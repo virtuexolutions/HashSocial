@@ -33,6 +33,12 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {FloatingLabelInput} from 'react-native-floating-label-input';
 import Header from '../Components/Header';
 import navigationService from '../navigationService';
+import {
+  AccessToken,
+  GraphRequest,
+  GraphRequestManager,
+  LoginManager,
+} from 'react-native-fbsdk';
 
 const LoginScreen = () => {
   const disptach = useDispatch();
@@ -42,7 +48,55 @@ const LoginScreen = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState('');
   const [selectedRole, setSelectedType] = useState('Qbid Member');
+  const [userInfo, setUserInfo] = useState({})
+  const [isLogin, setIsLogin] = useState(false)
 
+  logoutWithFacebook = () => {
+    LoginManager.logOut();
+    setUserInfo({});
+  };
+
+
+  getInfoFromToken = token => {
+    const PROFILE_REQUEST_PARAMS = {
+      fields: {
+        string: 'id,name,first_name,last_name',
+      },
+    };
+    const profileRequest = new GraphRequest(
+      '/me',
+      {token, parameters: PROFILE_REQUEST_PARAMS},
+      (error, user) => {
+        if (error) {
+          console.log('login info has error: ' + error);
+        } else {
+          setUserInfo(user)
+          console.log('result:', user);
+        }
+      },
+    );
+    new GraphRequestManager().addRequest(profileRequest).start();
+  };
+
+  loginWithFacebook = () => {
+    // Attempt a login using the Facebook login dialog asking for default permissions.
+    LoginManager.logInWithPermissions(['public_profile']).then(
+      login => {
+        if (login.isCancelled) {
+          console.log('Login cancelled');
+        } else {
+          AccessToken.getCurrentAccessToken().then(data => {
+            const accessToken = data.accessToken.toString();
+            getInfoFromToken(accessToken);
+            // setIsLogin(true)
+          });
+        }
+      },
+      error => {
+        console.log('Login fail with error: ' + error);
+      },
+    );
+  };
   // const handleLogin = async loginFor => {
   //   console.log(
   //     '🚀 ~ file: LoginScreen.js:38 ~ handleLogin ~ loginFor',
@@ -230,6 +284,7 @@ const LoginScreen = () => {
             <CustomImage
               source={require('../Assets/Images/facebook.png')}
               style={{width: 20, height: 20}}
+              onPress ={isLogin ?  logoutWithFacebook() : loginWithFacebook() }
             />
           </View>
           <View
