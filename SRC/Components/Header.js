@@ -2,144 +2,84 @@ import React, {useState} from 'react';
 import {Icon} from 'native-base';
 import {View, Platform, Dimensions, TouchableOpacity} from 'react-native';
 import {DrawerActions, useNavigation} from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from './CustomText';
 import CustomImage from './CustomImage';
 const {height, width} = Dimensions.get('window');
-import Foundation from 'react-native-vector-icons/Foundation';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
-
-import Modal from 'react-native-modal';
-
 import {useDispatch, useSelector} from 'react-redux';
-import {imageUrl} from '../Config';
-import {setUserLogout} from '../Store/slices/auth';
-import LinearGradient from 'react-native-linear-gradient';
 
 const Header = props => {
-  const dispatch = useDispatch();
-  const notification = useSelector(state => state.commonReducer.notification);
-  const navigationN = useNavigation();
-  const [isModalVisible, setModalVisible] = useState(false);
   const {
-    title,
-    showBack,
-    showList,
-    headerColor,
-    titleColor,
-    close,
-    navigateTO,
-    headerType,
-    Notify,
-    hideUser,
+  showBack ,
+  Title ,
+  right ,
+
   } = props;
 
-  const [searchText, setSearchText] = useState('');
-  const user = useSelector(state => state.commonReducer.userData);
-  const userRole = useSelector(state => state.commonReducer.selectedRole);
-  const token = useSelector(state => state.authReducer.token);
-  const statusArray = [
-    {label: 'Change Password', value: 'ChangePassword'},
-    {label: 'Terms & Conditions', value: 'TermsAndConditions'},
-    {label: 'Financial Breakdown', value: 'FinancialBreakDown'},
-    {label: 'Logout', value: 'Logout'},
-  ];
-
   return (
-    <LinearGradient
-      style={styles.header2}
-      start={{ x: 0, y: 0 }}
-      end={{ x: 1, y:1}}
-      colors={
-        headerColor ? headerColor : [Color.themeColor, '#83D475', '#ABE098']
-      }>
-      {/* <View
-      style={[
-        styles.header2,
-        headerColor && {
-          backgroundColor: headerColor,
-        },
-      ]}> */}
+   <View style={{
+    width : windowWidth ,
+    height : windowHeight * 0.1 ,
+    justifyContent : 'center',
+    alignItems : 'center',
+    backgroundColor : 'white',
+   }}>
+    {
+      showBack ?
+      <Icon 
+      name={'left'}
+      as={FontAwesome}
+      size={moderateScale(15,0.6)}
+      color={Color.white}
+      style={{
+        position : 'absolute' ,
+        left : moderateScale(20,0.6),
+        // width : moderateScale(100,0.6),
+        // height : windowHeight * 0.1,
+  
+      }}
+      />
+      :
+    
+      <View style={{
+        position : 'absolute' ,
+        left : 10,
+        width : moderateScale(30,0.6),
+        height : 40,
+  
+      }}>
+    <CustomImage
+    source={require('../Assets/Images/logosmall.png')}
+    resizeMode={'stretch'}
+    style={{
+      width : '100%',
+      height : '100%',
 
-      <View
+    }}
+    />
+    </View>
+  }
+    {Title && <CustomText isBold>{Title}</CustomText>}
+      {
+        right &&
+        <Icon 
+        name={'reorder-three'}
+        as={Ionicons}
+        size={moderateScale(40,0.6)}
+        color={'#01E8E3'}
         style={{
-          height: moderateScale(30, 0.3),
-          width: moderateScale(30, 0.3),
-          borderRadius: moderateScale(5, 0.3),
-          justifyContent: 'center',
-          alignItems: 'center',
-          backgroundColor: showBack || showList ? 'white' : 'transparent',
-        }}>
-        {showBack ? (
-          <Icon
-            name={'arrowleft'}
-            as={AntDesign}
-            size={moderateScale(22, 0.3)}
-            color={userRole == 'Qbid Member' ? Color.themeColor : Color.blue}
-            onPress={() => {
-              navigationN.goBack();
-            }}
-          />
-        ): (
-          <View></View>
-        )}
-      </View>
-      {/* <CustomImage
-        resizeMode={'contain'}
-        style={{
-          width: windowWidth * 0.21,
-          // backgroundColor : 'red' ,
-          height: windowHeight * 0.05,
+          position : 'absolute' ,
+          right : moderateScale(20,0.6),
+          // width : moderateScale(100,0.6),
+          // height : windowHeight * 0.1,
+          
         }}
-        source={
-          userRole == 'Qbid Member'
-            ? require('../Assets/Images/hola.png')
-            : require('../Assets/Images/hola.png')
-        }
-      />  */}
-     
-      {/* <CustomText isBold style={{color : Color.white , fontSize : moderateScale(20,0.6)}} >Hola!!</CustomText> */}
-      {!hideUser ? (
-        <TouchableOpacity
-          activeOpacity={0.8}
-          onPress={() => {
-            navigationN.navigate('MyAccounts');
-          }}
-          style={{
-            width: moderateScale(36, 0.3),
-            height: moderateScale(36, 0.3),
-            borderRadius: moderateScale(18, 0.3),
-            backgroundColor: Color.green,
-            overflow: 'hidden',
-          }}>
-          <CustomImage
-            onPress={() => {
-              navigationN.navigate('MyAccounts');
-            }}
-            source={
-              user?.photo
-                ? {uri: `${user?.photo}`}
-                : require('../Assets/Images/dummyUser.png')
-            }
-            resizeMode={'cover'}
-            style={{
-              width: '100%',
-              height: '100%',
-            }}
-          />
-          {/* )} */}
-        </TouchableOpacity>
-      ) : (
-        <View
-          style={{
-            width: moderateScale(40, 0.3),
-          }}></View>
-      )}
-    </LinearGradient>
+        />}
+        </View>
   );
 };
 const styles = ScaledSheet.create({

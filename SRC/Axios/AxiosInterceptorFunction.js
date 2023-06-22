@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Alert } from "react-native";
-import NetworkErrorAlert from "../Components/NetworkErrorAlert";
+// import NetworkErrorAlert from "../Components/NetworkErrorAlert";
 import { baseUrl } from "../Config";
 
 /**

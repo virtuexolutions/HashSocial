@@ -12,7 +12,9 @@ buildscript {
     }
     repositories {
         google()
+        //For Social Login
         mavenCentral()
+        
     }
     dependencies {
         classpath("com.android.tools.build:gradle:7.3.1")

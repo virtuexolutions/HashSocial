@@ -22,6 +22,10 @@ import {
 } from './SRC/Utillity/utils';
 import SplashScreen from './SRC/Screens/SplashScreen';
 import LoginScreen from './SRC/Screens/LoginScreen';
+import Signup from './SRC/Screens/Signup';
+import ResetPassword from './SRC/Screens/ResetPassword';
+import ChangePassword from './SRC/Screens/ChangePassword';
+
 // import AppNavigator, {DrawerRoot} from './SRC/appNavigation';
 
 const App = () => {
@@ -70,12 +74,12 @@ const MainContainer = () => {
   if (isloading == true) {
     return <SplashScreen />;
   }
-  return <LoginScreen />;
+  return <AppNavigator />;
 };
 
 const useloader = value => {
   const [isloading, setIsloading] = useState(value);
-  const [loadingTime] = useState(5000);
+  const [loadingTime] = useState(6000);
   useEffect(() => {
     setTimeout(() => setIsloading(false), loadingTime);
   }, []);

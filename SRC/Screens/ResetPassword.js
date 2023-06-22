@@ -1,228 +1,197 @@
-import React, {useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {
-  Image,
-  Dimensions,
+  ActivityIndicator,
   ImageBackground,
   Platform,
+  Text,
+  TextInput,
   ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {ScaledSheet, moderateScale} from 'react-native-size-matters';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-
-import {useDispatch, useSelector} from 'react-redux';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-
-import navigationService from '../navigationService';
-
-import TextInputWithTitle from '../Components/TextInputWithTitle';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
-import CustomText from '../Components/CustomText';
-
+// import CustomText from '../Components/CustomText';
+// import CustomImage from '../Components/CustomImage';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
-import CustomButton from '../Components/CustomButton';
-import {ActivityIndicator} from 'react-native';
+import {moderateScale, ScaledSheet} from 'react-native-size-matters';
+// import TextInputWithTitle from '../Components/TextInputWithTitle';
+// import FontAwesome from 'react-native-vector-icons/FontAwesome';
+// import CustomButton from '../Components/CustomButton';
+import {Image, ScrollView} from 'native-base';
+import {useIsFocused} from '@react-navigation/native';
 import {Post} from '../Axios/AxiosInterceptorFunction';
-import CardContainer from '../Components/CardContainer';
-import CustomHeader from '../Components/CustomHeader';
-import { Icon } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
-import { setUserToken } from '../Store/slices/auth';
-import LinearGradient from 'react-native-linear-gradient';
+import {validateEmail} from '../Config';
+import {setSelectedRole, setUserData} from '../Store/slices/common';
+import {setUserLogin, setUserToken, setWalkThrough} from '../Store/slices/auth';
+import {useDispatch, useSelector} from 'react-redux';
+import CustomImage from '../Components/CustomImage';
+import TextInputWithTitle from '../Components/TextInputWithTitle';
+import CustomText from '../Components/CustomText';
+import CustomButton from '../Components/CustomButton';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import {FloatingLabelInput} from 'react-native-floating-label-input';
+import Header from '../Components/Header';
 
-const width = Dimensions.get('window').width;
-const height = Dimensions.get('window').height;
-
-const ResetPassword = props => {
-  const SelecteduserRole = useSelector(
-    state => state.commonReducer.selectedRole,
-  );
-  const dispatch = useDispatch();
-  const navigationN = useNavigation();
-  const phoneNumber = props?.route?.params?.phone;
-  const [phone, setPhone] = useState('');
+const ResetPassword = () => {
+  const disptach = useDispatch();
+  const [firstSection, setFirstSection] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const [username, setusername] = useState('');
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState('');
+  
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [selectedRole, setSelectedType] = useState('Qbid Member');
 
-  // const sendOTP = async () => {
-  //   const url = 'password/email';
-  //   if (['', null, undefined].includes(phone)) {
-  //     return Platform.OS == 'android'
-  //       ? ToastAndroid.show('Phone number is required', ToastAndroid.SHORT)
-  //       : alert('Phone number is required');
-  //   }
-  //   setIsLoading(true);
-  //   const response = await Post(url, {email: phone}, apiHeader());
-  //   setIsLoading(false);
-  //   if (response != undefined) {
-  //     console.log('response data =>', response?.data);
-  //     Platform.OS == 'android'
-  //       ? ToastAndroid.show(`OTP sent to ${phone}`, ToastAndroid.SHORT)
-  //       : alert(`OTP sent to ${phone}`);
-  //     fromForgot
-  //       ? navigationService.navigate('VerifyNumber', {
-  //           fromForgot: fromForgot,
-  //           phoneNumber: `${phone}`,
-  //         })
-  //       : navigationService.navigate('VerifyNumber', {
-  //           phoneNumber: `${phone}`,
-  //         });
-  //   }
-  // };
+
 
   return (
     <>
       <CustomStatusBar
-       backgroundColor={
-        Color.white
-      }
+        backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-         <LinearGradient
+      <Header right />
+      <ImageBackground
+        source={require('../Assets/Images/Main.png')}
+        resizeMode={'cover'}
         style={{
           width: windowWidth,
-          height: windowHeight,
-        }}
-        start={{ x: 0, y: 0 }}
-        end={{ x: 1, y:1}}
-        colors={Color.themeBgColor}
-        // locations ={[0, 0.5, 0.6]}
-        >
-            <TouchableOpacity
-            activeOpacity={0.8}
+          height: windowHeight * 0.9,
+          // justifyContent : 'center',
+          alignItems: 'center',
+        }}>
+        <CustomText
           style={{
-            position : 'absolute',
-            top : moderateScale(20,0.3),
-            left : moderateScale(20,0.3),
-            height: moderateScale(30, 0.3),
-            width: moderateScale(30, 0.3),
-            borderRadius: moderateScale(5, 0.3),
-            justifyContent: 'center',
-            alignItems: 'center',
-            backgroundColor:'white',
-            zIndex : 1
-          }}>
-         
-            <Icon
-              name={'arrowleft'}
-              as={AntDesign}
-              size={moderateScale(22, 0.3)}
-              color={Color.themeColor}
-              onPress={()=>{
-                navigationN.goBack()
-              }}
-            />
-            </TouchableOpacity>
-        <KeyboardAwareScrollView
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{
-            paddingBottom: moderateScale(20, 0.3),
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100%',
-            height: windowHeight,
-          }}>
-          <CardContainer
-            style={{
-              paddingVertical: moderateScale(30, 0.3),
-              alignItems: 'center',
-            }}>
-            <CustomText isBold style={styles.txt2}>
-              Forget Password
-            </CustomText>
-            <CustomText style={styles.txt3}>
-              Forgot your password ? don't worry, jsut take a simple step and
-              create your new password!
-            </CustomText>
+            fontSize: moderateScale(25, 0.6),
+            color: '#353434',
+            width: windowWidth * 0.9,
+            textAlign: 'left',
+            marginTop: moderateScale(10, 0.3),
+          }}
+          isBold={true}
+          children={'Reset Password'}
+        />
 
-            <TextInputWithTitle
-              titleText={'Enter New Password'}
-              secureText={false}
-              placeholder={'Enter New Password'}
-              setText={setPhone}
-              value={phone}
-              viewHeight={0.07}
-              viewWidth={0.75}
-              inputWidth={0.7}
-              // border={1}
-              borderColor={'#ffffff'}
-              backgroundColor={'#FFFFFF'}
-              marginTop={moderateScale(35, 0.3)}
-              color={Color.themeColor}
-              placeholderColor={Color.themeLightGray}
-              borderRadius={moderateScale(25, 0.3)}
-              elevation
-            />
-            <TextInputWithTitle
-              titleText={'Confirm your new password'}
-              secureText={false}
-              placeholder={'Confirm your new password'}
-              setText={setPhone}
-              value={phone}
-              viewHeight={0.07}
-              viewWidth={0.75}
-              inputWidth={0.7}
-              // border={1}
-              borderColor={'#ffffff'}
-              backgroundColor={'#FFFFFF'}
-              marginTop={moderateScale(10, 0.3)}
-              color={Color.themeColor}
-              placeholderColor={Color.themeLightGray}
-              borderRadius={moderateScale(25, 0.3)}
-              elevation
-            />
-            <CustomButton
-              text={
-                isLoading ? (
-                  <ActivityIndicator color={'#FFFFFF'} size={'small'} />
-                ) : (
-                  'Reset'
-                )
-              }
-              textColor={Color.white}
-              width={windowWidth * 0.75}
-              height={windowHeight * 0.06}
-              marginTop={moderateScale(20, 0.3)}
-              onPress={() => {
-              dispatch(setUserToken({token : 'sadasdawdadas'}))
-              }}
-              bgColor={Color.themeColor
+      
+        <View style={styles.conatiner}>
+          <TextInputWithTitle
+            title={'password'}
+            titleText={'Password'}
+            secureText={true}
+            placeholder={'password'}
+            setText={setPassword}
+            value={password}
+            viewHeight={0.07}
+            viewWidth={0.82}
+            inputWidth={0.8}
+            border={1}
+            borderColor={'#A7A7A7'}
+            backgroundColor={'#FFFFFF'}
+            // marginTop={moderateScale(30,0.3)}
+            color={Color.themeColor}
+            placeholderColor={Color.themeLightGray}
+            borderRadius={moderateScale(10, 0.3)}
+          />
+
+          <TextInputWithTitle
+            title={'Confirm Password'}
+            titleText={'Confirm Password'}
+            secureText={true}
+            placeholder={'Confirm Password'}
+            setText={setConfirmPassword}
+            value={confirmPassword}
+            viewHeight={0.07}
+            viewWidth={0.82}
+            inputWidth={0.8}
+            border={1}
+            borderColor={'#A7A7A7'}
+            backgroundColor={'#FFFFFF'}
+            // marginTop={moderateScale(30,0.3)}
+            color={Color.themeColor}
+            placeholderColor={Color.themeLightGray}
+            borderRadius={moderateScale(10, 0.3)}
+          />
+        
+          <CustomButton
+            text={
+              isLoading ? (
+                <ActivityIndicator color={'#FFFFFF'} size={'small'} />
+              ) : (
+                'Reset password'
+              )
             }
-              // borderColor={Color.white}
-              // borderWidth={2}
-              borderRadius={moderateScale(30, 0.3)}
-            />
+            textColor={Color.white}
+            width={windowWidth * 0.7}
+            height={windowHeight * 0.06}
+            marginTop={moderateScale(20, 0.3)}
+            onPress={() => {
+              // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
+            }}
+            bgColor={['#01E8E3', '#1296AF']}
+            borderRadius={moderateScale(30, 0.3)}
+            isGradient
+          />
+        </View>
 
-           
-             
-            
-          </CardContainer>
-        </KeyboardAwareScrollView>
-      </LinearGradient>
+
+     
+
+      
+      </ImageBackground>
     </>
   );
 };
 
 const styles = ScaledSheet.create({
-  txt2: {
-    color: Color.black,
-    fontSize: moderateScale(25, 0.6),
+  conatiner: {
+    width: windowWidth * 0.9,
+    // height: windowHeight *0.4,
+    paddingVertical: moderateScale(15, 0.6),
+    backgroundColor: 'white',
+    alignSelf: 'center',
+    borderRadius: moderateScale(15, 0.6),
+    alignItems: 'center',
+    marginTop: windowHeight*0.2 ,
   },
-  txt3: {
-    color: Color.themeLightGray,
-    fontSize: moderateScale(10, 0.6),
-    textAlign: 'center',
-    width: '80%',
-    marginTop: moderateScale(5, 0.3),
-    lineHeight: moderateScale(17, 0.3),
+  textInput: {
+    height: windowHeight * 0.05,
+    width: windowWidth * 0.7,
+    borderWidth: 1,
+    borderColor: Color.darkGray,
+    borderRadius: 10,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 3,
+    },
+    shadowOpacity: 0.29,
+    shadowRadius: 4.65,
+
+    elevation: 7,
+  },
+  bottomImage: {
+    width: windowWidth * 0.4,
+    backgroundColor: 'green',
   },
 
-  phoneView: {
-    width: '80%',
-    paddingVertical: moderateScale(5, 0.3),
-    flexDirection: 'row',
+  textContainer: {
     marginTop: moderateScale(20, 0.3),
+  },
+
+  Heading: {
+    fontSize: moderateScale(20, 0.3),
+    // fontWeight: 'bold',
+    color: '#ffffff',
+
+    alignSelf: 'flex-start',
+  },
+
+  txt3: {
+    fontSize: moderateScale(10, 0.6),
+    alignSelf: 'center',
+    fontWeight: '600',
   },
   container2: {
     flexDirection: 'row',
@@ -233,14 +202,17 @@ const styles = ScaledSheet.create({
   },
   txt4: {
     color: Color.purple,
-    fontSize: moderateScale(14, 0.6),
+    fontSize: moderateScale(15, 0.6),
     marginTop: moderateScale(8, 0.3),
     fontWeight: 'bold',
   },
   txt5: {
-    color: Color.themeLightGray,
+    color: Color.white,
     marginTop: moderateScale(10, 0.3),
     fontSize: moderateScale(12, 0.6),
+  },
+  dropDown: {
+    backgroundColor: Color.red,
   },
 });
 
