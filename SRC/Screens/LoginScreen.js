@@ -37,8 +37,15 @@ import {
   AccessToken,
   GraphRequest,
   GraphRequestManager,
+  LoginButton,
   LoginManager,
-} from 'react-native-fbsdk';
+  Profile,
+} from 'react-native-fbsdk-next';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
 
 const LoginScreen = () => {
   const disptach = useDispatch();
@@ -51,13 +58,31 @@ const LoginScreen = () => {
   const [userInfo, setUserInfo] = useState({})
   const [isLogin, setIsLogin] = useState(false)
 
-  logoutWithFacebook = () => {
+  const logoutWithFacebook = () => {
     LoginManager.logOut();
     setUserInfo({});
   };
 
 
-  getInfoFromToken = token => {
+  const currentProfile = Profile.getCurrentProfile().then(
+    function(currentProfile) {
+      if (currentProfile) {
+        console.log("The current logged user is: " +
+        JSON.stringify(currentProfile , null , 2)
+          + ". His profile id is: " +
+          currentProfile.userID
+        );
+      }
+    }
+  );
+  const isSignedIn = async () => {
+    const isSignedIn = await GoogleSignin.isSignedIn();
+    console.log("🚀 ~ file: LoginScreen.js:80 ~ isSignedIn= ~ isSignedIn:", isSignedIn)
+    // setState({ isLoginScreenPresented: !isSignedIn });
+  };
+  // console.log("🚀 ~ file: LoginScreen.js:72 ~ LoginScreen ~ currentProfile:", currentProfile)
+
+  const getInfoFromToken = token => {
     const PROFILE_REQUEST_PARAMS = {
       fields: {
         string: 'id,name,first_name,last_name',
@@ -78,23 +103,22 @@ const LoginScreen = () => {
     new GraphRequestManager().addRequest(profileRequest).start();
   };
 
-  loginWithFacebook = () => {
+  const loginWithFacebook = () => {
     // Attempt a login using the Facebook login dialog asking for default permissions.
-    LoginManager.logInWithPermissions(['public_profile']).then(
-      login => {
-        if (login.isCancelled) {
-          console.log('Login cancelled');
+    LoginManager.logInWithPermissions(["public_profile"]).then(
+      function(result) {
+        if (result.isCancelled) {
+          console.log("Login cancelled");
         } else {
-          AccessToken.getCurrentAccessToken().then(data => {
-            const accessToken = data.accessToken.toString();
-            getInfoFromToken(accessToken);
-            // setIsLogin(true)
-          });
+          console.log(
+            "Login success with permissions: " +
+              result.grantedPermissions.toString()
+          );
         }
       },
-      error => {
-        console.log('Login fail with error: ' + error);
-      },
+      function(error) {
+        console.log("Login fail with error: " + error);
+      }
     );
   };
   // const handleLogin = async loginFor => {
@@ -135,6 +159,40 @@ const LoginScreen = () => {
   //   }
   // };
 
+
+  const GoogleLogin = async()=>{
+    GoogleSignin.configure();
+
+      try {
+        await GoogleSignin.hasPlayServices();
+        const userInfo = await GoogleSignin.signIn();
+        console.log("🚀 ~ file: LoginScreen.js:162 ~ GoogleLogin ~ userInfo:", userInfo)
+        alert(`Login successful for ${userInfo?.user?.email}` )
+        // setState({ userInfo });
+      } catch (error) {
+        if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+          console.log('sign in cancelled')
+          // user cancelled the login flow
+        } else if (error.code === statusCodes.IN_PROGRESS) {
+          console.log('sign in progress')
+
+          // operation (e.g. sign in) is in progress already
+        } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+          // play services not available or outdated
+          console.log('play service not availble')
+
+        } else {
+          console.log(error)
+          // some other error happened
+        }
+      }
+    };
+  
+  // useEffect(() => {
+
+  // }, [])
+  
+  
   return (
     <>
       <CustomStatusBar
@@ -270,6 +328,7 @@ const LoginScreen = () => {
             <CustomImage
               source={require('../Assets/Images/google.png')}
               style={{width: 20, height: 20}}
+              onPress={GoogleLogin}
             />
           </View>
           <View
@@ -284,7 +343,7 @@ const LoginScreen = () => {
             <CustomImage
               source={require('../Assets/Images/facebook.png')}
               style={{width: 20, height: 20}}
-              onPress ={isLogin ?  logoutWithFacebook() : loginWithFacebook() }
+              onPress ={()=>{isLogin ?  logoutWithFacebook() : loginWithFacebook()} }
             />
           </View>
           <View
@@ -299,10 +358,28 @@ const LoginScreen = () => {
             <CustomImage
               source={require('../Assets/Images/twitter.png')}
               style={{width: 20, height: 20}}
+              onPress={isSignedIn}
             />
           </View>
         </View>
 
+        {/* <LoginButton
+          onLoginFinished={
+            (error, result) => {
+              if (error) {
+                console.log("login has error: " + result.error);
+              } else if (result.isCancelled) {
+                console.log("login is cancelled.");
+              } else {
+                AccessToken.getCurrentAccessToken().then(
+                  (data) => {
+                    console.log(data.accessToken.toString())
+                  }
+                )
+              }
+            }
+          }
+          onLogoutFinished={() => console.log("logout.")}/> */}
         <CustomButton
           text={
             isLoading ? (
