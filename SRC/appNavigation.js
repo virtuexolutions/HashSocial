@@ -12,6 +12,17 @@ import Signup from './Screens/Signup';
 import ChangePassword from './Screens/ChangePassword';
 import EnterPhone from './Screens/EnterPhone';
 import VerifyNumber from './Screens/VerifyNumber';
+import AddPost from './Screens/AddPost';
+import MyGallery from './Screens/MyGallery';
+import CreateNewFeed from './Screens/CreateNewFeed';
+import AccountSetting from './Screens/AccountSetting';
+import BubbleList from './Screens/BubbleList';
+import BubbleSearch from './Screens/BubbleSearch';
+import Notifications from './Screens/Notifications';
+import Posting from './Screens/Posting';
+import Profile from './Screens/Profile';
+import ProfileList from './Screens/ProfileList';
+// import AccountSetting from './Screens/AccountSetting';
 // import HomeScreen from './Screens/HomeScreen';
 // import MyAccounts from './Screens/MyAccounts';
 // import ChangePassword from './Screens/ChangePassword';
@@ -39,16 +50,24 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={LoginScreen}
+          initialRouteName={ProfileList}
           screenOptions={{headerShown: false}}>
-
+          <RootNav.Screen name="BubbleList" component={BubbleList} />
+          <RootNav.Screen name="Profile" component={Profile} />
+          <RootNav.Screen name="Posting" component={Posting} />
+          <RootNav.Screen name="ProfileList" component={ProfileList} />
+          <RootNav.Screen name="Notifications" component={Notifications} />
+          <RootNav.Screen name="BubbleSearch" component={BubbleSearch} />
+          <RootNav.Screen name="AccountSetting" component={AccountSetting} />
+          <RootNav.Screen name="CreateNewFeed" component={CreateNewFeed} />
+          <RootNav.Screen name="MyGallery" component={MyGallery} />
+          <RootNav.Screen name="AddPost" component={AddPost} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="Signup" component={Signup} />
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
           <RootNav.Screen name="EnterPhone" component={EnterPhone} />
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
-
 
           {/* <RootNav.Screen name="EnterPhone" component={EnterPhone} />
         

@@ -77,11 +77,12 @@ const DropDownSingleSelect = ({
           name={iconName}
           as={iconType}
           size={moderateScale(22, 0.3)}
-          style={[
-            styles.icon2,
-            backgroundColor && {color: Color.themeGray},
-            myJobs && {color: '#ffffff00'},
-          ]}
+          // style={[
+          //   styles.icon2,
+          //   backgroundColor && {color: Color.themeGray},
+          //   myJobs && {color: '#1296AF'},
+          // ]}
+          color={'#1296AF'}
         />
       )}
       <SelectDropdown
@@ -108,8 +109,8 @@ const DropDownSingleSelect = ({
           ...styles.dropDownBtnText,
           ...(item !== '' && {color: Colors ? Colors : Color.themeBlack}),
           ...(backgroundColor && {
-            color: `${Color.white}`,
-            fontSize: moderateScale(18, 0.3),
+            color: `${Color.black}`,
+            fontSize: moderateScale(14, 0.3),
           }),
         }}
         dropdownStyle={{
@@ -163,7 +164,7 @@ const DropDownSingleSelect = ({
 const styles = ScaledSheet.create({
   dropDownBtn: {
     backgroundColor: Color.white,
-    height: height * 0.07,
+    height: height * 0.06,
     borderRadius: moderateScale(25, 0.3),
   },
   main: {
@@ -182,7 +183,7 @@ const styles = ScaledSheet.create({
     // backgroundColor: "red",
     width: width * 0.75,
     // marginLeft: 38,
-    fontSize: moderateScale(15, 0.3),
+    fontSize: moderateScale(12, 0.3),
     color: Color.themeLightGray,
     textAlign: 'left',
     textTransform: 'capitalize',
@@ -192,7 +193,7 @@ const styles = ScaledSheet.create({
   },
   dropDownRowText: {
     width: width * 0.75,
-    fontSize: moderateScale(16, 0.3),
+    fontSize: moderateScale(14, 0.3),
     color: 'black',
     textAlign: 'left',
     textTransform: 'capitalize',

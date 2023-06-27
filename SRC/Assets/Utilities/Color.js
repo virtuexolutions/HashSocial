@@ -23,7 +23,7 @@ export default Color = {
   purple: '#0D668E',
 
   // theme colors
-  themeColor: '#AF69EF',
+  themeColor: '#1296AF',
   themePink : '#F84569',
   themeColor1: '#52C4BF',
 

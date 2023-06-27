@@ -63,7 +63,7 @@ const Header = props => {
     />
     </View>
   }
-    {Title && <CustomText isBold>{Title}</CustomText>}
+    {Title && <CustomText style={{fontSize: 23}} isBold>{Title}</CustomText>}
       {
         right &&
         <Icon 
