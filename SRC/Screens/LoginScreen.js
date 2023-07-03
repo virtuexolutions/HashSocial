@@ -11,41 +11,28 @@ import {
 } from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
-// import CustomText from '../Components/CustomText';
-// import CustomImage from '../Components/CustomImage';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
-// import TextInputWithTitle from '../Components/TextInputWithTitle';
-// import FontAwesome from 'react-native-vector-icons/FontAwesome';
-// import CustomButton from '../Components/CustomButton';
-import {Image, ScrollView} from 'native-base';
-import {useIsFocused} from '@react-navigation/native';
-import {Post} from '../Axios/AxiosInterceptorFunction';
-import {validateEmail} from '../Config';
-import {setSelectedRole, setUserData} from '../Store/slices/common';
-import {setUserLogin, setUserToken, setWalkThrough} from '../Store/slices/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import CustomImage from '../Components/CustomImage';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomText from '../Components/CustomText';
 import CustomButton from '../Components/CustomButton';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {FloatingLabelInput} from 'react-native-floating-label-input';
 import Header from '../Components/Header';
 import navigationService from '../navigationService';
-import {
-  AccessToken,
-  GraphRequest,
-  GraphRequestManager,
-  LoginButton,
-  LoginManager,
-  Profile,
-} from 'react-native-fbsdk-next';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-} from '@react-native-google-signin/google-signin';
+// import {
+//   AccessToken,
+//   GraphRequest,
+//   GraphRequestManager,
+//   LoginButton,
+//   LoginManager,
+//   Profile,
+// } from 'react-native-fbsdk-next';
+// import {
+//   GoogleSignin,
+//   GoogleSigninButton,
+//   statusCodes,
+// } from '@react-native-google-signin/google-signin';
 
 const LoginScreen = () => {
   const disptach = useDispatch();
@@ -58,135 +45,135 @@ const LoginScreen = () => {
   const [userInfo, setUserInfo] = useState({})
   const [isLogin, setIsLogin] = useState(false)
 
-  const logoutWithFacebook = () => {
-    LoginManager.logOut();
-    setUserInfo({});
-  };
-
-
-  const currentProfile = Profile.getCurrentProfile().then(
-    function(currentProfile) {
-      if (currentProfile) {
-        console.log("The current logged user is: " +
-        JSON.stringify(currentProfile , null , 2)
-          + ". His profile id is: " +
-          currentProfile.userID
-        );
-      }
-    }
-  );
-  const isSignedIn = async () => {
-    const isSignedIn = await GoogleSignin.isSignedIn();
-    console.log("🚀 ~ file: LoginScreen.js:80 ~ isSignedIn= ~ isSignedIn:", isSignedIn)
-    // setState({ isLoginScreenPresented: !isSignedIn });
-  };
-  // console.log("🚀 ~ file: LoginScreen.js:72 ~ LoginScreen ~ currentProfile:", currentProfile)
-
-  const getInfoFromToken = token => {
-    const PROFILE_REQUEST_PARAMS = {
-      fields: {
-        string: 'id,name,first_name,last_name',
-      },
-    };
-    const profileRequest = new GraphRequest(
-      '/me',
-      {token, parameters: PROFILE_REQUEST_PARAMS},
-      (error, user) => {
-        if (error) {
-          console.log('login info has error: ' + error);
-        } else {
-          setUserInfo(user)
-          console.log('result:', user);
-        }
-      },
-    );
-    new GraphRequestManager().addRequest(profileRequest).start();
-  };
-
-  const loginWithFacebook = () => {
-    // Attempt a login using the Facebook login dialog asking for default permissions.
-    LoginManager.logInWithPermissions(["public_profile"]).then(
-      function(result) {
-        if (result.isCancelled) {
-          console.log("Login cancelled");
-        } else {
-          console.log(
-            "Login success with permissions: " +
-              result.grantedPermissions.toString()
-          );
-        }
-      },
-      function(error) {
-        console.log("Login fail with error: " + error);
-      }
-    );
-  };
-  // const handleLogin = async loginFor => {
-  //   console.log(
-  //     '🚀 ~ file: LoginScreen.js:38 ~ handleLogin ~ loginFor',
-  //     loginFor,
-  //   );
-  //   const url = 'login';
-  //   const body = {
-  //     email: email.trim(),
-  //     password: password,
-  //   };
-  //   if (email == '' || password == '') {
-  //     return Platform.OS == 'android'
-  //       ? ToastAndroid.show('Required Field is empty', ToastAndroid.SHORT)
-  //       : alert('Required Field is empty');
-  //   }
-  //   if (!validateEmail(email)) {
-  //     return Platform.OS == 'android'
-  //       ? ToastAndroid.show('Please use valid email', ToastAndroid.SHORT)
-  //       : alert('Please use valid email');
-  //   }
-  //   setIsLoading(true);
-  //   const response = await Post(url, body, apiHeader());
-  //   setIsLoading(false);
-  //   if (response != undefined) {
-  //     console.log(response?.data);
-  //     // console.log('yes' ,  response?.data?.data?.user_info?.role , loginFor)
-  //     response?.data?.data?.user_info?.role == loginFor
-  //       ? (dispatch(setUserData(response?.data?.data?.user_info)),
-  //         dispatch(setUserLogin(response?.data?.data?.token)))
-  //       : Platform.OS == 'android'
-  //       ? ToastAndroid.show(
-  //           'This User is not registered for selected role',
-  //           ToastAndroid.SHORT,
-  //         )
-  //       : alert('This User is not registered for selected role');
-  //   }
+  // const logoutWithFacebook = () => {
+  //   LoginManager.logOut();
+  //   setUserInfo({});
   // };
 
 
-  const GoogleLogin = async()=>{
-    GoogleSignin.configure();
+  // const currentProfile = Profile.getCurrentProfile().then(
+  //   function(currentProfile) {
+  //     if (currentProfile) {
+  //       console.log("The current logged user is: " +
+  //       JSON.stringify(currentProfile , null , 2)
+  //         + ". His profile id is: " +
+  //         currentProfile.userID
+  //       );
+  //     }
+  //   }
+  // );
+  // const isSignedIn = async () => {
+  //   const isSignedIn = await GoogleSignin.isSignedIn();
+  //   console.log("🚀 ~ file: LoginScreen.js:80 ~ isSignedIn= ~ isSignedIn:", isSignedIn)
+  //   // setState({ isLoginScreenPresented: !isSignedIn });
+  // };
+  // // console.log("🚀 ~ file: LoginScreen.js:72 ~ LoginScreen ~ currentProfile:", currentProfile)
 
-      try {
-        await GoogleSignin.hasPlayServices();
-        const userInfo = await GoogleSignin.signIn();
-        console.log("🚀 ~ file: LoginScreen.js:162 ~ GoogleLogin ~ userInfo:", userInfo)
-        alert(`Login successful for ${userInfo?.user?.email}` )
-        // setState({ userInfo });
-      } catch (error) {
-        if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-          console.log('sign in cancelled')
-          // user cancelled the login flow
-        } else if (error.code === statusCodes.IN_PROGRESS) {
-          console.log('sign in progress')
+  // const getInfoFromToken = token => {
+  //   const PROFILE_REQUEST_PARAMS = {
+  //     fields: {
+  //       string: 'id,name,first_name,last_name',
+  //     },
+  //   };
+  //   const profileRequest = new GraphRequest(
+  //     '/me',
+  //     {token, parameters: PROFILE_REQUEST_PARAMS},
+  //     (error, user) => {
+  //       if (error) {
+  //         console.log('login info has error: ' + error);
+  //       } else {
+  //         setUserInfo(user)
+  //         console.log('result:', user);
+  //       }
+  //     },
+  //   );
+  //   new GraphRequestManager().addRequest(profileRequest).start();
+  // };
 
-          // operation (e.g. sign in) is in progress already
-        } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-          // play services not available or outdated
-          console.log('play service not availble')
+  // const loginWithFacebook = () => {
+  //   // Attempt a login using the Facebook login dialog asking for default permissions.
+  //   LoginManager.logInWithPermissions(["public_profile"]).then(
+  //     function(result) {
+  //       if (result.isCancelled) {
+  //         console.log("Login cancelled");
+  //       } else {
+  //         console.log(
+  //           "Login success with permissions: " +
+  //             result.grantedPermissions.toString()
+  //         );
+  //       }
+  //     },
+  //     function(error) {
+  //       console.log("Login fail with error: " + error);
+  //     }
+  //   );
+  // };
+  // // const handleLogin = async loginFor => {
+  // //   console.log(
+  // //     '🚀 ~ file: LoginScreen.js:38 ~ handleLogin ~ loginFor',
+  // //     loginFor,
+  // //   );
+  // //   const url = 'login';
+  // //   const body = {
+  // //     email: email.trim(),
+  // //     password: password,
+  // //   };
+  // //   if (email == '' || password == '') {
+  // //     return Platform.OS == 'android'
+  // //       ? ToastAndroid.show('Required Field is empty', ToastAndroid.SHORT)
+  // //       : alert('Required Field is empty');
+  // //   }
+  // //   if (!validateEmail(email)) {
+  // //     return Platform.OS == 'android'
+  // //       ? ToastAndroid.show('Please use valid email', ToastAndroid.SHORT)
+  // //       : alert('Please use valid email');
+  // //   }
+  // //   setIsLoading(true);
+  // //   const response = await Post(url, body, apiHeader());
+  // //   setIsLoading(false);
+  // //   if (response != undefined) {
+  // //     console.log(response?.data);
+  // //     // console.log('yes' ,  response?.data?.data?.user_info?.role , loginFor)
+  // //     response?.data?.data?.user_info?.role == loginFor
+  // //       ? (dispatch(setUserData(response?.data?.data?.user_info)),
+  // //         dispatch(setUserLogin(response?.data?.data?.token)))
+  // //       : Platform.OS == 'android'
+  // //       ? ToastAndroid.show(
+  // //           'This User is not registered for selected role',
+  // //           ToastAndroid.SHORT,
+  // //         )
+  // //       : alert('This User is not registered for selected role');
+  // //   }
+  // // };
 
-        } else {
-          console.log(error)
-          // some other error happened
-        }
-      }
-    };
+
+  // const GoogleLogin = async()=>{
+  //   GoogleSignin.configure();
+
+  //     try {
+  //       await GoogleSignin.hasPlayServices();
+  //       const userInfo = await GoogleSignin.signIn();
+  //       console.log("🚀 ~ file: LoginScreen.js:162 ~ GoogleLogin ~ userInfo:", userInfo)
+  //       alert(`Login successful for ${userInfo?.user?.email}` )
+  //       // setState({ userInfo });
+  //     } catch (error) {
+  //       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+  //         console.log('sign in cancelled')
+  //         // user cancelled the login flow
+  //       } else if (error.code === statusCodes.IN_PROGRESS) {
+  //         console.log('sign in progress')
+
+  //         // operation (e.g. sign in) is in progress already
+  //       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+  //         // play services not available or outdated
+  //         console.log('play service not availble')
+
+  //       } else {
+  //         console.log(error)
+  //         // some other error happened
+  //       }
+  //     }
+  //   };
   
   // useEffect(() => {
 
@@ -292,6 +279,7 @@ const LoginScreen = () => {
             height={windowHeight * 0.06}
             marginTop={moderateScale(20, 0.3)}
             onPress={() => {
+              navigationService.navigate('BubbleSelection')
               // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
             }}
             bgColor={['#01E8E3', '#1296AF']}
@@ -328,7 +316,7 @@ const LoginScreen = () => {
             <CustomImage
               source={require('../Assets/Images/google.png')}
               style={{width: 20, height: 20}}
-              onPress={GoogleLogin}
+              // onPress={GoogleLogin}
             />
           </View>
           <View
@@ -343,7 +331,7 @@ const LoginScreen = () => {
             <CustomImage
               source={require('../Assets/Images/facebook.png')}
               style={{width: 20, height: 20}}
-              onPress ={()=>{isLogin ?  logoutWithFacebook() : loginWithFacebook()} }
+              // onPress ={()=>{isLogin ?  logoutWithFacebook() : loginWithFacebook()} }
             />
           </View>
           <View
@@ -358,7 +346,7 @@ const LoginScreen = () => {
             <CustomImage
               source={require('../Assets/Images/twitter.png')}
               style={{width: 20, height: 20}}
-              onPress={isSignedIn}
+              // onPress={isSignedIn}
             />
           </View>
         </View>

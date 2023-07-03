@@ -32,6 +32,7 @@ import CustomButton from '../Components/CustomButton';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {FloatingLabelInput} from 'react-native-floating-label-input';
 import Header from '../Components/Header';
+import navigationService from '../navigationService';
 
 
 const Signup = () => {
@@ -280,6 +281,7 @@ const Signup = () => {
             height={windowHeight * 0.06}
             marginTop={moderateScale(20, 0.3)}
             onPress={() => {
+              navigationService.navigate('BubbleSelection')
               // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
             }}
             bgColor={['#01E8E3', '#1296AF']}

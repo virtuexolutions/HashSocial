@@ -22,6 +22,7 @@ import Notifications from './Screens/Notifications';
 import Posting from './Screens/Posting';
 import Profile from './Screens/Profile';
 import ProfileList from './Screens/ProfileList';
+import BubbleSelection from './Screens/BubbleSelection';
 // import AccountSetting from './Screens/AccountSetting';
 // import HomeScreen from './Screens/HomeScreen';
 // import MyAccounts from './Screens/MyAccounts';
@@ -50,7 +51,7 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={ProfileList}
+          initialRouteName={'LoginScreen'}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="BubbleList" component={BubbleList} />
           <RootNav.Screen name="Profile" component={Profile} />
@@ -68,23 +69,8 @@ const AppNavigator = () => {
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
           <RootNav.Screen name="EnterPhone" component={EnterPhone} />
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
+          <RootNav.Screen name="BubbleSelection" component={BubbleSelection} />
 
-          {/* <RootNav.Screen name="EnterPhone" component={EnterPhone} />
-        
-          <RootNav.Screen name="HomeScreen" component={HomeScreen} />
-          <RootNav.Screen name="MyAccounts" component={MyAccounts} />
-          <RootNav.Screen name="FriendRequest" component={FriendRequest} />
-          <RootNav.Screen name="SeeAllScreen" component={SeeAllScreen} />
-          <RootNav.Screen name="Support" component={Support} />
-          <RootNav.Screen name="SelectedChat" component={SelectedChat} /> */}
-
-          {/* 
-          <RootNav.Screen
-            name="NegotiatorPortfolio"
-            component={NegotiatorPortfolio}
-          />
-          <Tabs.Screen name={'ChatScreen'} component={ChatScreen} />
-      <Tabs.Screen name={'Settings'} component={Settings} /> */}
         </RootNav.Navigator>
       </NavigationContainer>
     );

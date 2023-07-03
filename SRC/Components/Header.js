@@ -17,6 +17,7 @@ const Header = props => {
   showBack ,
   Title ,
   right ,
+  search
 
   } = props;
 
@@ -65,20 +66,49 @@ const Header = props => {
   }
     {Title && <CustomText style={{fontSize: 23}} isBold>{Title}</CustomText>}
       {
-        right &&
-        <Icon 
+        right &&(
+          <View style={{
+            flexDirection:'row',
+            justifyContent:'space-between',
+            alignItems : 'center',
+            position : 'absolute' ,
+            right : moderateScale(10,0.6),
+            
+          }}>
+
+            {search &&
+            //   <Icon 
+            // name={'search'}
+            // as={Ionicons}
+            // size={moderateScale(20,0.6)}
+            // color={'#757575'}
+            // style={{
+             
+              
+            // }}
+            <CustomImage 
+            source={require('../Assets/Images/search.png')}
+            style={{
+              width : moderateScale(20,0.6) , 
+              height : moderateScale(20,0.6)
+            }}
+            />  
+          } 
+          
+          <Icon 
         name={'reorder-three'}
         as={Ionicons}
         size={moderateScale(40,0.6)}
         color={'#01E8E3'}
         style={{
-          position : 'absolute' ,
-          right : moderateScale(20,0.6),
-          // width : moderateScale(100,0.6),
-          // height : windowHeight * 0.1,
+        
           
         }}
-        />}
+        />
+        
+        </View>
+          )
+        }
         </View>
   );
 };

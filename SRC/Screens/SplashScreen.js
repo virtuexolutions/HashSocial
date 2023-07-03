@@ -33,21 +33,7 @@ const SplashScreen = () => {
   animated
 />
 
-        {/* <CustomImage
-          source={require('../Assets/Images/splash.gif')}
-          resizeMode={"stretch"}
-          style={{width: 150, height: 150 }}
-          /> */}
-        
-        {/* <Animatable.View
-          animation="fadeInDown"
-          duration={2500}
-          useNativeDriver
-          style={[styles?.textContainer]}
-          
-          
-          >
-        </Animatable.View> */}
+      
             </ImageBackground>
    
     </ScreenBoiler>

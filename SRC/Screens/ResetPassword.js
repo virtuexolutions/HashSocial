@@ -18,7 +18,7 @@ import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 // import TextInputWithTitle from '../Components/TextInputWithTitle';
 // import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import CustomButton from '../Components/CustomButton';
-import {Image, ScrollView} from 'native-base';
+import {Image, ScrollView, Toast} from 'native-base';
 import {useIsFocused} from '@react-navigation/native';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import {validateEmail} from '../Config';
@@ -32,6 +32,7 @@ import CustomButton from '../Components/CustomButton';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {FloatingLabelInput} from 'react-native-floating-label-input';
 import Header from '../Components/Header';
+import navigationService from '../navigationService';
 
 const ResetPassword = () => {
   const disptach = useDispatch();
@@ -127,6 +128,8 @@ const ResetPassword = () => {
             height={windowHeight * 0.06}
             marginTop={moderateScale(20, 0.3)}
             onPress={() => {
+              ToastAndroid.show('Password Reset' , ToastAndroid.SHORT)
+              navigationService.navigate('LoginScreen')
               // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
             }}
             bgColor={['#01E8E3', '#1296AF']}
