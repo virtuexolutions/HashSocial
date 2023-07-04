@@ -413,7 +413,7 @@ const CreateNewBubble = () => {
             marginTop={moderateScale(10, 0.3)}
             bgColor={['#FFFFFF', '#FFFFFF']}
             borderRadius={moderateScale(30, 0.3)}
-            isGradient
+            isGradient  
             isBold={true}
             marginBottom={moderateScale(50)}
           />
