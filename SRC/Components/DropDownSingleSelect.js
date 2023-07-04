@@ -30,6 +30,7 @@ const DropDownSingleSelect = ({
   myJobs,
   Colors,
   dropdownStyle,
+  btnStyle
 }) => {
   const [data , setData] = useState([])
 
@@ -91,6 +92,8 @@ const DropDownSingleSelect = ({
         buttonStyle={{
           ...styles.dropDownBtn,
           width: width * 0.89,
+          backgroundColor :'white',
+          ...(btnStyle && btnStyle),
 
           ...(disabled && {backgroundColor: `${Color.veryLightGray}90`}),
           ...(myJobs && {
@@ -103,6 +106,11 @@ const DropDownSingleSelect = ({
           }),
           ...(!iconName && {
             width: width,
+          
+          
+          
+          
+          
           }),
         }}
         buttonTextStyle={{
@@ -115,6 +123,7 @@ const DropDownSingleSelect = ({
         }}
         dropdownStyle={{
           width: width,
+          // height : 120,
           borderRadius: moderateScale(10, 0.3),
           marginTop: -height * 0.06,
 
@@ -163,14 +172,14 @@ const DropDownSingleSelect = ({
 };
 const styles = ScaledSheet.create({
   dropDownBtn: {
-    backgroundColor: Color.white,
-    height: height * 0.06,
+    backgroundColor: Color.red,
+    height: height * 0.08,
     borderRadius: moderateScale(25, 0.3),
   },
   main: {
     position: 'relative',
     backgroundColor: Color.themeInputText,
-    height: height * 0.06,
+    height: height * 0.03,
     borderBottomWidth: moderateScale(1, 0.3),
     borderColor: 'lightgrey',
     marginTop: moderateScale(6, 0.3),

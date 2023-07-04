@@ -23,6 +23,7 @@ import Posting from './Screens/Posting';
 import Profile from './Screens/Profile';
 import ProfileList from './Screens/ProfileList';
 import BubbleSelection from './Screens/BubbleSelection';
+import CreateNewBubble from './Screens/CreateNewBubble';
 // import AccountSetting from './Screens/AccountSetting';
 // import HomeScreen from './Screens/HomeScreen';
 // import MyAccounts from './Screens/MyAccounts';
@@ -51,8 +52,9 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'LoginScreen'}
+          initialRouteName={'CreateNewBubble'}
           screenOptions={{headerShown: false}}>
+          <RootNav.Screen name="CreateNewBubble" component={CreateNewBubble} />
           <RootNav.Screen name="BubbleList" component={BubbleList} />
           <RootNav.Screen name="Profile" component={Profile} />
           <RootNav.Screen name="Posting" component={Posting} />
