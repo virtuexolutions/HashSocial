@@ -6,9 +6,14 @@ import {windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import ScreenBoiler from '../Components/ScreenBoiler';
 import FastImage from 'react-native-fast-image';
-import {ImageBackground, ScrollView, ToastAndroid, TouchableOpacity} from 'react-native';
+import {
+  ImageBackground,
+  ScrollView,
+  ToastAndroid,
+  TouchableOpacity,
+} from 'react-native';
 import Header from '../Components/Header';
-import { View } from 'react-native';
+import {View} from 'react-native';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
 
@@ -90,48 +95,43 @@ const BubbleSelection = () => {
           //   justifyContent: 'center',
           //   alignItems: 'center',
         }}>
-            <View style={{
-                position:'absolute',
-                bottom : moderateScale(100,0.3),
-                right : moderateScale(15,0.6),
-                zIndex : 1,
-             
-            }}>
-                  <CustomButton
-            text={
-            'Save'
-            }
+        <View
+          style={{
+            position: 'absolute',
+            bottom: moderateScale(100, 0.3),
+            right: moderateScale(15, 0.6),
+            zIndex: 1,
+          }}>
+          <CustomButton
+            text={'Save'}
             textColor={Color.white}
             width={windowWidth * 0.2}
             height={windowHeight * 0.04}
             onPress={() => {
-                ToastAndroid.show('Saved',ToastAndroid.SHORT)
+              ToastAndroid.show('Saved', ToastAndroid.SHORT);
               // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
             }}
-            fontSize={moderateScale(12,0.6)}
+            fontSize={moderateScale(12, 0.6)}
             bgColor={['#01E8E3', '#1296AF']}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
           />
-            <CustomButton
-            text={
-            'cancel'
-            }
+          <CustomButton
+            text={'cancel'}
             textColor={'#01E8E3'}
             width={windowWidth * 0.2}
             height={windowHeight * 0.04}
-            fontSize={moderateScale(12,0.6)}
-
+            fontSize={moderateScale(12, 0.6)}
             onPress={() => {
-                  navigationService.navigate('LoginScreen')
+              navigationService.navigate('LoginScreen');
               // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
             }}
-            marginTop={moderateScale(10,0.3)}
+            marginTop={moderateScale(10, 0.3)}
             bgColor={['#ffffff', '#ffffff']}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
           />
-            </View>
+        </View>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
@@ -161,39 +161,13 @@ const BubbleSelection = () => {
                     index % 2 == 0 ? windowHeight * 0.3 : windowHeight * 0.17,
                   borderRadius: moderateScale(15, 0.6),
                   overflow: 'hidden',
-             marginTop:
+                  marginTop:
                     index == 4 || index == 10 ? -windowHeight * 0.13 : 0,
                   zIndex: 1,
                   marginVertical: moderateScale(5, 0.3),
                   marginHorizontal: moderateScale(2, 0.3),
                 }}>
-                {item.added && (
-                  <Animatable.View
-                    animation="pulse"
-                    easing="ease-out"
-                    iterationCount="infinite"
-                    style={{
-                      width: moderateScale(60,0.6),
-                      height: moderateScale(60,0.6),
-                      position: 'absolute',
-                      zIndex: 1,
-                      alignSelf : 'center',
-                      top : '40%'
-                    }}>
-                    <CustomImage
-                      onPress={() => {
-                        const data = [...BubbleImageArraty];
-                        data[index].added = !data[index].added;
-      
-                        setBubbleImageArraty(data);
-                      }}
-                      source={require('../Assets/Images/heart.png')}
-                      resizeMode={'stretch'}
-                      style={{width: '100%', height: '100%'}}
-                    />
-                  </Animatable.View>
-                )}
-                <CustomImage
+                  <CustomImage
                   onPress={() => {
                     const data = [...BubbleImageArraty];
                     data[index].added = !data[index].added;
@@ -206,6 +180,42 @@ const BubbleSelection = () => {
                     height: '100%',
                   }}
                 />
+                {item.added && (
+                  <View style={{
+                    width: windowWidth * 0.3,
+                  height:
+                    index % 2 == 0 ? windowHeight * 0.3 : windowHeight * 0.17,
+                    backgroundColor:'rgba(0,0,0,0.5)',
+                    position:'absolute',
+                    zIndex:1,
+                  }}>
+                  <Animatable.View
+                    animation="pulse"
+                    easing="ease-out"
+                    iterationCount="infinite"
+                    style={{
+                      width: moderateScale(60, 0.6),
+                      height: moderateScale(60, 0.6),
+                      // position: 'absolute',
+                      // zIndex: 1,
+                      alignSelf: 'center',
+                      top: '35%',
+                    }}>
+                    <CustomImage
+                      onPress={() => {
+                        const data = [...BubbleImageArraty];
+                        data[index].added = !data[index].added;
+
+                        setBubbleImageArraty(data);
+                      }}
+                      source={require('../Assets/Images/heart.png')}
+                      resizeMode={'stretch'}
+                      style={{width: '100%', height: '100%'}}
+                    />
+                  </Animatable.View>
+                  </View>
+                )}
+                
               </TouchableOpacity>
             );
           })}

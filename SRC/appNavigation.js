@@ -23,6 +23,11 @@ import Posting from './Screens/Posting';
 import Profile from './Screens/Profile';
 import ProfileList from './Screens/ProfileList';
 import BubbleSelection from './Screens/BubbleSelection';
+import Inbox from './Screens/Inbox';
+import Chat from './Screens/Chat';
+import Bubble from './Screens/Bubble';
+import BubbleDetail from './Screens/BubbleDetail';
+import BubbleEdit from './Screens/BubbleEdit';
 // import AccountSetting from './Screens/AccountSetting';
 // import HomeScreen from './Screens/HomeScreen';
 // import MyAccounts from './Screens/MyAccounts';
@@ -51,8 +56,18 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'LoginScreen'}
+          initialRouteName={'BubbleEdit'}
           screenOptions={{headerShown: false}}>
+          <RootNav.Screen name="BubbleDetail" component={BubbleDetail} />
+          <RootNav.Screen name="BubbleEdit" component={BubbleEdit} />
+          <RootNav.Screen name="Bubble" component={Bubble} />
+          <RootNav.Screen name="MyGallery" component={MyGallery} />
+          <RootNav.Screen name="BubbleSelection" component={BubbleSelection} />
+            <RootNav.Screen name="Chat" component={Chat} />
+          <RootNav.Screen name="Inbox" component={Inbox} />
+          <RootNav.Screen name="EnterPhone" component={EnterPhone} />
+          <RootNav.Screen name="LoginScreen" component={LoginScreen} />
+          {/* <RootNav.Screen name="BubbleList" component={HomeScreen} /> */}
           <RootNav.Screen name="BubbleList" component={BubbleList} />
           <RootNav.Screen name="Profile" component={Profile} />
           <RootNav.Screen name="Posting" component={Posting} />
@@ -61,15 +76,11 @@ const AppNavigator = () => {
           <RootNav.Screen name="BubbleSearch" component={BubbleSearch} />
           <RootNav.Screen name="AccountSetting" component={AccountSetting} />
           <RootNav.Screen name="CreateNewFeed" component={CreateNewFeed} />
-          <RootNav.Screen name="MyGallery" component={MyGallery} />
           <RootNav.Screen name="AddPost" component={AddPost} />
-          <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="Signup" component={Signup} />
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
-          <RootNav.Screen name="EnterPhone" component={EnterPhone} />
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
-          <RootNav.Screen name="BubbleSelection" component={BubbleSelection} />
 
         </RootNav.Navigator>
       </NavigationContainer>

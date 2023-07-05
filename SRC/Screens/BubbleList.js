@@ -74,7 +74,7 @@ const BubbleList = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Bubble List'} />
+      <Header right Title={'Bubble List'}  search/>
 
       <ImageBackground
         source={require('../Assets/Images/Main.png')}
@@ -86,27 +86,25 @@ const BubbleList = () => {
         }}>
         <View
           style={{
-            width: windowWidth / 1,
-            // height: windowHeight / 0.,
-            marginTop: moderateScale(10, 0.3),
-            marginBottom: moderateScale(10,0.3),
+            width: windowWidth ,
+            marginTop: moderateScale(5, 0.3),
             
           }}>
           <FlatList
             data={BubbleListData}
             renderItem={({item, index}) => {
-              console.log('New Data1', item);
+              // console.log('New Data1', item);
 
               return (
                 <>
                   <View
                     style={{
-                      width: windowWidth / 1,
-                      height: windowHeight / 9,
+                      width: windowWidth * 1,
+                      height: windowHeight *0.1,
                       flexDirection: 'row',
-                    //   alignItems: 'center',
+                      alignItems: 'center',
                       paddingLeft: moderateScale(20, 0.6),
-                      //   marginBottom: moderateScale(15, 0.3),
+                      marginBottom:moderateScale(5,0.3),
                     }}>
                     <View style={styles.profileSection}>
                       <CustomImage
@@ -149,11 +147,12 @@ const BubbleList = () => {
                   <View
                     style={{
                       width: windowWidth * 0.9,
-                      height: 0.7,
+                      height: 2,
                       backgroundColor: 'white',
                     // backgroundColor:'white',
                       justifyContent: 'center',
                       alignSelf: 'center',
+                      opacity: 0.5,
                       marginBottom: moderateScale(10, 0.3),
                     }}></View>
                 </>
@@ -177,7 +176,7 @@ const styles = StyleSheet.create({
     height: windowWidth *0.2,
     width: windowWidth * 0.2,
     backgroundColor: '#fff',
-    borderRadius: 50,
+    borderRadius:  (windowWidth *0.2 )/2,
     overflow:'hidden',
 
     

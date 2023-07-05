@@ -20,7 +20,7 @@ const Posting = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Posting'} />
+      <Header right Title={'Posting'} search/>
 
       <ImageBackground
         source={require('../Assets/Images/Main.png')}

@@ -31,7 +31,7 @@ const Profile = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Profile'} />
+      <Header right Title={'Profile'}  search/>
 
       <ImageBackground
         source={require('../Assets/Images/Main.png')}

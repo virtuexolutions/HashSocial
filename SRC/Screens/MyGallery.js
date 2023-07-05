@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {ImageBackground, View} from 'react-native';
+import {ImageBackground, View, TouchableOpacity} from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
@@ -17,9 +17,18 @@ import ImagePickerModal from '../Components/ImagePickerModal';
 
 const MyGallery = () => {
   const [selectedTab, setSelectedTab] = useState('All');
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
   const [profilePicture, setProfilePicture] = useState({});
-  console.log("🚀 ~ file: MyGallery.js:21 ~ MyGallery ~ profilePicture:", profilePicture)
+  const [selectedImages, setselectedImages] = useState([]);
+  const [selected, setSelected] = useState(-1);
+  console.log(
+    '🚀 ~ file: MyGallery.js:23 ~ MyGallery ~ selectedImages:',
+    selectedImages,
+  );
+  console.log(
+    '🚀 ~ file: MyGallery.js:21 ~ MyGallery ~ profilePicture:',
+    profilePicture,
+  );
 
   const [images, setImages] = useState([
     {
@@ -60,35 +69,32 @@ const MyGallery = () => {
       url: require('../Assets/Images/gallery8.png'),
     },
   ]);
-  console.log("🚀 ~ file: MyGallery.js:63 ~ MyGallery ~ images:", images)
+  console.log('🚀 ~ file: MyGallery.js:63 ~ MyGallery ~ images:', images);
 
   useEffect(() => {
-    if(Object.keys(profilePicture).length>0 ){
-      const newData = images.slice(1)
-      newData.unshift(profilePicture)
-      newData.unshift(images[0])
-      console.log("🚀 ~ file: MyGallery.js:67 ~ useEffect ~ newData:", newData)
+    if (Object.keys(profilePicture).length > 0) {
+      const newData = images.slice(1);
+      newData.unshift(profilePicture);
+      newData.unshift(images[0]);
+      console.log('🚀 ~ file: MyGallery.js:67 ~ useEffect ~ newData:', newData);
       setImages(newData);
-      setProfilePicture({})
+      setProfilePicture({});
     }
-  
-    
-  }, [profilePicture])
-  
+  }, [profilePicture]);
+
   return (
     <>
       <CustomStatusBar
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'My Gallery'} />
+      <Header right Title={'My Gallery'} search/>
       <ImageBackground
         source={require('../Assets/Images/Main.png')}
         resizeMode={'cover'}
         style={{
           width: windowWidth,
           height: windowHeight * 0.9,
-          // justifyContent : 'center',
           alignItems: 'center',
         }}>
         <View
@@ -121,8 +127,6 @@ const MyGallery = () => {
               backgroundColor: 'black',
               marginTop: moderateScale(10, 0.3),
 
-              // alignItems:'center',
-              // justifyContent:'center',
             }}></View>
           <CustomText
             style={{
@@ -175,17 +179,14 @@ const MyGallery = () => {
             flexDirection: 'row',
             flexWrap: 'nowrap',
           }}>
-         
-        
-
           <FlatList
             numColumns={3}
             data={images}
             showsVerticalScrollIndicator={false}
             renderItem={({item, index}) => {
-            //   console.log('index:', item);
+              //   console.log('index:', item);
               return (
-                <View
+                <TouchableOpacity
                   style={{
                     height: windowHeight * 0.2,
                     width: windowWidth * 0.285,
@@ -196,33 +197,83 @@ const MyGallery = () => {
                     overflow: 'hidden',
                     marginVertical: moderateScale(5, 0.3),
                     marginHorizontal: moderateScale(2, 0.3),
-                    
-                  }} 
-                 
-                  >
-                    {index==0 ? <Icon name="camera" as={Entypo} size={41} color={'black'} style={{top:54, left:35}}  onPress={()=>{
-                    
-                      // console.log('here')
-                      setShowModal(true);
-                  }} /> :
-                  <CustomImage
-                    source={item?.uri ? {uri : item?.uri }: item?.url}
+                  }}>
+                  {index == 0 ? (
+                    <Icon
+                      name="camera"
+                      as={Entypo}
+                      size={41}
+                      color={'black'}
+                      style={{alignSelf: 'center', top: 50}}
+                      onPress={() => {
+                        // console.log('here')
+                        setShowModal(true);
+                      }}
+                    />
+                  ) : (
+                    <CustomImage
+                      source={item?.uri ? {uri: item?.uri} : item?.url}
+                      onPress={() => {
+                        const isSelected = selectedImages.findIndex(data => data?.id == item?.id);
+                        setSelected(isSelected);
+                        console.log(
+                          '🚀 ~ file: MyGallery.js:216 ~ MyGallery ~ index:',
+                          isSelected
+                        );
+                        if (isSelected > -1) {
+                          const dataNew = selectedImages.filter(data => data?.id != item?.id);
+                          setselectedImages(dataNew);
+                        } else {
+                          setselectedImages(prev => [...prev, item]);
+                        }
+                      }}
                       style={{
                         width: '100%',
-                        position: 'absolute',
-                        // top: -77,
-                        // left:-56,
-                        // alignItems: 'center',
-                        // justifyContent:'center',
+                        height: '100%',
+                        zIndex: 0,
                       }}
-                    key={item?.id}
-                      resizeMode={'cover'}
-                  />}
-                </View>
+                      key={item?.id}
+                    />
+                  )}
+                  {selectedImages.findIndex(data => data?.id == item?.id) >
+                    -1 && (
+                    <TouchableOpacity
+                    onPress={() => {
+                      const isSelected = selectedImages.findIndex(data => data?.id == item?.id);
+                      setSelected(isSelected);
+                      console.log(
+                        '🚀 ~ file: MyGallery.js:216 ~ MyGallery ~ index:',
+                        isSelected
+                      );
+                      if (isSelected > -1) {
+                        const dataNew = selectedImages.filter(data => data?.id != item?.id);
+                        setselectedImages(dataNew);
+                      } else {
+                        setselectedImages(prev => [...prev, item]);
+                      }
+                    }}
+                      style={{
+                        height: windowHeight * 0.2,
+                        width: windowWidth * 0.285,
+                        backgroundColor: 'rgba(0,0,0,0.5)',
+                        position: 'absolute',
+                        zIndex: 1,
+                      }}>
+                      <Icon
+                        name="check"
+                        as={Entypo}
+                        color={'#0E9AB0'}
+                        size={50}
+                        zIndex={1}
+                        style={{alignSelf: 'center', top: 50}}
+                      />
+                    
+                    </TouchableOpacity>
+                  )}
+                </TouchableOpacity>
               );
             }}
           />
-          
         </View>
         <CustomButton
           text={'Next'}
@@ -241,10 +292,10 @@ const MyGallery = () => {
         />
       </ImageBackground>
       <ImagePickerModal
-          show={showModal}
-          setShow={setShowModal}
-          setFileObject={setProfilePicture}
-        />
+        show={showModal}
+        setShow={setShowModal}
+        setFileObject={setProfilePicture}
+      />
     </>
   );
 };

@@ -20,49 +20,49 @@ const ProfileList = () => {
   const ProfileListData = [
     {
       id: 1,
-      image: require('../Assets/Images/Ellipse2.png'),
+      image: require('../Assets/Images/dummyman1.png'),
       name: 'JonaThan',
       title: 'Public Account',
     },
     {
       id: 2,
-      image: require('../Assets/Images/Ellipse2.png'),
+      image: require('../Assets/Images/dummyman1.png'),
       name: 'JonaThan',
       title: 'Public Account',
     },
     {
       id: 3,
-      image: require('../Assets/Images/Ellipse2.png'),
+      image: require('../Assets/Images/dummyman1.png'),
       name: 'JonaThan',
       title: 'Public Account',
     },
     {
       id: 4,
-      image: require('../Assets/Images/Ellipse2.png'),
+      image: require('../Assets/Images/dummyman1.png'),
       name: 'JonaThan',
       title: 'Public Account',
     },
     {
       id: 5,
-      image: require('../Assets/Images/Ellipse2.png'),
+      image: require('../Assets/Images/dummyman1.png'),
       name: 'JonaThan',
       title: 'Public Account',
     },
     {
       id: 6,
-      image: require('../Assets/Images/Ellipse2.png'),
+      image: require('../Assets/Images/dummyman1.png'),
       name: 'JonaThan',
       title: 'Public Account',
     },
     {
       id: 7,
-      image: require('../Assets/Images/Ellipse2.png'),
+      image: require('../Assets/Images/avatar.png'),
       name: 'JonaThan',
       title: 'Public Account',
     },
     {
       id: 8,
-      image: require('../Assets/Images/Ellipse2.png'),
+      image: require('../Assets/Images/avatar.png'),
       name: 'JonaThan',
       title: 'Public Account',
     },
@@ -73,7 +73,7 @@ const ProfileList = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Profile'} />
+      <Header right Title={'Profile'} search/>
 
       <ImageBackground
         source={require('../Assets/Images/Main.png')}
@@ -85,8 +85,8 @@ const ProfileList = () => {
         }}>
         <View
           style={{
-            width: windowWidth / 1,
-            height: windowHeight / 1,
+            width: windowWidth ,
+         
             marginTop: moderateScale(10, 0.3),
           }}>
           <FlatList
@@ -109,8 +109,8 @@ const ProfileList = () => {
                     <View style={styles.profileSection}>
                       <CustomImage
                         source={item.image}
-                        style={{width: 75, height: 75, borderRadius: 50}}
-                        resizeMode="contain"
+                        style={{width: '100%', height: '100%'}}
+                        // resizeMode="contain"
                       />
                     </View>
 
@@ -142,7 +142,8 @@ const ProfileList = () => {
                     style={{
                       width: '90%',
                       height: 2,
-                      backgroundColor: '#77d6dd',
+                      backgroundColor: 'white',
+                      opacity:0.5,
                       justifyContent: 'center',
                       alignSelf: 'center',
                       marginBottom: moderateScale(10, 0.3),
@@ -165,13 +166,15 @@ const styles = StyleSheet.create({
   },
 
   profileSection: {
-    height: windowHeight / 9.7,
-    width: windowWidth / 5,
+    height: windowWidth *0.2,
+    width: windowWidth * 0.2,
     backgroundColor: '#fff',
-    borderRadius: 50,
+    borderRadius:(windowWidth *0.2)/2,
     borderWidth: 3,
     borderColor: '#33dd50',
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+
+    // alignItems: 'center',
+    overflow:'hidden',
   },
 });

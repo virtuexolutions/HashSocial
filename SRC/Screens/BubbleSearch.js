@@ -59,7 +59,7 @@ const BubbleSearch = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Search'} />
+      <Header right Title={'Search'} search />
 
       <ImageBackground
         source={require('../Assets/Images/Main.png')}
@@ -67,17 +67,17 @@ const BubbleSearch = () => {
         style={{
           width: windowWidth * 1,
           height: windowHeight * 0.9,
-          alignItems: 'center',
+          // alignItems: 'center',
         }}>
         <View
           style={{
-            width: windowWidth / 1,
-            height: windowHeight / 8,
+            width: windowWidth,
+            height: windowHeight *0.15,
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            padding: moderateScale(8, 0.3),
-            // marginTop: moderateScale(60, 0.3),
+            paddingHorizontal: moderateScale(8, 0.3),
+            // marginTop: moderateScale(-10, 0.3),
           }}>
           <View style={styles.profileSection}>
             <CustomImage
