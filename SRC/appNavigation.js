@@ -67,15 +67,9 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-<<<<<<< HEAD
           initialRouteName={'Feeds'}
           screenOptions={{headerShown: false}}>
-          <RootNav.Screen name="Feeds" component={Feeds} />
-=======
-          initialRouteName={firstScreen}
-          screenOptions={{headerShown: false}}>
           {/* <RootNav.Screen name="CreateNewBubble" component={CreateNewBubble} /> */}
->>>>>>> origin/Naneeta
           <RootNav.Screen name="BubbleDetail" component={BubbleDetail} />
           {/* <RootNav.Screen name="BubbleEdit" component={BubbleEdit} /> */}
           <RootNav.Screen name="Bubble" component={Bubble} />
