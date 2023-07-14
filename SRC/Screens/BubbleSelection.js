@@ -81,6 +81,8 @@ const BubbleSelection = () => {
     BubbleImageArraty,
   );
 
+
+ 
   return (
     <ScreenBoiler
       statusBarBackgroundColor={'white'}

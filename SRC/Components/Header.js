@@ -11,6 +11,7 @@ const {height, width} = Dimensions.get('window');
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {useDispatch, useSelector} from 'react-redux';
+import navigationService from '../navigationService';
 
 const Header = props => {
   const {
@@ -92,7 +93,11 @@ const Header = props => {
               width : moderateScale(20,0.6) , 
               height : moderateScale(20,0.6)
             }}
+            onPress ={()=>{
+              navigationService.navigate('BubbleSearch')
+            }}
             />  
+           
           } 
           
           <Icon 

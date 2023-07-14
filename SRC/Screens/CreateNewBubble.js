@@ -6,7 +6,7 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 const {height, width} = Dimensions.get('window');
 import {moderateScale} from 'react-native-size-matters';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -16,37 +16,91 @@ import CustomText from '../Components/CustomText';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
 import {Icon, ScrollView} from 'native-base';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomSwitch from '../Components/CustomSwitch';
 import CustomButton from '../Components/CustomButton';
+import Color from '../Assets/Utilities/Color';
+import CustomImage from '../Components/CustomImage';
+import ImagePickerModal from '../Components/ImagePickerModal';
+import navigationService from '../navigationService';
 
 const CreateNewBubble = () => {
   const [CreateBubble, setCreateBubble] = useState('');
   const [Admin, setAdmin] = useState('');
-  const architecture = ['#architecture', 'ABC', 'BCD', 'CDE'];
-  const [dropDownValue, setDropDownValue] = useState('#Architecture');
+  const [bubbleTitle, setBubbleTitle] = useState('');
+  const [moderator, setModerator] = useState('');
+  const [showModal, setShowModal] = useState(false);
+  const [profilePicture, setProfilePicture] = useState({});
+  console.log(
+    '🚀 ~ file: CreateNewBubble.js:35 ~ CreateNewBubble ~ profilePicture:',
+    profilePicture,
+  );
+  const architecture = ['ABC', 'BCD', 'CDE'];
+  const [architectureValue, setArchitectureValue] = useState('#Architecture');
+  const [switchValue, setSwitchValue] = useState('Private');
 
-  const ApprovalForAdmittance = [
-    'Approval For Admittance',
-    'ABC',
-    'BCD',
-    'CDE',
-  ];
+  const ApprovalForAdmittance = ['yes', 'No'];
 
-  const [dropDownValue1, setDropDownValue1] = useState(
+  const [ApprovalForAdmittanceValue, SetApprovalForAdmittance] = useState(
     'Approval For Admittance',
   );
 
-  const ApprovaltoPost = ['Approval To Post', 'ABC', 'BCD', 'CDE'];
-  const [dropDownValue2, setDropDownValue2] = useState('Approval To Post');
+  const ApprovaltoPost = ['yes', 'No'];
+  const [ApprovalToPostValue, setApprovalToPostValue] =
+    useState('Approval To Post');
 
-  const MembershipCost = ['Member ship Cost', 'ABC', 'BCD', 'CDE'];
-  const [dropDownValue3, setDropDownValue3] = useState('Member ship Cost');
+  const MembershipCost = ['yes', 'No'];
+  const [MembershipCostValue, setMembershipCost] = useState('Member ship Cost');
 
   const onSelectSwitch = index => {
     console.log('Selected index: ' + index);
+    if (index == 1) {
+      setSwitchValue('private');
+    } else if (index == 2) {
+      setSwitchValue('public');
+    }
+    console.log(switchValue);
   };
+
+  const memberships = [
+    {
+      title: 'Gold \n Membership',
+      color: ['#f0cd60', '#f8e290', '#d8ad3f', '#915711'],
+      border: '#975e18',
+    },
+    {
+      title: 'platinum \n Membership',
+      color: ['#ebebeb', '#b3b3b5', '#9c9a9f'],
+      border: '#dfdfe0',
+    },
+    {
+      title: 'silver \n Membership',
+      color: ['#ebebeb', '#b3b3b5', '#9c9a9f'],
+      border: '#dfdfe0',
+    },
+  ];
+
+  const body = {
+    bubbleTitle: bubbleTitle,
+    architecture: architectureValue,
+    image: profilePicture,
+    moderator: moderator,
+    admin: Admin,
+    ApprovalForAdmittance: ApprovalForAdmittanceValue,
+    ApprovaltoPost: ApprovalToPostValue,
+    MembershipCost: MembershipCostValue,
+    privacy: switchValue,
+  };
+
+  useEffect(() => {
+    if (Object.keys(profilePicture).length > 0) {
+      console.log(
+        '🚀 ~ file: CreateNewBubble.js:72 ~ useEffect ~ profilePicture:',
+        profilePicture,
+      );
+    }
+  }, [profilePicture]);
 
   return (
     <>
@@ -54,7 +108,7 @@ const CreateNewBubble = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right />
+      <Header right Title={'Create new Bubble'} search />
 
       <ImageBackground
         source={require('../Assets/Images/Main.png')}
@@ -69,26 +123,33 @@ const CreateNewBubble = () => {
               width: windowWidth,
               height: windowHeight * 0.3,
               flexDirection: 'row',
-              justifyContent: 'space-between',
+              justifyContent: 'center',
               marginTop: moderateScale(15, 0.3),
-              padding: moderateScale(10, 0.6),
+              // padding: moderateScale(10, 0.6),
             }}>
-            <CustomText
-              style={{
-                color: Color.black,
-                width: windowWidth * 0.2,
-                marginTop: moderateScale(12, 0.3),
-              }}
-              isBold>
-              Bubble Title
-            </CustomText>
+            <TextInputWithTitle
+              placeholder={'Bubble Title'}
+              setText={setBubbleTitle}
+              value={bubbleTitle}
+              marginTop={moderateScale(5, 0.3)}
+              viewHeight={0.04}
+              viewWidth={0.23}
+              inputHeight={0.05}
+              inputWidth={0.23}
+              color={Color.black}
+              // backgroundColor={'red'}
+              placeholderColor={Color.black}
+              // style={{fontWeight: '900'}}
+              isBold
+            />
 
             <DropDownSingleSelect
               array={architecture}
-              item={dropDownValue}
-              setItem={setDropDownValue}
-              width={windowWidth * 0.3}
-              placeholder={dropDownValue}
+              item={architectureValue}
+              setItem={setArchitectureValue}
+              width={windowWidth * 0.34}
+              placeholder={'#Architecture'}
+              fontSize={moderateScale(10, 0.5)}
               dropdownStyle={{
                 borderBottomWidth: 0,
                 width: windowWidth * 0.3,
@@ -103,36 +164,58 @@ const CreateNewBubble = () => {
             />
 
             <View
-              style={{
-                height: windowHeight * 0.27,
-                width: width * 0.4,
-                backgroundColor: '#dddbdb',
-                borderRadius: moderateScale(20, 0.6),
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}>
-              <TouchableOpacity
-                activeOpacity={0.7}
-                style={{
-                  height: height * 0.04,
-                  width: windowWidth * 0.3,
-                  backgroundColor: '#fff',
-                  borderRadius: 20,
+              style={[
+                {
+                  height: windowHeight * 0.27,
+                  width: width * 0.35,
+                  backgroundColor: '#dddbdb',
+                  borderRadius: moderateScale(20, 0.6),
+                  marginLeft: moderateScale(18, 0.3),
                   justifyContent: 'center',
+                  overflow: 'hidden',
+                },
+                Object.keys(profilePicture).length == 0 && {
                   alignItems: 'center',
-                }}>
-                <CustomText
+                },
+              ]}>
+              {Object.keys(profilePicture).length > 0 ? (
+                <CustomImage
+                  source={{uri: profilePicture?.uri}}
                   style={{
-                    color: Color.black,
-                    fontSize: moderateScale(9, 0.6),
+                    width: '100%',
+                    height: '100%',
+                  }}
+                  onPress={() => {
+                    // console.log('here')
+                    setShowModal(true);
+                  }}
+                />
+              ) : (
+                <TouchableOpacity
+                  activeOpacity={0.7}
+                  style={{
+                    height: height * 0.04,
+                    width: windowWidth * 0.3,
+                    backgroundColor: '#ffffff',
+                    borderRadius: 20,
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}>
-                  Choose Your File
-                </CustomText>
-              </TouchableOpacity>
+                  <CustomText
+                    style={{
+                      color: Color.black,
+                      fontSize: moderateScale(9, 0.6),
+                    }}
+                    onPress={() => {
+                      // console.log('here')
+                      setShowModal(true);
+                    }}>
+                    Choose Your File
+                  </CustomText>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
-
-          {/* Bottom Divider Start */}
 
           <View
             style={{
@@ -143,8 +226,6 @@ const CreateNewBubble = () => {
               alignSelf: 'center',
               marginTop: moderateScale(10, 0.3),
             }}></View>
-
-          {/* Bottom Divider END */}
 
           <View
             style={{
@@ -159,7 +240,7 @@ const CreateNewBubble = () => {
                 flexDirection: 'row',
                 justifyContent: 'space-evenly',
                 alignItems: 'center',
-                height: windowHeight * 0.03,
+                height: windowHeight * 0.045,
                 width: windowWidth * 0.9,
                 backgroundColor: '#fff',
                 borderRadius: 20,
@@ -177,49 +258,41 @@ const CreateNewBubble = () => {
 
               <TextInputWithTitle
                 placeholder={'Jonathan'}
-                setText={setCreateBubble}
-                value={CreateBubble}
+                setText={setModerator}
+                value={moderator}
                 viewHeight={0.06}
                 viewWidth={0.7}
                 inputWidth={0.8}
                 color={Color.black}
-                placeholderColor={Color.black}
+                placeholderColor={Color.veryLightGray}
                 borderRadius={moderateScale(20, 0.3)}
-                style={{fontWeight: '800'}}
+                // style={{fontWeight: '900'}}
+                isBold
               />
             </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-around',
-                alignItems: 'center',
-                height: windowHeight * 0.03,
-                width: windowWidth * 0.9,
-                backgroundColor: '#fff',
-                borderRadius: 20,
-                paddingLeft: moderateScale(20, 0.6),
-                marginTop: moderateScale(10, 0.3),
-              }}>
-              <TextInputWithTitle
-                placeholder={'Admin'}
-                setText={setAdmin}
-                value={Admin}
-                viewHeight={0.06}
-                viewWidth={0.7}
-                inputWidth={0.9}
-                color={Color.black}
-                placeholderColor={Color.black}
-                borderRadius={moderateScale(20, 0.3)}
-              />
-            </View>
+            <TextInputWithTitle
+              placeholder={'Admin'}
+              setText={setAdmin}
+              value={Admin}
+              viewHeight={0.045}
+              viewWidth={0.9}
+              inputWidth={0.9}
+              inputHeight={0.05}
+              marginBottom={moderateScale(-5, 0.3)}
+              marginLeft={moderateScale(0.1, 0.3)}
+              color={Color.black}
+              marginTop={moderateScale(5, 0.3)}
+              placeholderColor={Color.black}
+              borderRadius={moderateScale(20, 0.3)}
+              backgroundColor={Color.white}
+            />
 
             <DropDownSingleSelect
               array={ApprovalForAdmittance}
-              item={dropDownValue1}
-              setItem={setDropDownValue1}
+              item={ApprovalForAdmittanceValue}
+              setItem={SetApprovalForAdmittance}
               width={windowWidth * 0.9}
-              placeholder={dropDownValue1}
+              placeholder={'Ápproval for Admittance'}
               dropdownStyle={{
                 borderBottomWidth: 0,
                 width: windowWidth * 0.9,
@@ -227,44 +300,43 @@ const CreateNewBubble = () => {
               }}
               btnStyle={{
                 backgroundColor: '#fff',
-                height: windowHeight * 0.03,
+                height: windowHeight * 0.045,
               }}
             />
 
             <DropDownSingleSelect
               array={ApprovaltoPost}
-              item={dropDownValue2}
-              setItem={setDropDownValue2}
+              item={ApprovalToPostValue}
+              setItem={setApprovalToPostValue}
               width={windowWidth * 0.9}
-              placeholder={dropDownValue2}
+              placeholder={'Approval To Post'}
               dropdownStyle={{
                 borderBottomWidth: 0,
                 width: windowWidth * 0.9,
               }}
               btnStyle={{
                 backgroundColor: '#fff',
-                height: windowHeight * 0.03,
+                height: windowHeight * 0.045,
               }}
             />
 
             <DropDownSingleSelect
               array={MembershipCost}
-              item={dropDownValue3}
-              setItem={setDropDownValue3}
+              item={MembershipCostValue}
+              setItem={setMembershipCost}
               width={windowWidth * 0.9}
-              placeholder={dropDownValue3}
+              placeholder={'Membership Cost'}
               dropdownStyle={{
                 borderBottomWidth: 0,
                 width: windowWidth * 0.9,
               }}
               btnStyle={{
                 backgroundColor: '#fff',
-                height: windowHeight * 0.03,
+                height: windowHeight * 0.045,
               }}
             />
           </View>
 
-          {/*  Divider Start */}
           <View
             style={{
               width: '90%',
@@ -272,120 +344,70 @@ const CreateNewBubble = () => {
               backgroundColor: '#a0e8eb',
               justifyContent: 'center',
               alignSelf: 'center',
+              marginTop: moderateScale(15, 0.3),
             }}></View>
-
-          {/*  Divider END */}
 
           <View
             style={{
               flexDirection: 'row',
-              justifyContent: 'space-around',
+              justifyContent: 'space-between',
+              alignItems: 'center',
               height: windowHeight * 0.12,
               width: width * 0.9,
               alignSelf: 'center',
+              // backgroundColor:'red',
               marginTop: moderateScale(10, 0.3),
             }}>
-            <LinearGradient
-              style={{
-                height: windowWidth * 0.2,
-                width: windowWidth * 0.2,
-                borderWidth: 1,
-                borderColor: '#975e18',
-                borderRadius: (windowWidth * 0.2) / 2,
-                backgroundColor: 'red',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              colors={['#f0cd60', '#f8e290', '#d8ad3f', '#915711']}>
-              <Icon
-                name="crown"
-                as={MaterialCommunityIcons}
-                size={50}
-                color="#fff"
-              />
-            </LinearGradient>
-
-            <LinearGradient
-              style={{
-                height: windowWidth * 0.2,
-                width: windowWidth * 0.2,
-                borderWidth: 1,
-                borderColor: '#dfdfe0',
-                borderRadius: (windowWidth * 0.2) / 2,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              colors={['#ebebeb', '#b3b3b5', '#9c9a9f']}>
-              <Icon
-                name="crown"
-                as={MaterialCommunityIcons}
-                size={50}
-                color="#fff"
-              />
-            </LinearGradient>
-
-            <LinearGradient
-              style={{
-                height: windowWidth * 0.2,
-                width: windowWidth * 0.2,
-                borderWidth: 1,
-                borderColor: '#dfdfe0',
-                borderRadius: (windowWidth * 0.2) / 2,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-              colors={['#ebebeb', '#b3b3b5', '#9c9a9f']}>
-              <Icon
-                name="crown"
-                as={MaterialCommunityIcons}
-                size={50}
-                color="#fff"
-              />
-            </LinearGradient>
+            {memberships.map(data => {
+              return (
+                <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                  <LinearGradient
+                    style={{
+                      height: windowWidth * 0.12,
+                      width: windowWidth * 0.12,
+                      borderWidth: 1,
+                      borderColor: data?.border,
+                      borderRadius: (windowWidth * 0.12) / 2,
+                      // backgroundColor: 'red',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}
+                    colors={data?.color}>
+                    <View
+                      style={{
+                        width: windowWidth * 0.07,
+                        height: windowHeight * 0.03,
+                      }}>
+                      <CustomImage
+                        source={require('../Assets/Images/crown.png')}
+                        style={{height: '100%', width: '100%'}}
+                      />
+                    </View>
+                  </LinearGradient>
+                  <CustomText
+                    numberOfLines={2}
+                    style={{
+                      width: windowWidth * 0.25,
+                      fontSize: moderateScale(12, 0.6),
+                    }}>
+                    {data?.title}
+                  </CustomText>
+                </View>
+              );
+            })}
           </View>
 
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-evenly',
-            }}>
-            <CustomText
-              style={{
-                color: Color.black,
-                fontSize: moderateScale(12, 0.6),
-              }}
-              isBold>
-              Gold{`\n`}Membership
-            </CustomText>
-
-            <CustomText
-              style={{
-                color: Color.black,
-                fontSize: moderateScale(12, 0.6),
-              }}
-              isBold>
-              Platinum{`\n`}Membership
-            </CustomText>
-
-            <CustomText
-              style={{
-                color: Color.black,
-                fontSize: moderateScale(12, 0.6),
-              }}
-              isBold>
-              Silver{`\n`}Membership
-            </CustomText>
-          </View>
-
-          <View
-            style={{
-              height: windowHeight * 0.10,
+              height: windowHeight * 0.08,
               width: windowWidth * 0.8,
-              marginTop: moderateScale(15, 0.3),
+              marginTop: moderateScale(10, 0.3),
               flexDirection: 'row',
+              // backgroundColor:'red',
               justifyContent: 'space-between',
+              alignItems: 'center',
               alignSelf: 'center',
-              padding: moderateScale(20, 0.6),
+              // padding: moderateScale(20, 0.6),
             }}>
             <CustomText
               style={{
@@ -410,18 +432,23 @@ const CreateNewBubble = () => {
             textColor={'#0E9AB0'}
             width={windowWidth * 0.4}
             height={windowHeight * 0.06}
-            marginTop={moderateScale(10, 0.3)}
+            // marginTop={moderateScale(10, 0.3)}
             bgColor={['#FFFFFF', '#FFFFFF']}
             borderRadius={moderateScale(30, 0.3)}
-            isGradient  
+            isGradient
             isBold={true}
             marginBottom={moderateScale(50)}
+            onPress={() => {
+              navigationService.navigate('HomeScreen', {data: body});
+            }}
           />
-
-
-         
         </ScrollView>
       </ImageBackground>
+      <ImagePickerModal
+        show={showModal}
+        setShow={setShowModal}
+        setFileObject={setProfilePicture}
+      />
     </>
   );
 };

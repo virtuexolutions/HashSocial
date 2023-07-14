@@ -3,6 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import navigationService from './navigationService';
 import {useSelector} from 'react-redux';
+import {Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import LoginScreen from './Screens/LoginScreen';
 // import EnterPhone from './Screens/EnterPhone';
@@ -27,7 +28,15 @@ import Inbox from './Screens/Inbox';
 import Chat from './Screens/Chat';
 import Bubble from './Screens/Bubble';
 import BubbleDetail from './Screens/BubbleDetail';
-import BubbleEdit from './Screens/BubbleEdit';
+// import CreateNewBubble from './Screens/CreateNewBubble';
+import HomeScreen from './Screens/HomeScreen';
+import Color from './Assets/Utilities/Color';
+import {windowHeight} from './Utillity/utils';
+import {moderateScale} from 'react-native-size-matters';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {Icon} from 'native-base';
+
 // import AccountSetting from './Screens/AccountSetting';
 // import HomeScreen from './Screens/HomeScreen';
 // import MyAccounts from './Screens/MyAccounts';
@@ -51,24 +60,26 @@ const AppNavigator = () => {
   const RootNavLogged = createNativeStackNavigator();
 
   const AppNavigatorContainer = () => {
-    const firstScreen = token != null ? 'HomeScreen' : 'LoginScreen';
+    const firstScreen = token != null ? 'TabNavigation' : 'LoginScreen';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'BubbleEdit'}
+          initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
+          {/* <RootNav.Screen name="CreateNewBubble" component={CreateNewBubble} /> */}
           <RootNav.Screen name="BubbleDetail" component={BubbleDetail} />
-          <RootNav.Screen name="BubbleEdit" component={BubbleEdit} />
+          {/* <RootNav.Screen name="BubbleEdit" component={BubbleEdit} /> */}
           <RootNav.Screen name="Bubble" component={Bubble} />
           <RootNav.Screen name="MyGallery" component={MyGallery} />
           <RootNav.Screen name="BubbleSelection" component={BubbleSelection} />
-            <RootNav.Screen name="Chat" component={Chat} />
+          {/* <RootNav.Screen name="Chat" component={Chat} /> */}
           <RootNav.Screen name="Inbox" component={Inbox} />
           <RootNav.Screen name="EnterPhone" component={EnterPhone} />
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
-          {/* <RootNav.Screen name="BubbleList" component={HomeScreen} /> */}
+          <RootNav.Screen name="HomeScreen" component={HomeScreen} />
           <RootNav.Screen name="BubbleList" component={BubbleList} />
+          <RootNav.Screen name="TabNavigation" component={TabNavigation} />
           <RootNav.Screen name="Profile" component={Profile} />
           <RootNav.Screen name="Posting" component={Posting} />
           <RootNav.Screen name="ProfileList" component={ProfileList} />
@@ -81,7 +92,6 @@ const AppNavigator = () => {
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
-
         </RootNav.Navigator>
       </NavigationContainer>
     );
@@ -90,95 +100,96 @@ const AppNavigator = () => {
   return <AppNavigatorContainer />;
 };
 
-// export const TabNavigation = () => {
-//   const userRole = useSelector(state => state.commonReducer.selectedRole);
-//   console.log(
-//     '🚀 ~ file: appNavigation.js:83 ~ TabNavigation ~ userRole:',
-//     userRole,
-//   );
-//   const Tabs = createBottomTabNavigator();
-//   return (
-//     <Tabs.Navigator
-//       screenOptions={({route}) => ({
-//         headerShown: false,
-//         tabBarIcon: ({focused}) => {
-//           let iconName;
-//           let color = Color.themeColor;
-//           let size = moderateScale(20, 0.3);
-//           let type = Ionicons;
+export const TabNavigation = () => {
+  const userRole = useSelector(state => state.commonReducer.selectedRole);
+  console.log(
+    '🚀 ~ file: appNavigation.js:83 ~ TabNavigation ~ userRole:',
+    userRole,
+  );
+  const Tabs = createBottomTabNavigator();
+  return (
+    <Tabs.Navigator
+      screenOptions={({route}) => ({
+        headerShown: false,
+        tabBarIcon: ({focused}) => {
+          let iconName;
+          let color = Color.themeColor;
+          let size = moderateScale(20, 0.3);
+          let type = Ionicons;
 
-//           if (
-//             route.name === 'HomeScreen' ||
-//             route.name === 'NegotiatorHomeScreen'
-//           ) {
-//             iconName = focused ? 'home' : 'home-outline';
-//             color = focused ? Color.themeColor : Color.themeLightGray;
-//             size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
-//           } else if (route.name === 'ChatScreen') {
-//             iconName = focused
-//               ? 'ios-chatbubble-ellipses-sharp'
-//               : 'ios-chatbubble-ellipses-outline';
-//             color = focused ? Color.themeColor : Color.themeLightGray;
-//             size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
-//           } else if (route.name === 'NotificationScreen') {
-//             type = FontAwesome;
-//             iconName = focused ? 'bell' : 'bell-o';
+          if (
+            route.name === 'Bubble' ||
+            route.name === 'NegotiatorHomeScreen'
+          ) {
+            iconName = require('./Assets/Images/home.png');
+            color = focused ? Color.themeColor : Color.themeLightGray;
+            size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
+          } else if (route.name === 'AddPost') {
+            iconName = require('./Assets/Images/plus.png');
+           
+            color = focused ? Color.themeColor : Color.themeLightGray;
+            size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
+          } else if (route.name === 'BubbleSelection') {
+            // type = AntDesign;
+            iconName = require('./Assets/Images/loading.png');
+            color = focused ? Color.themeColor : Color.themeLightGray;
+            size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
+          } else if (route.name === 'Inbox') {
+            type = Ionicons;
+            iconName = require('./Assets/Images/messenger.png');
 
-//             color = focused ? Color.themeColor : Color.themeLightGray;
-//             size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
-//           } else if (route.name === 'CreateNew') {
-//             type = AntDesign;
-//             iconName = focused ? 'Plus' : 'Plus';
+            color = focused ? Color.themeColor : Color.themeLightGray;
+            size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
+          } else {
+            iconName = require('./Assets/Images/profile.png');
+            color = focused ? Color.themeColor : Color.themeLightGray;
+            size = focused ? moderateScale(25, 0.3) : moderateScale(20, 0.3);
+          }
+          return (
+            <Image
+              source={iconName}
+              style={{
+                width: size,
+                height: size,
+                tintColor: color,
+                // color:'white',
+                // backgroundColor:Color.themeColor
+              }}
+            />
+          )
+        },
+        tabBarShowLabel: false,
+        tabBarStyle: {
+          // backgroundColor:'black',
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 0,
+            height: 5,
+          },
+          shadowOpacity: 0.36,
+          shadowRadius: 6.68,
 
-//             color = focused ? Color.themeColor : Color.themeLightGray;
-//             size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
-//           } else {
-//             iconName = focused ? 'settings-outline' : 'settings-sharp';
-//             color = focused ? Color.themeColor : Color.themeLightGray;
-//             size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
-//           }
-//           return route.name == 'CreateNew' ? (
-//             <View
-//               style={{
-//                 borderWidth: 5,
-//                 borderColor: Color.lightGrey,
-//                 height: moderateScale(60, 0.3),
-//                 width: moderateScale(60, 0.3),
-//                 borderRadius: moderateScale(30, 0.3),
-//                 backgroundColor: Color.themeColor,
-//                 justifyContent: 'center',
-//                 alignItems: 'center',
-//                 marginTop: moderateScale(-30, 0.3),
-//               }}>
-//               <Icon
-//                 name={'plus'}
-//                 as={type}
-//                 color={Color.white}
-//                 size={moderateScale(30, 0.3)}
-//               />
-//             </View>
-//           ) : (
-//             <Icon name={iconName} as={type} color={color} size={size} />
-//           );
-//         },
-//         tabBarShowLabel: false,
-//       })}>
-//       {userRole == 'Qbid Member' ? (
-//         <Tabs.Screen name={'HomeScreen'} component={HomeScreen} />
-//       ) : (
-//         <Tabs.Screen
-//           name={'NegotiatorHomeScreen'}
-//           component={NegotiatorHomeScreen}
-//         />
-//       )}
-//       <Tabs.Screen name={'NotificationScreen'} component={NotificationScreen} />
-//       {userRole == 'Qbid Member' && (
-//         <Tabs.Screen name={'CreateNew'} component={CreateNew} />
-//       )}
-//       <Tabs.Screen name={'ChatScreen'} component={ChatScreen} />
-//       <Tabs.Screen name={'Settings'} component={Settings} />
-//     </Tabs.Navigator>
-//   );
-// };
+          elevation: 11,
+          borderTopRightRadius: moderateScale(30, 0.6),
+          borderTopLeftRadius: moderateScale(30, 0.6),
+          height: windowHeight * 0.08,
+          
+        },
+      })}>
+      <Tabs.Screen name={'Bubble'} component={Bubble} />
+      <Tabs.Screen name={'BubbleSelection'} component={BubbleSelection} />
+      <Tabs.Screen name={'AddPost'} component={AddPost} />
+      <Tabs.Screen name={'Inbox'} component={Inbox} />
+      <Tabs.Screen
+        name={'AccountSetting'}
+        component={AccountSetting}
+        // options={{
+        //   // Pass data as a parameter to the component
+        //   data: { fromSpotLight: true },
+        // }}
+      />
+    </Tabs.Navigator>
+  );
+};
 
 export default AppNavigator;
