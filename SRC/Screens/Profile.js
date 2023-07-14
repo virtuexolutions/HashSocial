@@ -31,7 +31,7 @@ const Profile = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Profile'}  search/>
+      <Header right Title={'Create Profile'}  search/>
 
       <ImageBackground
         source={require('../Assets/Images/Main.png')}
@@ -48,15 +48,8 @@ const Profile = () => {
               source={require('../Assets/Images/dummyUser.png')}
               style={{
                 height:'100%',
-                width: '100%',
-
-               
-                // position:'absolute',
-                // top:-90,
-                // borderRadius: 80,
-              }}
+                width: '100%',}}
               resizeMode={'stretch'}
-              //   resizeMode="s"
             />
           </View>
           {/* Profile  Sectiopn Close */}
@@ -77,7 +70,7 @@ const Profile = () => {
             >
             <View
               style={{
-                justifyContent: 'center',
+                // justifyContent: 'center',
                 
                 alignSelf: 'center',
               }}>
@@ -99,7 +92,7 @@ const Profile = () => {
                 titleColor={'#353535'}
               />
               <TextInputWithTitle
-                title={'Description'}
+                title={'Description '}
                 secureText={false}
                 placeholder={'Description'}
                 setText={desc}
@@ -110,7 +103,7 @@ const Profile = () => {
                 border={1}
                 borderColor={'#353535'}
                 color={Color.themeColor}
-                placeholderColor={'#353535'}
+                placeholderColor={Color.themeLightGray}
                 borderRadius={moderateScale(10, 0.3)}
                 titleColor={'#353535'}
               />
@@ -165,10 +158,11 @@ const Profile = () => {
             </View>
             <CustomButton
             text={
+
               isLoading ? (
                 <ActivityIndicator color={'#1296AF'} size={'small'} />
               ) : (
-               'Add Insert'
+               'Insert'
               )
             }
             textColor={'#1296AF'}

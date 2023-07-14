@@ -68,7 +68,7 @@ const CustomSwitch = ({
             style={{
               color: getSelectionMode == 2 ? 'white' : selectionColor,fontSize:9
             }}>
-            {option2}
+            {'private'}
           </Text>
         </TouchableOpacity>
       </View>

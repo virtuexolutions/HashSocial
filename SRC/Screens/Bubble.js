@@ -249,7 +249,7 @@ const Bubble = () => {
             width: windowWidth,
             marginTop: moderateScale(10, 0.3),
             paddingHorizontal: moderateScale(10, 0.6),
-            // marginRight: moderateScale(20, 0.3),
+            marginBottom: moderateScale(70, 0.3),
           }}
           showsVerticalScrollIndicator={false}>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>

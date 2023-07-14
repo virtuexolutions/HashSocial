@@ -73,7 +73,7 @@ const ProfileList = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Profile'} search/>
+      <Header right Title={'Profile List'} search/>
 
       <ImageBackground
         source={require('../Assets/Images/Main.png')}
@@ -86,7 +86,7 @@ const ProfileList = () => {
         <View
           style={{
             width: windowWidth ,
-         
+            marginBottom: moderateScale(10, 0.3),
             marginTop: moderateScale(10, 0.3),
           }}>
           <FlatList

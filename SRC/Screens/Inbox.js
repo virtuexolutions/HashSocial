@@ -21,11 +21,10 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Icon} from 'native-base';
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
-// const {height, width} = Dimensions.get('window');
 
 const Inbox = () => {
   const [swipedRow, setSwipedRow] = useState(null);
-  console.log('🚀 ~ file: Inbox.js:28 ~ Inbox ~ swipedRow:', swipedRow);
+  // console.log('🚀 ~ file: Inbox.js:28 ~ Inbox ~ swipedRow:', swipedRow);
   const [BubbleListData, setBubbleListData] = useState([
     {
       id: 1,
@@ -43,7 +42,7 @@ const Inbox = () => {
     },
     {
       id: 3,
-      image: require('../Assets/Images/avatar2.png'),
+      image: require('../Assets/Images/dummyUser1.png'),
       name: 'James Tavernier',
       msg: ['Hello', 'Aliquyam erat, sed diam'],
       Time: '8:40',
@@ -64,7 +63,7 @@ const Inbox = () => {
     },
     {
       id: 6,
-      image: require('../Assets/Images/avatar2.png'),
+      image: require('../Assets/Images/dummyUser1.png'),
       name: 'James Tavernier',
       msg: ['Hello', 'Aliquyam erat, sed diam'],
       Time: '8:40',
@@ -85,7 +84,7 @@ const Inbox = () => {
     },
     {
       id: 9,
-      image: require('../Assets/Images/avatar2.png'),
+      image: require('../Assets/Images/dummyUser1.png'),
       name: 'James Tavernier',
       msg: ['Hello', 'Aliquyam erat, sed diam'],
       Time: '8:40',
@@ -106,7 +105,7 @@ const Inbox = () => {
     },
     {
       id: 12,
-      image: require('../Assets/Images/avatar2.png'),
+      image: require('../Assets/Images/dummyUser1.png'),
       name: 'James Tavernier',
       msg: ['Hello', 'Aliquyam erat, sed diam'],
       Time: '8:40',
@@ -127,40 +126,22 @@ const Inbox = () => {
     },
   ]);
 
-  
-
   const deleteRow = index => {
-    // closeRow(rowMap, rowKey);
     const newData = [...BubbleListData];
-    // const prevIndex = listData.findIndex(item => item.key === rowKey);
     newData.splice(index, 1);
     setBubbleListData(newData);
   };
 
-
-
   const renderHiddenItem = (data, rowMap) => {
-    // console.log('data', data);
-    // console.log('rowMap', rowMap);
     return (
-      // {data?.item?.id == SwipeRow?.} &&
       <View
         style={{
           alignItems: 'flex-end',
-          // justifyContent: 'center',
           marginRight: moderateScale(-20, 0.3),
           backgroundColor: 'rgba(255, 255, 255, 0.3)',
-          //   opacity: 0.25,
           paddingHorizontal: moderateScale(5, 0.6),
           borderRadius: 10,
-        }}>
-        {/* <TouchableOpacity
-            style={[styles.backRightBtn, styles.backRightBtnRight]}
-            onPress={() => deleteRow(rowMap, data.item.key)}
-        > */}
-        {/* <Icon name ='delete' as={AntDesign} color={'white'}/> */}
-        {/* </TouchableOpacity> */}
-      </View>
+        }}></View>
     );
   };
 
@@ -170,7 +151,7 @@ const Inbox = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Inbox'} />
+      <Header right Title={'Inbox'} search />
 
       <ImageBackground
         source={require('../Assets/Images/Main.png')}
@@ -183,82 +164,36 @@ const Inbox = () => {
         <View
           style={{
             width: windowWidth,
-            // backgroundColor: 'red',
-            // height: windowHeight / 0.,
             marginTop: moderateScale(10, 0.3),
             marginBottom: moderateScale(10, 0.3),
-
-            // paddingLeft: moderateScale(20, 0.6),
-            // paddingRight: moderateScale(20, 0.6),
+            // justifyContent: 'center',
+            // alignItems: 'center',
           }}>
-          <CustomText
-            numberOfLines={1}
-            style={{
-              fontSize: moderateScale(20, 0.3),
-              marginBottom: moderateScale(10, 0.3),
-              paddingLeft: moderateScale(20, 0.6),
-              color: Color.white,
-            }}>
+          <CustomText style={styles.heading} numberOfLines={1} isBold>
             Today
           </CustomText>
           <SwipeListView
             data={BubbleListData}
             renderHiddenItem={renderHiddenItem}
-            // key={item?.id}
-            keyExtractor={(item)=>item.id}
-            // leftOpenValue={75}
+            keyExtractor={item => item.id}
             rightOpenValue={-40}
             previewRowKey={'0'}
-            
-           
-            // stopLeftSwipe={swipedRow !== null}
-            // stopRightSwipe={swipedRow !== null}
-            // renderItem={renderItem}
             contentContainerStyle={{
-                paddingBottom : moderateScale(100,0.6)
+              paddingBottom: moderateScale(100, 0.6),
             }}
             renderItem={({item, index}) => {
-              console.log('New Data1', item);
+              // console.log('New Data1', item);
 
               return (
                 <>
                   <TouchableOpacity
-                    onPress={() => handleSwipe(item.id)}
-                    style={[
-                      styles.rowFront,
-                      {
-                        // backgroundColor : 'yellow',
-                        height: windowHeight * 0.08,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        // backgroundColor: 'green',
-                        paddingLeft: moderateScale(20, 0.6),
-                        width: windowWidth * 0.95,
-                        // overflow : 'hidden'
-
-                        // paddingRight : moderateScale(20,0.6)
-                      },
-                    ]}
+                    style={styles.rowFront}
                     underlayColor={'#AAA'}>
-                    {/* <View
-                      style={{
-                        width: windowWidth,
-                        height: windowHeight * 0.08,
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        backgroundColor : 'green'
-                        //   alignItems: 'center',
-                        //   paddingLeft: moderateScale(20, 0.6),
-                        //   marginBottom: moderateScale(15, 0.3),
-                      }}> */}
                     <View
                       style={{
                         width: windowWidth * 0.6,
                         height: windowHeight * 0.08,
                         flexDirection: 'row',
-                        //   alignItems: 'center',
-                        //   paddingLeft: moderateScale(20, 0.6),
-                        //   marginBottom: moderateScale(15, 0.3),
                       }}>
                       <View style={styles.profileSection}>
                         <CustomImage
@@ -266,23 +201,18 @@ const Inbox = () => {
                           style={{
                             width: '100%',
                             height: '100%',
-                            //   borderRadius:100,
                           }}
                         />
                       </View>
 
                       <View
                         style={{
-                          paddingLeft: moderateScale(20, 0.6),
+                          paddingLeft: moderateScale(10, 0.6),
                           justifyContent: 'center',
                         }}>
                         <CustomText
-                          style={{
-                            fontSize: moderateScale(14, 0.6),
-                            marginTop: moderateScale(-10, 0.3),
-                            color: '#000',
-                            fontWeight: '500',
-                          }}
+                          style={styles.name}
+                          numberOfLines={1}
                           isBold>
                           {item?.name}
                         </CustomText>
@@ -311,22 +241,11 @@ const Inbox = () => {
                             <></>
                           )}
                           <CustomText
-                            style={{
-                              marginLeft: moderateScale(3, 0.3),
-                              fontSize: moderateScale(11, 0.6),
-                              color: Color.themeLightGray,
-                            }}>
+                            style={styles.msg}
+                            numberOfLines={1}>
                             {item?.msg[item?.msg.length - 1]}
                           </CustomText>
                         </View>
-
-                        {/* <CustomText
-                            style={{
-                              fontSize: moderateScale(11, 0.6),
-                              color: Color.themeLightGray,
-                            }}>
-                            {item?.msg[item?.msg.length - 1]}
-                          </CustomText> */}
                       </View>
                     </View>
 
@@ -361,16 +280,7 @@ const Inbox = () => {
                         {item?.msg.length}
                       </CustomText>
                     </View>
-                    <View
-                      style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        left: -20,
-                        backgroundColor: 'rgba(255, 255, 255, 0.3)',
-                        //   opacity: 0.25,
-                        paddingHorizontal: moderateScale(5, 0.6),
-                        borderRadius: 5,
-                      }}>
+                    <View style={styles.delete}>
                       <Icon
                         name="delete"
                         as={AntDesign}
@@ -378,19 +288,9 @@ const Inbox = () => {
                         onPress={() => deleteRow(index)}
                       />
                     </View>
-                    {/* </View> */}
                   </TouchableOpacity>
                   <View
-                    style={{
-                      width: windowWidth * 0.9,
-                      height: 2.5,
-                      backgroundColor: 'white',
-                      // backgroundColor:'white',
-                      justifyContent: 'center',
-                      alignSelf: 'center',
-                      opacity: 0.4,
-                      marginBottom: moderateScale(10, 0.3),
-                    }}></View>
+                    style={styles.line}></View>
                 </>
               );
             }}
@@ -407,6 +307,45 @@ const styles = StyleSheet.create({
   backTextWhite: {
     color: '#FFF',
   },
+  heading: {
+    fontSize: moderateScale(20, 0.6),
+    textAlign: 'left',
+    width: windowWidth,
+    marginTop: moderateScale(-10, 0.3),
+    paddingLeft: moderateScale(20, 0.6),
+    marginBottom: moderateScale(10, 0.3),
+    color: 'white',
+    fontWeight: '500',
+  },
+  name: {
+    fontSize: moderateScale(14, 0.6),
+    textAlign: 'left',
+    marginTop: moderateScale(-10, 0.3),
+    color: '#000',
+  },
+  delete: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    left: -20,
+    backgroundColor: 'rgba(255, 255, 255, 0.3)',
+    //   opacity: 0.25,
+    paddingHorizontal: moderateScale(5, 0.6),
+    borderRadius: 5,
+  },
+  line:{
+    width: windowWidth * 0.9,
+    height: 2.5,
+    backgroundColor: 'white',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    opacity: 0.4,
+    marginBottom: moderateScale(10, 0.3),
+  },
+  msg:{
+    marginLeft: moderateScale(3, 0.3),
+    fontSize: moderateScale(11, 0.6),
+    color: Color.themeLightGray,
+  },
   rowFront: {
     // alignItems: 'center',
     // backgroundColor: 'transparent',
@@ -414,6 +353,11 @@ const styles = StyleSheet.create({
     // borderBottomWidth: 1,
     // justifyContent: 'cente/r',
     // height: 50,
+    height: windowHeight * 0.08,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: moderateScale(20, 0.6),
+    width: windowWidth * 0.95,
   },
   rowBack: {
     alignItems: 'center',

@@ -29,6 +29,7 @@ const DropDownSingleSelect = ({
   inRow,
   myJobs,
   Colors,
+  fontSize,
   dropdownStyle,
   btnStyle
 }) => {
@@ -117,9 +118,8 @@ const DropDownSingleSelect = ({
           ...styles.dropDownBtnText,
           ...(item !== '' && {color: Colors ? Colors : Color.themeBlack}),
           ...(backgroundColor && {
-            color: `${Color.black}`,
-            fontSize: moderateScale(14, 0.3),
-          }),
+            color: `${Color.black}`}),
+            ...(fontSize && {fontSize: fontSize ? fontSize : moderateScale(12, 0.3)})
         }}
         dropdownStyle={{
           width: width,
@@ -135,6 +135,7 @@ const DropDownSingleSelect = ({
         rowStyle={{...styles.dropDownRow}}
         rowTextStyle={{
           ...styles.dropDownRowText,
+          // fontSize: fontSize && fontSize
         }}
         selectedRowStyle={{
           backgroundColor: Color.splashBGMiddle,
@@ -147,13 +148,14 @@ const DropDownSingleSelect = ({
                 name="chevron-small-down"
                 as={Entypo}
                 size={moderateScale(27, 0.3)}
+                color={'white'}
                 style={[
                   styles.icon,
                   extreme && {
                     position: 'absolute',
                     left: -8,
                   },
-                  backgroundColor && {color: Color.themeGray},
+                  backgroundColor && {color: 'white'},
                 ]}
               />
             </>
@@ -210,7 +212,7 @@ const styles = ScaledSheet.create({
   },
   icon: {
     marginTop: 3,
-    color: Color.themeBlack,
+    color:'#1296AF',
   },
   icon2: {
     color: Color.themeColor,

@@ -15,6 +15,7 @@ import CustomText from '../Components/CustomText';
 import CustomButton from '../Components/CustomButton';
 import { windowHeight, windowWidth } from '../Utillity/utils';
 import CustomImage from '../Components/CustomImage';
+import navigationService from '../navigationService';
 
 const AccountSetting = () => {
 
@@ -70,6 +71,7 @@ const AccountSetting = () => {
             height={windowHeight * 0.06}
             marginTop={moderateScale(10, 0.3)}
             onPress={() => {
+              navigationService.navigate('Profile')
             }}
             fontSize={moderateScale(12,0.6)}
             bgColor={['#FFFFFF', '#FFFFFF']}
@@ -90,11 +92,12 @@ const AccountSetting = () => {
             marginTop={moderateScale(10, 0.3)}
             fontSize={moderateScale(12,0.6)}
             onPress={() => {
-              // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
+              navigationService.navigate('ProfileList')
             }}
             bgColor={['#FFFFFF', '#FFFFFF']}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
+           
           />
 
      
