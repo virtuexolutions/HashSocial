@@ -1,6 +1,5 @@
 import {
   StyleSheet,
-  
   View,
   ImageBackground,
   Dimensions,
@@ -9,7 +8,7 @@ import {
   FlatList,
   TextInput,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 const {height, width} = Dimensions.get('window');
 import {moderateScale} from 'react-native-size-matters';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -19,8 +18,10 @@ import Header from '../Components/Header';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
+import TextInputWithTitle from '../Components/TextInputWithTitle';
 
 const BubbleSearch = () => {
+  const [search, setSearch] = useState('');
   const SearchData = [
     {
       id: 1,
@@ -72,53 +73,45 @@ const BubbleSearch = () => {
         <View
           style={{
             width: windowWidth,
-            height: windowHeight *0.15,
+            height: windowHeight * 0.09,
             flexDirection: 'row',
             justifyContent: 'space-between',
             alignItems: 'center',
-            paddingHorizontal: moderateScale(8, 0.3),
-            // marginTop: moderateScale(-10, 0.3),
+            paddingHorizontal: moderateScale(8, 0.3)
           }}>
           <View style={styles.profileSection}>
             <CustomImage
               source={require('../Assets/Images/dummyman1.png')}
               style={{
-                height: windowHeight * 0.07,
-                width: windowHeight * 0.07,
-                borderRadius: 50,
-                borderWidth: 3,
-                borderColor: '#33dd50',
+                height: '100%',
+                width: '100%',
               }}
               resizeMode="contain"
             />
           </View>
 
-          <View
-            style={{
-              width: windowWidth / 1.45,
-              height: windowHeight / 17,
-              backgroundColor: '#fff',
-              borderRadius: 50,
-              justifyContent: 'center',
-            //   marginLeft:moderateScale(10,0.3)
-            }}>
-            <TextInput
-              placeholder="Alchole"
-              style={{
-                // paddingLeft: moderateScale(10, 0.6),
-                paddingLeft: moderateScale(20, 0.6),
-              }}
-            />
-          </View>
+          <TextInputWithTitle
+            secureText={false}
+            placeholder={'Alchole'}
+            setText={setSearch}
+            value={search}
+            viewHeight={0.05}
+            viewWidth={0.7}
+            inputWidth={0.7}
+            backgroundColor={'white'}
+            color={Color.themeColor}
+            placeholderColor={Color.veryLightGray}
+            borderRadius={moderateScale(25, 0.3)}
+          />
 
           <TouchableOpacity
             activeOpacity={0.8}
             style={{justifyContent: 'center'}}>
-            <Entypo name="images" size={25} color="#fff" />
+            <Entypo name="images" size={28} color="#fff" />
           </TouchableOpacity>
         </View>
 
-        <View style={{width: windowWidth / 1, height: windowHeight / 0.9}}>
+        <View style={{width: windowWidth * 1}}>
           <FlatList
             data={SearchData}
             contentContainerStyle={{
@@ -128,21 +121,19 @@ const BubbleSearch = () => {
               return (
                 <View
                   style={{
-                    width: windowWidth / 1,
-                    height: windowHeight / 12,
+                    width: windowWidth * 1,
+                    height: windowHeight * 0.07
+                    ,
                     flexDirection: 'row',
                     alignItems: 'center',
                     paddingLeft: moderateScale(14, 0.6),
                   }}>
-                  <View style={styles.profileSection}>
-                    <Image
+                  <View style={styles.profileSection1}>
+                    <CustomImage
                       source={item.image}
                       style={{
-                        height: windowHeight * 0.06,
-                        width: windowHeight * 0.06,
-                        borderRadius: 50,
-                        borderWidth: 2,
-                        borderColor: '#33dd50'
+                        height: '100%',
+                        width: '100%',
                       }}
                       resizeMode="contain"
                     />
@@ -157,8 +148,8 @@ const BubbleSearch = () => {
                       style={{
                         fontSize: moderateScale(16, 0.6),
                         color: '#000',
-                        // fontWeight: '500',
-                      }} isBold>
+                      }}
+                      isBold>
                       {item?.name}
                     </CustomText>
                     <CustomText
@@ -187,9 +178,21 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.06,
     width: windowHeight * 0.06,
     backgroundColor: '#fff',
-    borderRadius: 50,
-    // borderWidth: 3,
-    // borderColor: '#33dd50',
+    borderRadius: (windowHeight * 0.06) / 2,
+    overflow:'hidden',
+    borderWidth: 2,
+    borderColor: '#33dd50',
+    justifyContent: 'center',
+    // alignSelf: 'center',
+  },
+  profileSection1: {
+    height: windowHeight * 0.05,
+    width: windowHeight * 0.05,
+    backgroundColor: '#fff',
+    borderRadius: (windowHeight * 0.05) / 2,
+    overflow:'hidden',
+    borderWidth: 1,
+    borderColor: '#33dd50',
     justifyContent: 'center',
     // alignSelf: 'center',
   },

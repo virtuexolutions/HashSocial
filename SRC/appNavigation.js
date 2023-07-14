@@ -28,6 +28,7 @@ import Chat from './Screens/Chat';
 import Bubble from './Screens/Bubble';
 import BubbleDetail from './Screens/BubbleDetail';
 import BubbleEdit from './Screens/BubbleEdit';
+import Feeds from './Screens/Feeds';
 // import AccountSetting from './Screens/AccountSetting';
 // import HomeScreen from './Screens/HomeScreen';
 // import MyAccounts from './Screens/MyAccounts';
@@ -56,8 +57,9 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'BubbleEdit'}
+          initialRouteName={'Feeds'}
           screenOptions={{headerShown: false}}>
+          <RootNav.Screen name="Feeds" component={Feeds} />
           <RootNav.Screen name="BubbleDetail" component={BubbleDetail} />
           <RootNav.Screen name="BubbleEdit" component={BubbleEdit} />
           <RootNav.Screen name="Bubble" component={Bubble} />

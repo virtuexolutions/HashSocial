@@ -70,7 +70,6 @@ const Bubble = () => {
         style={{
           width: windowWidth,
           height: windowHeight * 0.9,
-          // justifyContent : 'center',
           alignItems: 'center',
         }}>
         <ImageBackground
@@ -79,8 +78,6 @@ const Bubble = () => {
           style={{
             width: windowWidth,
             height: windowHeight * 0.35,
-            // justifyContent : 'center',
-            // alignItems: 'center',
           }}>
           <View
             style={{
@@ -95,7 +92,6 @@ const Bubble = () => {
                 fontSize: moderateScale(17, 0.6),
                 color: 'black',
                 marginRight: moderateScale(8, 0.3),
-                //   width: windowWidth*0.9,
                 textAlign: 'center',
               }}
               isBold
@@ -135,7 +131,6 @@ const Bubble = () => {
                   fontSize: moderateScale(20, 0.6),
                   color: 'black',
                   marginRight: moderateScale(8, 0.3),
-                  //   width: windowWidth*0.9,
                   textAlign: 'center',
                 }}
                 isBold
@@ -147,7 +142,6 @@ const Bubble = () => {
                   fontSize: moderateScale(14, 0.6),
                   color: 'white',
                   marginRight: moderateScale(8, 0.3),
-                  //   width: windowWidth*0.9,
                   textAlign: 'center',
                 }}
               />
@@ -162,7 +156,6 @@ const Bubble = () => {
                   fontSize: moderateScale(20, 0.6),
                   color: 'black',
                   marginRight: moderateScale(8, 0.3),
-                  //   width: windowWidth*0.9,
                   textAlign: 'center',
                 }}
                 isBold
@@ -174,7 +167,6 @@ const Bubble = () => {
                   fontSize: moderateScale(14, 0.6),
                   color: 'white',
                   marginRight: moderateScale(8, 0.3),
-                  //   width: windowWidth*0.9,
                   textAlign: 'center',
                 }}
               />
@@ -189,7 +181,6 @@ const Bubble = () => {
                   fontSize: moderateScale(20, 0.6),
                   color: 'black',
                   marginRight: moderateScale(8, 0.3),
-                  //   width: windowWidth*0.9,
                   textAlign: 'center',
                 }}
                 isBold
@@ -201,7 +192,6 @@ const Bubble = () => {
                   fontSize: moderateScale(14, 0.6),
                   color: 'white',
                   marginRight: moderateScale(8, 0.3),
-                  //   width: windowWidth*0.9,
                   textAlign: 'center',
                 }}
               />
@@ -336,7 +326,7 @@ const Bubble = () => {
                         height: '100%',
                         width: '100%',
                       }}
-                      //   resizeMode={'stretch'}
+              
                     />
                   </View>
                   <View>
@@ -348,7 +338,6 @@ const Bubble = () => {
                         color: 'black',
                         marginTop: moderateScale(12, 0.3),
                         marginRight: moderateScale(8, 0.3),
-                        //   width: windowWidth*0.9,
                         textAlign: 'left',
                       }}
                       isBold
@@ -357,7 +346,6 @@ const Bubble = () => {
                       style={{
                         flexDirection: 'row',
                         justifyContent: 'space-between',
-                        // backgroundColor:'red',
                         width: windowWidth * 0.3,
                       }}>
                       <CustomText
@@ -366,9 +354,6 @@ const Bubble = () => {
                         style={{
                           fontSize: moderateScale(10, 0.6),
                           color: Color.veryLightGray,
-                          // marginTop: moderateScale(12, 0.3),
-                          // marginRight: moderateScale(8, 0.3),
-                          //   width: windowWidth*0.9,
                           textAlign: 'center',
                         }}
                       />
@@ -378,9 +363,6 @@ const Bubble = () => {
                         style={{
                           fontSize: moderateScale(10, 0.6),
                           color: Color.veryLightGray,
-                          // marginTop: moderateScale(12, 0.3),
-                          // marginRight: moderateScale(8, 0.3),
-                          //   width: windowWidth*0.9,
                           textAlign: 'right',
                         }}
                       />
