@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Dimensions,
   ImageBackground,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 const {height, width} = Dimensions.get('window');
@@ -24,6 +25,7 @@ import Color from '../Assets/Utilities/Color';
 import CustomImage from '../Components/CustomImage';
 import ImagePickerModal from '../Components/ImagePickerModal';
 import navigationService from '../navigationService';
+import { ScaledSheet } from 'react-native-size-matters';
 
 const CreateNewBubble = () => {
   const [CreateBubble, setCreateBubble] = useState('');
@@ -32,6 +34,7 @@ const CreateNewBubble = () => {
   const [moderator, setModerator] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [profilePicture, setProfilePicture] = useState({});
+  const [isLoading, setisLoading] = useState(false);
   console.log(
     '🚀 ~ file: CreateNewBubble.js:35 ~ CreateNewBubble ~ profilePicture:',
     profilePicture,
@@ -118,15 +121,7 @@ const CreateNewBubble = () => {
           height: windowHeight * 0.9,
         }}>
         <ScrollView nestedScrollEnabled>
-          <View
-            style={{
-              width: windowWidth,
-              height: windowHeight * 0.3,
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginTop: moderateScale(15, 0.3),
-              // padding: moderateScale(10, 0.6),
-            }}>
+          <View style={styles.topContainer}>
             <TextInputWithTitle
               placeholder={'Bubble Title'}
               setText={setBubbleTitle}
@@ -170,7 +165,7 @@ const CreateNewBubble = () => {
                   width: width * 0.35,
                   backgroundColor: '#dddbdb',
                   borderRadius: moderateScale(20, 0.6),
-                  marginLeft: moderateScale(18, 0.3),
+                  marginLeft: moderateScale(25, 0.3),
                   justifyContent: 'center',
                   overflow: 'hidden',
                 },
@@ -193,14 +188,7 @@ const CreateNewBubble = () => {
               ) : (
                 <TouchableOpacity
                   activeOpacity={0.7}
-                  style={{
-                    height: height * 0.04,
-                    width: windowWidth * 0.3,
-                    backgroundColor: '#ffffff',
-                    borderRadius: 20,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                  style={styles.image}>
                   <CustomText
                     style={{
                       color: Color.black,
@@ -218,14 +206,7 @@ const CreateNewBubble = () => {
           </View>
 
           <View
-            style={{
-              width: '90%',
-              height: 2,
-              backgroundColor: '#a0e8eb',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              marginTop: moderateScale(10, 0.3),
-            }}></View>
+            style={styles.line}></View>
 
           <View
             style={{
@@ -282,7 +263,7 @@ const CreateNewBubble = () => {
               marginLeft={moderateScale(0.1, 0.3)}
               color={Color.black}
               marginTop={moderateScale(5, 0.3)}
-              placeholderColor={Color.black}
+              placeholderColor={Color.veryLightGray}
               borderRadius={moderateScale(20, 0.3)}
               backgroundColor={Color.white}
             />
@@ -338,14 +319,7 @@ const CreateNewBubble = () => {
           </View>
 
           <View
-            style={{
-              width: '90%',
-              height: 2,
-              backgroundColor: '#a0e8eb',
-              justifyContent: 'center',
-              alignSelf: 'center',
-              marginTop: moderateScale(15, 0.3),
-            }}></View>
+            style={styles.line}></View>
 
           <View
             style={{
@@ -361,18 +335,7 @@ const CreateNewBubble = () => {
             {memberships.map(data => {
               return (
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <LinearGradient
-                    style={{
-                      height: windowWidth * 0.12,
-                      width: windowWidth * 0.12,
-                      borderWidth: 1,
-                      borderColor: data?.border,
-                      borderRadius: (windowWidth * 0.12) / 2,
-                      // backgroundColor: 'red',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}
-                    colors={data?.color}>
+                  <LinearGradient style={[styles.crownIcon,{borderColor: data?.border}]} colors={data?.color}>
                     <View
                       style={{
                         width: windowWidth * 0.07,
@@ -397,18 +360,7 @@ const CreateNewBubble = () => {
             })}
           </View>
 
-          <View
-            style={{
-              height: windowHeight * 0.08,
-              width: windowWidth * 0.8,
-              marginTop: moderateScale(10, 0.3),
-              flexDirection: 'row',
-              // backgroundColor:'red',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              alignSelf: 'center',
-              // padding: moderateScale(20, 0.6),
-            }}>
+          <View style={styles.switchContainer}>
             <CustomText
               style={{
                 color: Color.black,
@@ -428,8 +380,14 @@ const CreateNewBubble = () => {
           </View>
 
           <CustomButton
-            text={'Next'}
-            textColor={'#0E9AB0'}
+            text={
+              isLoading ? (
+                <ActivityIndicator color={'#01E8E3'} size={'small'} />
+              ) : (
+                'Next'
+              )
+            }
+            textColor={Color.themeColor}
             width={windowWidth * 0.4}
             height={windowHeight * 0.06}
             // marginTop={moderateScale(10, 0.3)}
@@ -454,3 +412,50 @@ const CreateNewBubble = () => {
 };
 
 export default CreateNewBubble;
+const styles = ScaledSheet.create({
+  topContainer: {
+    width: windowWidth * 0.9,
+    height: windowHeight * 0.3,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: moderateScale(15, 0.3),
+    // padding: moderateScale(10, 0.6),
+  },
+  switchContainer: {
+    height: windowHeight * 0.08,
+    width: windowWidth * 0.8,
+    marginTop: moderateScale(10, 0.3),
+    flexDirection: 'row',
+    // backgroundColor:'red',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    alignSelf: 'center',
+    // padding: moderateScale(20, 0.6),
+  },
+  crownIcon: {
+    height: windowWidth * 0.12,
+    width: windowWidth * 0.12,
+    borderWidth: 1,
+    
+    borderRadius: (windowWidth * 0.12) / 2,
+    // backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  line:{
+    width: '90%',
+    height: 2,
+    backgroundColor: '#a0e8eb',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginTop: moderateScale(15, 0.3),
+  },
+  image:{
+    height: height * 0.04,
+    width: windowWidth * 0.3,
+    backgroundColor: '#ffffff',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
+});

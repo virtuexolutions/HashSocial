@@ -16,9 +16,12 @@ import CustomButton from '../Components/CustomButton';
 import { windowHeight, windowWidth } from '../Utillity/utils';
 import CustomImage from '../Components/CustomImage';
 import navigationService from '../navigationService';
+import { useNavigation } from '@react-navigation/native';
+import Color from '../Assets/Utilities/Color';
 
 const AccountSetting = () => {
 
+  const navigation = useNavigation()
   const [isLoading, setIsLoading] = useState(false)
   return (
     <>
@@ -26,7 +29,7 @@ const AccountSetting = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Account Settings'} search />
+      <Header right Title={'Account Details'} search />
 
       <ImageBackground
         source={require('../Assets/Images/Main.png')}
@@ -66,7 +69,7 @@ const AccountSetting = () => {
                 'Create New Profile'
               )
             }
-            textColor={'#30a3b9'}
+            textColor={Color.themeColor}
             width={windowWidth * 0.7}
             height={windowHeight * 0.06}
             marginTop={moderateScale(10, 0.3)}
@@ -77,7 +80,9 @@ const AccountSetting = () => {
             bgColor={['#FFFFFF', '#FFFFFF']}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
+            // isBold
           />
+          
           <CustomButton
             text={
               isLoading ? (
@@ -86,21 +91,20 @@ const AccountSetting = () => {
                 'Profile List'
               )
             }
-            textColor={'#30a3b9'}
+            textColor={Color.themeColor}
             width={windowWidth * 0.7}
             height={windowHeight * 0.06}
             marginTop={moderateScale(10, 0.3)}
             fontSize={moderateScale(12,0.6)}
             onPress={() => {
-              navigationService.navigate('ProfileList')
+              navigationService.navigate('CreateNewBubble')
             }}
             bgColor={['#FFFFFF', '#FFFFFF']}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
-           
+            // isBold
           />
-
-     
+          
       </ImageBackground>
     </>
   );

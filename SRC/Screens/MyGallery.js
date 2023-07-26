@@ -17,6 +17,7 @@ import ImagePickerModal from '../Components/ImagePickerModal';
 
 const MyGallery = () => {
   const [selectedTab, setSelectedTab] = useState('All');
+  console.log("🚀 ~ file: MyGallery.js:20 ~ MyGallery ~ selectedTab:", selectedTab)
   const [showModal, setShowModal] = useState(false);
   const [profilePicture, setProfilePicture] = useState({});
   const [selectedImages, setselectedImages] = useState([]);
@@ -73,10 +74,9 @@ const MyGallery = () => {
 
   useEffect(() => {
     if (Object.keys(profilePicture).length > 0) {
-      const newData = images.slice(1);
-      newData.unshift(profilePicture);
-      newData.unshift(images[0]);
-      console.log('🚀 ~ file: MyGallery.js:67 ~ useEffect ~ newData:', newData);
+      const newData = [...images];
+      newData.splice(1, 0, profilePicture);
+      // console.log("🚀 ~ file: MyGallery.js:77 ~ useEffect ~ newData:", newData)
       setImages(newData);
       setProfilePicture({});
     }
@@ -88,7 +88,7 @@ const MyGallery = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'My Gallery'} search/>
+      <Header right Title={'My Gallery'} search />
       <ImageBackground
         source={require('../Assets/Images/Main.png')}
         resizeMode={'cover'}
@@ -102,40 +102,20 @@ const MyGallery = () => {
             flexDirection: 'row',
             width: windowWidth * 0.9,
             justifyContent: 'space-between',
-            marginTop: moderateScale(20, 0.3),
+            marginTop: moderateScale(10, 0.3),
             alignItems: 'center',
           }}>
           <CustomText
-            style={{
-              fontSize: moderateScale(12, 0.6),
-              color: selectedTab == 'All' ? 'white' : '#353434',
-              width: windowWidth * 0.2,
-              textAlign: 'center',
-              marginTop: moderateScale(10, 0.3),
-              //   alignSelf:'center',
-            }}
+          style={[{ color: selectedTab === 'All' ? Color.white : '#353434' },styles.heading ]}
             isBold={true}
             children={'All'}
             onPress={() => {
               setSelectedTab('All');
             }}
           />
-          <View
-            style={{
-              width: windowWidth * 0.006,
-              height: windowHeight * 0.02,
-              backgroundColor: 'black',
-              marginTop: moderateScale(10, 0.3),
-
-            }}></View>
+          <View style={styles.line}></View>
           <CustomText
-            style={{
-              color: selectedTab == 'Photos' ? 'white' : '#353434',
-              fontSize: moderateScale(12, 0.6),
-              width: windowWidth * 0.2,
-              textAlign: 'center',
-              marginTop: moderateScale(10, 0.3),
-            }}
+         style={[{ color: selectedTab === 'Photos' ? Color.white : '#353434' }, styles.heading ]}
             isBold={true}
             onPress={() => {
               setSelectedTab('Photos');
@@ -144,24 +124,9 @@ const MyGallery = () => {
           />
 
           <View
-            style={{
-              width: windowWidth * 0.006,
-              height: windowHeight * 0.02,
-              backgroundColor: 'black',
-              marginTop: moderateScale(10, 0.3),
-
-              // alignItems:'center',
-              // justifyContent:'center',
-            }}></View>
+            style={styles.line}></View>
           <CustomText
-            style={{
-              fontSize: moderateScale(12, 0.6),
-              color: '#353434',
-              width: windowWidth * 0.2,
-              color: selectedTab == 'Video' ? 'white' : '#353434',
-              textAlign: 'center',
-              marginTop: moderateScale(10, 0.3),
-            }}
+             style={[{ color: selectedTab === 'Video' ? Color.white : '#353434' }, styles.heading ]}
             isBold={true}
             onPress={() => {
               setSelectedTab('Video');
@@ -169,35 +134,42 @@ const MyGallery = () => {
             children={'Video'}
           />
         </View>
+        <View style={{position: 'absolute', bottom: 35, zIndex: 1}}>
+          <CustomButton
+            text={'Next'}
+            textColor={Color.themeColor}
+            width={windowWidth * 0.4}
+            height={windowHeight * 0.06}
+            marginTop={moderateScale(10, 0.3)}
+            onPress={() => {
+              // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
+              // navigationService.navigate('Signup');
+            }}
+            bgColor={['#FFFFFF', '#FFFFFF']}
+            borderRadius={moderateScale(30, 0.3)}
+            isGradient
+            isBold={true}
+          />
+        </View>
 
-        <View
-          style={{
-            width: windowWidth * 0.9,
-            height: windowHeight * 0.65,
-            justifyContent: 'space-between',
-            marginTop: moderateScale(20, 0.3),
-            flexDirection: 'row',
-            flexWrap: 'nowrap',
-          }}>
+        <View style={styles.photoConatiner}>
           <FlatList
             numColumns={3}
             data={images}
+            contentContainerStyle={{
+              marginBottom: moderateScale(30, 0.3),
+            }}
             showsVerticalScrollIndicator={false}
             renderItem={({item, index}) => {
               //   console.log('index:', item);
               return (
                 <TouchableOpacity
-                  style={{
-                    height: windowHeight * 0.2,
-                    width: windowWidth * 0.285,
-                    backgroundColor: 'white',
-                    borderRadius: 20,
-                    // alignItems: 'center',
-                    // justifyContent: 'center',
-                    overflow: 'hidden',
-                    marginVertical: moderateScale(5, 0.3),
-                    marginHorizontal: moderateScale(2, 0.3),
-                  }}>
+                  onPress={() => {
+                    if (index == 0) {
+                      setShowModal(true);
+                    }
+                  }}
+                  style={styles.photoCard}>
                   {index == 0 ? (
                     <Icon
                       name="camera"
@@ -214,14 +186,18 @@ const MyGallery = () => {
                     <CustomImage
                       source={item?.uri ? {uri: item?.uri} : item?.url}
                       onPress={() => {
-                        const isSelected = selectedImages.findIndex(data => data?.id == item?.id);
+                        const isSelected = selectedImages.findIndex(
+                          data => data?.id == item?.id,
+                        );
                         setSelected(isSelected);
                         console.log(
                           '🚀 ~ file: MyGallery.js:216 ~ MyGallery ~ index:',
-                          isSelected
+                          isSelected,
                         );
                         if (isSelected > -1) {
-                          const dataNew = selectedImages.filter(data => data?.id != item?.id);
+                          const dataNew = selectedImages.filter(
+                            data => data?.id != item?.id,
+                          );
                           setselectedImages(dataNew);
                         } else {
                           setselectedImages(prev => [...prev, item]);
@@ -238,36 +214,33 @@ const MyGallery = () => {
                   {selectedImages.findIndex(data => data?.id == item?.id) >
                     -1 && (
                     <TouchableOpacity
-                    onPress={() => {
-                      const isSelected = selectedImages.findIndex(data => data?.id == item?.id);
-                      setSelected(isSelected);
-                      console.log(
-                        '🚀 ~ file: MyGallery.js:216 ~ MyGallery ~ index:',
-                        isSelected
-                      );
-                      if (isSelected > -1) {
-                        const dataNew = selectedImages.filter(data => data?.id != item?.id);
-                        setselectedImages(dataNew);
-                      } else {
-                        setselectedImages(prev => [...prev, item]);
-                      }
-                    }}
-                      style={{
-                        height: windowHeight * 0.2,
-                        width: windowWidth * 0.285,
-                        backgroundColor: 'rgba(0,0,0,0.5)',
-                        position: 'absolute',
-                        zIndex: 1,
-                      }}>
+                      onPress={() => {
+                        const isSelected = selectedImages.findIndex(
+                          data => data?.id == item?.id,
+                        );
+                        setSelected(isSelected);
+                        console.log(
+                          '🚀 ~ file: MyGallery.js:216 ~ MyGallery ~ index:',
+                          isSelected,
+                        );
+                        if (isSelected > -1) {
+                          const dataNew = selectedImages.filter(
+                            data => data?.id != item?.id,
+                          );
+                          setselectedImages(dataNew);
+                        } else {
+                          setselectedImages(prev => [...prev, item]);
+                        }
+                      }}
+                      style={styles.checkIcon}>
                       <Icon
                         name="check"
                         as={Entypo}
-                        color={'#0E9AB0'}
+                        color={Color.themeColor}
                         size={50}
                         zIndex={1}
                         style={{alignSelf: 'center', top: 50}}
                       />
-                    
                     </TouchableOpacity>
                   )}
                 </TouchableOpacity>
@@ -275,21 +248,6 @@ const MyGallery = () => {
             }}
           />
         </View>
-        <CustomButton
-          text={'Next'}
-          textColor={'#0E9AB0'}
-          width={windowWidth * 0.4}
-          height={windowHeight * 0.06}
-          marginTop={moderateScale(10, 0.3)}
-          onPress={() => {
-            // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
-            navigationService.navigate('Signup');
-          }}
-          bgColor={['#FFFFFF', '#FFFFFF']}
-          borderRadius={moderateScale(30, 0.3)}
-          isGradient
-          isBold={true}
-        />
       </ImageBackground>
       <ImagePickerModal
         show={showModal}
@@ -304,11 +262,8 @@ const styles = ScaledSheet.create({
   conatiner: {
     width: windowWidth * 0.9,
     height: windowHeight * 0.0004,
-    // paddingVertical: moderateScale(15, 0.6),
-    backgroundColor: 'white',
+    backgroundColor: Color.white,
     alignSelf: 'center',
-    // borderRadius: moderateScale(15, 0.6),
-    // alignItems: 'center',
     marginTop: moderateScale(20, 0.3),
   },
   textInput: {
@@ -324,8 +279,43 @@ const styles = ScaledSheet.create({
     },
     shadowOpacity: 0.29,
     shadowRadius: 4.65,
-
     elevation: 7,
+  },
+  photoConatiner: {
+    width: windowWidth * 0.9,
+    justifyContent: 'space-between',
+    marginTop: moderateScale(20, 0.3),
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+    marginBottom:moderateScale(65,.3)
+  },
+  photoCard: {
+    height: windowHeight * 0.2,
+    width: windowWidth * 0.285,
+    backgroundColor: Color.white,
+    borderRadius: 20,
+    overflow: 'hidden',
+    marginVertical: moderateScale(5, 0.3),
+    marginHorizontal: moderateScale(2, 0.3),
+  },
+  line: {
+    width: windowWidth * 0.006,
+    height: windowHeight * 0.02,
+    backgroundColor: 'black',
+    marginTop: moderateScale(10, 0.3),
+  },
+  checkIcon: {
+    height: windowHeight * 0.2,
+    width: windowWidth * 0.285,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    position: 'absolute',
+    zIndex: 1,
+  },
+  heading:{
+    fontSize: moderateScale(12, 0.6),
+    width: windowWidth * 0.2,
+    textAlign: 'center',
+    marginTop: moderateScale(10, 0.3),
   },
 });
 

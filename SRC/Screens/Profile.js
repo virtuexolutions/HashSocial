@@ -18,12 +18,18 @@ import TextInputWithTitle from '../Components/TextInputWithTitle';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomButton from '../Components/CustomButton';
 import Color from '../Assets/Utilities/Color';
+import navigationService from '../navigationService';
+import { useDispatch, useSelector } from 'react-redux';
+import { setAccountPrivate } from '../Store/slices/common';
 
 const Profile = () => {
+
+  const theme = useSelector(state => state.commonReducer.theme);
   const [username, setUserName] = useState('');
   const [desc, setdesc] = useState('');
-  const [selectedTab, setSelectedTab] = useState('private');
+  const [selectedTab, setSelectedTab] = useState('public');
     const [isLoading, setIsLoading] = useState(false)
+    const dispatch = useDispatch();
 
   return (
     <>
@@ -34,7 +40,7 @@ const Profile = () => {
       <Header right Title={'Create Profile'}  search/>
 
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+        source={theme}
         resizeMode={'cover'}
         style={{
           width: windowWidth * 1,
@@ -129,6 +135,8 @@ const Profile = () => {
               <View style={[styles.radioButtonContainer]}>
                 <TouchableOpacity
                   onPress={() => {
+                    console.log('private')
+                    dispatch(setAccountPrivate(require('../Assets/Images/avatar.png')))
                     setSelectedTab('private');
                   }}
                   style={[styles.radioButton,{
@@ -137,11 +145,13 @@ const Profile = () => {
                   {/* <View style={styles.radioButtonIcon} /> */}
                 </TouchableOpacity>
                 <CustomText  onPress={() => {
+                  dispatch(setAccountPrivate(require('../Assets/Images/avatar.png')))
                     setSelectedTab('private');
                   }} style={styles.radioButtonText}>Private</CustomText>
 
                 <TouchableOpacity
                   onPress={() => {
+                    dispatch(setAccountPrivate(require('../Assets/Images/Main.png')))
                     setSelectedTab('public');
                   }}
                   style={[styles.radioButton,{
@@ -151,6 +161,7 @@ const Profile = () => {
                 </TouchableOpacity>
                 <CustomText 
                  onPress={() => {
+                  dispatch(setAccountPrivate(require('../Assets/Images/Main.png')))
                     setSelectedTab('public');
                   }}
                 style={styles.radioButtonText}>Public</CustomText>
@@ -160,18 +171,18 @@ const Profile = () => {
             text={
 
               isLoading ? (
-                <ActivityIndicator color={'#1296AF'} size={'small'} />
+                <ActivityIndicator color={Color.themeColor} size={'small'} />
               ) : (
                'Insert'
               )
             }
-            textColor={'#1296AF'}
+            textColor={Color.themeColor}
             width={windowWidth * 0.3}
             height={windowHeight * 0.04}
             marginTop={moderateScale(20, 0.3)}
-            fontSize={moderateScale(10,0.3)}
+            fontSize={moderateScale(12,0.3)}
             onPress={() => {
-              // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
+              navigationService.navigate('ProfileList')
             }}
             bgColor={'#FFFFFF'}
             borderRadius={moderateScale(30, 0.3)}

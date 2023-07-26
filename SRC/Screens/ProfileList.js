@@ -12,7 +12,7 @@ const {height, width} = Dimensions.get('window');
 import {moderateScale} from 'react-native-size-matters';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
-import { windowHeight, windowWidth } from '../Utillity/utils';
+import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
 
@@ -73,7 +73,7 @@ const ProfileList = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Profile List'} search/>
+      <Header right Title={'Profile List'} search />
 
       <ImageBackground
         source={require('../Assets/Images/Main.png')}
@@ -85,7 +85,7 @@ const ProfileList = () => {
         }}>
         <View
           style={{
-            width: windowWidth ,
+            width: windowWidth,
             marginBottom: moderateScale(10, 0.3),
             marginTop: moderateScale(10, 0.3),
           }}>
@@ -97,15 +97,7 @@ const ProfileList = () => {
             renderItem={({item, index}) => {
               return (
                 <>
-                  <View
-                    style={{
-                      width: windowWidth * 1,
-                      height: windowHeight *0.1,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingLeft: moderateScale(20, 0.6),
-                      marginBottom:moderateScale(5,0.3),
-                    }}>
+                  <View style={styles.row}>
                     <View style={styles.profileSection}>
                       <CustomImage
                         source={item.image}
@@ -138,16 +130,7 @@ const ProfileList = () => {
                     </View>
                   </View>
 
-                  <View
-                    style={{
-                      width: '90%',
-                      height: 2,
-                      backgroundColor: 'white',
-                      opacity:0.5,
-                      justifyContent: 'center',
-                      alignSelf: 'center',
-                      marginBottom: moderateScale(10, 0.3),
-                    }}></View>
+                  <View style={styles.line}></View>
                 </>
               );
             }}
@@ -166,15 +149,29 @@ const styles = StyleSheet.create({
   },
 
   profileSection: {
-    height: windowWidth *0.2,
+    height: windowWidth * 0.2,
     width: windowWidth * 0.2,
     backgroundColor: '#fff',
-    borderRadius:(windowWidth *0.2)/2,
+    borderRadius: (windowWidth * 0.2) / 2,
     borderWidth: 3,
     borderColor: '#33dd50',
-    // justifyContent: 'center',
-
-    // alignItems: 'center',
-    overflow:'hidden',
+    overflow: 'hidden',
+  },
+  line: {
+    width: '90%',
+    height: 2,
+    backgroundColor: 'white',
+    opacity: 0.5,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginBottom: moderateScale(10, 0.3),
+  },
+  row: {
+    width: windowWidth * 1,
+    height: windowHeight * 0.1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: moderateScale(20, 0.6),
+    marginBottom: moderateScale(5, 0.3),
   },
 });

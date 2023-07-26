@@ -6,6 +6,7 @@ const initialState = {
   categoryProperties: [],
   financeBreakDown: [],
   notification : false,
+  theme:'',
   servicesArray : [
     { id: 'Auto repair' , name: 'Auto repair',},
     { id: 'plumbing Projects' , name: 'plumbing Projects',},
@@ -62,6 +63,11 @@ const CommonSlice = createSlice({
     },
     setSelectedRole(state,action){
       state.selectedRole = action.payload
+    },
+    setAccountPrivate(state,action){
+      console.log("🚀 ~ file: common.js:68 ~ setAccountPrivate ~ action:", action.payload)
+      
+      state.theme = action.payload
     }
   },
 });
@@ -73,7 +79,8 @@ export const {
   setCategoryProperties,
   setFinanceBreakDown,
   setNotification,
-  setSelectedRole
+  setSelectedRole,
+  setAccountPrivate
 } = CommonSlice.actions;
 
 export default CommonSlice.reducer;

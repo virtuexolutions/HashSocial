@@ -16,8 +16,12 @@ import Header from '../Components/Header';
 import {View} from 'react-native';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
+import { useDispatch } from 'react-redux';
+import { setBubbleSelected } from '../Store/slices/auth';
 
 const BubbleSelection = () => {
+
+  const dispatch = useDispatch();
   const [BubbleImageArraty, setBubbleImageArraty] = useState([
     {
       image: require('../Assets/Images/bubble1.png'),
@@ -111,10 +115,11 @@ const BubbleSelection = () => {
             height={windowHeight * 0.04}
             onPress={() => {
               ToastAndroid.show('Saved', ToastAndroid.SHORT);
-              // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
+              dispatch(setBubbleSelected(true))
+              // navigationService.navigate('HomeScreen')
             }}
             fontSize={moderateScale(12, 0.6)}
-            bgColor={['#01E8E3', '#1296AF']}
+            bgColor={Color.themeBgColor}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
           />
@@ -149,6 +154,7 @@ const BubbleSelection = () => {
             width: windowWidth,
           }}>
           {BubbleImageArraty.map((item, index) => {
+            console.log("🚀 ~ file: BubbleSelection.js:155 ~ {BubbleImageArraty.map ~ item:", item)
             return (
               <TouchableOpacity
                 onPress={() => {
@@ -156,6 +162,7 @@ const BubbleSelection = () => {
                   data[index].added = !data[index].added;
 
                   setBubbleImageArraty(data);
+                  // setSavedBubbles(prev => [...prev, item])
                 }}
                 style={{
                   width: windowWidth * 0.3,

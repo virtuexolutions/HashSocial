@@ -132,7 +132,7 @@ const ResetPassword = () => {
               navigationService.navigate('LoginScreen')
               // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
             }}
-            bgColor={['#01E8E3', '#1296AF']}
+            bgColor={Color.themeBgColor}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
           />

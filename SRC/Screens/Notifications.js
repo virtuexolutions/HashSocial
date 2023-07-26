@@ -101,7 +101,7 @@ const Notifications = () => {
             viewHeight={0.06}
             viewWidth={0.7}
             inputWidth={0.7}
-            backgroundColor={'white'}
+            backgroundColor={Color.white}
             color={Color.themeColor}
             placeholderColor={Color.veryLightGray}
             borderRadius={moderateScale(25, 0.3)}
@@ -123,16 +123,7 @@ const Notifications = () => {
               return (
                 <>
                   <View
-                    style={{
-                      width: windowWidth,
-                      height: windowHeight * 0.07,
-                      // backgroundColor:'red',
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      alignItems: 'center',
-                      padding: moderateScale(10, 0.6),
-                      marginBottom: moderateScale(10, 0.3),
-                    }}>
+                    style={styles.row}>
                     <View style={styles.profileSection1}>
                       <CustomImage
                         source={item.image}
@@ -176,7 +167,8 @@ const Notifications = () => {
                     </CustomText>
                     <TouchableOpacity
                       activeOpacity={0.8}
-                      style={{justifyContent: 'center'}}>
+                      style={{justifyContent: 'center'}}
+                      >
                       <MaterialCommunityIcons
                         name="dots-vertical"
                         size={30}
@@ -186,15 +178,7 @@ const Notifications = () => {
                   </View>
 
                   <View
-                    style={{
-                      width: '90%',
-                      height: 2,
-                      opacity: 0.5,
-                      backgroundColor: 'white',
-                      justifyContent: 'center',
-                      alignSelf: 'center',
-                      marginBottom: moderateScale(10, 0.3),
-                    }}></View>
+                    style={styles.line}></View>
                 </>
               );
             }}
@@ -235,4 +219,22 @@ const styles = StyleSheet.create({
     // justifyContent: 'center',
     // alignSelf: 'center',
   },
+  line:{
+    width: '90%',
+    height: 2,
+    opacity: 0.5,
+    backgroundColor: Color.white,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginBottom: moderateScale(10, 0.3),
+  },
+  row:{
+    width: windowWidth,
+    height: windowHeight * 0.07,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    padding: moderateScale(10, 0.6),
+    marginBottom: moderateScale(10, 0.3),
+  }
 });

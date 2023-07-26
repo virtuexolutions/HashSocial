@@ -7,6 +7,7 @@ const initialState = {
   isVerified: false,
   userWalkThrough: false,
   isGoalCreated : false ,
+  bubbleSelected: false
 };
 
 const AuthSlice = createSlice({
@@ -30,6 +31,9 @@ const AuthSlice = createSlice({
     },
     setWalkThrough(state, action) {
       state.userWalkThrough = action.payload;
+    }, 
+    setBubbleSelected(state, action) {
+      state.bubbleSelected = action.payload;
     },
   },
 });
@@ -41,6 +45,7 @@ export const {
   setUserToken,
   SetFCMToken,
   setWalkThrough,
+  setBubbleSelected
   
   
 } = AuthSlice.actions;

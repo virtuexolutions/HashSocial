@@ -70,268 +70,376 @@ const Bubble = () => {
         style={{
           width: windowWidth,
           height: windowHeight * 0.9,
-          // justifyContent : 'center',
           alignItems: 'center',
         }}>
-        <ImageBackground
-          source={require('../Assets/Images/fitness.png')}
-          resizeMode={'cover'}
-          style={{
-            width: windowWidth,
-            height: windowHeight * 0.35,
-            // justifyContent : 'center',
-            // alignItems: 'center',
-          }}>
-          <View
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <ImageBackground
+            source={require('../Assets/Images/fitness.png')}
+            resizeMode={'cover'}
             style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginTop: moderateScale(30, 0.3),
+              width: windowWidth,
+              height: windowHeight * 0.35,
             }}>
-            <CustomText
-              numberOfLines={1}
-              children={'naplesrunning'}
-              style={{
-                fontSize: moderateScale(17, 0.6),
-                color: 'black',
-                marginRight: moderateScale(8, 0.3),
-                //   width: windowWidth*0.9,
-                textAlign: 'center',
-              }}
-              isBold
-            />
             <View
               style={{
-                backgroundColor: 'white',
-                borderRadius: 20,
-
-                height: 25,
+                flexDirection: 'row',
                 justifyContent: 'center',
-                alignItems: 'center',
-                width: 25,
-                padding: moderateScale(3, 0.6),
+                marginTop: moderateScale(30, 0.3),
               }}>
-              <Icon
-                name="check"
-                as={AntDesign}
-                color={'#0E9AB0'}
-                size={5}
-                zIndex={1}
-              />
-            </View>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              marginTop: moderateScale(30, 0.3),
-              paddingHorizontal: moderateScale(30, 0.6),
-            }}>
-            <View style={{justifyContent: 'center'}}>
               <CustomText
                 numberOfLines={1}
-                children={'36'}
+                children={'naplesrunning'}
                 style={{
-                  fontSize: moderateScale(20, 0.6),
+                  fontSize: moderateScale(17, 0.6),
                   color: 'black',
                   marginRight: moderateScale(8, 0.3),
-                  //   width: windowWidth*0.9,
                   textAlign: 'center',
                 }}
                 isBold
               />
-              <CustomText
-                numberOfLines={1}
-                children={'following'}
-                style={{
-                  fontSize: moderateScale(14, 0.6),
-                  color: 'white',
-                  marginRight: moderateScale(8, 0.3),
-                  //   width: windowWidth*0.9,
-                  textAlign: 'center',
-                }}
-              />
-            </View>
-            <View
-              style={{backgroundColor: 'white', height: 50, width: 1}}></View>
-            <View style={{justifyContent: 'center'}}>
-              <CustomText
-                numberOfLines={1}
-                children={'6.2M'}
-                style={{
-                  fontSize: moderateScale(20, 0.6),
-                  color: 'black',
-                  marginRight: moderateScale(8, 0.3),
-                  //   width: windowWidth*0.9,
-                  textAlign: 'center',
-                }}
-                isBold
-              />
-              <CustomText
-                numberOfLines={1}
-                children={'followers'}
-                style={{
-                  fontSize: moderateScale(14, 0.6),
-                  color: 'white',
-                  marginRight: moderateScale(8, 0.3),
-                  //   width: windowWidth*0.9,
-                  textAlign: 'center',
-                }}
-              />
-            </View>
-            <View
-              style={{backgroundColor: 'white', height: 50, width: 1}}></View>
-            <View style={{justifyContent: 'center'}}>
-              <CustomText
-                numberOfLines={1}
-                children={'192.1M'}
-                style={{
-                  fontSize: moderateScale(20, 0.6),
-                  color: 'black',
-                  marginRight: moderateScale(8, 0.3),
-                  //   width: windowWidth*0.9,
-                  textAlign: 'center',
-                }}
-                isBold
-              />
-              <CustomText
-                numberOfLines={1}
-                children={'Likes'}
-                style={{
-                  fontSize: moderateScale(14, 0.6),
-                  color: 'white',
-                  marginRight: moderateScale(8, 0.3),
-                  //   width: windowWidth*0.9,
-                  textAlign: 'center',
-                }}
-              />
-            </View>
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              marginTop: moderateScale(30, 0.3),
-            }}>
-            <CustomButton
-              text={
-                isLoading ? (
-                  <ActivityIndicator color={'#FFFFFF'} size={'small'} />
-                ) : (
-                  'Follow'
-                )
-              }
-              textColor={'#30a3b9'}
-              width={windowWidth * 0.5}
-              height={windowHeight * 0.06}
-              onPress={() => {}}
-              fontSize={moderateScale(15, 0.6)}
-              bgColor={['#FFFFFF', '#FFFFFF']}
-              borderRadius={moderateScale(30, 0.3)}
-              isGradient
-              isBold
-            />
-            <View
-              style={{
-                backgroundColor: 'white',
-                borderRadius: (windowWidth * 0.11) / 2,
-                // marginTop:moderateScale(10, 0.3),
-                height: windowWidth * 0.11,
-                justifyContent: 'center',
-                marginLeft: moderateScale(8, 0.3),
-
-                alignItems: 'center',
-                width: windowWidth * 0.11,
-                padding: moderateScale(3, 0.6),
-              }}>
-              <Icon
-                name="chevron-down"
-                as={EvilIcons}
-                color={'#0E9AB0'}
-                size={10}
-                zIndex={1}
-              />
-            </View>
-          </View>
-        </ImageBackground>
-        <ScrollView
-          style={{
-            width: windowWidth,
-            marginTop: moderateScale(10, 0.3),
-            paddingHorizontal: moderateScale(10, 0.6),
-            marginBottom: moderateScale(70, 0.3),
-          }}
-          showsVerticalScrollIndicator={false}>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            {events?.map(data => {
-              return (
-                <CustomText
-                  numberOfLines={1}
-                  children={data}
-                  style={{
-                    fontSize: moderateScale(14, 0.6),
-                    color: selectedEvent == data ? '#0E9AB0' : 'white',
-                    marginRight: moderateScale(8, 0.3),
-                    width: windowWidth * 0.22,
-                    // height:windowHeight*0.04,
-                    marginRight: moderateScale(17, 0.3),
-                    paddingVertical: moderateScale(5, 0.6),
-                    borderRadius: moderateScale(5, 0.6),
-                    //   width: windowWidth*0.9,
-                    backgroundColor:
-                      selectedEvent == data ? 'white' : 'rgba(0,0,0,.4)',
-                    textAlign: 'center',
-                    alignItems: 'center',
-                  }}
-                  onPress={() => {
-                    setSelectedEvent(data);
-                  }}
-                />
-              );
-            })}
-          </ScrollView>
-          {selectedEvent == 'Members' && ( <>
-            <View style={{flexDirection: 'row'}}>
-              <View
-                style={{
-                  width: windowWidth * 0.45,
-                  height: windowHeight * 0.2,
-                  backgroundColor: 'white',
-                  overflow: 'hidden',
-                  borderRadius: moderateScale(10, 0.6),
-                  marginTop: moderateScale(12, 0.3),
-                }}>
-                <CustomImage
-                  source={require('../Assets/Images/fitness2.png')}
-                  style={{
-                    height: '100%',
-                    width: '100%',
-
-                    // position:'absolute',
-                    // top:-90,
-                    // borderRadius: 80,
-                  }}
-                  resizeMode={'stretch'}
-                  //   resizeMode="s"
+              <View style={styles.checkIcon}>
+                <Icon
+                  name="check"
+                  as={AntDesign}
+                  color={Color.themeColor}
+                  size={5}
+                  zIndex={1}
                 />
               </View>
-              <View>
-                <View style={{flexDirection: 'row'}}>
-                  <View
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                marginTop: moderateScale(30, 0.3),
+                paddingHorizontal: moderateScale(30, 0.6),
+              }}>
+              <View style={{justifyContent: 'center'}}>
+                <CustomText
+                  numberOfLines={1}
+                  children={'36'}
+                  style={styles.followCount}
+                  isBold
+                />
+                <CustomText
+                  numberOfLines={1}
+                  children={'following'}
+                  style={styles.followText}
+                />
+              </View>
+              <View
+                style={{
+                  backgroundColor: Color.white,
+                  height: 50,
+                  width: 1,
+                }}></View>
+              <View style={{justifyContent: 'center'}}>
+                <CustomText
+                  numberOfLines={1}
+                  children={'6.2M'}
+                  style={styles.followCount}
+                  isBold
+                />
+                <CustomText
+                  numberOfLines={1}
+                  children={'followers'}
+                  style={styles.followText}
+                />
+              </View>
+              <View
+                style={{
+                  backgroundColor: Color.white,
+                  height: 50,
+                  width: 1,
+                }}></View>
+              <View style={{justifyContent: 'center'}}>
+                <CustomText
+                  numberOfLines={1}
+                  children={'192.1M'}
+                  style={styles.followCount}
+                  isBold
+                />
+                <CustomText
+                  numberOfLines={1}
+                  children={'Likes'}
+                  style={styles.followText}
+                />
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                marginTop: moderateScale(30, 0.3),
+              }}>
+              <CustomButton
+                text={
+                  isLoading ? (
+                    <ActivityIndicator color={'#FFFFFF'} size={'small'} />
+                  ) : (
+                    'Follow'
+                  )
+                }
+                textColor={Color.themeColor}
+                width={windowWidth * 0.5}
+                height={windowHeight * 0.06}
+                onPress={() => {}}
+                fontSize={moderateScale(15, 0.6)}
+                bgColor={['#FFFFFF', '#FFFFFF']}
+                borderRadius={moderateScale(30, 0.3)}
+                isGradient
+                isBold
+              />
+              <View style={styles.downIcon}>
+                <Icon
+                  name="chevron-down"
+                  as={EvilIcons}
+                  color={Color.themeColor}
+                  size={10}
+                  zIndex={1}
+                />
+              </View>
+            </View>
+          </ImageBackground>
+          <View
+            style={{
+              width: windowWidth,
+              marginTop: moderateScale(10, 0.3),
+              paddingHorizontal: moderateScale(10, 0.6),
+            }}>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}>
+              {events?.map(data => {
+                return (
+                  <CustomText
+                    numberOfLines={1}
+                    children={data}
                     style={{
-                      width: windowWidth * 0.1,
-                      height: windowWidth * 0.1,
-                      backgroundColor: 'white',
-                      overflow: 'hidden',
-                      borderColor: 'yellow',
-                      borderWidth: 1,
-                      borderRadius: (windowWidth * 0.1) / 2,
-                      marginTop: moderateScale(12, 0.3),
-                      marginLeft: moderateScale(5, 0.3),
-                      marginRight: moderateScale(8, 0.3),
-                    }}>
+                      ...styles.eventText,
+                      ...{
+                        backgroundColor:
+                          selectedEvent == data
+                            ? Color.white
+                            : 'rgba(0,0,0,.4)',
+                      },
+                      ...{
+                        color:
+                          selectedEvent == data
+                            ? Color.themeColor
+                            : Color.white,
+                      },
+                    }}
+                    onPress={() => {
+                      setSelectedEvent(data);
+                    }}
+                  />
+                );
+              })}
+            </ScrollView>
+            {selectedEvent == 'Members' && (
+              <>
+                <View style={{flexDirection: 'row'}}>
+                  <View style={styles.image1}>
                     <CustomImage
                       source={require('../Assets/Images/fitness2.png')}
+                      style={{
+                        height: '100%',
+                        width: '100%',
+                      }}
+                      resizeMode={'stretch'}
+                      //   resizeMode="s"
+                    />
+                  </View>
+                  <View>
+                    <View style={{flexDirection: 'row'}}>
+                      <View style={styles.profileImage}>
+                        <CustomImage
+                          source={require('../Assets/Images/fitness2.png')}
+                          style={{
+                            height: '100%',
+                            width: '100%',
+                          }}
+                          //   resizeMode={'stretch'}
+                        />
+                      </View>
+                      <View>
+                        <CustomText
+                          numberOfLines={1}
+                          children={'Meko Nakahara'}
+                          style={{
+                            fontSize: moderateScale(12, 0.6),
+                            color: 'black',
+                            marginTop: moderateScale(12, 0.3),
+                            marginRight: moderateScale(8, 0.3),
+                            textAlign: 'left',
+                          }}
+                          isBold
+                        />
+                        <View
+                          style={{
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                            width: windowWidth * 0.3,
+                          }}>
+                          <CustomText
+                            numberOfLines={1}
+                            children={'New York, USA'}
+                            style={{
+                              fontSize: moderateScale(10, 0.6),
+                              color: Color.veryLightGray,
+                              textAlign: 'center',
+                            }}
+                          />
+                          <CustomText
+                            numberOfLines={1}
+                            children={'1h Ago'}
+                            style={{
+                              fontSize: moderateScale(10, 0.6),
+                              color: Color.veryLightGray,
+                              textAlign: 'right',
+                            }}
+                          />
+                        </View>
+                      </View>
+                    </View>
+                    <CustomText style={styles.text}>
+                      Lorem Ipsum is simply dummy text of the printing and
+                      typesetting industry. Lorem Ipsum has been the industry's
+                      standard dummy text ever since the 1500s, when an unknown
+                      printer took a galley of type and scrambled it to make a
+                      type specimen book. It has survived not only five
+                      centuries, but also the leap into electronic typesetting,
+                      remaining essentially unchanged.
+                    </CustomText>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    marginTop: moderateScale(10, 0.3),
+                  }}>
+                  <CustomText
+                    numberOfLines={1}
+                    children={'Activity'}
+                    style={{
+                      ...styles.activityText,
+                      ...{
+                        borderBottomColor:
+                          selectedTab == 'Activity' ? Color.white : 'black',
+                      },
+                    }}
+                    onPress={() => {
+                      setSelectedTab('Activity');
+                    }}
+                    isBold
+                  />
+                  <CustomText
+                    numberOfLines={1}
+                    children={'Archive'}
+                    style={{
+                      ...styles.activityText,
+                      ...{
+                        borderBottomColor:
+                          selectedTab == 'Archive' ? Color.white : 'black',
+                      },
+                    }}
+                    onPress={() => {
+                      setSelectedTab('Archive');
+                    }}
+                    isBold
+                  />
+                </View>
+              </>
+            )}
+
+            {selectedEvent == 'Members' && selectedTab == 'Activity' ? (
+              <View
+                style={styles.activityContainer}>
+                <FlatList
+                  numColumns={3}
+                  data={activityData}
+                  showsVerticalScrollIndicator={false}
+                  renderItem={({item, index}) => {
+                    //   console.log('index:', item);
+                    return (
+                      <TouchableOpacity
+                        style={styles.activityImage}>
+                        <CustomImage
+                          source={item?.uri ? {uri: item?.uri} : item?.url}
+                          style={{
+                            width: '100%',
+                            height: '100%',
+                            zIndex: 0,
+                          }}
+                          key={item?.id}
+                        />
+                      </TouchableOpacity>
+                    );
+                  }}
+                />
+              </View>
+            ) : (
+              selectedEvent == 'Members' &&
+              selectedTab == 'Archive' && (
+                <>
+                  <View style={{flexDirection: 'row'}}>
+                    <View style={styles.image2}>
+                      <CustomImage
+                        source={require('../Assets/Images/fitness2.png')}
+                        style={{
+                          height: '100%',
+                          width: '100%',
+                        }}
+                        //   resizeMode={'stretch'}
+                      />
+                    </View>
+                    <View>
+                      <CustomText
+                        numberOfLines={1}
+                        children={'Meiko Nakahara'}
+                        style={{
+                          fontSize: moderateScale(15, 0.6),
+                          color: 'black',
+                          marginTop: moderateScale(12, 0.3),
+                          marginRight: moderateScale(8, 0.3),
+                          textAlign: 'left',
+                        }}
+                        isBold
+                      />
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'space-between',
+                          width: windowWidth * 0.4,
+                        }}>
+                        <CustomText
+                          numberOfLines={1}
+                          children={'New York, USA'}
+                          style={{
+                            fontSize: moderateScale(12, 0.6),
+                            color: Color.veryLightGray,
+                            textAlign: 'center',
+                          }}
+                        />
+                        <CustomText
+                          numberOfLines={1}
+                          children={'1h Ago'}
+                          style={{
+                            fontSize: moderateScale(12, 0.6),
+                            color: Color.veryLightGray,
+                            textAlign: 'right',
+                          }}
+                        />
+                      </View>
+                    </View>
+                  </View>
+                  <View
+                    style={styles.card}>
+                    <CustomImage
+                      source={require('../Assets/Images/archive.png')}
                       style={{
                         height: '100%',
                         width: '100%',
@@ -339,265 +447,10 @@ const Bubble = () => {
                       //   resizeMode={'stretch'}
                     />
                   </View>
-                  <View>
-                    <CustomText
-                      numberOfLines={1}
-                      children={'Meko Nakahara'}
-                      style={{
-                        fontSize: moderateScale(12, 0.6),
-                        color: 'black',
-                        marginTop: moderateScale(12, 0.3),
-                        marginRight: moderateScale(8, 0.3),
-                        //   width: windowWidth*0.9,
-                        textAlign: 'left',
-                      }}
-                      isBold
-                    />
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        // backgroundColor:'red',
-                        width: windowWidth * 0.3,
-                      }}>
-                      <CustomText
-                        numberOfLines={1}
-                        children={'New York, USA'}
-                        style={{
-                          fontSize: moderateScale(10, 0.6),
-                          color: Color.veryLightGray,
-                          // marginTop: moderateScale(12, 0.3),
-                          // marginRight: moderateScale(8, 0.3),
-                          //   width: windowWidth*0.9,
-                          textAlign: 'center',
-                        }}
-                      />
-                      <CustomText
-                        numberOfLines={1}
-                        children={'1h Ago'}
-                        style={{
-                          fontSize: moderateScale(10, 0.6),
-                          color: Color.veryLightGray,
-                          // marginTop: moderateScale(12, 0.3),
-                          // marginRight: moderateScale(8, 0.3),
-                          //   width: windowWidth*0.9,
-                          textAlign: 'right',
-                        }}
-                      />
-                    </View>
-                  </View>
-                </View>
-                <CustomText
-                  style={{
-                    fontSize: moderateScale(9, 0.6),
-                    color: '#353434',
-                    width: windowWidth * 0.5,
-                    textAlign: 'left',
-                    marginTop: moderateScale(5, 0.3),
-                    marginLeft: moderateScale(10, 0.3),
-                  }}>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CustomText>
-              </View>
-            </View>
-            <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              justifyContent: 'center',
-              marginTop: moderateScale(10, 0.3),
-            }}>
-            <CustomText
-              numberOfLines={1}
-              children={'Activity'}
-              style={{
-                fontSize: moderateScale(17, 0.6),
-                color: 'white',
-                // marginRight: moderateScale(8, 0.3),
-                width: windowWidth * 0.4,
-                height: windowHeight * 0.04,
-                textAlign: 'center',
-                borderBottomWidth: 1.5,
-                borderBottomColor:
-                  selectedTab == 'Activity' ? 'white' : 'black',
-                // marginRight:moderateScale(10,0.3)
-              }}
-              onPress={() => {
-                setSelectedTab('Activity');
-              }}
-              isBold
-            />
-            <CustomText
-              numberOfLines={1}
-              children={'Archive'}
-              style={{
-                fontSize: moderateScale(17, 0.6),
-                width: windowWidth * 0.4,
-                height: windowHeight * 0.04,
-                color: 'white',
-                borderBottomWidth: 1.5,
-                borderBottomColor: selectedTab == 'Archive' ? 'white' : 'black',
-                // marginRight: moderateScale(8, 0.3),
-                //   width: windowWidth*0.9,
-                textAlign: 'center',
-              }}
-              onPress={() => {
-                setSelectedTab('Archive');
-              }}
-              isBold
-            />
+                </>
+              )
+            )}
           </View>
-            </>
-          )}
-          
-          {selectedEvent == 'Members' && selectedTab == 'Activity' ? (
-            <View
-              style={{
-                width: windowWidth * 0.9,
-                height: windowHeight * 0.65,
-                justifyContent: 'center',
-                alignSelf:'center',
-                // alignItems:'center',
-                marginTop: moderateScale(20, 0.3),
-                flexDirection: 'row',
-                flexWrap: 'nowrap',
-              }}>
-              <FlatList
-                numColumns={3}
-                data={activityData}
-                showsVerticalScrollIndicator={false}
-                renderItem={({item, index}) => {
-                  //   console.log('index:', item);
-                  return (
-                    <TouchableOpacity
-                      style={{
-                        height: windowHeight * 0.2,
-                        width: windowWidth * 0.285,
-                        backgroundColor: 'white',
-                        //   borderRadius: 20,
-                        // alignItems: 'center',
-                        // justifyContent: 'center',
-                        overflow: 'hidden',
-                        marginVertical: moderateScale(5, 0.3),
-                        marginHorizontal: moderateScale(2, 0.3),
-                      }}>
-                      <CustomImage
-                        source={item?.uri ? {uri: item?.uri} : item?.url}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          zIndex: 0,
-                        }}
-                        key={item?.id}
-                      />
-                    </TouchableOpacity>
-                  );
-                }}
-              />
-            </View>
-          ) : selectedEvent == 'Members' && selectedTab == 'Archive'&&( 
-            <>
-              <View style={{flexDirection: 'row'}}>
-                <View
-                  style={{
-                    width: windowWidth * 0.13,
-                    height: windowWidth * 0.13,
-                    backgroundColor: 'white',
-                    overflow: 'hidden',
-                    borderColor: 'yellow',
-                    borderWidth: 1,
-                    borderRadius: (windowWidth * 0.13) / 2,
-                    marginTop: moderateScale(12, 0.3),
-                    marginLeft: moderateScale(5, 0.3),
-                    marginRight: moderateScale(8, 0.3),
-                  }}>
-                  <CustomImage
-                    source={require('../Assets/Images/fitness2.png')}
-                    style={{
-                      height: '100%',
-                      width: '100%',
-                    }}
-                    //   resizeMode={'stretch'}
-                  />
-                </View>
-                <View>
-                  <CustomText
-                    numberOfLines={1}
-                    children={'Meiko Nakahara'}
-                    style={{
-                      fontSize: moderateScale(15, 0.6),
-                      color: 'black',
-                      marginTop: moderateScale(12, 0.3),
-                      marginRight: moderateScale(8, 0.3),
-                      //   width: windowWidth*0.9,
-                      textAlign: 'left',
-                    }}
-                    isBold
-                  />
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                      // backgroundColor:'red',
-                      width: windowWidth * 0.4,
-                    }}>
-                    <CustomText
-                      numberOfLines={1}
-                      children={'New York, USA'}
-                      style={{
-                        fontSize: moderateScale(12, 0.6),
-                        color: Color.veryLightGray,
-                        // marginTop: moderateScale(12, 0.3),
-                        // marginRight: moderateScale(8, 0.3),
-                        //   width: windowWidth*0.9,
-                        textAlign: 'center',
-                      }}
-                    />
-                    <CustomText
-                      numberOfLines={1}
-                      children={'1h Ago'}
-                      style={{
-                        fontSize: moderateScale(12, 0.6),
-                        color: Color.veryLightGray,
-                        // marginTop: moderateScale(12, 0.3),
-                        // marginRight: moderateScale(8, 0.3),
-                        //   width: windowWidth*0.9,
-                        textAlign: 'right',
-                      }}
-                    />
-                  </View>
-                </View>
-              </View>
-              <View
-                style={{
-                  width: windowWidth * 0.9,
-                  height: windowHeight * 0.2,
-                  borderTopLeftRadius: 20,
-                  borderTopRightRadius: 20,
-                  marginTop:moderateScale(10,0.3),
-                  marginBottom:moderateScale(10,0.3),
-                  alignSelf:'center',
-                //   alignItems:'center',
-                //   justifyContent:'center',
-                }}>
-                <CustomImage
-                  source={require('../Assets/Images/archive.png')}
-                  style={{
-                    height: '100%',
-                    width: '100%',
-                  }}
-                  //   resizeMode={'stretch'}
-                />
-              </View>
-            </>
-          )}
-          
         </ScrollView>
       </ImageBackground>
     </>
@@ -607,9 +460,8 @@ const Bubble = () => {
 const styles = ScaledSheet.create({
   conatiner: {
     width: windowWidth * 0.9,
-    // height: windowHeight *0.4,
     paddingVertical: moderateScale(15, 0.6),
-    backgroundColor: 'white',
+    backgroundColor: Color.white,
     alignSelf: 'center',
     borderRadius: moderateScale(15, 0.6),
     alignItems: 'center',
@@ -642,9 +494,7 @@ const styles = ScaledSheet.create({
 
   Heading: {
     fontSize: moderateScale(20, 0.3),
-    // fontWeight: 'bold',
     color: '#ffffff',
-
     alignSelf: 'flex-start',
   },
 
@@ -658,7 +508,6 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: windowWidth * 0.9,
-    // marginTop: moderateScale(10,0.3),
   },
   txt4: {
     color: Color.purple,
@@ -674,6 +523,125 @@ const styles = ScaledSheet.create({
   dropDown: {
     backgroundColor: Color.red,
   },
+  checkIcon: {
+    backgroundColor: Color.white,
+    borderRadius: 20,
+    height: 25,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 25,
+    padding: moderateScale(3, 0.6),
+  },
+  followCount: {
+    fontSize: moderateScale(20, 0.6),
+    color: 'black',
+    marginRight: moderateScale(8, 0.3),
+    //   width: windowWidth*0.9,
+    textAlign: 'center',
+  },
+  followText: {
+    fontSize: moderateScale(14, 0.6),
+    color: Color.white,
+    marginRight: moderateScale(8, 0.3),
+    textAlign: 'center',
+  },
+  downIcon: {
+    backgroundColor: Color.white,
+    borderRadius: (windowWidth * 0.11) / 2,
+    height: windowWidth * 0.11,
+    justifyContent: 'center',
+    marginLeft: moderateScale(8, 0.3),
+    alignItems: 'center',
+    width: windowWidth * 0.11,
+    padding: moderateScale(3, 0.6),
+  },
+  text: {
+    fontSize: moderateScale(9, 0.6),
+    color: '#353434',
+    width: windowWidth * 0.5,
+    textAlign: 'left',
+    marginTop: moderateScale(5, 0.3),
+    marginLeft: moderateScale(10, 0.3),
+  },
+  profileImage: {
+    width: windowWidth * 0.1,
+    height: windowWidth * 0.1,
+    backgroundColor: Color.white,
+    overflow: 'hidden',
+    borderColor: 'yellow',
+    borderWidth: 1,
+    borderRadius: (windowWidth * 0.1) / 2,
+    marginTop: moderateScale(12, 0.3),
+    marginLeft: moderateScale(5, 0.3),
+    marginRight: moderateScale(8, 0.3),
+  },
+  image1: {
+    width: windowWidth * 0.45,
+    height: windowHeight * 0.2,
+    backgroundColor: Color.white,
+    overflow: 'hidden',
+    borderRadius: moderateScale(10, 0.6),
+    marginTop: moderateScale(12, 0.3),
+  },
+  image2: {
+    width: windowWidth * 0.13,
+    height: windowWidth * 0.13,
+    backgroundColor: Color.white,
+    overflow: 'hidden',
+    borderColor: 'yellow',
+    borderWidth: 1,
+    borderRadius: (windowWidth * 0.13) / 2,
+    marginTop: moderateScale(12, 0.3),
+    marginLeft: moderateScale(5, 0.3),
+    marginRight: moderateScale(8, 0.3),
+  },
+  eventText: {
+    fontSize: moderateScale(14, 0.6),
+
+    marginRight: moderateScale(8, 0.3),
+    width: windowWidth * 0.22,
+    marginRight: moderateScale(17, 0.3),
+    paddingVertical: moderateScale(5, 0.6),
+    borderRadius: moderateScale(5, 0.6),
+
+    textAlign: 'center',
+    alignItems: 'center',
+  },
+  activityText: {
+    fontSize: moderateScale(17, 0.6),
+    color: Color.white,
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.04,
+    textAlign: 'center',
+    borderBottomWidth: 1.5,
+  },
+  activityContainer:{
+    width: windowWidth * 0.9,
+    height: windowHeight * 0.65,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    // alignItems:'center',
+    marginTop: moderateScale(20, 0.3),
+    flexDirection: 'row',
+    flexWrap: 'nowrap',
+  },
+  activityImage:{
+    height: windowHeight * 0.2,
+    width: windowWidth * 0.285,
+    backgroundColor: Color.white,
+    overflow: 'hidden',
+    marginVertical: moderateScale(5, 0.3),
+    marginHorizontal: moderateScale(2, 0.3),
+  },
+  card:{
+    width: windowWidth * 0.9,
+    height: windowHeight * 0.2,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
+    marginTop: moderateScale(10, 0.3),
+    marginBottom: moderateScale(10, 0.3),
+    alignSelf: 'center',
+  }
 });
 
 export default Bubble;

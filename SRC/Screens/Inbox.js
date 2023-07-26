@@ -24,7 +24,6 @@ import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
 
 const Inbox = () => {
   const [swipedRow, setSwipedRow] = useState(null);
-  // console.log('🚀 ~ file: Inbox.js:28 ~ Inbox ~ swipedRow:', swipedRow);
   const [BubbleListData, setBubbleListData] = useState([
     {
       id: 1,
@@ -166,8 +165,6 @@ const Inbox = () => {
             width: windowWidth,
             marginTop: moderateScale(10, 0.3),
             marginBottom: moderateScale(10, 0.3),
-            // justifyContent: 'center',
-            // alignItems: 'center',
           }}>
           <CustomText style={styles.heading} numberOfLines={1} isBold>
             Today
@@ -182,8 +179,6 @@ const Inbox = () => {
               paddingBottom: moderateScale(100, 0.6),
             }}
             renderItem={({item, index}) => {
-              // console.log('New Data1', item);
-
               return (
                 <>
                   <TouchableOpacity
@@ -240,9 +235,7 @@ const Inbox = () => {
                           ) : (
                             <></>
                           )}
-                          <CustomText
-                            style={styles.msg}
-                            numberOfLines={1}>
+                          <CustomText style={styles.msg} numberOfLines={1}>
                             {item?.msg[item?.msg.length - 1]}
                           </CustomText>
                         </View>
@@ -250,33 +243,13 @@ const Inbox = () => {
                     </View>
 
                     <View
-                      style={{
-                        width: windowWidth * 0.4,
-                        height: windowHeight * 0.08,
-                        paddingLeft: moderateScale(20, 0.6),
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
+                      style={styles.chatRight}>
                       <CustomText
-                        style={{
-                          fontSize: moderateScale(10, 0.6),
-                          marginTop: moderateScale(-10, 0.3),
-                          color: Color.white,
-                          fontWeight: '500',
-                        }}>
+                        style={styles.timeText}>
                         {item?.Time}
                       </CustomText>
                       <CustomText
-                        style={{
-                          fontSize: moderateScale(11, 0.6),
-                          marginTop: moderateScale(5, 0.6),
-
-                          color: Color.themeLightGray,
-                          backgroundColor: 'white',
-                          paddingHorizontal: moderateScale(6, 0.6),
-                          padding: moderateScale(3, 0.6),
-                          borderRadius: 5,
-                        }}>
+                        style={styles.msgCount}>
                         {item?.msg.length}
                       </CustomText>
                     </View>
@@ -289,8 +262,7 @@ const Inbox = () => {
                       />
                     </View>
                   </TouchableOpacity>
-                  <View
-                    style={styles.line}></View>
+                  <View style={styles.line}></View>
                 </>
               );
             }}
@@ -328,11 +300,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     left: -20,
     backgroundColor: 'rgba(255, 255, 255, 0.3)',
-    //   opacity: 0.25,
     paddingHorizontal: moderateScale(5, 0.6),
     borderRadius: 5,
   },
-  line:{
+  line: {
     width: windowWidth * 0.9,
     height: 2.5,
     backgroundColor: 'white',
@@ -341,18 +312,12 @@ const styles = StyleSheet.create({
     opacity: 0.4,
     marginBottom: moderateScale(10, 0.3),
   },
-  msg:{
+  msg: {
     marginLeft: moderateScale(3, 0.3),
     fontSize: moderateScale(11, 0.6),
     color: Color.themeLightGray,
   },
   rowFront: {
-    // alignItems: 'center',
-    // backgroundColor: 'transparent',
-    // borderBottomColor: 'black',
-    // borderBottomWidth: 1,
-    // justifyContent: 'cente/r',
-    // height: 50,
     height: windowHeight * 0.08,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -361,18 +326,14 @@ const styles = StyleSheet.create({
   },
   rowBack: {
     alignItems: 'center',
-    // backgroundColor: '#DDD',
-    // flex: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     paddingLeft: 15,
   },
   backRightBtn: {
     alignItems: 'center',
-    // bottom: 0,
     justifyContent: 'center',
     position: 'absolute',
-    // top: 0,
     width: 20,
   },
   backRightBtnLeft: {
@@ -383,11 +344,33 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     right: 0,
   },
+  msgCount:{
+    fontSize: moderateScale(11, 0.6),
+    marginTop: moderateScale(5, 0.6),
+    color: Color.themeLightGray,
+    backgroundColor: 'white',
+    paddingHorizontal: moderateScale(6, 0.6),
+    padding: moderateScale(3, 0.6),
+    borderRadius: 5,
+  },
   profileSection: {
     height: windowWidth * 0.13,
     width: windowWidth * 0.13,
     backgroundColor: '#fff',
     borderRadius: 50,
     overflow: 'hidden',
+  },
+  chatRight:{
+    width: windowWidth * 0.4,
+    height: windowHeight * 0.08,
+    paddingLeft: moderateScale(20, 0.6),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  timeText:{
+    fontSize: moderateScale(10, 0.6),
+    marginTop: moderateScale(-10, 0.3),
+    color: Color.white,
+    fontWeight: '500',
   },
 });

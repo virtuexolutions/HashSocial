@@ -22,49 +22,61 @@ const BubbleList = () => {
       id: 1,
       image: require('../Assets/Images/gallery1.png'),
       name: 'Book Autor',
-      Time: 'Today 9 :00 am',
+      Time: 'Today 9:00 am',
     },
     {
       id: 2,
       image: require('../Assets/Images/gallery2.png'),
       name: 'Alternative Fitness',
-      Time: 'Today 9 :00 am',
+      Time: 'Today 9:00 am',
     },
     {
       id: 3,
       image: require('../Assets/Images/gallery3.png'),
       name: 'Alchol',
-      Time: 'Today 9 :00 am',
+      Time: 'Today 9:00 am',
     },
     {
       id: 4,
       image: require('../Assets/Images/gallery4.png'),
       name: 'Bird Shooting',
-      Time: 'Today 9 :00 am',
+      Time: 'Today 9:00 am',
     },
     {
       id: 5,
       image: require('../Assets/Images/gallery5.png'),
       name: 'Bird Shooting',
-      Time: 'Today 9 :00 am',
+      Time: 'Today 9:00 am',
     },
     {
       id: 6,
       image: require('../Assets/Images/gallery6.png'),
       name: 'Bird Shooting',
-      Time: 'Today 9 :00 am',
+      Time: 'Today 9:00 am',
     },
     {
       id: 7,
       image: require('../Assets/Images/gallery7.png'),
       name: 'Bird Shooting',
-      Time: 'Today 9 :00 am',
+      Time: 'Today 9:00 am',
     },
     {
       id: 8,
       image: require('../Assets/Images/gallery8.png'),
       name: 'Bird Shooting',
-      Time: 'Today 9 :00 am',
+      Time: 'Today 9:00 am',
+    },
+    {
+      id: 9,
+      image: require('../Assets/Images/gallery7.png'),
+      name: 'Bird Shooting',
+      Time: 'Today 9:00 am',
+    },
+    {
+      id: 10,
+      image: require('../Assets/Images/gallery8.png'),
+      name: 'Bird Shooting',
+      Time: 'Today 9:00 am',
     },
   ];
 
@@ -88,36 +100,28 @@ const BubbleList = () => {
           style={{
             width: windowWidth ,
             marginTop: moderateScale(5, 0.3),
+            marginBottom:moderateScale(20,.3)
             
           }}>
           <FlatList
             data={BubbleListData}
+            contentContainerStyle={{
+              marginBottom:moderateScale(10,.3)
+            }}
             renderItem={({item, index}) => {
-              // console.log('New Data1', item);
 
               return (
                 <>
                   <View
-                    style={{
-                      width: windowWidth * 1,
-                      height: windowHeight *0.1,
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingLeft: moderateScale(20, 0.6),
-                      marginBottom:moderateScale(5,0.3),
-                    }}>
+                    style={styles.row}>
                     <View style={styles.profileSection}>
                       <CustomImage
                         source={item?.image}
                         style={{
                           width: '100%',
                           height: '100%',
-                        //   borderRadius:100,
-                      
                         }}
                       />
-
-                  
                     </View>
 
                     <View
@@ -130,6 +134,7 @@ const BubbleList = () => {
                           fontSize: moderateScale(16, 0.6),
                           color: '#000',
                           fontWeight: '500',
+                          textAlign:'left',
                           
                         }} isBold>
                         {item?.name}
@@ -138,6 +143,8 @@ const BubbleList = () => {
                         style={{
                           fontSize: moderateScale(11, 0.6),
                           color: '#000',
+                          textAlign:'left',
+
                         }}>
                         {item?.Time}
                       </CustomText>
@@ -145,16 +152,7 @@ const BubbleList = () => {
                   </View>
 
                   <View
-                    style={{
-                      width: windowWidth * 0.9,
-                      height: 2,
-                      backgroundColor: 'white',
-                    // backgroundColor:'white',
-                      justifyContent: 'center',
-                      alignSelf: 'center',
-                      opacity: 0.5,
-                      marginBottom: moderateScale(10, 0.3),
-                    }}></View>
+                    style={styles.line}></View>
                 </>
               );
             }}
@@ -181,4 +179,22 @@ const styles = StyleSheet.create({
 
     
   },
+  line:{
+    width: windowWidth * 0.9,
+    height: 2,
+    backgroundColor: 'white',
+  // backgroundColor:'white',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    opacity: 0.5,
+    marginBottom: moderateScale(10, 0.3),
+  },
+  row:{
+    width: windowWidth * 1,
+    height: windowHeight *0.1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: moderateScale(20, 0.6),
+    marginBottom:moderateScale(5,0.3),
+  }
 });

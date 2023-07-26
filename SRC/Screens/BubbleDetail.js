@@ -1,9 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  ImageBackground,
- 
-} from 'react-native';
+import {StyleSheet, View, ImageBackground} from 'react-native';
 import React from 'react';
 
 import {moderateScale} from 'react-native-size-matters';
@@ -39,37 +34,19 @@ const BubbleDetail = () => {
         </View>
 
         <View style={styles.Box}>
-          <CustomText
-            style={{
-              marginTop: moderateScale(45, 0.3),
-              fontSize: moderateScale(17, 0, 6),
-              // fontWeight: '700',
-              textAlign: 'center',
-              color: '#000',
-            }}
-            isBold>
+          <CustomText style={styles.title} isBold>
             Bubble Title
           </CustomText>
           <CustomText
             style={{
               fontSize: moderateScale(10, 0, 6),
               color: '#000',
-              // marginTop: moderateScale(50, 0.3),
               textAlign: 'center',
             }}>
             #Architecture
           </CustomText>
 
-          <CustomText
-            style={{
-              fontSize: moderateScale(12, 0.6),
-              color: '#353434',
-              width: windowWidth * 0.85,
-              alignSelf:'center',
-              textAlign: 'center',
-              lineHeight:18,
-              marginTop: moderateScale(10, 0.3),
-            }}>
+          <CustomText style={styles.text}>
             Lorem Ipsum is simply dummy text of the printing and typesetting
             industry. Lorem Ipsum has been the industry's standard dummy text
             ever since the 1500s, when an unknown printer took a galley of type
@@ -79,93 +56,33 @@ const BubbleDetail = () => {
           </CustomText>
 
           <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: windowWidth * 0.85,
-              marginTop: moderateScale(10, 0.3),
-            }}>
-            <CustomText style={{
-              fontSize: moderateScale(12, 0.6),
-              color: '#353434',
-              alignSelf:'center',
-              textAlign: 'center',
-            //   marginTop: moderateScale(10, 0.3),
-            }}>Moderator: </CustomText>
-            <CustomText style={{
-              fontSize: moderateScale(14, 0.6),
-              color: '#353434',
-              alignSelf:'center',
-              textAlign: 'center',
-            //   marginTop: moderateScale(10, 0.3),
-            }} isBold>
+            style={styles.container2}>
+            <CustomText
+              style={styles.boldText}>
+              Moderator:{' '}
+            </CustomText>
+            <CustomText style={styles.boldText} isBold>
               Jonathan
             </CustomText>
           </View>
 
           <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              alignItems: 'center',
-              width: windowWidth * 0.85,
-              marginTop: moderateScale(10, 0.3),
-            }}>
-            <CustomText style={{
-              fontSize: moderateScale(12, 0.6),
-              color: '#353434',
-              alignSelf:'center',
-              textAlign: 'center',
-            //   marginTop: moderateScale(10, 0.3),
-            }}>Admin: </CustomText>
-            <CustomText style={{
-              fontSize: moderateScale(14, 0.6),
-              color: '#353434',
-              alignSelf:'center',
-              textAlign: 'center',
-            //   marginTop: moderateScale(10, 0.3),
-            }} isBold>
+            style={styles.container2}>
+            <CustomText
+             style={styles.boldText}>
+              Admin:{' '}
+            </CustomText>
+            <CustomText style={styles.boldText} isBold>
               Jonathan
             </CustomText>
           </View>
-          <CustomText style={{
-              fontSize: moderateScale(12, 0.6),
-              color: '#353434',
-              alignSelf:'center',
-              textAlign: 'center',
-              width: windowWidth * 0.85,
-              marginTop: moderateScale(10, 0.3),
-            //   marginTop: moderateScale(10, 0.3),
-            }} >
-              Approval for admittance
-            </CustomText>
+          <CustomText style={styles.approvalText}>
+            Approval for admittance
+          </CustomText>
 
-         
+          <CustomText style={styles.approvalText}>Approval to post</CustomText>
 
-            <CustomText style={{
-              fontSize: moderateScale(12, 0.6),
-              color: '#353434',
-              alignSelf:'center',
-              textAlign: 'center',
-              width: windowWidth * 0.85,
-              marginTop: moderateScale(10, 0.3),
-            //   marginTop: moderateScale(10, 0.3),
-            }} >
-              Approval to post
-            </CustomText>
-
-            <CustomText style={{
-              fontSize: moderateScale(12, 0.6),
-              color: '#353434',
-              alignSelf:'center',
-              textAlign: 'center',
-              width: windowWidth * 0.85,
-              marginTop: moderateScale(10, 0.3),
-            //   marginTop: moderateScale(10, 0.3),
-            }} >
-              Membership Cost
-            </CustomText>
+          <CustomText style={styles.approvalText}>Membership Cost</CustomText>
         </View>
       </ImageBackground>
     </>
@@ -184,10 +101,8 @@ const styles = StyleSheet.create({
     width: windowWidth * 0.3,
     borderRadius: (windowWidth * 0.3) / 2,
     overflow: 'hidden',
-    // backgroundColor: '#fff',
     borderWidth: 3,
     borderColor: '#00801f',
-    // justifyContent: 'center',
     alignSelf: 'center',
     zIndex: 1,
     marginTop: moderateScale(40, 0.3),
@@ -202,4 +117,43 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     elevation: 10,
   },
+  text: {
+    fontSize: moderateScale(12, 0.6),
+    color: '#353434',
+    width: windowWidth * 0.85,
+    alignSelf: 'center',
+    textAlign: 'center',
+    lineHeight: 18,
+    marginTop: moderateScale(10, 0.3),
+  },
+  approvalText: {
+    fontSize: moderateScale(14, 0.6),
+    color: '#353434',
+    alignSelf: 'center',
+    textAlign: 'center',
+    width: windowWidth * 0.85,
+    marginTop: moderateScale(10, 0.3),
+    //   marginTop: moderateScale(10, 0.3),
+  },
+  boldText: {
+    fontSize: moderateScale(14, 0.6),
+    color: '#353434',
+    alignSelf: 'center',
+    textAlign: 'center',
+    //   marginTop: moderateScale(10, 0.3),
+  },
+  title: {
+    marginTop: moderateScale(45, 0.3),
+    fontSize: moderateScale(17, 0, 6),
+    // fontWeight: '700',
+    textAlign: 'center',
+    color: '#000',
+  },
+  container2:{
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: windowWidth * 0.85,
+    marginTop: moderateScale(10, 0.3),
+  }
 });

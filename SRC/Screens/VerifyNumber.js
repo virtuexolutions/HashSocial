@@ -224,7 +224,7 @@ const VerifyNumber = props => {
               // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
               navigationService.navigate('ResetPassword')
             }}
-            bgColor={['#01E8E3', '#1296AF']}
+            bgColor={Color.themeBgColor}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
           />

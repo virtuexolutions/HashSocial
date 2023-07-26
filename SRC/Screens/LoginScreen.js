@@ -20,19 +20,8 @@ import CustomText from '../Components/CustomText';
 import CustomButton from '../Components/CustomButton';
 import Header from '../Components/Header';
 import navigationService from '../navigationService';
-// import {
-//   AccessToken,
-//   GraphRequest,
-//   GraphRequestManager,
-//   LoginButton,
-//   LoginManager,
-//   Profile,
-// } from 'react-native-fbsdk-next';
-// import {
-//   GoogleSignin,
-//   GoogleSigninButton,
-//   statusCodes,
-// } from '@react-native-google-signin/google-signin';
+import {setUserToken} from '../Store/slices/auth';
+
 
 const LoginScreen = () => {
   const disptach = useDispatch();
@@ -42,144 +31,9 @@ const LoginScreen = () => {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState('');
   const [selectedRole, setSelectedType] = useState('Qbid Member');
-  const [userInfo, setUserInfo] = useState({})
-  const [isLogin, setIsLogin] = useState(false)
+  const [userInfo, setUserInfo] = useState({});
+  const [isLogin, setIsLogin] = useState(false);
 
-  // const logoutWithFacebook = () => {
-  //   LoginManager.logOut();
-  //   setUserInfo({});
-  // };
-
-
-  // const currentProfile = Profile.getCurrentProfile().then(
-  //   function(currentProfile) {
-  //     if (currentProfile) {
-  //       console.log("The current logged user is: " +
-  //       JSON.stringify(currentProfile , null , 2)
-  //         + ". His profile id is: " +
-  //         currentProfile.userID
-  //       );
-  //     }
-  //   }
-  // );
-  // const isSignedIn = async () => {
-  //   const isSignedIn = await GoogleSignin.isSignedIn();
-  //   console.log("🚀 ~ file: LoginScreen.js:80 ~ isSignedIn= ~ isSignedIn:", isSignedIn)
-  //   // setState({ isLoginScreenPresented: !isSignedIn });
-  // };
-  // // console.log("🚀 ~ file: LoginScreen.js:72 ~ LoginScreen ~ currentProfile:", currentProfile)
-
-  // const getInfoFromToken = token => {
-  //   const PROFILE_REQUEST_PARAMS = {
-  //     fields: {
-  //       string: 'id,name,first_name,last_name',
-  //     },
-  //   };
-  //   const profileRequest = new GraphRequest(
-  //     '/me',
-  //     {token, parameters: PROFILE_REQUEST_PARAMS},
-  //     (error, user) => {
-  //       if (error) {
-  //         console.log('login info has error: ' + error);
-  //       } else {
-  //         setUserInfo(user)
-  //         console.log('result:', user);
-  //       }
-  //     },
-  //   );
-  //   new GraphRequestManager().addRequest(profileRequest).start();
-  // };
-
-  // const loginWithFacebook = () => {
-  //   // Attempt a login using the Facebook login dialog asking for default permissions.
-  //   LoginManager.logInWithPermissions(["public_profile"]).then(
-  //     function(result) {
-  //       if (result.isCancelled) {
-  //         console.log("Login cancelled");
-  //       } else {
-  //         console.log(
-  //           "Login success with permissions: " +
-  //             result.grantedPermissions.toString()
-  //         );
-  //       }
-  //     },
-  //     function(error) {
-  //       console.log("Login fail with error: " + error);
-  //     }
-  //   );
-  // };
-  // // const handleLogin = async loginFor => {
-  // //   console.log(
-  // //     '🚀 ~ file: LoginScreen.js:38 ~ handleLogin ~ loginFor',
-  // //     loginFor,
-  // //   );
-  // //   const url = 'login';
-  // //   const body = {
-  // //     email: email.trim(),
-  // //     password: password,
-  // //   };
-  // //   if (email == '' || password == '') {
-  // //     return Platform.OS == 'android'
-  // //       ? ToastAndroid.show('Required Field is empty', ToastAndroid.SHORT)
-  // //       : alert('Required Field is empty');
-  // //   }
-  // //   if (!validateEmail(email)) {
-  // //     return Platform.OS == 'android'
-  // //       ? ToastAndroid.show('Please use valid email', ToastAndroid.SHORT)
-  // //       : alert('Please use valid email');
-  // //   }
-  // //   setIsLoading(true);
-  // //   const response = await Post(url, body, apiHeader());
-  // //   setIsLoading(false);
-  // //   if (response != undefined) {
-  // //     console.log(response?.data);
-  // //     // console.log('yes' ,  response?.data?.data?.user_info?.role , loginFor)
-  // //     response?.data?.data?.user_info?.role == loginFor
-  // //       ? (dispatch(setUserData(response?.data?.data?.user_info)),
-  // //         dispatch(setUserLogin(response?.data?.data?.token)))
-  // //       : Platform.OS == 'android'
-  // //       ? ToastAndroid.show(
-  // //           'This User is not registered for selected role',
-  // //           ToastAndroid.SHORT,
-  // //         )
-  // //       : alert('This User is not registered for selected role');
-  // //   }
-  // // };
-
-
-  // const GoogleLogin = async()=>{
-  //   GoogleSignin.configure();
-
-  //     try {
-  //       await GoogleSignin.hasPlayServices();
-  //       const userInfo = await GoogleSignin.signIn();
-  //       console.log("🚀 ~ file: LoginScreen.js:162 ~ GoogleLogin ~ userInfo:", userInfo)
-  //       alert(`Login successful for ${userInfo?.user?.email}` )
-  //       // setState({ userInfo });
-  //     } catch (error) {
-  //       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-  //         console.log('sign in cancelled')
-  //         // user cancelled the login flow
-  //       } else if (error.code === statusCodes.IN_PROGRESS) {
-  //         console.log('sign in progress')
-
-  //         // operation (e.g. sign in) is in progress already
-  //       } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-  //         // play services not available or outdated
-  //         console.log('play service not availble')
-
-  //       } else {
-  //         console.log(error)
-  //         // some other error happened
-  //       }
-  //     }
-  //   };
-  
-  // useEffect(() => {
-
-  // }, [])
-  
-  
   return (
     <>
       <CustomStatusBar
@@ -202,7 +56,7 @@ const LoginScreen = () => {
             color: '#353434',
             width: windowWidth * 0.9,
             textAlign: 'left',
-            marginTop : moderateScale(10,0.3),
+            marginTop: moderateScale(10, 0.3),
           }}
           isBold={true}
           children={' Hello, Welcome Back'}
@@ -261,9 +115,9 @@ const LoginScreen = () => {
               width: windowWidth * 0.8,
               textAlign: 'right',
             }}
-            onPress={()=>{
-              console.log('here')
-              navigationService.navigate('EnterPhone')
+            onPress={() => {
+              console.log('here');
+              navigationService.navigate('EnterPhone');
             }}
           />
           <CustomButton
@@ -279,10 +133,10 @@ const LoginScreen = () => {
             height={windowHeight * 0.06}
             marginTop={moderateScale(20, 0.3)}
             onPress={() => {
-              navigationService.navigate('BubbleSelection')
-              // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
+              // navigationService.navigate('BubbleSelection')
+              disptach(setUserToken({token: 'fasdasd awdawdawdada'}));
             }}
-            bgColor={['#01E8E3', '#1296AF']}
+            bgColor={Color.themeBgColor}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
           />
@@ -331,7 +185,6 @@ const LoginScreen = () => {
             <CustomImage
               source={require('../Assets/Images/facebook.png')}
               style={{width: 20, height: 20}}
-              // onPress ={()=>{isLogin ?  logoutWithFacebook() : loginWithFacebook()} }
             />
           </View>
           <View
@@ -351,23 +204,6 @@ const LoginScreen = () => {
           </View>
         </View>
 
-        {/* <LoginButton
-          onLoginFinished={
-            (error, result) => {
-              if (error) {
-                console.log("login has error: " + result.error);
-              } else if (result.isCancelled) {
-                console.log("login is cancelled.");
-              } else {
-                AccessToken.getCurrentAccessToken().then(
-                  (data) => {
-                    console.log(data.accessToken.toString())
-                  }
-                )
-              }
-            }
-          }
-          onLogoutFinished={() => console.log("logout.")}/> */}
         <CustomButton
           text={
             isLoading ? (
@@ -376,7 +212,7 @@ const LoginScreen = () => {
               'Sign up'
             )
           }
-          textColor={'#0E9AB0'}
+          textColor={Color.themeColor}
           width={windowWidth * 0.7}
           height={windowHeight * 0.06}
           marginTop={moderateScale(40, 0.3)}
@@ -388,57 +224,6 @@ const LoginScreen = () => {
           borderRadius={moderateScale(30, 0.3)}
           isGradient
         />
-
-        {/* <CustomImage
-              source={
-              require('../Assets/Images/Main.png')
-              }
-              // resizeMode={'stretch'}
-              style={{
-                width : windowWidth * 0.3,
-                height : windowHeight * 0.1,
-              }}
-            /> */}
-
-        {/* <FloatingLabelInput
-        label="Phone"
-        value={email}
-        // staticLabel
-        hintTextColor={'#aaa'}
-        mask="+11-1111111111"
-        hint="+92-3112048588"
-        containerStyles={{
-          borderWidth: 2,
-          paddingHorizontal: 10,
-          margin : 20,
-          backgroundColor: '#fff',
-          borderColor: 'blue',
-          borderRadius: 8,
-          width : '90%' ,
-          height : windowHeight * 0.06,
-          alignSelf : 'center',
-          // backgroundColor : 'yellow'
-        }}
-        customLabelStyles={{
-          colorFocused: 'red',
-          fontSizeFocused: 13,
-          alignSelf : 'center',
-        }}
-        labelStyles={{
-          backgroundColor: 'transparent',
-          alignSelf : 'center',
-          paddingHorizontal: 5,
-          paddingBottom : 10
-        }}
-        inputStyles={{
-          color: 'blue',
-          paddingHorizontal: 10,
-        }}
-        onChangeText={value => {
-          setEmail(value);
-        }}
-    
-      /> */}
       </ImageBackground>
     </>
   );

@@ -19,6 +19,7 @@ import Header from '../Components/Header';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
+import Color from '../Assets/Utilities/Color';
 
 const BubbleSearch = () => {
   const SearchData = [
@@ -51,6 +52,64 @@ const BubbleSearch = () => {
       image: require('../Assets/Images/Ellipse6.png'),
       name: 'Alchole',
       Tags: '#Architecture',
+    }, {
+      id: 6,
+      image: require('../Assets/Images/Ellipse2.png'),
+      name: 'Alchole',
+      Tags: '#Architecture',
+    },
+    {
+      id: 7,
+      image: require('../Assets/Images/Ellipse3.png'),
+      name: 'Alchole',
+      Tags: '#Architecture',
+    },
+    {
+      id: 8,
+      image: require('../Assets/Images/Ellipse4.png'),
+      name: 'Alchole',
+      Tags: '#Architecture',
+    },
+    {
+      id: 9,
+      image: require('../Assets/Images/Ellipse5.png'),
+      name: 'Alchole',
+      Tags: '#Architecture',
+    },
+    {
+      id: 10,
+      image: require('../Assets/Images/Ellipse6.png'),
+      name: 'Alchole',
+      Tags: '#Architecture',
+    }, {
+      id: 11,
+      image: require('../Assets/Images/Ellipse2.png'),
+      name: 'Alchole',
+      Tags: '#Architecture',
+    },
+    {
+      id: 12,
+      image: require('../Assets/Images/Ellipse3.png'),
+      name: 'Alchole',
+      Tags: '#Architecture',
+    },
+    {
+      id: 13,
+      image: require('../Assets/Images/Ellipse4.png'),
+      name: 'Alchole',
+      Tags: '#Architecture',
+    },
+    {
+      id: 14,
+      image: require('../Assets/Images/Ellipse5.png'),
+      name: 'Alchole',
+      Tags: '#Architecture',
+    },
+    {
+      id: 15,
+      image: require('../Assets/Images/Ellipse6.png'),
+      name: 'Alchole',
+      Tags: '#Architecture',
     },
   ];
   return (
@@ -70,42 +129,24 @@ const BubbleSearch = () => {
           // alignItems: 'center',
         }}>
         <View
-          style={{
-            width: windowWidth,
-            height: windowHeight *0.15,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingHorizontal: moderateScale(8, 0.3),
-            // marginTop: moderateScale(-10, 0.3),
-          }}>
+          style={styles.topContainer}>
           <View style={styles.profileSection}>
             <CustomImage
               source={require('../Assets/Images/dummyman1.png')}
               style={{
-                height: windowHeight * 0.07,
-                width: windowHeight * 0.07,
-                borderRadius: 50,
-                borderWidth: 3,
-                borderColor: '#33dd50',
+                height: '100%',
+                width: '100%',
+                
               }}
               resizeMode="contain"
             />
           </View>
 
           <View
-            style={{
-              width: windowWidth / 1.45,
-              height: windowHeight / 17,
-              backgroundColor: '#fff',
-              borderRadius: 50,
-              justifyContent: 'center',
-            //   marginLeft:moderateScale(10,0.3)
-            }}>
+            style={styles.search}>
             <TextInput
               placeholder="Alchole"
               style={{
-                // paddingLeft: moderateScale(10, 0.6),
                 paddingLeft: moderateScale(20, 0.6),
               }}
             />
@@ -118,31 +159,23 @@ const BubbleSearch = () => {
           </TouchableOpacity>
         </View>
 
-        <View style={{width: windowWidth / 1, height: windowHeight / 0.9}}>
+        <View style={{width: windowWidth, marginBottom:moderateScale(35,.3) }}>
           <FlatList
             data={SearchData}
             contentContainerStyle={{
               marginBottom: moderateScale(10, 0.3),
+              marginTop:moderateScale(10,.3)
             }}
             renderItem={({item, index}) => {
               return (
                 <View
-                  style={{
-                    width: windowWidth / 1,
-                    height: windowHeight / 12,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingLeft: moderateScale(14, 0.6),
-                  }}>
-                  <View style={styles.profileSection}>
-                    <Image
+                  style={styles.row}>
+                  <View style={styles.profileSection2}>
+                    <CustomImage
                       source={item.image}
                       style={{
-                        height: windowHeight * 0.06,
-                        width: windowHeight * 0.06,
-                        borderRadius: 50,
-                        borderWidth: 2,
-                        borderColor: '#33dd50'
+                        height:'100%',
+                        width: '100%',
                       }}
                       resizeMode="contain"
                     />
@@ -182,15 +215,51 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  topContainer:{
+    width: windowWidth,
+    // height: windowHeight *0.1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(8, 0.3),
+    marginTop: moderateScale(10, 0.3),
+  },
 
   profileSection: {
+    height: windowHeight * 0.08,
+    width: windowHeight * 0.08,
+    backgroundColor: '#fff',
+    borderRadius:(windowHeight * 0.08 )/2,
+    borderWidth: 3,
+    borderColor: Color.green,
+    justifyContent: 'center',
+    overflow:'hidden',
+    // alignSelf: 'center',
+  },
+  profileSection2: {
     height: windowHeight * 0.06,
     width: windowHeight * 0.06,
     backgroundColor: '#fff',
-    borderRadius: 50,
-    // borderWidth: 3,
-    // borderColor: '#33dd50',
+    borderRadius:(windowHeight * 0.06 )/2,
+    borderWidth: 2,
+    borderColor: Color.green,
     justifyContent: 'center',
+    overflow:'hidden',
     // alignSelf: 'center',
   },
+  search:{
+    width: windowWidth*0.7,
+    height: windowHeight * 0.06,
+    backgroundColor: '#fff',
+    borderRadius: 50,
+    justifyContent: 'center',
+  //   marginLeft:moderateScale(10,0.3)
+  },
+  row:{
+    width: windowWidth,
+    height: windowHeight *0.08,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: moderateScale(14, 0.6),
+  }
 });
