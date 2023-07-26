@@ -28,7 +28,7 @@ import Inbox from './Screens/Inbox';
 import Chat from './Screens/Chat';
 import Bubble from './Screens/Bubble';
 import BubbleDetail from './Screens/BubbleDetail';
-import BubbleEdit from './Screens/BubbleEdit';
+// import BubbleEdit from './Screens/BubbleEdit';
 import Feeds from './Screens/Feeds';
 // import CreateNewBubble from './Screens/CreateNewBubble';
 import HomeScreen from './Screens/HomeScreen';
@@ -70,6 +70,7 @@ const AppNavigator = () => {
           initialRouteName={'Feeds'}
           screenOptions={{headerShown: false}}>
           {/* <RootNav.Screen name="CreateNewBubble" component={CreateNewBubble} /> */}
+          <RootNav.Screen name="Feeds" component={Feeds} />
           <RootNav.Screen name="BubbleDetail" component={BubbleDetail} />
           {/* <RootNav.Screen name="BubbleEdit" component={BubbleEdit} /> */}
           <RootNav.Screen name="Bubble" component={Bubble} />
