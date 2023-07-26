@@ -25,6 +25,7 @@ import LoginScreen from './SRC/Screens/LoginScreen';
 import Signup from './SRC/Screens/Signup';
 import ResetPassword from './SRC/Screens/ResetPassword';
 import ChangePassword from './SRC/Screens/ChangePassword';
+import Feeds from './SRC/Screens/Feeds';
 
 // import AppNavigator, {DrawerRoot} from './SRC/appNavigation';
 

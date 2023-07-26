@@ -1,6 +1,5 @@
 import {
   StyleSheet,
-  
   View,
   ImageBackground,
   Dimensions,
@@ -9,7 +8,7 @@ import {
   FlatList,
   TextInput,
 } from 'react-native';
-import React from 'react';
+import React, {useState} from 'react';
 const {height, width} = Dimensions.get('window');
 import {moderateScale} from 'react-native-size-matters';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -19,9 +18,14 @@ import Header from '../Components/Header';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
+<<<<<<< HEAD
 import Color from '../Assets/Utilities/Color';
+=======
+import TextInputWithTitle from '../Components/TextInputWithTitle';
+>>>>>>> origin/osama
 
 const BubbleSearch = () => {
+  const [search, setSearch] = useState('');
   const SearchData = [
     {
       id: 1,
@@ -129,19 +133,34 @@ const BubbleSearch = () => {
           // alignItems: 'center',
         }}>
         <View
+<<<<<<< HEAD
           style={styles.topContainer}>
+=======
+          style={{
+            width: windowWidth,
+            height: windowHeight * 0.09,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            paddingHorizontal: moderateScale(8, 0.3)
+          }}>
+>>>>>>> origin/osama
           <View style={styles.profileSection}>
             <CustomImage
               source={require('../Assets/Images/dummyman1.png')}
               style={{
                 height: '100%',
                 width: '100%',
+<<<<<<< HEAD
                 
+=======
+>>>>>>> origin/osama
               }}
               resizeMode="contain"
             />
           </View>
 
+<<<<<<< HEAD
           <View
             style={styles.search}>
             <TextInput
@@ -151,15 +170,34 @@ const BubbleSearch = () => {
               }}
             />
           </View>
+=======
+          <TextInputWithTitle
+            secureText={false}
+            placeholder={'Alchole'}
+            setText={setSearch}
+            value={search}
+            viewHeight={0.05}
+            viewWidth={0.7}
+            inputWidth={0.7}
+            backgroundColor={'white'}
+            color={Color.themeColor}
+            placeholderColor={Color.veryLightGray}
+            borderRadius={moderateScale(25, 0.3)}
+          />
+>>>>>>> origin/osama
 
           <TouchableOpacity
             activeOpacity={0.8}
             style={{justifyContent: 'center'}}>
-            <Entypo name="images" size={25} color="#fff" />
+            <Entypo name="images" size={28} color="#fff" />
           </TouchableOpacity>
         </View>
 
+<<<<<<< HEAD
         <View style={{width: windowWidth, marginBottom:moderateScale(35,.3) }}>
+=======
+        <View style={{width: windowWidth * 1}}>
+>>>>>>> origin/osama
           <FlatList
             data={SearchData}
             contentContainerStyle={{
@@ -169,12 +207,28 @@ const BubbleSearch = () => {
             renderItem={({item, index}) => {
               return (
                 <View
+<<<<<<< HEAD
                   style={styles.row}>
                   <View style={styles.profileSection2}>
                     <CustomImage
                       source={item.image}
                       style={{
                         height:'100%',
+=======
+                  style={{
+                    width: windowWidth * 1,
+                    height: windowHeight * 0.07
+                    ,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingLeft: moderateScale(14, 0.6),
+                  }}>
+                  <View style={styles.profileSection1}>
+                    <CustomImage
+                      source={item.image}
+                      style={{
+                        height: '100%',
+>>>>>>> origin/osama
                         width: '100%',
                       }}
                       resizeMode="contain"
@@ -190,8 +244,8 @@ const BubbleSearch = () => {
                       style={{
                         fontSize: moderateScale(16, 0.6),
                         color: '#000',
-                        // fontWeight: '500',
-                      }} isBold>
+                      }}
+                      isBold>
                       {item?.name}
                     </CustomText>
                     <CustomText
@@ -240,9 +294,27 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.06,
     width: windowHeight * 0.06,
     backgroundColor: '#fff',
+<<<<<<< HEAD
     borderRadius:(windowHeight * 0.06 )/2,
     borderWidth: 2,
     borderColor: Color.green,
+=======
+    borderRadius: (windowHeight * 0.06) / 2,
+    overflow:'hidden',
+    borderWidth: 2,
+    borderColor: '#33dd50',
+    justifyContent: 'center',
+    // alignSelf: 'center',
+  },
+  profileSection1: {
+    height: windowHeight * 0.05,
+    width: windowHeight * 0.05,
+    backgroundColor: '#fff',
+    borderRadius: (windowHeight * 0.05) / 2,
+    overflow:'hidden',
+    borderWidth: 1,
+    borderColor: '#33dd50',
+>>>>>>> origin/osama
     justifyContent: 'center',
     overflow:'hidden',
     // alignSelf: 'center',

@@ -28,6 +28,8 @@ import Inbox from './Screens/Inbox';
 import Chat from './Screens/Chat';
 import Bubble from './Screens/Bubble';
 import BubbleDetail from './Screens/BubbleDetail';
+// import BubbleEdit from './Screens/BubbleEdit';
+import Feeds from './Screens/Feeds';
 // import CreateNewBubble from './Screens/CreateNewBubble';
 import HomeScreen from './Screens/HomeScreen';
 import Color from './Assets/Utilities/Color';
