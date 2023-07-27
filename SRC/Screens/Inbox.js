@@ -21,8 +21,10 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Icon} from 'native-base';
 import {SwipeListView, SwipeRow} from 'react-native-swipe-list-view';
+import { useSelector } from 'react-redux';
 
 const Inbox = () => {
+  const privacy = useSelector(state=> state.authReducer.privacy)
   const [swipedRow, setSwipedRow] = useState(null);
   const [BubbleListData, setBubbleListData] = useState([
     {
@@ -153,7 +155,11 @@ const Inbox = () => {
       <Header right Title={'Inbox'} search />
 
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+       source={
+        privacy == 'private'
+          ? require('../Assets/Images/theme2.jpg')
+          : require('../Assets/Images/Main.png')
+      }
         resizeMode={'cover'}
         style={{
           width: windowWidth * 1,
@@ -171,6 +177,7 @@ const Inbox = () => {
           </CustomText>
           <SwipeListView
             data={BubbleListData}
+            showsVerticalScrollIndicator={false}
             renderHiddenItem={renderHiddenItem}
             keyExtractor={item => item.id}
             rightOpenValue={-40}

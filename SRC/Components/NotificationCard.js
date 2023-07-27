@@ -19,7 +19,7 @@ const NotificationCard = ({ image, text, name, time, unread, onPress }) => {
           unread && {
             backgroundColor : 'rgba(223, 254, 250,0.7)',
             // borderWidth: 0,
-            // borderColor: userRole == 'Qbid Member' ? Color.blue : Color.themeColor,
+            // borderColor: userRole == 'Qbid Member' ? Color.blue : themeColor[1],
           },
         ]}
       >

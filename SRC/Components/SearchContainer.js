@@ -9,9 +9,11 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { Icon } from "native-base";
 import { TextInput } from "react-native-gesture-handler";
 import { windowHeight, windowWidth } from "../Utillity/utils";
+import { useSelector } from "react-redux";
 // import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 
 const SearchContainer = ({ width, text, input, onPress, data, setData , style , places , inputStyle , placeHolder }) => {
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
   return (
     <TouchableOpacity onPress={onPress} activeOpacity={0.9}>
       <View
@@ -38,7 +40,7 @@ const SearchContainer = ({ width, text, input, onPress, data, setData , style , 
               as={FontAwesome}
               size={moderateScale(20)}
               style={{ alignSelf: "center" }}
-              color={Color.themeColor}
+              color={themeColor[1]}
             />
           </>
         )}

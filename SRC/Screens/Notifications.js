@@ -21,8 +21,11 @@ import CustomText from '../Components/CustomText';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import {Icon} from 'native-base';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
+import { useSelector } from 'react-redux';
 
 const Notifications = () => {
+  const privacy = useSelector(state=> state.authReducer.privacy)
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const [search, setSearch] = useState('');
 
   const Notificationdata = [
@@ -67,7 +70,11 @@ const Notifications = () => {
       <Header right Title={'Notifications'} search />
 
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+        source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         style={{
           width: windowWidth * 1,
@@ -102,7 +109,7 @@ const Notifications = () => {
             viewWidth={0.7}
             inputWidth={0.7}
             backgroundColor={Color.white}
-            color={Color.themeColor}
+            color={themeColor[1]}
             placeholderColor={Color.veryLightGray}
             borderRadius={moderateScale(25, 0.3)}
           />
@@ -138,12 +145,14 @@ const Notifications = () => {
                       style={{
                         width: windowWidth * 0.65,
                         marginLeft: moderateScale(10, 0.3),
+                        // backgroundColor:'red'
                       }}>
                       <CustomText
                         style={{
                           fontSize: moderateScale(16, 0.6),
                           color: '#000',
                           fontWeight: '500',
+                          textAlign:"left"
                         }}
                         isBold>
                         {item?.name}
@@ -152,6 +161,7 @@ const Notifications = () => {
                         style={{
                           fontSize: moderateScale(9, 0.6),
                           color: '#000',
+                          textAlign:"left"
                         }}>
                         {item?.desc}
                       </CustomText>

@@ -1,10 +1,11 @@
 import { useSelector } from "react-redux";
 
-
+// const privacy = useSelector(state=> state.commonReducer.privacy)  
 
 
 
 export default Color = {
+  
   
   // Basic Colors
   white: '#FFFFFF',
@@ -31,11 +32,7 @@ export default Color = {
   themeLightGray: '#8D8D8D',
   themeBlack: '#3A3838',
   //gradientColors
-<<<<<<< HEAD
   themeBgColor: ['#01E8E3', '#1296AF'],
-=======
-  themeBgColor: ['#8EF1F0' , '#42C4D0'],
->>>>>>> origin/osama
   themeBgColorNegotiator : ['#0D668E' , '#00ADEF'],
   statusBarColor: ['#297FAD', '#297FAD'],
 };

@@ -14,8 +14,11 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import CustomImage from '../Components/CustomImage';
 import {mode} from 'native-base/lib/typescript/theme/tools';
 import ImagePickerModal from '../Components/ImagePickerModal';
+import { useSelector } from 'react-redux';
 
 const MyGallery = () => {
+  const privacy = useSelector(state=> state.authReducer.privacy)
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const [selectedTab, setSelectedTab] = useState('All');
   console.log("🚀 ~ file: MyGallery.js:20 ~ MyGallery ~ selectedTab:", selectedTab)
   const [showModal, setShowModal] = useState(false);
@@ -90,7 +93,11 @@ const MyGallery = () => {
       />
       <Header right Title={'My Gallery'} search />
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+        source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         style={{
           width: windowWidth,
@@ -137,7 +144,7 @@ const MyGallery = () => {
         <View style={{position: 'absolute', bottom: 35, zIndex: 1}}>
           <CustomButton
             text={'Next'}
-            textColor={Color.themeColor}
+            textColor={themeColor[1]}
             width={windowWidth * 0.4}
             height={windowHeight * 0.06}
             marginTop={moderateScale(10, 0.3)}
@@ -236,7 +243,7 @@ const MyGallery = () => {
                       <Icon
                         name="check"
                         as={Entypo}
-                        color={Color.themeColor}
+                        color={themeColor[1]}
                         size={50}
                         zIndex={1}
                         style={{alignSelf: 'center', top: 50}}

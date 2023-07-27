@@ -9,6 +9,7 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import {windowWidth} from '../Utillity/utils';
+import { useSelector } from 'react-redux';
 
 const width = Dimensions.get('window').width;
 const height = Dimensions.get('window').height;
@@ -34,6 +35,7 @@ const DropDownSingleSelect = ({
   btnStyle
 }) => {
   const [data , setData] = useState([])
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
 
   useEffect(() => {
     setData([])
@@ -150,7 +152,7 @@ const DropDownSingleSelect = ({
                 size={moderateScale(27, 0.3)}
                 color={'white'}
                 style={[
-                  styles.icon,
+                  styles.icon,{color:themeColor[1],},
                   extreme && {
                     position: 'absolute',
                     left: -8,
@@ -212,10 +214,10 @@ const styles = ScaledSheet.create({
   },
   icon: {
     marginTop: 3,
-    color:'#1296AF',
+    
   },
   icon2: {
-    color: Color.themeColor,
+    // color: themeColor[1],
     position: 'absolute',
     left: moderateScale(10, 0.3),
     top: moderateScale(12, 0.3),

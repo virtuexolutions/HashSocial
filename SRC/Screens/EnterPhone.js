@@ -21,6 +21,9 @@ import Header from '../Components/Header';
 import navigationService from '../navigationService';
 
 const EnterPhone = () => {
+  const privacy = useSelector(state=> state.authReducer.privacy)
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+
   const disptach = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
   const [phone, setPhone] = useState('');
@@ -33,7 +36,11 @@ const EnterPhone = () => {
       />
       <Header right />
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+        source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         style={{
           width: windowWidth,
@@ -69,7 +76,7 @@ const EnterPhone = () => {
             borderColor={'#A7A7A7'}
             backgroundColor={'#FFFFFF'}
             // marginTop={moderateScale(30,0.3)}
-            color={Color.themeColor}
+            color={themeColor[1]}
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(10, 0.3)}
           />
@@ -90,7 +97,7 @@ const EnterPhone = () => {
               // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
               navigationService.navigate('VerifyNumber', {phoneNumber: phone});
             }}
-            bgColor={Color.themeBgColor}
+            bgColor={themeColor}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
           />

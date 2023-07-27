@@ -16,6 +16,8 @@ import {useSelector} from 'react-redux';
 
 const ChatScreen = () => {
   const userRole = useSelector(state => state.commonReducer.selectedRole);
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+
   const [searchData, setSearchData] = useState('');
 
   const chatListingData = [
@@ -119,14 +121,14 @@ const ChatScreen = () => {
       showHeader={true}
       statusBarBackgroundColor={
         userRole == 'Qbid Member'
-          ? Color.themeBgColor
-          : Color.themeBgColorNegotiator
+          ? themeColor
+          : themeColorNegotiator
       }
       statusBarContentStyle={'light-content'}
       headerColor={
         userRole == 'Qbid Member'
-          ? Color.themeBgColor
-          : Color.themeBgColorNegotiator
+          ? themeColor
+          : themeColorNegotiator
       }>
       <LinearGradient
         style={{
@@ -137,8 +139,8 @@ const ChatScreen = () => {
         end={{x: 1, y: 0}}
         colors={
           userRole == 'Qbid Member'
-            ? Color.themeBgColor
-            : Color.themeBgColorNegotiator
+            ? themeColor
+            : themeColorNegotiator
         }>
         <SearchContainer
           width={windowWidth * 0.9}
@@ -166,7 +168,7 @@ const ChatScreen = () => {
           }}
           style={{
             minHeight: windowHeight * 0.9,
-            // backgroundColor : Color.themeColor
+            // backgroundColor : themeColor[1]
           }}
           renderItem={({item, index}) => {
             return (

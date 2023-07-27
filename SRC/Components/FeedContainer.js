@@ -18,8 +18,11 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import CustomText from '../Components/CustomText';
 import {Icon} from 'native-base';
+import { useSelector } from 'react-redux';
 
 const FeedContainer = ({item}) => {
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+
   console.log('ITEM==>', item);
   return (
     <TouchableOpacity
@@ -32,7 +35,7 @@ const FeedContainer = ({item}) => {
       activeOpacity={1}
       style={[
         styles.card,
-        {height: windowHeight, paddingBottom: moderateScale(10, 0.3)},
+        {height: windowHeight, paddingBottom: moderateScale(0, 0.3)},
       ]}>
       <CustomImage
         style={styles.image}
@@ -214,7 +217,7 @@ const FeedContainer = ({item}) => {
                 name={'location-outline'}
                 as={Ionicons}
                 size={moderateScale(17, 0.6)}
-                color={Color.themeColor}
+                color={themeColor[1]}
               />
               <CustomText isBold style={styles.text}>{`5 Ml`}</CustomText>
             </View>
@@ -231,7 +234,7 @@ const FeedContainer = ({item}) => {
                 style={{
                   width: windowWidth * 0.2,
                   height: windowHeight * 0.03,
-                  // tintColor : Color.themeColor
+                  // tintColor : themeColor[1]
                 }}
                 // onPress={() => {
                 //   navigationService.navigate('Israeliteinfo', {user: card});
@@ -299,12 +302,12 @@ const styles = StyleSheet.create({
   israelite: {
     width: windowWidth * 0.22,
     height: windowWidth * 0.1,
-    // backgroundColor: Color.themeColor,
+    // backgroundColor: themeColor[1],
     borderRadius: moderateScale(8, 0.6),
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    borderColor: Color.themeColor,
+    // borderColor: themeColor[1],
     borderWidth: 1,
   },
 });

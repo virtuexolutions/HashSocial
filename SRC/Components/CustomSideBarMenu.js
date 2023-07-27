@@ -44,6 +44,7 @@ const CustomSidebarMenu = (props) => {
   //   const userData = useSelector(state => state.commonReducer?.user);
 
   const dispatch = useDispatch();
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
 
   return (
     <>
@@ -311,7 +312,7 @@ export default CustomSidebarMenu;
 const styles = ScaledSheet.create({
   header: {
     height: height * 0.24,
-    backgroundColor: Color.themeColor,
+    backgroundColor: themeColor[1],
   },
   labels: {
     flexDirection: "row",
@@ -366,7 +367,7 @@ const styles = ScaledSheet.create({
         : moderateScale(50, 0.3),
   },
   userProfileView: {
-    backgroundColor: Color.themeColor,
+    backgroundColor: themeColor[1],
     marginLeft: moderateScale(20, 0.3),
   },
 });

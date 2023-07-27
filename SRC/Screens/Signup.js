@@ -37,6 +37,10 @@ import navigationService from '../navigationService';
 
 const Signup = () => {
   const servicesArray = useSelector(state => state.commonReducer.servicesArray);
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+
+  const privacy = useSelector(state=> state.authReducer.privacy)
+
   const SelecteduserRole = useSelector(
     state => state.commonReducer.selectedRole,
   );
@@ -142,7 +146,11 @@ const Signup = () => {
       <Header right />
       
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+          source={
+            privacy == 'private'
+              ? require('../Assets/Images/theme2.jpg')
+              : require('../Assets/Images/Main.png')
+          }
         resizeMode={'cover'}
         style={{
           width: windowWidth,
@@ -184,7 +192,7 @@ const Signup = () => {
             borderColor={'#A7A7A7'}
             backgroundColor={'#FFFFFF'}
             // marginTop={moderateScale(20,0.3)}
-            color={Color.themeColor}
+            color={themeColor[1]}
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(10, 0.3)}
           />
@@ -201,7 +209,7 @@ const Signup = () => {
             borderColor={'#A7A7A7'}
             backgroundColor={'#FFFFFF'}
             // marginTop={moderateScale(20,0.3)}
-            color={Color.themeColor}
+            color={themeColor[1]}
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(10, 0.3)}
           />
@@ -218,7 +226,7 @@ const Signup = () => {
             borderColor={'#A7A7A7'}
             backgroundColor={'#FFFFFF'}
             // marginTop={moderateScale(20,0.3)}
-            color={Color.themeColor}
+            color={themeColor[1]}
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(10, 0.3)}
           />
@@ -236,7 +244,7 @@ const Signup = () => {
             borderColor={'#A7A7A7'}
             backgroundColor={'#FFFFFF'}
             // marginTop={moderateScale(30,0.3)}
-            color={Color.themeColor}
+            color={themeColor[1]}
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(10, 0.3)}
           />
@@ -254,7 +262,7 @@ const Signup = () => {
             borderColor={'#A7A7A7'}
             backgroundColor={'#FFFFFF'}
             // marginTop={moderateScale(30,0.3)}
-            color={Color.themeColor}
+            color={themeColor[1]}
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(10, 0.3)}
           />
@@ -284,7 +292,7 @@ const Signup = () => {
               navigationService.navigate('BubbleSelection')
               // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
             }}
-            bgColor={Color.themeBgColor}
+            bgColor={themeColor}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
           />

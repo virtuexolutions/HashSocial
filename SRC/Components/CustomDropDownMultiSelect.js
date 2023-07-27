@@ -8,6 +8,7 @@ import { windowWidth } from '../Utillity/utils';
 
 const CustomDropDownMultiSelect = ({min, max, item, setItem, array, title , maxHeight , marginTop , containerStyle}) => {
   const userRole = useSelector(state => state.commonReducer.selectedRole); 
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
   // const {min, max, item, setItem, array, title} = props;
   return (
     <View style={{
@@ -26,14 +27,14 @@ const CustomDropDownMultiSelect = ({min, max, item, setItem, array, title , maxH
         searchInputPlaceholderText={'Search items ...'}
         textInputProps={{autoFocus: false}}
         hideDropdown
-        tagRemoveIconColor={ userRole == 'Qbid Member' ?  Color.blue : Color.themeColor}
+        tagRemoveIconColor={ userRole == 'Qbid Member' ?  Color.blue : themeColor[1]}
         tagBorderColor={ userRole == 'Qbid Member' ?  Color.blue : Color.white}
         tagTextColor={ userRole == 'Qbid Member' ?  Color.white : Color.white}
         
         displayKey="name"
         uniqueKey="id"
         // hideSubmitButton
-        submitButtonColor={Color.themeColor}
+        submitButtonColor={themeColor[1]}
         submitButtonText={'Done'}
         styleMainWrapper={{
           // align
@@ -54,8 +55,8 @@ const CustomDropDownMultiSelect = ({min, max, item, setItem, array, title , maxH
           height: moderateScale(50, 0.3),
           fontSize: moderateScale(20, 0.3),
         }}
-        selectedItemIconColor={Color.themeColor}
-        selectedItemTextColor={Color.themeColor}
+        selectedItemIconColor={themeColor[1]}
+        selectedItemTextColor={themeColor[1]}
         styleDropdownMenu={[{
           width: Dimensions.get('window').width * 0.9,
           paddingHorizontal: 10,

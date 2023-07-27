@@ -1,5 +1,10 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {ActivityIndicator, ImageBackground, View,TouchableOpacity} from 'react-native';
+import {
+  ActivityIndicator,
+  ImageBackground,
+  View,
+  TouchableOpacity,
+} from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
@@ -9,8 +14,11 @@ import TextInputWithTitle from '../Components/TextInputWithTitle';
 import CustomText from '../Components/CustomText';
 import Header from '../Components/Header';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
+import {useSelector} from 'react-redux';
 
 const CreateNewFeed = () => {
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  const privacy = useSelector(state => state.authReducer.privacy);
   const [feedTitle, setFeedTitle] = useState('');
   const [description, setDescription] = useState('');
   const [Details, setDetails] = useState('');
@@ -26,15 +34,18 @@ const CreateNewFeed = () => {
       />
       <Header right Title={'Create New Feed'} />
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+        source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         style={{
           width: windowWidth,
           height: windowHeight * 0.9,
           alignItems: 'center',
         }}>
-        <View
-          style={styles.topContainer}>
+        <View style={styles.topContainer}>
           <View style={{}}>
             <TextInputWithTitle
               titleText={'Feed title'}
@@ -125,71 +136,82 @@ const CreateNewFeed = () => {
 
         <View style={styles.line}></View>
         <DropDownSingleSelect
-              array={architecture}
-              item={dropDownValue}
-              setItem={setDropDownValue}
-              width={windowWidth * 0.9}
-              placeholder={dropDownValue}
-              dropdownStyle={{
-                borderBottomWidth: 0,
-                width: windowWidth * 0.9,
-                marginTop: 10,
+          array={architecture}
+          item={dropDownValue}
+          setItem={setDropDownValue}
+          width={windowWidth * 0.9}
+          placeholder={dropDownValue}
+          dropdownStyle={{
+            borderBottomWidth: 0,
+            width: windowWidth * 0.9,
+            marginTop: 10,
+          }}
+          btnStyle={{
+            backgroundColor: '#fff',
+            height: windowHeight * 0.05,
+          }}
+        />
+
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            width: windowWidth * 0.9,
+            alignSelf: 'center',
+            // backgroundColor:'red',
+            marginTop: moderateScale(30, 0.3),
+          }}>
+          <CustomText
+            style={{
+              color: '#000',
+              fontSize: moderateScale(12, 0.6),
+              marginLeft: moderateScale(10, 0.3),
+            }}>
+            Privacy Setting
+          </CustomText>
+
+          <View style={[styles.radioButtonContainer]}>
+            <TouchableOpacity
+              onPress={() => {
+                setRadio('private');
               }}
-              btnStyle={{
-                backgroundColor: '#fff',
-                height: windowHeight * 0.05,
+              style={[
+                styles.radioButton,
+                {
+                  backgroundColor:
+                    radio == 'private' ? themeColor[1] : Color.veryLightGray,
+                },
+              ]}>
+              {/* <View style={styles.radioButtonIcon} /> */}
+            </TouchableOpacity>
+            <CustomText
+              onPress={() => {
+                setRadio('private');
               }}
-            />
-       
+              style={styles.radioButtonText}>
+              Private
+            </CustomText>
 
-       <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: windowWidth*0.9,
-                alignSelf : 'center',
-                // backgroundColor:'red',
-                marginTop : moderateScale(30,0.3)
-              }}>
-                <CustomText
-                  style={{
-                    color: '#000',
-                    fontSize: moderateScale(12, 0.6),
-                    marginLeft:moderateScale(10,.3)
-                  }}>
-                  Privacy Setting
-                </CustomText>
-
-              <View style={[styles.radioButtonContainer]}>
-                <TouchableOpacity
-                  onPress={() => {
-                    setRadio('private');
-                  }}
-                  style={[styles.radioButton,{
-                    backgroundColor : radio == 'private' ? Color.themeColor : Color.veryLightGray
-                  }]}>
-                  {/* <View style={styles.radioButtonIcon} /> */}
-                </TouchableOpacity>
-                <CustomText  onPress={() => {
-                    setRadio('private');
-                  }} style={styles.radioButtonText}>Private</CustomText>
-
-                <TouchableOpacity
-                  onPress={() => {
-                    setRadio('public');
-                  }}
-                  style={[styles.radioButton,{
-                    backgroundColor : radio == 'public' ? Color.themeColor : Color.veryLightGray
-                  }]}>
-               
-                </TouchableOpacity>
-                <CustomText 
-                 onPress={() => {
-                    setRadio('public');
-                  }}
-                style={styles.radioButtonText}>Public</CustomText>
-              </View>
-            </View>
+            <TouchableOpacity
+              onPress={() => {
+                setRadio('public');
+              }}
+              style={[
+                styles.radioButton,
+                {
+                  backgroundColor:
+                    radio == 'public' ? themeColor[1] : Color.veryLightGray,
+                },
+              ]}></TouchableOpacity>
+            <CustomText
+              onPress={() => {
+                setRadio('public');
+              }}
+              style={styles.radioButtonText}>
+              Public
+            </CustomText>
+          </View>
+        </View>
       </ImageBackground>
     </>
   );
@@ -265,7 +287,7 @@ const styles = ScaledSheet.create({
   dropDown: {
     backgroundColor: Color.red,
   },
-  privacyContainer:{
+  privacyContainer: {
     width: windowWidth * 0.9,
     height: windowHeight * 0.05,
     flexDirection: 'row',
@@ -273,8 +295,8 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     marginTop: moderateScale(10, 0.3),
   },
-  topContainer:{
-    width: windowWidth ,
+  topContainer: {
+    width: windowWidth,
     height: windowHeight * 0.28,
     flexDirection: 'row',
     justifyContent: 'space-between',
@@ -287,14 +309,14 @@ const styles = ScaledSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     alignItems: 'center',
-    width: windowWidth*0.5,
+    width: windowWidth * 0.5,
     paddingLeft: moderateScale(20, 0.3),
   },
   radioButton: {
-    height: moderateScale(11,0.6),
-    width: moderateScale(11,0.6),
+    height: moderateScale(11, 0.6),
+    width: moderateScale(11, 0.6),
     backgroundColor: '#e8e8e8',
-    borderRadius: moderateScale(11,0.6),
+    borderRadius: moderateScale(11, 0.6),
     borderWidth: 2,
     borderColor: '#fff',
     alignItems: 'center',
@@ -303,7 +325,7 @@ const styles = ScaledSheet.create({
   radioButtonIcon: {
     height: 8,
     width: 8,
-    borderRadius: moderateScale(7,.6),
+    borderRadius: moderateScale(7, 0.6),
     backgroundColor: '#98CFB6',
   },
   radioButtonText: {

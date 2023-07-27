@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux';
 
 const ChatCard = ({name, image, lastmessage, date, unread, unreadCount , onPress}) => {
   const userRole = useSelector(state => state.commonReducer.selectedRole);
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
 
 
   return (
@@ -79,7 +80,7 @@ const ChatCard = ({name, image, lastmessage, date, unread, unreadCount , onPress
             width : moderateScale(15,0.3),
             height : moderateScale(15,0.3),
             borderRadius : moderateScale(7.5 , 0.3),
-            backgroundColor : userRole == 'Qbid Member' ? Color.blue : Color.themeColor,
+            backgroundColor : userRole == 'Qbid Member' ? Color.blue : themeColor[1],
             justifyContent : 'center',
             alignItems : 'center',
             overflow : 'hidden',

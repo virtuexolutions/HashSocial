@@ -25,9 +25,12 @@ import Color from '../Assets/Utilities/Color';
 import CustomImage from '../Components/CustomImage';
 import ImagePickerModal from '../Components/ImagePickerModal';
 import navigationService from '../navigationService';
-import { ScaledSheet } from 'react-native-size-matters';
+import {ScaledSheet} from 'react-native-size-matters';
+import {useSelector} from 'react-redux';
 
 const CreateNewBubble = () => {
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  const privacy = useSelector(state => state.authReducer.privacy);
   const [CreateBubble, setCreateBubble] = useState('');
   const [Admin, setAdmin] = useState('');
   const [bubbleTitle, setBubbleTitle] = useState('');
@@ -114,7 +117,11 @@ const CreateNewBubble = () => {
       <Header right Title={'Create new Bubble'} search />
 
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+        source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         style={{
           width: windowWidth,
@@ -186,9 +193,7 @@ const CreateNewBubble = () => {
                   }}
                 />
               ) : (
-                <TouchableOpacity
-                  activeOpacity={0.7}
-                  style={styles.image}>
+                <TouchableOpacity activeOpacity={0.7} style={styles.image}>
                   <CustomText
                     style={{
                       color: Color.black,
@@ -205,8 +210,7 @@ const CreateNewBubble = () => {
             </View>
           </View>
 
-          <View
-            style={styles.line}></View>
+          <View style={styles.line}></View>
 
           <View
             style={{
@@ -318,8 +322,7 @@ const CreateNewBubble = () => {
             />
           </View>
 
-          <View
-            style={styles.line}></View>
+          <View style={styles.line}></View>
 
           <View
             style={{
@@ -335,7 +338,9 @@ const CreateNewBubble = () => {
             {memberships.map(data => {
               return (
                 <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <LinearGradient style={[styles.crownIcon,{borderColor: data?.border}]} colors={data?.color}>
+                  <LinearGradient
+                    style={[styles.crownIcon, {borderColor: data?.border}]}
+                    colors={data?.color}>
                     <View
                       style={{
                         width: windowWidth * 0.07,
@@ -387,7 +392,7 @@ const CreateNewBubble = () => {
                 'Next'
               )
             }
-            textColor={Color.themeColor}
+            textColor={themeColor[1]}
             width={windowWidth * 0.4}
             height={windowHeight * 0.06}
             // marginTop={moderateScale(10, 0.3)}
@@ -436,13 +441,13 @@ const styles = ScaledSheet.create({
     height: windowWidth * 0.12,
     width: windowWidth * 0.12,
     borderWidth: 1,
-    
+
     borderRadius: (windowWidth * 0.12) / 2,
     // backgroundColor: 'red',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  line:{
+  line: {
     width: '90%',
     height: 2,
     backgroundColor: '#a0e8eb',
@@ -450,12 +455,12 @@ const styles = ScaledSheet.create({
     alignSelf: 'center',
     marginTop: moderateScale(15, 0.3),
   },
-  image:{
+  image: {
     height: height * 0.04,
     width: windowWidth * 0.3,
     backgroundColor: '#ffffff',
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 });

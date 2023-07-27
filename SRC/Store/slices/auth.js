@@ -7,7 +7,9 @@ const initialState = {
   isVerified: false,
   userWalkThrough: false,
   isGoalCreated : false ,
-  bubbleSelected: false
+  bubbleSelected: false,
+  privacy:'public',
+  ThemeColor : ['#01E8E3', '#1296AF']
 };
 
 const AuthSlice = createSlice({
@@ -35,6 +37,22 @@ const AuthSlice = createSlice({
     setBubbleSelected(state, action) {
       state.bubbleSelected = action.payload;
     },
+    setAccountPrivate(state,action){
+      console.log("🚀 ~ file: common.js:68 ~ setAccountPrivate ~ action:", action.payload)
+      if(action.payload == 'private'){
+        state.ThemeColor = ['#FFDE3E','#EA9F04']
+        // state.theme = require('../../Assets/Images/theme2.jpg')
+        // themeColor = ['#FFDE3E','#EA9F04']
+        // themeColor[1]='#EA9F04'
+      }else{
+        // state.theme = require('../../Assets/Images/Main.png')
+        state.ThemeColor = ['#01E8E3', '#1296AF']
+      
+
+      }
+      
+      state.privacy = action.payload
+    }
   },
 });
 
@@ -45,7 +63,8 @@ export const {
   setUserToken,
   SetFCMToken,
   setWalkThrough,
-  setBubbleSelected
+  setBubbleSelected,
+  setAccountPrivate
   
   
 } = AuthSlice.actions;

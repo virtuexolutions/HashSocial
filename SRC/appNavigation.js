@@ -6,8 +6,6 @@ import {useSelector} from 'react-redux';
 import {Image} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import LoginScreen from './Screens/LoginScreen';
-// import EnterPhone from './Screens/EnterPhone';
-// import VerifyNumber from './Screens/VerifyNumber';
 import ResetPassword from './Screens/ResetPassword';
 import Signup from './Screens/Signup';
 import ChangePassword from './Screens/ChangePassword';
@@ -28,9 +26,7 @@ import Inbox from './Screens/Inbox';
 import Chat from './Screens/Chat';
 import Bubble from './Screens/Bubble';
 import BubbleDetail from './Screens/BubbleDetail';
-// import BubbleEdit from './Screens/BubbleEdit';
 import Feeds from './Screens/Feeds';
-// import CreateNewBubble from './Screens/CreateNewBubble';
 import HomeScreen from './Screens/HomeScreen';
 import Color from './Assets/Utilities/Color';
 import {windowHeight} from './Utillity/utils';
@@ -78,25 +74,27 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'Profile'}
+          initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
+          <RootNav.Screen name="LoginScreen" component={LoginScreen} />
+          <RootNav.Screen name="Feeds" component={Feeds} />
+          <RootNav.Screen name="BubbleSearch" component={BubbleSearch} />
           <RootNav.Screen name="AccountDetails" component={AccountDetails} />
-          <RootNav.Screen name="AddPost" component={AddPost} />
+          {/* <RootNav.Screen name="AddPost" component={AddPost} /> */}
           <RootNav.Screen name="TabNavigation" component={TabNavigation} />
           <RootNav.Screen name="AccountSetting" component={AccountSetting} />
-          <RootNav.Screen name="Posting" component={Posting} />
+          <RootNav.Screen name="AddPost" component={AddPost} />
           <RootNav.Screen name="CreateNewBubble" component={CreateNewBubble} />
           <RootNav.Screen name="BubbleDetail" component={BubbleDetail} />
           <RootNav.Screen name="Bubble" component={Bubble} />
           <RootNav.Screen name="MyGallery" component={MyGallery} />
           <RootNav.Screen name="BubbleSelection" component={BubbleSelection} />
           <RootNav.Screen name="EnterPhone" component={EnterPhone} />
-          <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="BubbleList" component={BubbleList} />
           <RootNav.Screen name="Profile" component={Profile} />
           <RootNav.Screen name="ProfileList" component={ProfileList} />
           <RootNav.Screen name="Notifications" component={Notifications} />
-          <RootNav.Screen name="BubbleSearch" component={BubbleSearch} />
+          {/* <RootNav.Screen name="BubbleSearch" component={BubbleSearch} /> */}
           <RootNav.Screen name="CreateNewFeed" component={CreateNewFeed} />
           <RootNav.Screen name="Signup" component={Signup} />
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
@@ -112,6 +110,7 @@ const AppNavigator = () => {
 
 export const TabNavigation = () => {
   const userRole = useSelector(state => state.commonReducer.selectedRole);
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
   console.log(
     '🚀 ~ file: appNavigation.js:83 ~ TabNavigation ~ userRole:',
     userRole,
@@ -123,33 +122,33 @@ export const TabNavigation = () => {
         headerShown: false,
         tabBarIcon: ({focused}) => {
           let iconName;
-          let color = Color.themeColor;
+          let color = themeColor[1];
           let size = moderateScale(20, 0.3);
           let type = Ionicons;
 
           if (route.name === 'HomeScreen') {
             iconName = require('./Assets/Images/home.png');
-            color = focused ? Color.themeColor : Color.themeLightGray;
+            color = focused ? themeColor[1] : Color.themeLightGray;
             size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
-          } else if (route.name === 'AddPost') {
+          } else if (route.name === 'Posting') {
             iconName = require('./Assets/Images/plus.png');
 
-            color = focused ? Color.themeColor : Color.themeLightGray;
+            color = focused ? themeColor[1] : Color.themeLightGray;
             size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
-          } else if (route.name === 'EmptyScreen') {
+          } else if (route.name === 'BubbleSearch') {
             // type = AntDesign;
             iconName = require('./Assets/Images/loading.png');
-            color = focused ? Color.themeColor : Color.themeLightGray;
+            color = focused ? themeColor[1] : Color.themeLightGray;
             size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
           } else if (route.name === 'Inbox') {
             type = Ionicons;
             iconName = require('./Assets/Images/messenger.png');
 
-            color = focused ? Color.themeColor : Color.themeLightGray;
+            color = focused ? themeColor[1] : Color.themeLightGray;
             size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
           } else {
             iconName = require('./Assets/Images/profile.png');
-            color = focused ? Color.themeColor : Color.themeLightGray;
+            color = focused ? themeColor[1] : Color.themeLightGray;
             size = focused ? moderateScale(25, 0.3) : moderateScale(20, 0.3);
           }
           return (
@@ -160,7 +159,7 @@ export const TabNavigation = () => {
                 height: size,
                 tintColor: color,
                 // color:'white',
-                // backgroundColor:Color.themeColor
+                // backgroundColor:themeColor[1]
               }}
             />
           );
@@ -183,8 +182,8 @@ export const TabNavigation = () => {
         },
       })}>
       <Tabs.Screen name={'HomeScreen'} component={HomeScreen} />
-      <Tabs.Screen name={'EmptyScreen'} component={EmptyScreen} />
-      <Tabs.Screen name={'AddPost'} component={AddPost} />
+      <Tabs.Screen name={'BubbleSearch'} component={BubbleSearch} />
+      <Tabs.Screen name={'Posting'} component={Posting} />
       <Tabs.Screen name={'Inbox'} component={Inbox} />
       <Tabs.Screen
         name={'AccountDetails'}

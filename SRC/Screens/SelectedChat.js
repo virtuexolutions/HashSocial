@@ -14,6 +14,7 @@ import { useNavigation } from '@react-navigation/native'
 
 const SelectedChat = ({route}) => {
   const navigation = useNavigation()
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const secondUser = route?.params?.user2
   console.log("🚀 ~ file: SelectedChat.js:8 ~ SelectedChat ~ secondUser:", secondUser)
 
@@ -94,7 +95,7 @@ const SelectedChat = ({route}) => {
               borderColor={'#ffffff'}
               backgroundColor={'#FFFFFF'}
               marginTop={moderateScale(35, 0.3)}
-              color={Color.themeColor}
+              color={themeColor[1]}
               placeholderColor={Color.themeLightGray}
               borderRadius={moderateScale(25, 0.3)}
               elevation

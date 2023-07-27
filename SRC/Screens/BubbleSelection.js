@@ -16,10 +16,12 @@ import Header from '../Components/Header';
 import {View} from 'react-native';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setBubbleSelected } from '../Store/slices/auth';
 
 const BubbleSelection = () => {
+  const privacy = useSelector(state=> state.authReducer.privacy)
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
 
   const dispatch = useDispatch();
   const [BubbleImageArraty, setBubbleImageArraty] = useState([
@@ -93,7 +95,11 @@ const BubbleSelection = () => {
       statusBarContentStyle={'dark-content'}>
       <Header right Title={'Select Bubble'} search />
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+         source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         style={{
           width: windowWidth,
@@ -114,18 +120,25 @@ const BubbleSelection = () => {
             width={windowWidth * 0.2}
             height={windowHeight * 0.04}
             onPress={() => {
-              ToastAndroid.show('Saved', ToastAndroid.SHORT);
-              dispatch(setBubbleSelected(true))
-              // navigationService.navigate('HomeScreen')
+              if(BubbleImageArraty.some(item=> item.added == true)){
+                ToastAndroid.show('Saved', ToastAndroid.SHORT);
+                dispatch(setBubbleSelected(true))
+                // navigationService.navigate('TabNavigation')
+              }
+              else{
+                ToastAndroid.show('Please select any bubble', ToastAndroid.SHORT);
+                // dispatch(setBubbleSelected(true))
+              }
+              
             }}
             fontSize={moderateScale(12, 0.6)}
-            bgColor={Color.themeBgColor}
+            bgColor={themeColor}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
           />
           <CustomButton
             text={'cancel'}
-            textColor={'#01E8E3'}
+            textColor={themeColor[1]}
             width={windowWidth * 0.2}
             height={windowHeight * 0.04}
             fontSize={moderateScale(12, 0.6)}
@@ -241,7 +254,7 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
     height: windowHeight,
     width: windowWidth,
-    backgroundColor: Color.themeColor,
+    // backgroundColor: themeColor[1],
   },
 });
 

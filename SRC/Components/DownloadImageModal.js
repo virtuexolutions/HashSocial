@@ -8,9 +8,11 @@ import CustomText from './CustomText'
 import CustomButton from './CustomButton'
 import ImageView from "react-native-image-viewing" ;
 import RNFetchBlob from 'rn-fetch-blob';
+import { useSelector } from 'react-redux'
 
 
 const DownloadImageModal = ({isVisible , setIsVisible , imageName , url}) => {
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
     const [visible , setVisible] = useState(false)
 
 
@@ -170,7 +172,7 @@ const styles = ScaledSheet.create({
         height : windowHeight * 0.37,
         borderRadius : moderateScale(25,0.3),
         borderWidth : 2,
-        borderColor : Color.themeColor,
+        borderColor : themeColor[1],
         backgroundColor : '#F2FCE4',
         justifyContent : 'center',
         alignItems : 'center'

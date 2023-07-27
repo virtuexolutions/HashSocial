@@ -18,13 +18,13 @@ import Header from '../Components/Header';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
-<<<<<<< HEAD
 import Color from '../Assets/Utilities/Color';
-=======
 import TextInputWithTitle from '../Components/TextInputWithTitle';
->>>>>>> origin/osama
+import { useSelector } from 'react-redux';
 
 const BubbleSearch = () => {
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  const privacy = useSelector(state=> state.authReducer.privacy)
   const [search, setSearch] = useState('');
   const SearchData = [
     {
@@ -36,85 +36,62 @@ const BubbleSearch = () => {
     {
       id: 2,
       image: require('../Assets/Images/Ellipse3.png'),
-      name: 'Alchole',
+      name: 'Alternative Fitness',
       Tags: '#Architecture',
     },
     {
       id: 3,
       image: require('../Assets/Images/Ellipse4.png'),
-      name: 'Alchole',
+      name: 'Archery',
       Tags: '#Architecture',
     },
     {
       id: 4,
       image: require('../Assets/Images/Ellipse5.png'),
-      name: 'Alchole',
+      name: 'architecture',
       Tags: '#Architecture',
     },
     {
       id: 5,
       image: require('../Assets/Images/Ellipse6.png'),
-      name: 'Alchole',
+      name: 'art',
       Tags: '#Architecture',
     }, {
       id: 6,
       image: require('../Assets/Images/Ellipse2.png'),
-      name: 'Alchole',
+      name: 'Astrology',
       Tags: '#Architecture',
     },
     {
       id: 7,
       image: require('../Assets/Images/Ellipse3.png'),
-      name: 'Alchole',
+      name: 'Beer',
       Tags: '#Architecture',
     },
     {
       id: 8,
       image: require('../Assets/Images/Ellipse4.png'),
-      name: 'Alchole',
+      name: 'Author Books',
       Tags: '#Architecture',
     },
     {
       id: 9,
       image: require('../Assets/Images/Ellipse5.png'),
-      name: 'Alchole',
+      name: 'Bird Watching',
       Tags: '#Architecture',
     },
     {
       id: 10,
       image: require('../Assets/Images/Ellipse6.png'),
-      name: 'Alchole',
+      name: 'bolging',
       Tags: '#Architecture',
     }, {
       id: 11,
       image: require('../Assets/Images/Ellipse2.png'),
-      name: 'Alchole',
+      name: 'Author books',
       Tags: '#Architecture',
     },
-    {
-      id: 12,
-      image: require('../Assets/Images/Ellipse3.png'),
-      name: 'Alchole',
-      Tags: '#Architecture',
-    },
-    {
-      id: 13,
-      image: require('../Assets/Images/Ellipse4.png'),
-      name: 'Alchole',
-      Tags: '#Architecture',
-    },
-    {
-      id: 14,
-      image: require('../Assets/Images/Ellipse5.png'),
-      name: 'Alchole',
-      Tags: '#Architecture',
-    },
-    {
-      id: 15,
-      image: require('../Assets/Images/Ellipse6.png'),
-      name: 'Alchole',
-      Tags: '#Architecture',
-    },
+   
   ];
   return (
     <>
@@ -125,7 +102,11 @@ const BubbleSearch = () => {
       <Header right Title={'Search'} search />
 
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+       source={
+        privacy == 'private'
+          ? require('../Assets/Images/theme2.jpg')
+          : require('../Assets/Images/Main.png')
+      }
         resizeMode={'cover'}
         style={{
           width: windowWidth * 1,
@@ -133,44 +114,19 @@ const BubbleSearch = () => {
           // alignItems: 'center',
         }}>
         <View
-<<<<<<< HEAD
           style={styles.topContainer}>
-=======
-          style={{
-            width: windowWidth,
-            height: windowHeight * 0.09,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingHorizontal: moderateScale(8, 0.3)
-          }}>
->>>>>>> origin/osama
           <View style={styles.profileSection}>
             <CustomImage
               source={require('../Assets/Images/dummyman1.png')}
               style={{
                 height: '100%',
                 width: '100%',
-<<<<<<< HEAD
                 
-=======
->>>>>>> origin/osama
               }}
               resizeMode="contain"
             />
           </View>
 
-<<<<<<< HEAD
-          <View
-            style={styles.search}>
-            <TextInput
-              placeholder="Alchole"
-              style={{
-                paddingLeft: moderateScale(20, 0.6),
-              }}
-            />
-          </View>
-=======
           <TextInputWithTitle
             secureText={false}
             placeholder={'Alchole'}
@@ -180,11 +136,10 @@ const BubbleSearch = () => {
             viewWidth={0.7}
             inputWidth={0.7}
             backgroundColor={'white'}
-            color={Color.themeColor}
+            color={themeColor[1]}
             placeholderColor={Color.veryLightGray}
             borderRadius={moderateScale(25, 0.3)}
           />
->>>>>>> origin/osama
 
           <TouchableOpacity
             activeOpacity={0.8}
@@ -193,11 +148,7 @@ const BubbleSearch = () => {
           </TouchableOpacity>
         </View>
 
-<<<<<<< HEAD
         <View style={{width: windowWidth, marginBottom:moderateScale(35,.3) }}>
-=======
-        <View style={{width: windowWidth * 1}}>
->>>>>>> origin/osama
           <FlatList
             data={SearchData}
             contentContainerStyle={{
@@ -207,28 +158,12 @@ const BubbleSearch = () => {
             renderItem={({item, index}) => {
               return (
                 <View
-<<<<<<< HEAD
                   style={styles.row}>
                   <View style={styles.profileSection2}>
                     <CustomImage
                       source={item.image}
                       style={{
                         height:'100%',
-=======
-                  style={{
-                    width: windowWidth * 1,
-                    height: windowHeight * 0.07
-                    ,
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingLeft: moderateScale(14, 0.6),
-                  }}>
-                  <View style={styles.profileSection1}>
-                    <CustomImage
-                      source={item.image}
-                      style={{
-                        height: '100%',
->>>>>>> origin/osama
                         width: '100%',
                       }}
                       resizeMode="contain"
@@ -244,12 +179,13 @@ const BubbleSearch = () => {
                       style={{
                         fontSize: moderateScale(16, 0.6),
                         color: '#000',
+                        textAlign:'left',
                       }}
                       isBold>
                       {item?.name}
                     </CustomText>
                     <CustomText
-                      style={{fontSize: moderateScale(9, 0.6), color: '#000'}}>
+                      style={{fontSize: moderateScale(9, 0.6),  textAlign:'left', color: '#000'}}>
                       {item.Tags}
                     </CustomText>
                   </View>
@@ -294,27 +230,9 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.06,
     width: windowHeight * 0.06,
     backgroundColor: '#fff',
-<<<<<<< HEAD
     borderRadius:(windowHeight * 0.06 )/2,
     borderWidth: 2,
     borderColor: Color.green,
-=======
-    borderRadius: (windowHeight * 0.06) / 2,
-    overflow:'hidden',
-    borderWidth: 2,
-    borderColor: '#33dd50',
-    justifyContent: 'center',
-    // alignSelf: 'center',
-  },
-  profileSection1: {
-    height: windowHeight * 0.05,
-    width: windowHeight * 0.05,
-    backgroundColor: '#fff',
-    borderRadius: (windowHeight * 0.05) / 2,
-    overflow:'hidden',
-    borderWidth: 1,
-    borderColor: '#33dd50',
->>>>>>> origin/osama
     justifyContent: 'center',
     overflow:'hidden',
     // alignSelf: 'center',

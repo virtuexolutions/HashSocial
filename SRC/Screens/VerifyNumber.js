@@ -41,6 +41,10 @@ import Header from '../Components/Header';
 import navigationService from '../navigationService';
 
 const VerifyNumber = props => {
+  const privacy = useSelector(state=> state.authReducer.privacy)
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+
+
   const disptach = useDispatch();
   const [firstSection, setFirstSection] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -153,7 +157,11 @@ const VerifyNumber = props => {
       />
       <Header right />
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+         source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         style={{
           width: windowWidth,
@@ -186,9 +194,9 @@ const VerifyNumber = props => {
             <View
               onLayout={getCellOnLayoutHandler(index)}
               key={index}
-              style={[styles.cellRoot, isFocused && styles.focusCell]}>
+              style={[styles.cellRoot, isFocused && styles.focusCell,{borderColor: themeColor[1],}]}>
               <CustomText
-                style={[styles.cellText, isFocused && {color: Color.black}]}>
+                style={[styles.cellText,{ color: themeColor[1],}, isFocused && {color: Color.black}]}>
                 {symbol || (isFocused ? <Cursor /> : null)}
               </CustomText>
             </View>
@@ -224,7 +232,7 @@ const VerifyNumber = props => {
               // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
               navigationService.navigate('ResetPassword')
             }}
-            bgColor={Color.themeBgColor}
+            bgColor={themeColor}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
           />
@@ -286,14 +294,14 @@ const styles = ScaledSheet.create({
     // borderRadius: moderateScale(10, 0.3),
   },
   focusCell: {
-    // backgroundColor: Color.themeColor,
+    // backgroundColor: themeColor[1],
     // borderRadius: moderateScale(10, 0.3),
 
-    borderColor: Color.themeColor,
+    
     borderWidth: 1,
   },
   cellText: {
-    color: Color.themeColor,
+   
     fontSize: moderateScale(20, 0.3),
     textAlign: 'center',
   },

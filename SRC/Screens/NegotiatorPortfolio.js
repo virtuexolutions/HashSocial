@@ -30,6 +30,7 @@ import CustomDropDownMultiSelect from '../Components/CustomDropDownMultiSelect';
 
 const NegotiatorPortfolio = () => {
   const servicesArray = useSelector(state => state.commonReducer.servicesArray);
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const userRole = useSelector(state => state.commonReducer.selectedRole);
   const [image, setImage] = useState({});
   const [showModal, setShowModal] = useState(false);
@@ -69,14 +70,14 @@ const NegotiatorPortfolio = () => {
       showHeader={true}
       statusBarBackgroundColor={
         userRole == 'Qbid Member'
-          ? Color.themeBgColor
-          : Color.themeBgColorNegotiator
+          ? themeColor
+          : themeColorNegotiator
       }
       statusBarContentStyle={'light-content'}
       headerColor={
         userRole == 'Qbid Member'
-          ? Color.themeBgColor
-          : Color.themeBgColorNegotiator
+          ? themeColor
+          : themeColorNegotiator
       }
       showBack={true}>
       <LinearGradient
@@ -87,8 +88,8 @@ const NegotiatorPortfolio = () => {
         end={{x: 1, y: 0}}
         colors={
           userRole == 'Qbid Member'
-            ? Color.themeBgColor
-            : Color.themeBgColorNegotiator
+            ? themeColor
+            : themeColorNegotiator
         }>
         {!availibility && (
           <View
@@ -213,7 +214,7 @@ const NegotiatorPortfolio = () => {
                       backgroundColor:
                         userRole == 'Qbid Member'
                           ? Color.blue
-                          : Color.themeColor,
+                          : themeColor[1],
                     },
                   ]}>
                   <Icon
@@ -412,7 +413,7 @@ const NegotiatorPortfolio = () => {
                         backgroundColor:
                           userRole == 'Qbid Member'
                             ? Color.blue
-                            : Color.themeColor,
+                            : themeColor[1],
                       }}
                     />
                     <CustomText
@@ -456,7 +457,7 @@ const NegotiatorPortfolio = () => {
                       backgroundColor:
                         userRole == 'Qbid Member'
                           ? Color.blue
-                          : Color.themeColor,
+                          : themeColor[1],
                     }}
                   />
                   <CustomText
@@ -480,7 +481,7 @@ const NegotiatorPortfolio = () => {
               height={windowHeight * 0.07}
               marginTop={moderateScale(20, 0.3)}
               bgColor={
-                userRole == 'Qbid Member' ? Color.blue : Color.themeColor
+                userRole == 'Qbid Member' ? Color.blue : themeColor[1]
               }
               borderRadius={moderateScale(30, 0.3)}
               disabled={!availibility}
@@ -502,7 +503,7 @@ const NegotiatorPortfolio = () => {
           setIsVisible={setEditProfile}
           container={{
             width: windowWidth * 0.9,
-            // backgroundColor : Color.themeColor,
+            // backgroundColor : themeColor[1],
             borderRadius: moderateScale(10, 0.6),
             height: windowHeight * 0.8,
             overflow: 'hidden',
@@ -517,7 +518,7 @@ const NegotiatorPortfolio = () => {
             }}
             start={{x: 0, y: 0}}
             end={{x: 1, y: 0}}
-            colors={userRole == 'Qbid Member' ?  Color.themeBgColor : Color.themeBgColorNegotiator}>
+            colors={userRole == 'Qbid Member' ?  themeColor : themeColorNegotiator}>
             <TextInputWithTitle
               title={'First Name'}
               secureText={false}
@@ -530,7 +531,7 @@ const NegotiatorPortfolio = () => {
               // border={1}
               borderColor={'#ffffff'}
               backgroundColor={'#FFFFFF'}
-              color={Color.themeColor}
+              color={themeColor[1]}
               placeholderColor={Color.themeLightGray}
               borderRadius={moderateScale(25, 0.3)}
             />
@@ -546,7 +547,7 @@ const NegotiatorPortfolio = () => {
               // border={1}
               borderColor={'#ffffff'}
               backgroundColor={'#FFFFFF'}
-              color={Color.themeColor}
+              color={themeColor[1]}
               placeholderColor={Color.themeLightGray}
               borderRadius={moderateScale(25, 0.3)}
             />
@@ -564,7 +565,7 @@ const NegotiatorPortfolio = () => {
                   // border={1}
                   borderColor={'#ffffff'}
                   backgroundColor={'#FFFFFF'}
-                  color={Color.themeColor}
+                  color={themeColor[1]}
                   placeholderColor={Color.themeLightGray}
                   borderRadius={moderateScale(25, 0.3)}
                 />
@@ -592,7 +593,7 @@ const NegotiatorPortfolio = () => {
                       style={[
                         styles.circle,
                         jobStatus == 'Retired' && {
-                          backgroundColor: Color.themeColor,
+                          backgroundColor: themeColor[1],
                           borderColor: Color.white,
                         },
                       ]}></TouchableOpacity>
@@ -619,7 +620,7 @@ const NegotiatorPortfolio = () => {
                       style={[
                         styles.circle,
                         jobStatus == 'Self-Employed' && {
-                          backgroundColor: Color.themeColor,
+                          backgroundColor: themeColor[1],
                           borderColor: Color.white,
                         },
                       ]}></TouchableOpacity>
@@ -639,7 +640,7 @@ const NegotiatorPortfolio = () => {
               // border={1}
               borderColor={'#ffffff'}
               backgroundColor={'#FFFFFF'}
-              color={Color.themeColor}
+              color={themeColor[1]}
               placeholderColor={Color.themeLightGray}
               borderRadius={moderateScale(25, 0.3)}
             />
@@ -655,7 +656,7 @@ const NegotiatorPortfolio = () => {
               // border={1}
               borderColor={'#ffffff'}
               backgroundColor={'#FFFFFF'}
-              color={Color.themeColor}
+              color={themeColor[1]}
               placeholderColor={Color.themeLightGray}
               borderRadius={moderateScale(25, 0.3)}
             />
@@ -671,7 +672,7 @@ const NegotiatorPortfolio = () => {
               // border={1}
               borderColor={'#ffffff'}
               backgroundColor={'#FFFFFF'}
-              color={Color.themeColor}
+              color={themeColor[1]}
               placeholderColor={Color.themeLightGray}
               borderRadius={moderateScale(25, 0.3)}
             />
@@ -687,7 +688,7 @@ const NegotiatorPortfolio = () => {
               // border={1}
               borderColor={'#ffffff'}
               backgroundColor={'#FFFFFF'}
-              color={Color.themeColor}
+              color={themeColor[1]}
               placeholderColor={Color.themeLightGray}
               borderRadius={moderateScale(25, 0.3)}
             />
@@ -701,7 +702,7 @@ const NegotiatorPortfolio = () => {
               viewWidth={0.8}
               inputWidth={0.78}
               backgroundColor={'#FFFFFF'}
-              color={Color.themeColor}
+              color={themeColor[1]}
               placeholderColor={Color.themeLightGray}
               borderRadius={moderateScale(25, 0.3)}
               // marginBottom={moderateScale(10, 0.3)}
@@ -716,7 +717,7 @@ const NegotiatorPortfolio = () => {
               viewWidth={0.8}
               inputWidth={0.78}
               backgroundColor={'#FFFFFF'}
-              color={Color.themeColor}
+              color={themeColor[1]}
               placeholderColor={Color.themeLightGray}
               borderRadius={moderateScale(25, 0.3)}
               // marginBottom={moderateScale(10, 0.3)}
@@ -771,7 +772,7 @@ const NegotiatorPortfolio = () => {
               //   dispatch(setUserToken({token: 'dasdawradawdawrtfeasfzs'}));
               // }}
               bgColor={
-                userRole == 'Qbid Member' ? Color.blue : Color.themeColor
+                userRole == 'Qbid Member' ? Color.blue : themeColor[1]
               }
               // borderColor={Color.white}
               // borderWidth={2}
@@ -848,7 +849,7 @@ const styles = ScaledSheet.create({
     borderRadius: moderateScale(7, 0.3),
     borderWidth: 1,
     backgroundColor: Color.white,
-    borderColor: Color.themeColor,
+    borderColor: themeColor[1],
     marginLeft: moderateScale(15, 0.3),
   },
   heading: {
@@ -914,7 +915,7 @@ const DetailContainer = ({
       <Icon
         name={imageName}
         as={type}
-        color={userRole == 'Qbid Member' ? Color.blue : Color.themeColor}
+        color={userRole == 'Qbid Member' ? Color.blue : themeColor[1]}
         size={moderateScale(20, 0.6)}
       />
       <CustomText style={styles.title}>{title}</CustomText>

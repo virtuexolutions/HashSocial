@@ -15,8 +15,12 @@ import Header from '../Components/Header';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
+import { useSelector } from 'react-redux';
 
 const ProfileList = () => {
+  const privacy = useSelector(state=> state.authReducer.privacy)
+
+
   const ProfileListData = [
     {
       id: 1,
@@ -26,43 +30,43 @@ const ProfileList = () => {
     },
     {
       id: 2,
-      image: require('../Assets/Images/dummyman1.png'),
-      name: 'JonaThan',
-      title: 'Public Account',
+      image: require('../Assets/Images/dummyman4.png'),
+      name: 'Jameson',
+      title: 'Private Account',
     },
     {
       id: 3,
-      image: require('../Assets/Images/dummyman1.png'),
-      name: 'JonaThan',
+      image: require('../Assets/Images/avatar.png'),
+      name: 'Jessica milla',
       title: 'Public Account',
     },
     {
       id: 4,
-      image: require('../Assets/Images/dummyman1.png'),
-      name: 'JonaThan',
-      title: 'Public Account',
+      image: require('../Assets/Images/dummyUser.png'),
+      name: 'Josh verstappen',
+      title: 'Private Account',
     },
     {
       id: 5,
-      image: require('../Assets/Images/dummyman1.png'),
+      image: require('../Assets/Images/dummyUser1.png'),
       name: 'JonaThan',
-      title: 'Public Account',
+      title: 'Private Account',
     },
     {
       id: 6,
       image: require('../Assets/Images/dummyman1.png'),
-      name: 'JonaThan',
+      name: 'Jomes taverneir',
       title: 'Public Account',
     },
     {
       id: 7,
-      image: require('../Assets/Images/avatar.png'),
+      image: require('../Assets/Images/avatar1.png'),
       name: 'JonaThan',
-      title: 'Public Account',
+      title: 'Private Account',
     },
     {
       id: 8,
-      image: require('../Assets/Images/avatar.png'),
+      image: require('../Assets/Images/avatar3.png'),
       name: 'JonaThan',
       title: 'Public Account',
     },
@@ -76,7 +80,11 @@ const ProfileList = () => {
       <Header right Title={'Profile List'} search />
 
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+         source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         style={{
           width: windowWidth * 1,
@@ -109,14 +117,15 @@ const ProfileList = () => {
                     <View
                       style={{
                         paddingLeft: moderateScale(25, 0.6),
-                        justifyContent: 'center',
-                        alignItems: 'center',
+                        // justifyContent: 'center',
+                        // alignItems: 'center',
                       }}>
                       <CustomText
                         style={{
                           fontSize: moderateScale(18, 0.6),
                           color: '#000',
                           fontWeight: '500',
+                          textAlign:'left'
                         }}>
                         {item.name}
                       </CustomText>
@@ -124,6 +133,7 @@ const ProfileList = () => {
                         style={{
                           fontSize: moderateScale(11, 0.6),
                           color: '#000',
+                          textAlign:'left'
                         }}>
                         {item.title}
                       </CustomText>

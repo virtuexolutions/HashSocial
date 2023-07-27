@@ -14,9 +14,11 @@ import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
+import { useSelector } from 'react-redux';
 // const {height, width} = Dimensions.get('window');
 
 const BubbleList = () => {
+  const privacy = useSelector(state=> state.authReducer.privacy)
   const BubbleListData = [
     {
       id: 1,
@@ -89,7 +91,11 @@ const BubbleList = () => {
       <Header right Title={'Bubble List'}  search/>
 
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+        source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         style={{
           width: windowWidth * 1,

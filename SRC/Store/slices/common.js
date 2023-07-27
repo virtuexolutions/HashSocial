@@ -1,4 +1,5 @@
 import {createSlice} from '@reduxjs/toolkit';
+import Color from '../../Assets/Utilities/Color';
 
 const initialState = {
   userData: {},
@@ -6,7 +7,7 @@ const initialState = {
   categoryProperties: [],
   financeBreakDown: [],
   notification : false,
-  theme:'',
+  // theme: require('../../Assets/Images/Main.png'),
   servicesArray : [
     { id: 'Auto repair' , name: 'Auto repair',},
     { id: 'plumbing Projects' , name: 'plumbing Projects',},
@@ -57,18 +58,14 @@ const CommonSlice = createSlice({
     },
     setFinanceBreakDown(state, action) {
       state.financeBreakDown = action.payload;
-    },
+  },
     setNotification(state,action){
       state.notification = action.payload
     },
     setSelectedRole(state,action){
       state.selectedRole = action.payload
     },
-    setAccountPrivate(state,action){
-      console.log("🚀 ~ file: common.js:68 ~ setAccountPrivate ~ action:", action.payload)
-      
-      state.theme = action.payload
-    }
+   
   },
 });
 
@@ -80,7 +77,6 @@ export const {
   setFinanceBreakDown,
   setNotification,
   setSelectedRole,
-  setAccountPrivate
 } = CommonSlice.actions;
 
 export default CommonSlice.reducer;

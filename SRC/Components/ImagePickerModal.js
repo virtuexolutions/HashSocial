@@ -22,6 +22,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import CustomText from '../Components/CustomText';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import Color from '../Assets/Utilities/Color';
+import { useSelector } from 'react-redux';
 
 const requestCameraPermission = async () => {
   try {
@@ -43,6 +44,7 @@ const requestCameraPermission = async () => {
 };
 
 const ImagePickerModal = props => {
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
   let {show, setShow, setFileObject, setMultiImages, crop} = props;
 
   const openGallery = () => {
@@ -62,34 +64,34 @@ const ImagePickerModal = props => {
     //       }).then(image => {
     //         console.log( 'dasdas ========>',image);
     //       })
-    //     : 
+    //     :
     launchImageLibrary(options, response => {
-            if (Platform.OS === 'ios') {
-              setShow(false);
-            }
-            if (response.didCancel) {
-            } else if (response.error) {
-            } else if (response.customButton) {
-              alert(response.customButton);
-            } else {
-              setFileObject &&
-                setFileObject({
-                  uri: response?.assets[0]?.uri,
-                  type: response?.assets[0]?.type,
-                  name: response?.assets[0]?.fileName,
-                });
-
-              setMultiImages &&
-                setMultiImages(x => [
-                  ...x,
-                  {
-                    uri: response?.assets[0]?.uri,
-                    type: response?.assets[0]?.type,
-                    name: response?.assets[0]?.fileName,
-                  },
-                ]);
-            }
+      if (Platform.OS === 'ios') {
+        setShow(false);
+      }
+      if (response.didCancel) {
+      } else if (response.error) {
+      } else if (response.customButton) {
+        alert(response.customButton);
+      } else {
+        setFileObject &&
+          setFileObject({
+            uri: response?.assets[0]?.uri,
+            type: response?.assets[0]?.type,
+            name: response?.assets[0]?.fileName,
           });
+
+        setMultiImages &&
+          setMultiImages(x => [
+            ...x,
+            {
+              uri: response?.assets[0]?.uri,
+              type: response?.assets[0]?.type,
+              name: response?.assets[0]?.fileName,
+            },
+          ]);
+      }
+    });
     // }
   };
 
@@ -159,7 +161,11 @@ const ImagePickerModal = props => {
           borderRadius: Dimensions.get('window').width * 0.02,
         }}>
         <CustomText style={styles.modalHead}>Upload picture</CustomText>
-        <View style={styles.modalContentContianer}>
+        <View
+          style={[
+            styles.modalContentContianer,
+            {borderBottomColor: themeColor[1], borderTopColor: themeColor[1]},
+          ]}>
           <TouchableOpacity
             onPress={() => {
               if (Platform.OS === 'android') {
@@ -167,7 +173,7 @@ const ImagePickerModal = props => {
               }
               openGallery();
             }}
-            style={styles.modalContentBtn}>
+            style={[styles.modalContentBtn, {backgroundColor: themeColor[1]}]}>
             <Icon
               name={'folder-images'}
               as={Entypo}
@@ -185,7 +191,7 @@ const ImagePickerModal = props => {
               }
               openCamera();
             }}
-            style={styles.modalContentBtn}>
+            style={[styles.modalContentBtn, {backgroundColor: themeColor[1]}]}>
             <Icon
               name={'camera'}
               as={FontAwesome5}
@@ -199,7 +205,7 @@ const ImagePickerModal = props => {
         </View>
         <TouchableOpacity
           onPress={() => setShow(false)}
-          style={styles.modalCancelBtn}>
+          style={[styles.modalCancelBtn, {backgroundColor: themeColor[1]}]}>
           <CustomText style={styles.modalBtnText}>Cancel</CustomText>
         </TouchableOpacity>
       </View>
@@ -278,13 +284,11 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     alignContent: 'center',
     height: windowHeight * 0.21,
-    borderBottomColor: Color.themeColor,
     borderBottomWidth: 2,
-    borderTopColor: Color.themeColor,
+
     borderTopWidth: 2,
   },
   modalContentBtn: {
-    backgroundColor: Color.themeColor,
     alignItems: 'center',
     paddingHorizontal: windowWidth * 0.08,
     paddingVertical: windowHeight * 0.02,
@@ -296,7 +300,6 @@ const styles = ScaledSheet.create({
     fontSize: moderateScale(15, 0.3),
   },
   modalCancelBtn: {
-    backgroundColor: Color.themeColor,
     paddingVertical: windowHeight * 0.008,
     width: windowWidth * 0.25,
     alignItems: 'center',

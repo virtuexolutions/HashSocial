@@ -7,18 +7,25 @@ import Header from '../Components/Header';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
+import { useSelector } from 'react-redux';
 
 const BubbleDetail = () => {
+  const privacy = useSelector(state=> state.authReducer.privacy)
+
   return (
     <>
       <CustomStatusBar
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Notifications'} search />
+      <Header right Title={'Bubble Details'} search />
 
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+        source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         style={{
           width: windowWidth * 1,

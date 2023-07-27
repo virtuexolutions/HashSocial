@@ -12,9 +12,13 @@ import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
 import CustomButton from '../Components/CustomButton';
+import { useSelector } from 'react-redux';
+import navigationService from '../navigationService';
 // import { Header } from 'react-native/Libraries/NewAppScreen';
 
 const Posting = () => {
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  const privacy = useSelector(state=> state.authReducer.privacy)
   const [isLoading, setIsLoading] = useState(false)
   return (
     <>
@@ -25,7 +29,11 @@ const Posting = () => {
       <Header right Title={'Posting'} search />
 
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+         source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         blurRadius={5}
         style={{
@@ -42,13 +50,13 @@ const Posting = () => {
               'Create New Profile'
             )
           }
-          textColor={Color.themeColor}
+          textColor={themeColor[1]}
           width={windowWidth * 0.7}
           height={windowHeight * 0.06}
           marginTop={moderateScale(10, 0.3)}
           onPress={() => {
             // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
-            // navigationService.navigate('Signup');
+            navigationService.navigate('Profile');
           }}
           bgColor={['#FFFFFF', '#FFFFFF']}
           borderRadius={moderateScale(30, 0.3)}
@@ -62,13 +70,13 @@ const Posting = () => {
               'Create New Bubble'
             )
           }
-          textColor={Color.themeColor}
+          textColor={themeColor[1]}
           width={windowWidth * 0.7}
           height={windowHeight * 0.06}
           marginTop={moderateScale(10, 0.3)}
           onPress={() => {
             // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
-            // navigationService.navigate('Signup');
+            navigationService.navigate('CreateNewBubble');
           }}
           bgColor={['#FFFFFF', '#FFFFFF']}
           borderRadius={moderateScale(30, 0.3)}
@@ -82,13 +90,13 @@ const Posting = () => {
               'Create Feed'
             )
           }
-          textColor={Color.themeColor}
+          textColor={themeColor[1]}
           width={windowWidth * 0.7}
           height={windowHeight * 0.06}
           marginTop={moderateScale(10, 0.3)}
           onPress={() => {
             // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
-            // navigationService.navigate('Signup');
+            navigationService.navigate('CreateNewFeed');
           }}
           bgColor={['#FFFFFF', '#FFFFFF']}
           borderRadius={moderateScale(30, 0.3)}
@@ -102,13 +110,13 @@ const Posting = () => {
               'Create New post'
             )
           }
-          textColor={Color.themeColor}
+          textColor={themeColor[1]}
           width={windowWidth * 0.7}
           height={windowHeight * 0.06}
           marginTop={moderateScale(10, 0.3)}
           onPress={() => {
             // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
-            // navigationService.navigate('Signup');
+            navigationService.navigate('AddPost');
           }}
           bgColor={['#FFFFFF', '#FFFFFF']}
           borderRadius={moderateScale(30, 0.3)}
@@ -139,6 +147,6 @@ const styles = StyleSheet.create({
   },
   btnText: {
     fontSize: moderateScale(14, 0.6),
-    color: Color.themeColor,
+    // color: themeColor[1],
   },
 });

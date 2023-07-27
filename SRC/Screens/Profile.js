@@ -20,14 +20,17 @@ import CustomButton from '../Components/CustomButton';
 import Color from '../Assets/Utilities/Color';
 import navigationService from '../navigationService';
 import { useDispatch, useSelector } from 'react-redux';
-import { setAccountPrivate } from '../Store/slices/common';
+import { setAccountPrivate } from '../Store/slices/auth';
 
 const Profile = () => {
-
-  const theme = useSelector(state => state.commonReducer.theme);
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  // const theme = useSelector(state => state.authReducer.theme);
+  // console.log("🚀 ~ file: Profile.js:28 ~ Profile ~ theme:", theme)
+  const privacy = useSelector(state => state.authReducer.privacy);
+  console.log("🚀 ~ file: Profile.js:30 ~ Profile ~ privacy:", privacy)
   const [username, setUserName] = useState('');
   const [desc, setdesc] = useState('');
-  const [selectedTab, setSelectedTab] = useState('public');
+  const [selectedTab, setSelectedTab] = useState(privacy? privacy :'');
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch();
 
@@ -40,7 +43,7 @@ const Profile = () => {
       <Header right Title={'Create Profile'}  search/>
 
       <ImageBackground
-        source={theme}
+        source={privacy == 'private' ? require('../Assets/Images/theme2.jpg'): require('../Assets/Images/Main.png')}
         resizeMode={'cover'}
         style={{
           width: windowWidth * 1,
@@ -49,7 +52,7 @@ const Profile = () => {
         }}>
 
           {/* Profile  Sectiopn Start */}
-          <View style={styles.profileSection}>
+          <View style={[styles.profileSection,{borderColor : privacy=='private' ? Color.red: Color.green}]}>
             <CustomImage
               source={require('../Assets/Images/dummyUser.png')}
               style={{
@@ -68,7 +71,7 @@ const Profile = () => {
               marginTop: moderateScale(30,0.3),
               borderRadius: moderateScale(20,0.6),
               borderLeftWidth: 4,
-              borderColor: '#80dea8',
+              borderColor: privacy == 'public' ? '#80dea8': '#FFABB0',
               borderTopWidth: 4,
               paddingVertical : moderateScale(20,0.3)
             }}
@@ -92,7 +95,7 @@ const Profile = () => {
                 inputWidth={0.8}
                 border={1}
                 borderColor={'#353535'}
-                color={Color.themeColor}
+                color={themeColor[1]}
                 placeholderColor={Color.themeLightGray}
                 borderRadius={moderateScale(10, 0.3)}
                 titleColor={'#353535'}
@@ -108,7 +111,7 @@ const Profile = () => {
                 inputWidth={0.8}
                 border={1}
                 borderColor={'#353535'}
-                color={Color.themeColor}
+                color={themeColor[1]}
                 placeholderColor={Color.themeLightGray}
                 borderRadius={moderateScale(10, 0.3)}
                 titleColor={'#353535'}
@@ -136,32 +139,32 @@ const Profile = () => {
                 <TouchableOpacity
                   onPress={() => {
                     console.log('private')
-                    dispatch(setAccountPrivate(require('../Assets/Images/avatar.png')))
+                    dispatch(setAccountPrivate('private'))
                     setSelectedTab('private');
                   }}
                   style={[styles.radioButton,{
-                    backgroundColor : selectedTab == 'private' ? Color.themeColor : Color.veryLightGray
+                    backgroundColor : selectedTab == 'private' ? Color.red : Color.veryLightGray
                   }]}>
                   {/* <View style={styles.radioButtonIcon} /> */}
                 </TouchableOpacity>
                 <CustomText  onPress={() => {
-                  dispatch(setAccountPrivate(require('../Assets/Images/avatar.png')))
+                  dispatch(setAccountPrivate('private'))
                     setSelectedTab('private');
                   }} style={styles.radioButtonText}>Private</CustomText>
 
                 <TouchableOpacity
                   onPress={() => {
-                    dispatch(setAccountPrivate(require('../Assets/Images/Main.png')))
+                    dispatch(setAccountPrivate('public'))
                     setSelectedTab('public');
                   }}
                   style={[styles.radioButton,{
-                    backgroundColor : selectedTab == 'public' ? Color.themeColor : Color.veryLightGray
+                    backgroundColor : selectedTab == 'public' ? themeColor[1] : Color.veryLightGray
                   }]}>
                
                 </TouchableOpacity>
                 <CustomText 
                  onPress={() => {
-                  dispatch(setAccountPrivate(require('../Assets/Images/Main.png')))
+                  dispatch(setAccountPrivate('public'))
                     setSelectedTab('public');
                   }}
                 style={styles.radioButtonText}>Public</CustomText>
@@ -171,12 +174,12 @@ const Profile = () => {
             text={
 
               isLoading ? (
-                <ActivityIndicator color={Color.themeColor} size={'small'} />
+                <ActivityIndicator color={themeColor[1]} size={'small'} />
               ) : (
                'Insert'
               )
             }
-            textColor={Color.themeColor}
+            textColor={privacy == 'private' ? 'black':themeColor[1]}
             width={windowWidth * 0.3}
             height={windowHeight * 0.04}
             marginTop={moderateScale(20, 0.3)}
@@ -212,7 +215,7 @@ const styles = StyleSheet.create({
     marginTop: moderateScale(40, 0.3),
     overflow :'hidden' ,
     borderWidth: 4,
-    borderColor: '#33dd50',
+    // borderColor: '#33dd50',
     // justifyContent: 'center',
     // alignSelf: 'center',
     // alignItems: 'center',

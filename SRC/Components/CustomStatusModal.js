@@ -5,6 +5,7 @@ import CustomText from './CustomText';
 import Color from '../Assets/Utilities/Color';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import {windowHeight, windowWidth} from '../Utillity/utils';
+import { useSelector } from 'react-redux';
 
 const CustomStatusModal = ({
   isModalVisible,
@@ -17,6 +18,7 @@ const CustomStatusModal = ({
     '🚀 ~ file: CustomStatusModal.js:10 ~ CustomStatusModal ~ statusArray',
     statusArray,
   );
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
   return (
     <Modal
       isVisible={isModalVisible}
@@ -63,7 +65,7 @@ const CustomStatusModal = ({
                 //   marginTop: moderateScale(10, 0.3),
                   textAlign: 'center',
                   paddingBottom: moderateScale(5, 0.3),
-                  backgroundColor : data == item?.name ? Color.themeColor : 'transparent'
+                  backgroundColor : data == item?.name ? themeColor[1] : 'transparent'
                 }}>
                 {item?.name}
               </CustomText>

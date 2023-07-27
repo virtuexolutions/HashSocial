@@ -20,10 +20,17 @@ import CustomText from '../Components/CustomText';
 import CustomButton from '../Components/CustomButton';
 import Header from '../Components/Header';
 import navigationService from '../navigationService';
-import {setUserToken} from '../Store/slices/auth';
-
+import {setAccountPrivate, setUserToken} from '../Store/slices/auth';
 
 const LoginScreen = () => {
+  const privacy = useSelector(state => state.authReducer.privacy);
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  console.log("🚀 ~ file: LoginScreen.js:28 ~ LoginScreen ~ themeColor:", themeColor)
+  const dispatch = useDispatch();
+  const [selectedTab, setSelectedTab] = useState(privacy)
+
+  console.log('🚀 ~ file: LoginScreen.js:28 ~ LoginScreen ~ theme:', privacy);
+
   const disptach = useDispatch();
   const [firstSection, setFirstSection] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +49,11 @@ const LoginScreen = () => {
       />
       <Header right />
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+        source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         style={{
           width: windowWidth,
@@ -84,7 +95,7 @@ const LoginScreen = () => {
             borderColor={'#A7A7A7'}
             backgroundColor={'#FFFFFF'}
             // marginTop={moderateScale(20,0.3)}
-            color={Color.themeColor}
+            color={themeColor[1]}
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(10, 0.3)}
           />
@@ -102,7 +113,7 @@ const LoginScreen = () => {
             borderColor={'#A7A7A7'}
             backgroundColor={'#FFFFFF'}
             // marginTop={moderateScale(30,0.3)}
-            color={Color.themeColor}
+            color={themeColor[1]}
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(10, 0.3)}
           />
@@ -133,14 +144,65 @@ const LoginScreen = () => {
             height={windowHeight * 0.06}
             marginTop={moderateScale(20, 0.3)}
             onPress={() => {
-              // navigationService.navigate('BubbleSelection')
+              // navigationService.navigate('BubbleSelection');
               disptach(setUserToken({token: 'fasdasd awdawdawdada'}));
             }}
-            bgColor={Color.themeBgColor}
+            bgColor={themeColor}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
           />
         </View>
+        <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                width: '90%',
+                alignSelf : 'center',
+                marginTop : moderateScale(10,0.3)
+              }}>
+                <CustomText
+                  style={{
+                    color: '#000',
+                    fontSize: moderateScale(11, 0.6),
+                  }}>
+                  Privacy Setting
+                </CustomText>
+
+              <View style={[styles.radioButtonContainer]}>
+                <TouchableOpacity
+                  onPress={() => {
+                    console.log('private')
+                    dispatch(setAccountPrivate('private'))
+                    setSelectedTab('private');
+                  }}
+                  style={[styles.radioButton,{
+                    backgroundColor : selectedTab == 'private' ? Color.red : Color.veryLightGray
+                  }]}>
+                  {/* <View style={styles.radioButtonIcon} /> */}
+                </TouchableOpacity>
+                <CustomText  onPress={() => {
+                  dispatch(setAccountPrivate('private'))
+                    setSelectedTab('private');
+                  }} style={styles.radioButtonText}>Private</CustomText>
+
+                <TouchableOpacity
+                  onPress={() => {
+                    dispatch(setAccountPrivate('public'))
+                    setSelectedTab('public');
+                  }}
+                  style={[styles.radioButton,{
+                    backgroundColor : selectedTab == 'public' ? themeColor[1] : Color.veryLightGray
+                  }]}>
+               
+                </TouchableOpacity>
+                <CustomText 
+                 onPress={() => {
+                  dispatch(setAccountPrivate('public'))
+                    setSelectedTab('public');
+                  }}
+                style={styles.radioButtonText}>Public</CustomText>
+              </View>
+            </View>
         <CustomText
           style={{
             color: Color.white,
@@ -212,7 +274,7 @@ const LoginScreen = () => {
               'Sign up'
             )
           }
-          textColor={Color.themeColor}
+          textColor={themeColor[1]}
           width={windowWidth * 0.7}
           height={windowHeight * 0.06}
           marginTop={moderateScale(40, 0.3)}
@@ -298,6 +360,34 @@ const styles = ScaledSheet.create({
   },
   dropDown: {
     backgroundColor: Color.red,
+  },
+  radioButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    width: '50%',
+    paddingLeft: moderateScale(20, 0.3),
+  },
+  radioButton: {
+    height: moderateScale(11,0.6),
+    width: moderateScale(11,0.6),
+    backgroundColor: '#e8e8e8',
+    borderRadius: moderateScale(11,0.6),
+    borderWidth: 2,
+    borderColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  radioButtonIcon: {
+    height: 8,
+    width: 8,
+    borderRadius: 7,
+    backgroundColor: '#98CFB6',
+  },
+  radioButtonText: {
+    fontSize: moderateScale(12, 0.6),
+    fontWeight: '600',
+    color: '#000',
   },
 });
 

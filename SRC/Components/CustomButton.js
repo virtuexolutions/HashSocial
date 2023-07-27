@@ -13,6 +13,7 @@ import LinearGradient from "react-native-linear-gradient";
 import { moderateScale, scale } from "react-native-size-matters";
 import CustomText from "./CustomText";
 import Color from "../Assets/Utilities/Color";
+import { useSelector } from "react-redux";
 
 const CustomButton = (props) => {
   const {
@@ -44,6 +45,7 @@ const CustomButton = (props) => {
 
     // value
   } = props;
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
   return (
     <TouchableOpacity
       activeOpacity={activeOpacity ? activeOpacity : 0.9}
@@ -59,7 +61,7 @@ const CustomButton = (props) => {
           marginBottom: marginBottom || 0,
         },
         elevation &&{
-          shadowColor: Color.themeColor,
+          shadowColor: themeColor[1],
 shadowOffset: {
 	width: 0,
 	height: 4,

@@ -34,6 +34,10 @@ import {FloatingLabelInput} from 'react-native-floating-label-input';
 import Header from '../Components/Header';
 
 const ChangePassword = () => {
+  const privacy = useSelector(state=> state.authReducer.privacy)
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+
+  
   const disptach = useDispatch();
   const [firstSection, setFirstSection] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
@@ -52,7 +56,11 @@ const ChangePassword = () => {
       />
       <Header right />
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+          source={
+            privacy == 'private'
+              ? require('../Assets/Images/theme2.jpg')
+              : require('../Assets/Images/Main.png')
+          }
         resizeMode={'cover'}
         style={{
           width: windowWidth,
@@ -87,7 +95,7 @@ const ChangePassword = () => {
             borderColor={'#A7A7A7'}
             backgroundColor={'#FFFFFF'}
             // marginTop={moderateScale(30,0.3)}
-            color={Color.themeColor}
+            color={themeColor[1]}
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(10, 0.3)}
           />
@@ -105,7 +113,7 @@ const ChangePassword = () => {
             borderColor={'#A7A7A7'}
             backgroundColor={'#FFFFFF'}
             // marginTop={moderateScale(30,0.3)}
-            color={Color.themeColor}
+            color={themeColor[1]}
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(10, 0.3)}
           />
@@ -123,7 +131,7 @@ const ChangePassword = () => {
             borderColor={'#A7A7A7'}
             backgroundColor={'#FFFFFF'}
             // marginTop={moderateScale(30,0.3)}
-            color={Color.themeColor}
+            color={themeColor[1]}
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(10, 0.3)}
           />
@@ -143,7 +151,7 @@ const ChangePassword = () => {
             onPress={() => {
               // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
             }}
-            bgColor={Color.themeBgColor}
+            bgColor={themeColor}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
           />

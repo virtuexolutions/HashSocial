@@ -22,6 +22,7 @@ const CustomAlertModal = props => {
     iconType,
     areYouSureAlert,
   } = props;
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
 
   // iconType  () error == 0 ) ( success == 1 ) ( warning == 2 )
   return (
@@ -62,7 +63,7 @@ const CustomAlertModal = props => {
             // width: width * 0.625,
           }}>
           <CustomButton
-            bgColor={Color.themeColor}
+            bgColor={themeColor[1]}
             borderColor={'white'}
             borderWidth={1}
             textColor={Color.white}
@@ -83,9 +84,9 @@ const CustomAlertModal = props => {
               }}>
               <CustomButton
                 bgColor={Color.white}
-                borderColor={Color.themeColor}
+                borderColor={themeColor[1]}
                 borderWidth={1}
-                textColor={Color.themeColor}
+                textColor={themeColor[1]}
                 onPress={onClose}
                 width={width * 0.2}
                 height={height * 0.045}
@@ -108,7 +109,7 @@ const CustomAlertModal = props => {
 
 const styles = ScaledSheet.create({
   modalUpperView: {
-    backgroundColor: Color.themeColor,
+    backgroundColor: themeColor[1],
     width: width * 0.7,
     minHeight: height * 0.1,
     maxHeight: height * 0.1,

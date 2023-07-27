@@ -18,8 +18,11 @@ import CustomImage from '../Components/CustomImage';
 import navigationService from '../navigationService';
 import {useNavigation} from '@react-navigation/native';
 import Color from '../Assets/Utilities/Color';
+import { useSelector } from 'react-redux';
 
 const AccountDetails = () => {
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  const privacy = useSelector(state=> state.authReducer.privacy)
   const navigation = useNavigation();
   const [isLoading, setIsLoading] = useState(false);
   return (
@@ -31,14 +34,14 @@ const AccountDetails = () => {
       <Header right Title={'Account Details'} search />
 
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+        source={privacy == 'private' ? require('../Assets/Images/theme2.jpg'): require('../Assets/Images/Main.png')}
         resizeMode={'cover'}
         style={{
           width: windowWidth * 1,
           height: windowHeight * 0.9,
           alignItems: 'center',
         }}>
-        <View style={styles.profileSection}>
+        <View style={[styles.profileSection,{borderColor:privacy=='private' ? Color.red : Color.green }]}>
           <CustomImage
             source={require('../Assets/Images/dummyman1.png')}
             style={{
@@ -69,7 +72,7 @@ const AccountDetails = () => {
               'Create New Profile'
             )
           }
-          textColor={Color.themeColor}
+          textColor={themeColor[1]}
           width={windowWidth * 0.7}
           height={windowHeight * 0.06}
           marginTop={moderateScale(10, 0.3)}
@@ -91,7 +94,7 @@ const AccountDetails = () => {
               'Add Bubbles'
             )
           }
-          textColor={Color.themeColor}
+          textColor={themeColor[1]}
           width={windowWidth * 0.7}
           height={windowHeight * 0.06}
           marginTop={moderateScale(10, 0.3)}
@@ -112,7 +115,7 @@ const AccountDetails = () => {
               'Back'
             )
           }
-          textColor={Color.themeColor}
+          textColor={themeColor[1]}
           width={windowWidth * 0.7}
           height={windowHeight * 0.06}
           marginTop={moderateScale(10, 0.3)}
@@ -145,6 +148,6 @@ const styles = StyleSheet.create({
     marginTop: windowHeight * 0.2,
     overflow: 'hidden',
     borderWidth: 4,
-    borderColor: Color.green,
+    // borderColor: Color.green,
   },
 });

@@ -9,9 +9,16 @@ import {Icon} from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import Color from '../Assets/Utilities/Color';
+import CustomStatusBar from '../Components/CustomStatusBar';
+import Header from '../Components/Header';
+import { useSelector } from 'react-redux';
 
 const Feeds = () => {
+  const privacy = useSelector(state=> state.authReducer.privacy)
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+
   const [selectedTab, SetSelectedTab] = useState('Fitness');
+  
 
   feedsArray = [
     {
@@ -86,77 +93,80 @@ const Feeds = () => {
   ];
 
   return (
-    <View style={{width: windowWidth}}>
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        style={{
-          marginTop: moderateScale(40, 0.3),
-          position: 'absolute',
-          zIndex: 1,
-           marginLeft: moderateScale(20, 0.6)
-        }}>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          style={{justifyContent: 'center',
-          marginRight:moderateScale(5,0.3)}}>
-          <Icon name={'arrowleft'} as={AntDesign} color={'white'} size={5} />
-        </TouchableOpacity>
+   
+      <View style={{width: windowWidth}}>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          style={{
+            marginTop: moderateScale(40, 0.3),
+            position: 'absolute',
+            zIndex: 1,
+            marginLeft: moderateScale(20, 0.3),
+          }}>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            style={{
+              justifyContent: 'center',
+              marginRight: moderateScale(5, 0.3),
+            }}>
+            <Icon name={'arrowleft'} as={AntDesign} color={'white'} size={5} />
+          </TouchableOpacity>
 
-        {Fitness?.map(item => {
-          return (
-            <LinearGradient
-            start={{x: 0, y: 0}}
-            end={{x: 0, y: 0.9}}
-            
-              colors={selectedTab == item?.name ? Color.themeBgColor : ['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.4)']}
-              style={{
-                width: windowWidth * 0.2,
-                height: windowHeight * 0.04,
-                borderRadius: (windowHeight * 0.04) / 5,
-                margin: moderateScale(10, 0.3),
-                
-              }}>
-              <TouchableOpacity
-                onPress={() => {
-                  SetSelectedTab(item?.name);
-                }}
-                activeOpacity={0.8}
+          {Fitness?.map(item => {
+            return (
+              <LinearGradient
+                start={{x: 0, y: 0}}
+                end={{x: 0, y: 0.9}}
+                colors={
+                  selectedTab == item?.name
+                    ? themeColor
+                    : ['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.4)']
+                }
                 style={{
-                  width: '100%',
-                  height: '100%',
-                  alignItems: 'center',
-                justifyContent: 'center',
+                  width: windowWidth * 0.2,
+                  height: windowHeight * 0.04,
+                  borderRadius: (windowHeight * 0.04) / 5,
+                  margin: moderateScale(10, 0.3),
                 }}>
-                <CustomText
+                <TouchableOpacity
+                  onPress={() => {
+                    SetSelectedTab(item?.name);
+                  }}
+                  activeOpacity={0.8}
                   style={{
-                    fontSize: moderateScale(12, 0.6),
-                    color: Color.white,
+                    width: '100%',
+                    height: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                   }}>
-                  {item?.name}
-                </CustomText>
-              </TouchableOpacity>
-             
-            </LinearGradient>
-          );
-        })}
-      </ScrollView>
+                  <CustomText
+                    style={{
+                      fontSize: moderateScale(12, 0.6),
+                      color: Color.white,
+                    }}>
+                    {item?.name}
+                  </CustomText>
+                </TouchableOpacity>
+              </LinearGradient>
+            );
+          })}
+        </ScrollView>
 
-      <FlatList
-        vertical={true}
-        showsVerticalScrollIndicator={true}
-        data={feedsArray}
-        contentContainerStyle={{
-          zIndex: 0,
-        }}
-        renderItem={({item, index}) => {
-          return <FeedContainer item={item} />;
-        }}
-      />
-    </View>
+        <FlatList
+          vertical={true}
+          showsVerticalScrollIndicator={true}
+          data={feedsArray}
+          contentContainerStyle={{
+            zIndex: 0,
+          }}
+          renderItem={({item, index}) => {
+            return <FeedContainer item={item} />;
+          }}
+        />
+      </View>
+  
   );
 };
 
 export default Feeds;
-
-

@@ -18,8 +18,10 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from './CustomText';
+import { useSelector } from 'react-redux';
 
 const TextInputWithTitle = props => {
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const [showPassword, setShowPassword] = useState(false);
   return (
     <>
@@ -47,7 +49,7 @@ const TextInputWithTitle = props => {
             backgroundColor: props.backgroundColor,
           },
           props.elevation && {
-            shadowColor: Color.themeColor,
+            shadowColor: themeColor[1],
             shadowOffset: {
               width: 0,
               height: 4,

@@ -11,8 +11,11 @@ import CustomButton from '../Components/CustomButton';
 import Header from '../Components/Header';
 import navigationService from '../navigationService';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { useSelector } from 'react-redux';
 
 const AddPost = () => {
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  const privacy = useSelector(state => state.authReducer.privacy);
   const [selectedTab, setSelectedTab] = useState('Tag People');
   const [loading, setLoading] = useState(false);
 
@@ -24,7 +27,11 @@ const AddPost = () => {
       />
       <Header right Title={'ADD POST'} search />
       <ImageBackground
-        source={require('../Assets/Images/Main.png')}
+       source={
+        privacy == 'private'
+          ? require('../Assets/Images/theme2.jpg')
+          : require('../Assets/Images/Main.png')
+      }
         resizeMode={'cover'}
         style={{
           width: windowWidth,
@@ -98,7 +105,7 @@ const AddPost = () => {
               'Post'
             )
           }
-          textColor={Color.themeColor}
+          textColor={themeColor[1]}
           width={windowWidth * 0.7}
           height={windowHeight * 0.06}
           marginTop={moderateScale(40, 0.3)}
@@ -119,7 +126,7 @@ const AddPost = () => {
               'Add Bubble'
             )
           }
-          textColor={Color.themeColor}
+          textColor={themeColor[1]}
           width={windowWidth * 0.7}
           height={windowHeight * 0.06}
           marginTop={moderateScale(10, 0.3)}
