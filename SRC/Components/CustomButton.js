@@ -41,7 +41,9 @@ const CustomButton = (props) => {
     isBold,
     disabled = false,
     alignSelf,
-    elevation
+    elevation,
+    paddingHorizontal ,
+    marginRight,
 
     // value
   } = props;
@@ -73,8 +75,14 @@ elevation: 9,},
         alignSelf && {
           alignSelf: alignSelf,
         },
+        paddingHorizontal && {
+          paddingHorizontal : paddingHorizontal
+        },
         justifyContent && {
           justifyContent: justifyContent,
+        },
+        marginRight && {
+          marginRight : marginRight ,
         },
         borderRadius && {
           borderRadius: borderRadius,
@@ -185,7 +193,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
-    paddingHorizontal : moderateScale(10,0.3),
+    // paddingHorizontal : moderateScale(10,0.3),
     paddingVertical : moderateScale(2,0.3),
   },
   text: {
@@ -200,9 +208,9 @@ const styles = StyleSheet.create({
   },
   iconCustom: {
     color: "#C0C0C0",
-    fontSize: moderateScale(20,0.6),
-    paddingRight: 20,
-    paddingLeft: I18nManager.isRTL ? 20 : 0,
+    // fontSize: moderateScale(20,0.6),
+    // paddingRight: 20,
+    // paddingLeft: I18nManager.isRTL ? 20 : 0,
   },
 });
 

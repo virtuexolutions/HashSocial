@@ -15,6 +15,7 @@ import Header from '../Components/Header';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
 import { useSelector } from 'react-redux';
+import CardComponent from '../Components/CardComponent';
 // const {height, width} = Dimensions.get('window');
 
 const BubbleList = () => {
@@ -22,63 +23,47 @@ const BubbleList = () => {
   const BubbleListData = [
     {
       id: 1,
-      image: require('../Assets/Images/gallery1.png'),
-      name: 'Book Autor',
-      Time: 'Today 9:00 am',
+      image: require('../Assets/Images/dummyman1.png'),
+      name: 'Book Author',
+      Time:'Today 9:00 Am',
+      title: 'Owner Mood Admin',
+      close: true,
+      check: false,
+      edit: true,
+      pending: false,
     },
     {
       id: 2,
-      image: require('../Assets/Images/gallery2.png'),
-      name: 'Alternative Fitness',
-      Time: 'Today 9:00 am',
+      image: require('../Assets/Images/dummyman4.png'),
+      name: 'Alternative fitness',
+      Time:'Today 9:00 Am',
+      title: 'Member',
+      close: true,
+      check: false,
+      edit: false,
+      pending: false,
     },
     {
       id: 3,
-      image: require('../Assets/Images/gallery3.png'),
+      image: require('../Assets/Images/avatar.png'),
       name: 'Alchol',
-      Time: 'Today 9:00 am',
+      Time:'Today 9:00 Am',
+      title: 'Request to join awaiting Response',
+      close: false,
+      check: false,
+      edit: false,
+      pending: true,
     },
     {
       id: 4,
-      image: require('../Assets/Images/gallery4.png'),
-      name: 'Bird Shooting',
-      Time: 'Today 9:00 am',
-    },
-    {
-      id: 5,
-      image: require('../Assets/Images/gallery5.png'),
-      name: 'Bird Shooting',
-      Time: 'Today 9:00 am',
-    },
-    {
-      id: 6,
-      image: require('../Assets/Images/gallery6.png'),
-      name: 'Bird Shooting',
-      Time: 'Today 9:00 am',
-    },
-    {
-      id: 7,
-      image: require('../Assets/Images/gallery7.png'),
-      name: 'Bird Shooting',
-      Time: 'Today 9:00 am',
-    },
-    {
-      id: 8,
-      image: require('../Assets/Images/gallery8.png'),
-      name: 'Bird Shooting',
-      Time: 'Today 9:00 am',
-    },
-    {
-      id: 9,
-      image: require('../Assets/Images/gallery7.png'),
-      name: 'Bird Shooting',
-      Time: 'Today 9:00 am',
-    },
-    {
-      id: 10,
-      image: require('../Assets/Images/gallery8.png'),
-      name: 'Bird Shooting',
-      Time: 'Today 9:00 am',
+      image: require('../Assets/Images/dummyUser.png'),
+      name: 'Bords Shooting',
+      Time:'Today 9:00 Am',
+      title: 'Invite to bubble Need to help',
+      close: true,
+      check: true,
+      edit: false,
+      pending: false,
     },
   ];
 
@@ -88,7 +73,7 @@ const BubbleList = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Bubble List'}  search/>
+      <Header right Title={'Feed List'}  search/>
 
       <ImageBackground
         source={
@@ -117,49 +102,14 @@ const BubbleList = () => {
             renderItem={({item, index}) => {
 
               return (
-                <>
-                  <View
-                    style={styles.row}>
-                    <View style={styles.profileSection}>
-                      <CustomImage
-                        source={item?.image}
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                        }}
-                      />
-                    </View>
-
-                    <View
-                      style={{
-                        paddingLeft: moderateScale(25, 0.6),
-                        justifyContent: 'center',
-                      }}>
-                      <CustomText
-                        style={{
-                          fontSize: moderateScale(16, 0.6),
-                          color: '#000',
-                          fontWeight: '500',
-                          textAlign:'left',
-                          
-                        }} isBold>
-                        {item?.name}
-                      </CustomText>
-                      <CustomText
-                        style={{
-                          fontSize: moderateScale(11, 0.6),
-                          color: '#000',
-                          textAlign:'left',
-
-                        }}>
-                        {item?.Time}
-                      </CustomText>
-                    </View>
-                  </View>
-
-                  <View
-                    style={styles.line}></View>
-                </>
+                <CardComponent
+                item={item}
+                check={item?.check}
+                close={item?.close}
+                edit={item?.edit}
+                pending={item?.pending}
+              />
+                
               );
             }}
           />

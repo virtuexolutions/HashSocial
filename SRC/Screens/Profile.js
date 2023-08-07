@@ -29,7 +29,7 @@ const Profile = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
   console.log("🚀 ~ file: Profile.js:30 ~ Profile ~ privacy:", privacy)
   const [username, setUserName] = useState('');
-  const [desc, setdesc] = useState('');
+  const [desc, setDesc] = useState('');
   const [selectedTab, setSelectedTab] = useState(privacy? privacy :'');
     const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch();
@@ -104,8 +104,8 @@ const Profile = () => {
                 title={'Description '}
                 secureText={false}
                 placeholder={'Description'}
-                setText={desc}
-                value={setdesc}
+                setText={setDesc}
+                value={desc}
                 viewHeight={0.06}
                 viewWidth={0.82}
                 inputWidth={0.8}
