@@ -30,7 +30,7 @@ const Bubble = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const [isLoading, setIsLoading] = useState(false);
   const events = ['Members', 'Chats', 'Events', 'Store'];
-  const [selectedEvent, setSelectedEvent] = useState('Members');
+  const [selectedEvent, setSelectedEvent] = useState('');
   const [selectedTab, setSelectedTab] = useState('Activity');
   const [activityData, setactivityData] = useState([
     {
@@ -67,11 +67,11 @@ const Bubble = () => {
       />
       <Header right Title="Bubble" search />
       <ImageBackground
-       source={
-        privacy == 'private'
-          ? require('../Assets/Images/theme2.jpg')
-          : require('../Assets/Images/Main.png')
-      }
+        source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         style={{
           width: windowWidth,
@@ -232,142 +232,140 @@ const Bubble = () => {
                       },
                       ...{
                         color:
-                          selectedEvent == data
-                            ? themeColor[1]
-                            : Color.white,
+                          selectedEvent == data ? themeColor[1] : Color.white,
                       },
                     }}
                     onPress={() => {
                       setSelectedEvent(data);
+                      if(data =='Members'){
+                        navigationService.navigate('MemberList')
+                      }
                     }}
                   />
                 );
               })}
             </ScrollView>
-            {selectedEvent == 'Members' && (
-              <>
-                <View
+
+            <View
+              style={{
+                flexDirection: 'row',
+                marginLeft: moderateScale(10, 0.3),
+                marginRight: moderateScale(10, 0.3),
+              }}>
+              <View style={styles.image1}>
+                <CustomImage
+                  source={require('../Assets/Images/fitness2.png')}
                   style={{
-                    flexDirection: 'row',
-                    marginLeft: moderateScale(10, 0.3),
-                    marginRight: moderateScale(10, 0.3),
-                  }}>
-                  <View style={styles.image1}>
+                    height: '100%',
+                    width: '100%',
+                  }}
+                  resizeMode={'stretch'}
+                  //   resizeMode="s"
+                />
+              </View>
+              <View>
+                <View style={{flexDirection: 'row'}}>
+                  <View style={styles.profileImage}>
                     <CustomImage
                       source={require('../Assets/Images/fitness2.png')}
                       style={{
                         height: '100%',
                         width: '100%',
                       }}
-                      resizeMode={'stretch'}
-                      //   resizeMode="s"
+                      //   resizeMode={'stretch'}
                     />
                   </View>
                   <View>
-                    <View style={{flexDirection: 'row'}}>
-                      <View style={styles.profileImage}>
-                        <CustomImage
-                          source={require('../Assets/Images/fitness2.png')}
-                          style={{
-                            height: '100%',
-                            width: '100%',
-                          }}
-                          //   resizeMode={'stretch'}
-                        />
-                      </View>
-                      <View>
-                        <CustomText
-                          numberOfLines={1}
-                          children={'Meko Nakahara'}
-                          style={{
-                            fontSize: moderateScale(12, 0.6),
-                            color: 'black',
-                            marginTop: moderateScale(12, 0.3),
-                            marginRight: moderateScale(8, 0.3),
-                            textAlign: 'left',
-                          }}
-                          isBold
-                        />
-                        <View
-                          style={{
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                            width: windowWidth * 0.3,
-                          }}>
-                          <CustomText
-                            numberOfLines={1}
-                            children={'New York, USA'}
-                            style={{
-                              fontSize: moderateScale(10, 0.6),
-                              color: Color.veryLightGray,
-                              textAlign: 'center',
-                            }}
-                          />
-                          <CustomText
-                            numberOfLines={1}
-                            children={'1h Ago'}
-                            style={{
-                              fontSize: moderateScale(10, 0.6),
-                              color: Color.veryLightGray,
-                              textAlign: 'right',
-                            }}
-                          />
-                        </View>
-                      </View>
+                    <CustomText
+                      numberOfLines={1}
+                      children={'Meko Nakahara'}
+                      style={{
+                        fontSize: moderateScale(12, 0.6),
+                        color: 'black',
+                        marginTop: moderateScale(12, 0.3),
+                        marginRight: moderateScale(8, 0.3),
+                        textAlign: 'left',
+                      }}
+                      isBold
+                    />
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                        width: windowWidth * 0.3,
+                      }}>
+                      <CustomText
+                        numberOfLines={1}
+                        children={'New York, USA'}
+                        style={{
+                          fontSize: moderateScale(10, 0.6),
+                          color: Color.veryLightGray,
+                          textAlign: 'center',
+                        }}
+                      />
+                      <CustomText
+                        numberOfLines={1}
+                        children={'1h Ago'}
+                        style={{
+                          fontSize: moderateScale(10, 0.6),
+                          color: Color.veryLightGray,
+                          textAlign: 'right',
+                        }}
+                      />
                     </View>
-                    <CustomText style={styles.text} numberOfLines={9}>
-                      Lorem Ipsum is simply dummy text of the printing and
-                      typesetting industry. Lorem Ipsum has been the industry's
-                      standard dummy text ever since the 1500s, when an unknown
-                      printer took a galley of type and scrambled it to make a
-                      type specimen book. It has survived not only five
-                      centuries, but also the leap into electronic typesetting,
-                      remaining essentially unchanged.
-                    </CustomText>
                   </View>
                 </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginTop: moderateScale(10, 0.3),
-                  }}>
-                  <CustomText
-                    numberOfLines={1}
-                    children={'Activity'}
-                    style={{
-                      ...styles.activityText,
-                      ...{
-                        borderBottomColor:
-                          selectedTab == 'Activity' ? Color.white : 'black',
-                      },
-                    }}
-                    onPress={() => {
-                      setSelectedTab('Activity');
-                    }}
-                    isBold
-                  />
-                  <CustomText
-                    numberOfLines={1}
-                    children={'Archive'}
-                    style={{
-                      ...styles.activityText,
-                      ...{
-                        borderBottomColor:
-                          selectedTab == 'Archive' ? Color.white : 'black',
-                      },
-                    }}
-                    onPress={() => {
-                      setSelectedTab('Archive');
-                    }}
-                    isBold
-                  />
-                </View>
-              </>
-            )}
+                <CustomText style={styles.text} numberOfLines={9}>
+                  Lorem Ipsum is simply dummy text of the printing and
+                  typesetting industry. Lorem Ipsum has been the industry's
+                  standard dummy text ever since the 1500s, when an unknown
+                  printer took a galley of type and scrambled it to make a type
+                  specimen book. It has survived not only five centuries, but
+                  also the leap into electronic typesetting, remaining
+                  essentially unchanged.
+                </CustomText>
+              </View>
+            </View>
+            <View
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginTop: moderateScale(10, 0.3),
+              }}>
+              <CustomText
+                numberOfLines={1}
+                children={'Activity'}
+                style={{
+                  ...styles.activityText,
+                  ...{
+                    borderBottomColor:
+                      selectedTab == 'Activity' ? Color.white : 'black',
+                  },
+                }}
+                onPress={() => {
+                  setSelectedTab('Activity');
+                }}
+                isBold
+              />
+              <CustomText
+                numberOfLines={1}
+                children={'Archive'}
+                style={{
+                  ...styles.activityText,
+                  ...{
+                    borderBottomColor:
+                      selectedTab == 'Archive' ? Color.white : 'black',
+                  },
+                }}
+                onPress={() => {
+                  setSelectedTab('Archive');
+                }}
+                isBold
+              />
+            </View>
 
-            {selectedEvent == 'Members' && selectedTab == 'Activity' ? (
+            {selectedTab == 'Activity' ? (
               <View style={styles.activityContainer}>
                 <FlatList
                   numColumns={3}
@@ -378,9 +376,13 @@ const Bubble = () => {
                     return (
                       <TouchableOpacity
                         style={styles.activityImage}
-                        onPress={()=>{navigationService.navigate('Feeds')}}>
+                        onPress={() => {
+                          navigationService.navigate('Feeds');
+                        }}>
                         <CustomImage
-                            onPress={()=>{navigationService.navigate('Feeds')}}
+                          onPress={() => {
+                            navigationService.navigate('Feeds');
+                          }}
                           source={item?.uri ? {uri: item?.uri} : item?.url}
                           style={{
                             width: '100%',
@@ -395,7 +397,7 @@ const Bubble = () => {
                 />
               </View>
             ) : (
-              selectedEvent == 'Members' &&
+              
               selectedTab == 'Archive' && (
                 <>
                   <View style={{flexDirection: 'row'}}>

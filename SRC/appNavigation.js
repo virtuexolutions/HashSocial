@@ -37,6 +37,8 @@ import {Icon} from 'native-base';
 import CreateNewBubble from './Screens/CreateNewBubble';
 import EmptyScreen from './Screens/EmptyScreen';
 import AccountDetails from './Screens/AccountDetails';
+import FeedList from './Screens/FeedList';
+import MemberList from './Screens/MemberList';
 
 // import AccountSetting from './Screens/AccountSetting';
 // import HomeScreen from './Screens/HomeScreen';
@@ -69,7 +71,6 @@ const AppNavigator = () => {
       token != null
         ? 'BubbleSelection'
         : 'LoginScreen';
-        // const firstScreen = token!=null ? 'BubbleSelection' :bubbleSelected? 'TabNavigation' : 'Loginscreen'
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
@@ -77,10 +78,11 @@ const AppNavigator = () => {
           initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
+          <RootNav.Screen name="FeedList" component={FeedList} />
           <RootNav.Screen name="Feeds" component={Feeds} />
           <RootNav.Screen name="BubbleSearch" component={BubbleSearch} />
           <RootNav.Screen name="AccountDetails" component={AccountDetails} />
-          {/* <RootNav.Screen name="AddPost" component={AddPost} /> */}
+          <RootNav.Screen name="MemberList" component={MemberList} />
           <RootNav.Screen name="TabNavigation" component={TabNavigation} />
           <RootNav.Screen name="AccountSetting" component={AccountSetting} />
           <RootNav.Screen name="AddPost" component={AddPost} />
@@ -94,7 +96,6 @@ const AppNavigator = () => {
           <RootNav.Screen name="Profile" component={Profile} />
           <RootNav.Screen name="ProfileList" component={ProfileList} />
           <RootNav.Screen name="Notifications" component={Notifications} />
-          {/* <RootNav.Screen name="BubbleSearch" component={BubbleSearch} /> */}
           <RootNav.Screen name="CreateNewFeed" component={CreateNewFeed} />
           <RootNav.Screen name="Signup" component={Signup} />
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />

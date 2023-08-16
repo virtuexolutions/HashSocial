@@ -21,6 +21,7 @@ import CustomButton from '../Components/CustomButton';
 import Color from '../Assets/Utilities/Color';
 import {Icon, ScrollView} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const CardComponent = ({item, pending, check, close, edit}) => {
   return (
@@ -37,15 +38,28 @@ const CardComponent = ({item, pending, check, close, edit}) => {
         style={{
           paddingLeft: moderateScale(15, 0.6),
           width: windowWidth * 0.45,
+          // backgroundColor:'red',
+          // justifyContent:'center',
+          // alignItems:'center'
         }}>
         <CustomText
+          numberOfLines={1}
           style={{
-            fontSize: moderateScale(18, 0.6),
+            fontSize: moderateScale(16, 0.6),
             color: '#000',
             fontWeight: '500',
             textAlign: 'left',
           }}>
-          {item.name}
+          {item?.name}
+        </CustomText>
+        <CustomText
+          numberOfLines={1}
+          style={{
+            fontSize: moderateScale(11, 0.6),
+            color: '#000',
+            textAlign: 'left',
+          }}>
+          {item?.Time}
         </CustomText>
         <CustomText
           style={{
@@ -53,15 +67,7 @@ const CardComponent = ({item, pending, check, close, edit}) => {
             color: '#000',
             textAlign: 'left',
           }}>
-          {item.Time}
-        </CustomText>
-          <CustomText
-          style={{
-            fontSize: moderateScale(11, 0.6),
-            color: '#000',
-            textAlign: 'left',
-          }}>
-          {item.title}
+          {item?.title}
         </CustomText>
       </View>
 
@@ -142,6 +148,103 @@ const CardComponent = ({item, pending, check, close, edit}) => {
             bgColor={'#FFFFFF'}
           />
         )}
+        {!item?.bubble && (item?.title == 'Requestor' ? (
+          <>
+            <CustomButton
+              iconName={'check'}
+              iconType={Entypo}
+              iconStyle={{
+                // width: 120,
+                // height: 120,
+                color: Color.black,
+                // padding: 55,
+                // marginLeft: 92,
+              }}
+              textColor={Color.black}
+              // width={windowWidth * 0.15}
+              height={windowHeight * 0.05}
+              fontSize={moderateScale(12, 0.6)}
+              borderRadius={moderateScale(10, 0.3)}
+              paddingHorizontal={moderateScale(15, 0.3)}
+              marginRight={moderateScale(5, 0.3)}
+              bgColor={'#FFFFFF'}
+            />
+            <CustomButton
+              iconName={'cross'}
+              iconType={Entypo}
+              iconStyle={{
+                // width: 120,
+                // height: 120,
+                color: Color.black,
+                // padding: 55,
+                // marginLeft: 92,
+              }}
+              textColor={Color.black}
+              // width={windowWidth * 0.15}
+              height={windowHeight * 0.05}
+              fontSize={moderateScale(12, 0.6)}
+              borderRadius={moderateScale(10, 0.3)}
+              paddingHorizontal={moderateScale(15, 0.3)}
+              marginRight={moderateScale(5, 0.3)}
+              bgColor={'#FFFFFF'}
+            />
+          </>
+        ) : item?.title == 'Member' ? (
+          <>
+            <CustomButton
+              iconName={'pause'}
+              iconType={AntDesign}
+              iconStyle={{
+                // width: 120,
+                // height: 120,
+                color: Color.black,
+                // padding: 55,
+                // marginLeft: 92,
+              }}
+              textColor={Color.black}
+              // width={windowWidth * 0.15}
+              height={windowHeight * 0.05}
+              fontSize={moderateScale(12, 0.6)}
+              borderRadius={moderateScale(10, 0.3)}
+              paddingHorizontal={moderateScale(15, 0.3)}
+              marginRight={moderateScale(5, 0.3)}
+              bgColor={'#FFFFFF'}
+            />
+            <CustomButton
+              iconName={'cross'}
+              iconType={Entypo}
+              iconStyle={{
+                // width: 120,
+                // height: 120,
+                color: Color.black,
+                // padding: 55,
+                // marginLeft: 92,
+              }}
+              textColor={Color.black}
+              // width={windowWidth * 0.15}
+              height={windowHeight * 0.05}
+              fontSize={moderateScale(12, 0.6)}
+              borderRadius={moderateScale(10, 0.3)}
+              paddingHorizontal={moderateScale(15, 0.3)}
+              marginRight={moderateScale(5, 0.3)}
+              bgColor={'#FFFFFF'}
+            />
+          </>
+        ) : item?.title == 'Invited' ? (
+          <CustomButton
+            text={'invited'}
+            textColor={Color.black}
+            // width={windowWidth * 0.13}
+            height={windowHeight * 0.05}
+            fontSize={moderateScale(10, 0.6)}
+            bgColor={'#FFFFFF'}
+            borderRadius={moderateScale(10, 0.3)}
+            paddingHorizontal={moderateScale(5, 0.3)}
+            marginRight={moderateScale(5, 0.3)}
+          />
+        ) : (
+          <></>
+        ))}
       </View>
     </View>
 

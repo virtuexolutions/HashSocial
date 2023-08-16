@@ -27,6 +27,7 @@ const BubbleList = () => {
       name: 'Book Author',
       Time:'Today 9:00 Am',
       title: 'Owner Mood Admin',
+      bubble:true,
       close: true,
       check: false,
       edit: true,
@@ -38,6 +39,7 @@ const BubbleList = () => {
       name: 'Alternative fitness',
       Time:'Today 9:00 Am',
       title: 'Member',
+      bubble:true,
       close: true,
       check: false,
       edit: false,
@@ -50,6 +52,7 @@ const BubbleList = () => {
       Time:'Today 9:00 Am',
       title: 'Request to join awaiting Response',
       close: false,
+      bubble:true,
       check: false,
       edit: false,
       pending: true,
@@ -61,6 +64,7 @@ const BubbleList = () => {
       Time:'Today 9:00 Am',
       title: 'Invite to bubble Need to help',
       close: true,
+      bubble:true,
       check: true,
       edit: false,
       pending: false,
@@ -73,7 +77,7 @@ const BubbleList = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Feed List'}  search/>
+      <Header right Title={'Bubble List'}  search/>
 
       <ImageBackground
         source={

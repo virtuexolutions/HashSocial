@@ -31,7 +31,7 @@ const ProfileList = () => {
       id: 1,
       image: require('../Assets/Images/dummyman1.png'),
       name: 'Book Author',
-      title: 'Public Account',
+      title: 'Private Account',
       close: true,
       check: false,
       edit: true,
@@ -61,7 +61,7 @@ const ProfileList = () => {
       id: 4,
       image: require('../Assets/Images/dummyUser.png'),
       name: 'Bords Shooting',
-      title: 'Public Account',
+      title: 'Private Account',
       close: true,
       check: false,
       edit: true,
@@ -74,7 +74,7 @@ const ProfileList = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Member List'} search />
+      <Header right Title={'Profile List'} search />
 
       <ImageBackground
         source={
