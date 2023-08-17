@@ -6,8 +6,10 @@ import {
   Dimensions,
   ImageBackground,
   Image,
+  Animated,
+  Button,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 const {height, width} = Dimensions.get('window');
 import {moderateScale} from 'react-native-size-matters';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -27,6 +29,7 @@ import {useSelector} from 'react-redux';
 import {BlurView} from '@react-native-community/blur';
 import CustomButton from '../Components/CustomButton';
 import {ActivityIndicator} from 'react-native';
+import * as Animatable from 'react-native-animatable';
 
 const HomeScreen = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -34,7 +37,14 @@ const HomeScreen = props => {
   const data = props?.route?.params?.data;
   const [clicked, setclicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  console.log('🚀 ~ file: HomeScreen.js:32 ~ HomeScreen ~ data:', data);
+  const [highlightedIcon, setHighlightedIcon] = useState(null);
+  console.log(
+    '🚀 ~ file: HomeScreen.js:40 ~ HomeScreen ~ highlightedIcon:',
+    highlightedIcon,
+  );
+  const [animationStopped, setAnimationStopped] = useState(false);
+
+  const backRef = useRef(null);
 
   const [content, setContent] = useState([
     {
@@ -130,8 +140,38 @@ const HomeScreen = props => {
     '🚀 ~ file: HomeScreen.js:65 ~ HomeScreen ~ content:',
     content?.length,
   );
+  const [profiles, setProfiles] = useState([
+    {
+      id: 1,
+      image: require('../Assets/Images/dummyman4.png'),
+    },
+    {
+      id: 2,
+      image: require('../Assets/Images/dummyman1.png'),
+    },
+    {
+      id: 3,
+      image: require('../Assets/Images/dummyProfile.png'),
+    },
+    {
+      id: 4,
+      image: require('../Assets/Images/dummyUser1.png'),
+    },
+  ]);
+
+
+  
+  const animateSideContainer = () => {
+    backRef.current?.animate('fadeInLeft', 2000);
+  };
+
   useEffect(() => {
-    // console.log(Object.keys(data?.image).length>0)
+    if (animationStopped) {
+      animateSideContainer();
+    }
+  }, [animationStopped]);
+
+  useEffect(() => {
     if (data && Object.keys(data?.image).length > 0) {
       setContent(prev => [
         ...prev,
@@ -160,49 +200,128 @@ const HomeScreen = props => {
       <Header right Title={'Profile'} search />
 
       <ImageBackground
-       source={
-        privacy == 'private'
-          ? require('../Assets/Images/theme2.jpg')
-          : require('../Assets/Images/Main.png')
-      }
+        source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
-        // blurRadius={clicked ? 8 : 0 }
         style={{
           width: windowWidth,
           height: windowHeight * 0.9,
-          // alignItems:'center',
+          overflow: 'hidden',
           justifyContent: 'center',
         }}>
-        <GestureHandlerRootView>
+        {highlightedIcon && (
           <View
-            // animation="zoomIn"
-            // easing="ease-out"
-            // iterationCount="infinite"
             style={{
-              width: 500,
-              height: 500,
-
-              // position: 'absolute',
-              // zIndex: 1,
-              // alignSelf: 'center',
-              // top: '35%',
+              width: windowWidth,
+              height: windowHeight,
+              position: 'absolute',
+              zIndex: 0,
+              top: -40,
             }}>
-            <RoundMenu
-              centerContent={
-                <Image
-                  source={require('../Assets/Images/dummyman1.png')}
-                  resizeMode="cover"
-                  style={style.centerImage}
-                />
-              }
-              largeImageSize={width / 2.5}
-              content={content}
-              contentContainerStyle={{
-                borderWidth: 2,
-              }}
-            />
+            {highlightedIcon}
           </View>
-        </GestureHandlerRootView>
+        )}
+
+        <View
+          style={{
+            width: windowWidth,
+            height: windowHeight * 0.9,
+            positon: 'absolute',
+            overflow: 'hidden',
+            flexDirection: 'row',
+            backgroundColor: 'rgba(0,0,0,.6)',
+          }}>
+          <Animatable.View
+            ref={backRef}
+            style={{
+              width: windowWidth,
+              height: windowHeight * 0.9,
+              position: 'absolute',
+              flexDirection: 'row',
+            }}>
+            <View
+              style={{
+                width: windowWidth * 0.1,
+                height: windowHeight * 0.8,
+                backgroundColor: Color.themeColor1,
+                alignItems: 'center',
+                zIndex: 1,
+                left: 0,
+                position: 'absolute',
+                justifyContent: 'center',
+              }}>
+              {profiles.map(item => {
+                return (
+                  <View
+                    style={{
+                      width: windowWidth * 0.08,
+                      height: windowWidth * 0.08,
+                      backgroundColor: 'white',
+                      overflow: 'hidden',
+                      // borderColor: '#33dd50',
+                      // borderWidth: 2,
+                      borderRadius: (windowWidth * 0.08) / 2,
+                      marginTop: moderateScale(12, 0.3),
+                      marginLeft: moderateScale(5, 0.3),
+                      marginRight: moderateScale(8, 0.3),
+                    }}>
+                    <CustomImage
+                      source={item?.image}
+                      style={{
+                        height: '100%',
+                        width: '100%',
+                      }}
+                    />
+                  </View>
+                );
+              })}
+            </View>
+            <Image
+              source={require('../Assets/Images/animatedImage.png')}
+              resizeMode={'cover'}
+              style={{
+                width: '90%',
+                height: '100%',
+                position: 'absolute',
+                zIndex: 0,
+                top: -40,
+                // left:35,
+                right: 5,
+              }}></Image>
+          </Animatable.View>
+          <GestureHandlerRootView>
+            <View
+              style={{
+                width: windowWidth * 0.9,
+                height: windowHeight * 0.75,
+                alignItems: 'center',
+                justifyContent: 'center',
+                marginLeft: moderateScale(20, 0.3),
+                zIndex: 2,
+              }}>
+              <RoundMenu
+                centerContent={
+                  <ImageBackground
+                    source={require('../Assets/Images/dummyman1.png')}
+                    resizeMode="cover"
+                    style={style.centerImage}
+                  />
+                }
+                largeImageSize={width / 2.5}
+                content={content}
+                contentContainerStyle={{
+                  borderWidth: 2,
+                }}
+                setHighlightedIcon={setHighlightedIcon}
+                setAnimationStopped={setAnimationStopped}
+              />
+            </View>
+          </GestureHandlerRootView>
+        </View>
+
       </ImageBackground>
       {clicked && (
         <BlurView
