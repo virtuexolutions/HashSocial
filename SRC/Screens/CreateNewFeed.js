@@ -15,6 +15,8 @@ import CustomText from '../Components/CustomText';
 import Header from '../Components/Header';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
 import {useSelector} from 'react-redux';
+import CustomButton from '../Components/CustomButton';
+import navigationService from '../navigationService';
 
 const CreateNewFeed = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
@@ -23,6 +25,8 @@ const CreateNewFeed = () => {
   const [description, setDescription] = useState('');
   const [Details, setDetails] = useState('');
   const [radio, setRadio] = useState('');
+  const [isLoading, setisLoading] = useState(false);
+
 
   const architecture = ['#architecture', 'ABC', 'BCD', 'CDE'];
   const [dropDownValue, setDropDownValue] = useState('#Architecture');
@@ -46,7 +50,13 @@ const CreateNewFeed = () => {
           alignItems: 'center',
         }}>
         <View style={styles.topContainer}>
-          <View style={{}}>
+          <View style={{
+            // borderWidth : 1,
+            paddingRight : moderateScale(7,0.6),
+            paddingBottom : moderateScale(7,0.6),
+          
+
+          }}>
             <TextInputWithTitle
               titleText={'Feed title'}
               placeholder={'Feed Title'}
@@ -55,7 +65,7 @@ const CreateNewFeed = () => {
               viewHeight={0.05}
               viewWidth={0.5}
               inputWidth={0.6}
-              marginBottom={moderateScale(-15, 0.3)}
+              marginBottom={moderateScale(-10, 0.3)}
               color={Color.black}
               placeholderColor={Color.black}
               style={{fontWeight: 'bold'}}
@@ -74,6 +84,9 @@ const CreateNewFeed = () => {
               inputWidth={0.55}
               marginTop={moderateScale(5, 0.3)}
               color={Color.red}
+              border={1}
+              marginLeft ={moderateScale(10,0.3)}
+              borderColor={Color.white}
               placeholderColor={Color.themeLightGray}
               multiline
             />
@@ -212,6 +225,28 @@ const CreateNewFeed = () => {
             </CustomText>
           </View>
         </View>
+        <CustomButton
+            text={
+              isLoading ? (
+                <ActivityIndicator color={'#01E8E3'} size={'small'} />
+              ) : (
+                'Submit'
+              )
+            }
+            textColor={themeColor[1]}
+            width={windowWidth * 0.4}
+            height={windowHeight * 0.06}
+            // marginTop={moderateScale(10, 0.3)}
+            bgColor={['#FFFFFF', '#FFFFFF']}
+            borderRadius={moderateScale(30, 0.3)}
+            isGradient
+            isBold={true}
+            marginTop={moderateScale(20,0.3)}
+            // marginBottom={moderateScale(50)}
+            onPress={() => {
+              navigationService.navigate('HomeScreen');
+            }}
+          />
       </ImageBackground>
     </>
   );
@@ -302,7 +337,7 @@ const styles = ScaledSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     // marginTop: moderateScale(20, 0.3),
-    marginLeft: moderateScale(-20, 0.3),
+    // marginLeft: moderateScale(-20, 0.3),
     // backgroundColor:'black'
   },
   radioButtonContainer: {

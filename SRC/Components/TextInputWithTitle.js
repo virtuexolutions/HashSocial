@@ -62,6 +62,9 @@ const TextInputWithTitle = props => {
           props.marginBottom && {
             marginBottom: props.marginBottom,
           },
+          props.marginLeft && {
+            marginLeft: props.marginLeft,
+          },
           props.autoCapitalize && {
             textTransform: props.autoCapitalize,
           },

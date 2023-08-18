@@ -79,7 +79,7 @@ const AppNavigator = () => {
           initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
-          <RootNav.Screen name="HomeScreen" component={HomeScreen} />
+          {/* <RootNav.Screen name="HomeScreen" component={HomeScreen} /> */}
 
           
           <RootNav.Screen name="FeedList" component={FeedList} />
