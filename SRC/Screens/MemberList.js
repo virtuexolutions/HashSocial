@@ -61,7 +61,7 @@ import {
           backgroundColor={Color.white}
           barStyle={'dark-content'}
         />
-        <Header right Title={'Member List'}  search/>
+        <Header right Title={'Member List'}  search showBack/>
   
         <ImageBackground
           source={

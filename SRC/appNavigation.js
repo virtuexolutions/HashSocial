@@ -3,7 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import navigationService from './navigationService';
 import {useSelector} from 'react-redux';
-import {Image} from 'react-native';
+import {Image, View} from 'react-native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import LoginScreen from './Screens/LoginScreen';
 import ResetPassword from './Screens/ResetPassword';
@@ -29,7 +29,7 @@ import BubbleDetail from './Screens/BubbleDetail';
 import Feeds from './Screens/Feeds';
 import HomeScreen from './Screens/HomeScreen';
 import Color from './Assets/Utilities/Color';
-import {windowHeight} from './Utillity/utils';
+import {windowHeight, windowWidth} from './Utillity/utils';
 import {moderateScale} from 'react-native-size-matters';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -39,6 +39,7 @@ import EmptyScreen from './Screens/EmptyScreen';
 import AccountDetails from './Screens/AccountDetails';
 import FeedList from './Screens/FeedList';
 import MemberList from './Screens/MemberList';
+import { profilePicUrl } from './Config';
 
 // import AccountSetting from './Screens/AccountSetting';
 // import HomeScreen from './Screens/HomeScreen';
@@ -78,6 +79,9 @@ const AppNavigator = () => {
           initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
+          <RootNav.Screen name="HomeScreen" component={HomeScreen} />
+
+          
           <RootNav.Screen name="FeedList" component={FeedList} />
           <RootNav.Screen name="Feeds" component={Feeds} />
           <RootNav.Screen name="BubbleSearch" component={BubbleSearch} />
@@ -111,7 +115,10 @@ const AppNavigator = () => {
 
 export const TabNavigation = () => {
   const userRole = useSelector(state => state.commonReducer.selectedRole);
+  const privacy = useSelector(state => state.authReducer.privacy);
+
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  console.log("🚀 ~ file: appNavigation.js:119 ~ TabNavigation ~ themeColor:", themeColor)
   console.log(
     '🚀 ~ file: appNavigation.js:83 ~ TabNavigation ~ userRole:',
     userRole,
@@ -126,33 +133,50 @@ export const TabNavigation = () => {
           let color = themeColor[1];
           let size = moderateScale(20, 0.3);
           let type = Ionicons;
+         let borderWidth = 0
 
           if (route.name === 'HomeScreen') {
             iconName = require('./Assets/Images/home.png');
             color = focused ? themeColor[1] : Color.themeLightGray;
-            size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
+            size = focused ? moderateScale(23, 0.3) : moderateScale(20, 0.3);
+            borderWidth = focused ? 5 : 0
           } else if (route.name === 'Posting') {
-            iconName = require('./Assets/Images/plus.png');
+            iconName =  privacy == 'private'
+            ?  require('./Assets/Images/add1.png') : require('./Assets/Images/add.png') 
 
-            color = focused ? themeColor[1] : Color.themeLightGray;
-            size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
+            color = focused ? 'none' : 'none';
+            size = focused ? moderateScale(55, 0.3) : moderateScale(35, 0.3);
+            borderWidth = focused ? 5 : 0
           } else if (route.name === 'BubbleSearch') {
             // type = AntDesign;
             iconName = require('./Assets/Images/loading.png');
             color = focused ? themeColor[1] : Color.themeLightGray;
-            size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
+            size = focused ? moderateScale(23, 0.3) : moderateScale(20, 0.3);
+            borderWidth = focused ? 5 : 0
           } else if (route.name === 'Inbox') {
             type = Ionicons;
             iconName = require('./Assets/Images/messenger.png');
 
             color = focused ? themeColor[1] : Color.themeLightGray;
-            size = focused ? moderateScale(30, 0.3) : moderateScale(20, 0.3);
+            size = focused ? moderateScale(23, 0.3) : moderateScale(20, 0.3);
+            borderWidth = focused ? 5 : 0
           } else {
             iconName = require('./Assets/Images/profile.png');
             color = focused ? themeColor[1] : Color.themeLightGray;
-            size = focused ? moderateScale(25, 0.3) : moderateScale(20, 0.3);
+            size = focused ? moderateScale(23, 0.3) : moderateScale(20, 0.3);
+            borderWidth = focused ? 5 : 0
           }
           return (
+            <View style={{
+              height : '90%',
+              borderBottomWidth : borderWidth,
+              justifyContent : 'center',
+              borderColor : themeColor[1],
+              // backgroundColor : 'red',
+              width : windowWidth * 0.18,
+              alignItems : 'center',
+            }}>
+
             <Image
               source={iconName}
               style={{
@@ -162,11 +186,14 @@ export const TabNavigation = () => {
                 // color:'white',
                 // backgroundColor:themeColor[1]
               }}
-            />
+              />
+              </View>
           );
         },
         tabBarShowLabel: false,
+      
         tabBarStyle: {
+          position: 'absolute',
           // backgroundColor:'black',
           shadowColor: '#000',
           shadowOffset: {
@@ -177,10 +204,17 @@ export const TabNavigation = () => {
           shadowRadius: 6.68,
 
           elevation: 11,
-          // borderTopRightRadius: moderateScale(30, 0.6),
-          // borderTopLeftRadius: moderateScale(30, 0.6),
+          borderTopRightRadius: moderateScale(30, 0.6),
+          borderTopLeftRadius: moderateScale(30, 0.6),
           height: windowHeight * 0.08,
+          overflow : 'hidden'
+          // backgroundColor : 'red'
+          
         },
+      
+        // headerBackgroundContainerStyle :{
+        //   backgroundColor :'red'
+        // }
       })}>
       <Tabs.Screen name={'HomeScreen'} component={HomeScreen} />
       <Tabs.Screen name={'BubbleSearch'} component={BubbleSearch} />

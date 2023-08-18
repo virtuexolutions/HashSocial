@@ -40,7 +40,7 @@ const Profile = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Create Profile'}  search/>
+      <Header right Title={'Create Profile'}  search showBack/>
 
       <ImageBackground
         source={privacy == 'private' ? require('../Assets/Images/theme2.jpg'): require('../Assets/Images/Main.png')}

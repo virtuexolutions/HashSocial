@@ -65,7 +65,7 @@ const Bubble = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title="Bubble" search />
+      <Header right Title="Bubble" search showBack />
       <ImageBackground
         source={
           privacy == 'private'

@@ -74,7 +74,7 @@ const ProfileList = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Profile List'} search />
+      <Header right Title={'Profile List'} search showBack/>
 
       <ImageBackground
         source={

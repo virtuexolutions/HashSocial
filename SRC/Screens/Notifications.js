@@ -67,7 +67,7 @@ const Notifications = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Notifications'} search />
+      <Header right Title={'Notifications'} search showBack />
 
       <ImageBackground
         source={

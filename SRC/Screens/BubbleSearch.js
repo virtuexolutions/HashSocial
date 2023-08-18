@@ -91,6 +91,17 @@ const BubbleSearch = () => {
       name: 'Author books',
       Tags: '#Architecture',
     },
+    {
+      id: 10,
+      image: require('../Assets/Images/Ellipse6.png'),
+      name: 'bolging',
+      Tags: '#Architecture',
+    }, {
+      id: 11,
+      image: require('../Assets/Images/Ellipse2.png'),
+      name: 'Author books',
+      Tags: '#Architecture',
+    },
    
   ];
   return (
@@ -151,8 +162,10 @@ const BubbleSearch = () => {
         <View style={{width: windowWidth, marginBottom:moderateScale(35,.3) }}>
           <FlatList
             data={SearchData}
+            showsHorizontalScrollIndicator={false}
             contentContainerStyle={{
               marginBottom: moderateScale(10, 0.3),
+              paddingBottom:moderateScale(130,.6),
               marginTop:moderateScale(10,.3)
             }}
             renderItem={({item, index}) => {

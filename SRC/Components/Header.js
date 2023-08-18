@@ -9,7 +9,9 @@ import CustomText from './CustomText';
 import CustomImage from './CustomImage';
 const {height, width} = Dimensions.get('window');
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather'
+import Entypo from 'react-native-vector-icons/Entypo'
 import {useDispatch, useSelector} from 'react-redux';
 import navigationService from '../navigationService';
 import Modal from 'react-native-modal';
@@ -24,6 +26,7 @@ const Header = props => {
   const [modalVisible, setModalVisible] = useState(false);
   console.log('🚀 ~ file: Header.js:19 ~ Header ~ modalVisible:', modalVisible);
   const dispatch = useDispatch();
+  const navigation = useNavigation()
   const modalData = [
     {
       name: 'Notifications',
@@ -73,13 +76,17 @@ const Header = props => {
         }}>
         {showBack ? (
           <Icon
-            name={'left'}
-            as={FontAwesome}
-            size={moderateScale(15, 0.6)}
-            color={Color.white}
+            name={'chevron-left'}
+            as={Feather}
+            size={moderateScale(28, 0.6)}
+            color={Color.themeColor}
+            onPress={()=>{
+              navigation.goBack()
+            }}
             style={{
               position: 'absolute',
-              left: moderateScale(20, 0.6),
+              left: moderateScale(15, 0.6),
+              // backgroundColor:'red',
               // width : moderateScale(100,0.6),
               // height : windowHeight * 0.1,
             }}

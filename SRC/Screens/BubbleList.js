@@ -77,7 +77,7 @@ const BubbleList = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Bubble List'}  search/>
+      <Header right Title={'Bubble List'}  search showBack />
 
       <ImageBackground
         source={

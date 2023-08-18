@@ -18,7 +18,9 @@ const BubbleDetail = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Bubble Details'} search />
+      <Header right
+       Title={'Bubble Details'} search
+       showBack/>
 
       <ImageBackground
         source={
