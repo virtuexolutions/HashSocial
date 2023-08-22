@@ -79,7 +79,7 @@ const Header = props => {
             name={'chevron-left'}
             as={Feather}
             size={moderateScale(28, 0.6)}
-            color={Color.themeColor}
+            color={themeColor[1]}
             onPress={()=>{
               navigation.goBack()
             }}
