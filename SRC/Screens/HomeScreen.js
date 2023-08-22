@@ -18,7 +18,7 @@ import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from '../Components/CustomText';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
-import {Icon, ScrollView, theme} from 'native-base';
+import {Icon, ScrollView} from 'native-base';
 import Color from '../Assets/Utilities/Color';
 import CustomImage from '../Components/CustomImage';
 import ImagePickerModal from '../Components/ImagePickerModal';
@@ -30,15 +30,11 @@ import {BlurView} from '@react-native-community/blur';
 import CustomButton from '../Components/CustomButton';
 import {ActivityIndicator} from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import LinearGradient from 'react-native-linear-gradient';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const HomeScreen = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
-  console.log(
-    '🚀 ~ file: HomeScreen.js:38 ~ HomeScreen ~ themeColor:',
-    themeColor,
-  );
   const data = props?.route?.params?.data;
   const [clicked, setclicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -50,6 +46,7 @@ const HomeScreen = props => {
   const [animationStopped, setAnimationStopped] = useState(false);
 
   const backRef = useRef(null);
+  const [rotationAngle, setRotationAngle] = useState(0)
 
   const [content, setContent] = useState([
     {
@@ -162,24 +159,10 @@ const HomeScreen = props => {
       id: 4,
       image: require('../Assets/Images/dummyUser1.png'),
     },
-    {
-      id: 5,
-      image: require('../Assets/Images/dummyman4.png'),
-    },
-    {
-      id: 6,
-      image: require('../Assets/Images/dummyman1.png'),
-    },
-    {
-      id: 7,
-      image: require('../Assets/Images/dummyProfile.png'),
-    },
-    {
-      id: 8,
-      image: require('../Assets/Images/dummyUser1.png'),
-    },
   ]);
 
+
+  
   const animateSideContainer = () => {
     backRef.current?.animate('fadeInLeft', 2000);
   };
@@ -251,87 +234,64 @@ const HomeScreen = props => {
             positon: 'absolute',
             overflow: 'hidden',
             flexDirection: 'row',
-            // backgroundColor: 'rgba(0,0,0,.6)',
+            backgroundColor: 'rgba(0,0,0,.6)',
           }}>
           <Animatable.View
             ref={backRef}
             style={{
-              // marginTop : 10,
               width: windowWidth,
               height: windowHeight * 0.9,
               position: 'absolute',
               flexDirection: 'row',
-              backgroundColor: 'rgba(0,0,0,0.6)',
             }}>
-            <LinearGradient
+            <View
               style={{
                 width: windowWidth * 0.1,
-                height: windowHeight * 0.9,
-
+                height: windowHeight * 0.8,
+                backgroundColor: Color.themeColor1,
                 alignItems: 'center',
                 zIndex: 1,
                 left: 0,
                 position: 'absolute',
                 justifyContent: 'center',
-              }}
-              // start={{x: 0, y: 0}}
-              // end={{x: 1, y: 0}}
-              // colors={['#43ebeb','#00d8e1', '#00bac7', '#39e9e9']}
-              colors={themeColor}>
-              <View
-                style={{
-                  width: windowWidth * 0.1,
-                  height: windowHeight * 0.9,
-                  // backgroundColor: 'rgba(0,216,225,255)',
-                  alignItems: 'center',
-                  zIndex: 1,
-                  left: 0,
-                  position: 'absolute',
-                  justifyContent: 'center',
-                }}>
-                {profiles.map(item => {
-                  return (
-                    <View
+              }}>
+              {profiles.map(item => {
+                return (
+                  <View
+                    style={{
+                      width: windowWidth * 0.08,
+                      height: windowWidth * 0.08,
+                      backgroundColor: 'white',
+                      overflow: 'hidden',
+                      // borderColor: '#33dd50',
+                      // borderWidth: 2,
+                      borderRadius: (windowWidth * 0.08) / 2,
+                      marginTop: moderateScale(12, 0.3),
+                      marginLeft: moderateScale(5, 0.3),
+                      marginRight: moderateScale(8, 0.3),
+                    }}>
+                    <CustomImage
+                      source={item?.image}
                       style={{
-                        width: windowWidth * 0.08,
-                        height: windowWidth * 0.08,
-                        backgroundColor: 'white',
-                        overflow: 'hidden',
-                        // borderColor: '#33dd50',
-                        // borderWidth: 2,
-                        borderRadius: (windowWidth * 0.08) / 2,
-                        marginTop: moderateScale(20, 0.3),
-                        marginLeft: moderateScale(5, 0.3),
-                        marginRight: moderateScale(8, 0.3),
-                      }}>
-                      <CustomImage
-                        source={item?.image}
-                        style={{
-                          height: '100%',
-                          width: '100%',
-                        }}
-                      />
-                    </View>
-                  );
-                })}
-              </View>
-            </LinearGradient>
+                        height: '100%',
+                        width: '100%',
+                      }}
+                    />
+                  </View>
+                );
+              })}
+            </View>
             <Image
-              source={
-                privacy == 'private'
-                  ? require('../Assets/Images/animatedImage1.png')
-                  : require('../Assets/Images/animatedImage.png')
-              }
+              source={require('../Assets/Images/animatedImage.png')}
               resizeMode={'cover'}
               style={{
-                width: '100%',
-                height: windowHeight * 0.8,
+                width: '90%',
+                height: '100%',
                 position: 'absolute',
                 zIndex: 0,
-                top: 0,
+                top: -40,
                 // left:35,
-                left: 1,
-                // backgroundColor : 'red'
+                right: 5,
               }}></Image>
           </Animatable.View>
           <GestureHandlerRootView>
@@ -355,21 +315,68 @@ const HomeScreen = props => {
                 largeImageSize={width / 2.5}
                 content={content}
                 contentContainerStyle={{
-                  borderWidth: 2,
+                  borderWidth: 3,
                 }}
                 setHighlightedIcon={setHighlightedIcon}
                 setAnimationStopped={setAnimationStopped}
+                rotationAngle={rotationAngle}
               />
             </View>
+           
           </GestureHandlerRootView>
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              right: 0,
+              // top:10,
+              bottom: 150,
+              // backgroundColor: 'white',
+              // zIndex: 1,
+            }}
+            onPress={() => {
+              console.log('rotate=======>>>');
+              setRotationAngle(prev => prev + 180);
+            }}>
+            <CustomButton
+              iconName={'rotate-360'}
+              iconType={MaterialCommunityIcons}
+              // bgColor={themeColor[1]}
+              // borderColor={'white'}
+              // borderWidth={1}
+              iconStyle={{
+                color: 'white',
+                // backgroundColor:'purple',
+
+                marginRight: moderateScale(5, 0.3),
+                width: windowWidth * 0.06,
+                height: windowHeight * 0.015,
+                fontSize: moderateScale(20, 0.6),
+              }}
+              textColor={Color.white}
+              // bgColor={'black'}
+              onPress={() => {
+                console.log('rotate=======>>>');
+                setRotationAngle(prev => prev + 180);
+              }}
+              width={windowWidth * 0.3}
+              height={windowHeight * 0.09}
+              text={'change Side'}
+              fontSize={moderateScale(12, 0.3)}
+              borderRadius={moderateScale(30, 0.3)}
+              // textTransform={'capitalize'}
+              // isGradient={true}
+              // marginTop={moderateScale(12, 0.3)}
+            />
+          </TouchableOpacity>
         </View>
+
       </ImageBackground>
       {clicked && (
         <BlurView
           // intensity={100}
           style={{
             position: 'absolute',
-            height: windowHeight * 0.86,
+            height: windowHeight * 0.87,
             width: windowWidth,
             justifyContent: 'center',
             alignItems: 'center',
@@ -422,27 +429,6 @@ const HomeScreen = props => {
                 // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
                 setclicked(false);
                 navigationService.navigate('Bubble');
-              }}
-              bgColor={['#FFFFFF', '#FFFFFF']}
-              borderRadius={moderateScale(30, 0.3)}
-              isGradient
-            />
-            <CustomButton
-              text={
-                isLoading ? (
-                  <ActivityIndicator color={'#01E8E3'} size={'small'} />
-                ) : (
-                  'Close'
-                )
-              }
-              textColor={themeColor[1]}
-              width={windowWidth * 0.7}
-              height={windowHeight * 0.06}
-              marginTop={moderateScale(20, 0.3)}
-              onPress={() => {
-                // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
-                setclicked(false);
-                // navigationService.navigate('Bubble');
               }}
               bgColor={['#FFFFFF', '#FFFFFF']}
               borderRadius={moderateScale(30, 0.3)}
