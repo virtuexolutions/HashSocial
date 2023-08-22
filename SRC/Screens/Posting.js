@@ -12,7 +12,7 @@ import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
 import CustomButton from '../Components/CustomButton';
-import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux'; 
 import navigationService from '../navigationService';
 // import { Header } from 'react-native/Libraries/NewAppScreen';
 

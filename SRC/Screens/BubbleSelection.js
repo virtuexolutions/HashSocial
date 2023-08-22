@@ -121,8 +121,8 @@ const BubbleSelection = () => {
             height={windowHeight * 0.04}
             onPress={() => {
               if(BubbleImageArraty.some(item=> item.added == true)){
-                ToastAndroid.show('Saved', ToastAndroid.SHORT);
                 dispatch(setBubbleSelected(true))
+                ToastAndroid.show('Saved', ToastAndroid.SHORT);
                 // navigationService.navigate('TabNavigation')
               }
               else{
