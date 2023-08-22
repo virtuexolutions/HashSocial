@@ -46,7 +46,9 @@ const Header = props => {
         navigationService.navigate('BubbleList');
       },
     },
-    {name: 'Membership', onPress: () => {}},
+    {name: 'Membership', onPress: () => {
+      navigationService.navigate('SubscriptionScreen');
+     }},
     {name: 'Privacy', onPress: () => {}},
     {
       name: 'settings',

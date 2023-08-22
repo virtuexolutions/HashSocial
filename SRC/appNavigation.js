@@ -40,6 +40,7 @@ import AccountDetails from './Screens/AccountDetails';
 import FeedList from './Screens/FeedList';
 import MemberList from './Screens/MemberList';
 import { profilePicUrl } from './Config';
+import SubscriptionScreen from './Screens/SubscriptionScreen';
 
 // import AccountSetting from './Screens/AccountSetting';
 // import HomeScreen from './Screens/HomeScreen';
@@ -104,6 +105,7 @@ const AppNavigator = () => {
           <RootNav.Screen name="Signup" component={Signup} />
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
+          <RootNav.Screen name="SubscriptionScreen" component={SubscriptionScreen} />
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
         </RootNav.Navigator>
       </NavigationContainer>
