@@ -31,6 +31,7 @@ import CustomButton from '../Components/CustomButton';
 import {ActivityIndicator} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import LinearGradient from 'react-native-linear-gradient';
 
 const HomeScreen = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -159,6 +160,22 @@ const HomeScreen = props => {
       id: 4,
       image: require('../Assets/Images/dummyUser1.png'),
     },
+    {
+      id: 5,
+      image: require('../Assets/Images/dummyman4.png'),
+    },
+    {
+      id: 6,
+      image: require('../Assets/Images/dummyman1.png'),
+    },
+    {
+      id: 7,
+      image: require('../Assets/Images/dummyProfile.png'),
+    },
+    {
+      id: 8,
+      image: require('../Assets/Images/dummyUser1.png'),
+    },
   ]);
 
 
@@ -244,11 +261,26 @@ const HomeScreen = props => {
               position: 'absolute',
               flexDirection: 'row',
             }}>
+                <LinearGradient
+              style={{
+                width: windowWidth * 0.1,
+                height: windowHeight * 0.9,
+
+                alignItems: 'center',
+                zIndex: 1,
+                left: 0,
+                position: 'absolute',
+                justifyContent: 'center',
+              }}
+              // start={{x: 0, y: 0}}
+              // end={{x: 1, y: 0}}
+              // colors={['#43ebeb','#00d8e1', '#00bac7', '#39e9e9']}
+              colors={themeColor}>
             <View
               style={{
                 width: windowWidth * 0.1,
-                height: windowHeight * 0.8,
-                backgroundColor: Color.themeColor1,
+                height: windowHeight * 0.9,
+                // backgroundColor: themeColor[1],
                 alignItems: 'center',
                 zIndex: 1,
                 left: 0,
@@ -281,8 +313,12 @@ const HomeScreen = props => {
                 );
               })}
             </View>
+            </LinearGradient>
             <Image
-              source={require('../Assets/Images/animatedImage.png')}
+              source={ privacy == 'private'
+              ?require('../Assets/Images/animatedImage1.png'):
+              require('../Assets/Images/animatedImage.png')
+            }
               resizeMode={'cover'}
               style={{
                 width: '90%',
@@ -429,6 +465,27 @@ const HomeScreen = props => {
                 // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
                 setclicked(false);
                 navigationService.navigate('Bubble');
+              }}
+              bgColor={['#FFFFFF', '#FFFFFF']}
+              borderRadius={moderateScale(30, 0.3)}
+              isGradient
+            />
+             <CustomButton
+              text={
+                isLoading ? (
+                  <ActivityIndicator color={'#01E8E3'} size={'small'} />
+                ) : (
+                  'Close'
+                )
+              }
+              textColor={themeColor[1]}
+              width={windowWidth * 0.7}
+              height={windowHeight * 0.06}
+              marginTop={moderateScale(20, 0.3)}
+              onPress={() => {
+                // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
+                setclicked(false);
+                // navigationService.navigate('Bubble');
               }}
               bgColor={['#FFFFFF', '#FFFFFF']}
               borderRadius={moderateScale(30, 0.3)}
