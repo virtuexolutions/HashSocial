@@ -315,6 +315,7 @@ const HomeScreen = props => {
                   );
                 })}
               </View>
+              
             </LinearGradient>
             <Image
               source={
