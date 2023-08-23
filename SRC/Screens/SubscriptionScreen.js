@@ -21,6 +21,7 @@ import {
   import Color from '../Assets/Utilities/Color';
   import TextInputWithTitle from '../Components/TextInputWithTitle';
   import { useSelector } from 'react-redux';
+import SubscriptionCard from '../Components/SubscriptionCard';
 
 const SubscriptionScreen = () => {
     const themeColor = useSelector(state => state.authReducer.ThemeColor);
@@ -31,7 +32,7 @@ const SubscriptionScreen = () => {
       backgroundColor={Color.white}
       barStyle={'dark-content'}
     />
-    <Header right Title={'Search'} search />
+    <Header showBack Title={'MemberShip plan'}  />
 
     <ImageBackground
      source={
@@ -45,6 +46,59 @@ const SubscriptionScreen = () => {
         height: windowHeight * 0.9,
         // alignItems: 'center',
       }}>
+        <FlatList 
+        data={[
+            {
+                image : require('../Assets/Images/gold.png'),
+                title : 'Gold membership',
+                expiring : 'expiring in two days',
+                Description : 'Lorem ipsum dolor lorem ipsum dolor',
+                price : 53 ,
+                actualPrice : 50,
+            },
+            {
+                image : require('../Assets/Images/platinum.png'),
+                title : 'Platinum membership',
+                expiring : null,
+                Description : 'Lorem ipsum dolor lorem ipsum dolor',
+                price : 36 ,
+                actualPrice : 30,
+            },
+            {
+                image : require('../Assets/Images/gold.png'),
+                title : 'silver membership',
+                expiring : null,
+                Description : 'Lorem ipsum dolor lorem ipsum dolor',
+                price : 23 ,
+                actualPrice : 20,
+            }
+        ]}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+            paddingVertical : moderateScale(30,0.6),
+            alignItems : 'center'
+        }}
+        style={{
+            width : windowWidth
+        }}
+        renderItem={({item , index})=>{
+            return(
+                <SubscriptionCard  item={item} />
+            )
+        }}
+        ListHeaderComponent={()=>{
+            return(
+                <CustomText isBold style={{
+                    color : Color.white,
+                    width : windowWidth * 0.9,
+                    textAlign : 'left',
+                    fontSize : moderateScale(17,0.6),
+                    marginBottom : moderateScale(10,0.3)
+                }}>Select a membership plan</CustomText>
+            )
+        }}
+        
+        />
         </ImageBackground></>
   )
 }

@@ -39,6 +39,7 @@ const HomeScreen = props => {
   const data = props?.route?.params?.data;
   const [clicked, setclicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [alignment , setAlignment] = useState('left')
   const [highlightedIcon, setHighlightedIcon] = useState(null);
   console.log(
     '🚀 ~ file: HomeScreen.js:40 ~ HomeScreen ~ highlightedIcon:',
@@ -181,7 +182,7 @@ const HomeScreen = props => {
 
   
   const animateSideContainer = () => {
-    backRef.current?.animate('fadeInLeft', 2000);
+    backRef.current?.animate(alignment == 'left' ? 'fadeInLeft' : 'fadeInRight', 2000);
   };
 
   useEffect(() => {
@@ -262,16 +263,17 @@ const HomeScreen = props => {
               flexDirection: 'row',
             }}>
                 <LinearGradient
-              style={{
+              style={[{
                 width: windowWidth * 0.1,
                 height: windowHeight * 0.9,
 
                 alignItems: 'center',
                 zIndex: 1,
-                left: 0,
+                
+                // right : 0,
                 position: 'absolute',
                 justifyContent: 'center',
-              }}
+              } , alignment == 'left' && {left: 0} , alignment == 'right' && {right: 0}]}
               // start={{x: 0, y: 0}}
               // end={{x: 1, y: 0}}
               // colors={['#43ebeb','#00d8e1', '#00bac7', '#39e9e9']}
@@ -320,15 +322,16 @@ const HomeScreen = props => {
               require('../Assets/Images/animatedImage.png')
             }
               resizeMode={'cover'}
-              style={{
+              style={[{
                 width: '90%',
                 height: '100%',
                 position: 'absolute',
                 zIndex: 0,
                 top: -40,
+                transform: [{ scaleX: alignment == 'left'  ? 1 : -1 }],
                 // left:35,
-                right: 5,
-              }}></Image>
+                
+              },alignment == 'left' && {right: 5} , alignment == 'right' && {left : 5}]}></Image>
           </Animatable.View>
           <GestureHandlerRootView>
             <View
@@ -355,20 +358,20 @@ const HomeScreen = props => {
                 }}
                 setHighlightedIcon={setHighlightedIcon}
                 setAnimationStopped={setAnimationStopped}
-                rotationAngle={rotationAngle}
+                rotationAngle={rotationAngle}alignment={alignment}
               />
             </View>
            
           </GestureHandlerRootView>
           <TouchableOpacity
-            style={{
+            style={[{
               position: 'absolute',
-              right: 0,
+            
               // top:10,
-              bottom: 150,
+              bottom: 100,
               // backgroundColor: 'white',
               // zIndex: 1,
-            }}
+            } ,alignment == 'left' && {  right: 0} ,alignment == 'right' && {left : 0} ]}
             onPress={() => {
               console.log('rotate=======>>>');
               setRotationAngle(prev => prev + 180);
@@ -376,10 +379,7 @@ const HomeScreen = props => {
             <CustomButton
               iconName={'rotate-360'}
               iconType={MaterialCommunityIcons}
-              // bgColor={themeColor[1]}
-              // borderColor={'white'}
-              // borderWidth={1}
-              iconStyle={{
+             iconStyle={{
                 color: 'white',
                 // backgroundColor:'purple',
 
@@ -393,15 +393,14 @@ const HomeScreen = props => {
               onPress={() => {
                 console.log('rotate=======>>>');
                 setRotationAngle(prev => prev + 180);
+                setAlignment(alignment == 'left' ? 'right' : 'left')
               }}
               width={windowWidth * 0.3}
               height={windowHeight * 0.09}
               text={'change Side'}
               fontSize={moderateScale(12, 0.3)}
               borderRadius={moderateScale(30, 0.3)}
-              // textTransform={'capitalize'}
-              // isGradient={true}
-              // marginTop={moderateScale(12, 0.3)}
+              
             />
           </TouchableOpacity>
         </View>

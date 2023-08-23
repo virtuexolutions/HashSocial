@@ -32,28 +32,33 @@ const Header = props => {
       name: 'Notifications',
       onPress: () => {
         navigationService.navigate('Notifications');
+        setModalVisible(!modalVisible);
       },
     },
     {
       name: 'Profile',
       onPress: () => {
         navigationService.navigate('Profile');
+        setModalVisible(!modalVisible);
       },
     },
     {
       name: 'Bubble List',
       onPress: () => {
         navigationService.navigate('BubbleList');
+        setModalVisible(!modalVisible);
       },
     },
     {name: 'Membership', onPress: () => {
       navigationService.navigate('SubscriptionScreen');
+      setModalVisible(!modalVisible);
      }},
     {name: 'Privacy', onPress: () => {}},
     {
       name: 'settings',
       onPress: () => {
         navigationService.navigate('AccountSetting');
+        setModalVisible(!modalVisible);
       },
     },
     {
@@ -61,6 +66,7 @@ const Header = props => {
       onPress: () => {
         dispatch(setUserToken(null))
         dispatch(setBubbleSelected(false))
+        setModalVisible(!modalVisible);
         navigationService.navigate('LoginScreen');
       },
     },
