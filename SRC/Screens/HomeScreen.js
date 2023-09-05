@@ -252,7 +252,7 @@ const HomeScreen = props => {
             positon: 'absolute',
             overflow: 'hidden',
             flexDirection: 'row',
-            backgroundColor: 'rgba(0,0,0,.6)',
+            backgroundColor: 'rgba(0,0,0,.8)',
           }}>
           <Animatable.View
             ref={backRef}
@@ -359,6 +359,7 @@ const HomeScreen = props => {
                 setHighlightedIcon={setHighlightedIcon}
                 setAnimationStopped={setAnimationStopped}
                 rotationAngle={rotationAngle}alignment={alignment}
+                elevation={5}
               />
             </View>
            
