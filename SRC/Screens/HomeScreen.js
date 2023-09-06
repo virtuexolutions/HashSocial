@@ -139,6 +139,71 @@ const HomeScreen = props => {
         // navigationService.navigate('Bubble');
       },
     },
+    {
+      image: (
+        <Image
+          source={require('../Assets/Images/gallery3.png')}
+          resizeMode="cover"
+          style={style.icon}
+        />
+      ),
+      onPress: () => {
+        setclicked(true);
+        // navigationService.navigate('Bubble');
+      },
+    },
+    {
+      image: (
+        <Image
+          source={require('../Assets/Images/gallery2.png')}
+          resizeMode="cover"
+          style={style.icon}
+        />
+      ),
+      onPress: () => {
+        setclicked(true);
+        // navigationService.navigate('Bubble');
+      },
+    },
+    {
+      image: (
+        <Image
+          source={require('../Assets/Images/gallery1.png')}
+          resizeMode="cover"
+          style={style.icon}
+        />
+      ),
+      onPress: () => {
+        setclicked(true);
+        // navigationService.navigate('Bubble');
+      },
+    },
+    {
+      image: (
+        <Image
+          source={require('../Assets/Images/gallery4.png')}
+          resizeMode="cover"
+          style={style.icon}
+        />
+      ),
+      onPress: () => {
+        setclicked(true);
+        // navigationService.navigate('Bubble');
+      },
+    },
+    {
+      image: (
+        <Image
+          source={require('../Assets/Images/gallery5.png')}
+          resizeMode="cover"
+          style={style.icon}
+        />
+      ),
+      onPress: () => {
+        setclicked(true);
+        // navigationService.navigate('Bubble');
+      },
+    },
   ]);
   console.log(
     '🚀 ~ file: HomeScreen.js:65 ~ HomeScreen ~ content:',
