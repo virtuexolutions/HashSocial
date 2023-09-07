@@ -68,13 +68,14 @@ const ProfileList = () => {
       pending: false,
     },
   ];
+
   return (
     <>
       <CustomStatusBar
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Profile List'} search showBack/>
+      <Header right Title={'Profile List'} showBack search />
 
       <ImageBackground
         source={

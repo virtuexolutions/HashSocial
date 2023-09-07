@@ -30,8 +30,9 @@ import {BlurView} from '@react-native-community/blur';
 import CustomButton from '../Components/CustomButton';
 import {ActivityIndicator} from 'react-native';
 import * as Animatable from 'react-native-animatable';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons'
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import LinearGradient from 'react-native-linear-gradient';
+import RequestModal from '../Components/RequestModal';
 
 const HomeScreen = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -39,8 +40,9 @@ const HomeScreen = props => {
   const data = props?.route?.params?.data;
   const [clicked, setclicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [alignment , setAlignment] = useState('left')
+  const [alignment, setAlignment] = useState('left');
   const [highlightedIcon, setHighlightedIcon] = useState(null);
+  const [isVisible, setIsVisible] = useState(false)
   console.log(
     '🚀 ~ file: HomeScreen.js:40 ~ HomeScreen ~ highlightedIcon:',
     highlightedIcon,
@@ -48,10 +50,11 @@ const HomeScreen = props => {
   const [animationStopped, setAnimationStopped] = useState(false);
 
   const backRef = useRef(null);
-  const [rotationAngle, setRotationAngle] = useState(0)
+  const [rotationAngle, setRotationAngle] = useState(0);
 
   const [content, setContent] = useState([
     {
+      bubble: true,
       image: (
         <Image
           source={require('../Assets/Images/gallery3.png')}
@@ -71,6 +74,7 @@ const HomeScreen = props => {
       },
     },
     {
+      bubble: false,
       image: (
         <Image
           source={require('../Assets/Images/avatar.png')}
@@ -85,6 +89,7 @@ const HomeScreen = props => {
       },
     },
     {
+      bubble: false,
       image: (
         <Image
           source={require('../Assets/Images/dummyman1.png')}
@@ -99,6 +104,7 @@ const HomeScreen = props => {
       },
     },
     {
+      bubble: false,
       image: (
         <Image
           source={require('../Assets/Images/bubble1.png')}
@@ -113,6 +119,7 @@ const HomeScreen = props => {
       },
     },
     {
+      bubble: true,
       image: (
         <Image
           source={require('../Assets/Images/fitness2.png')}
@@ -127,6 +134,7 @@ const HomeScreen = props => {
       },
     },
     {
+      bubble: true,
       image: (
         <Image
           source={require('../Assets/Images/gallery7.png')}
@@ -140,6 +148,7 @@ const HomeScreen = props => {
       },
     },
     {
+      bubble: false,
       image: (
         <Image
           source={require('../Assets/Images/gallery3.png')}
@@ -153,6 +162,7 @@ const HomeScreen = props => {
       },
     },
     {
+      bubble: false,
       image: (
         <Image
           source={require('../Assets/Images/gallery2.png')}
@@ -166,6 +176,7 @@ const HomeScreen = props => {
       },
     },
     {
+      bubble: false,
       image: (
         <Image
           source={require('../Assets/Images/gallery1.png')}
@@ -179,6 +190,7 @@ const HomeScreen = props => {
       },
     },
     {
+      bubble: false,
       image: (
         <Image
           source={require('../Assets/Images/gallery4.png')}
@@ -192,6 +204,7 @@ const HomeScreen = props => {
       },
     },
     {
+      bubble: true,
       image: (
         <Image
           source={require('../Assets/Images/gallery5.png')}
@@ -205,10 +218,7 @@ const HomeScreen = props => {
       },
     },
   ]);
-  console.log(
-    '🚀 ~ file: HomeScreen.js:65 ~ HomeScreen ~ content:',
-    content?.length,
-  );
+
   const [profiles, setProfiles] = useState([
     {
       id: 1,
@@ -244,10 +254,11 @@ const HomeScreen = props => {
     },
   ]);
 
-
-  
   const animateSideContainer = () => {
-    backRef.current?.animate(alignment == 'left' ? 'fadeInLeft' : 'fadeInRight', 2000);
+    backRef.current?.animate(
+      alignment == 'left' ? 'fadeInLeft' : 'fadeInRight',
+      2000,
+    );
   };
 
   useEffect(() => {
@@ -282,7 +293,7 @@ const HomeScreen = props => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Profile'} search />
+      <Header right Title={'Profile'}  />
 
       <ImageBackground
         source={
@@ -327,76 +338,132 @@ const HomeScreen = props => {
               position: 'absolute',
               flexDirection: 'row',
             }}>
-                <LinearGradient
-              style={[{
-                width: windowWidth * 0.1,
-                height: windowHeight * 0.9,
+            <LinearGradient
+              style={[
+                {
+                  width: windowWidth * 0.1,
+                  height: windowHeight * 0.9,
 
-                alignItems: 'center',
-                zIndex: 1,
-                
-                // right : 0,
-                position: 'absolute',
-                justifyContent: 'center',
-              } , alignment == 'left' && {left: 0} , alignment == 'right' && {right: 0}]}
+                  alignItems: 'center',
+                  zIndex: 1,
+
+                  // right : 0,
+                  position: 'absolute',
+                  justifyContent: 'center',
+                },
+                alignment == 'left' && {left: 0},
+                alignment == 'right' && {right: 0},
+              ]}
               // start={{x: 0, y: 0}}
               // end={{x: 1, y: 0}}
               // colors={['#43ebeb','#00d8e1', '#00bac7', '#39e9e9']}
               colors={themeColor}>
-            <View
-              style={{
-                width: windowWidth * 0.1,
-                height: windowHeight * 0.9,
-                // backgroundColor: themeColor[1],
-                alignItems: 'center',
-                zIndex: 1,
-                left: 0,
-                position: 'absolute',
-                justifyContent: 'center',
-              }}>
-              {profiles.map(item => {
-                return (
-                  <View
-                    style={{
-                      width: windowWidth * 0.08,
-                      height: windowWidth * 0.08,
-                      backgroundColor: 'white',
-                      overflow: 'hidden',
-                      // borderColor: '#33dd50',
-                      // borderWidth: 2,
-                      borderRadius: (windowWidth * 0.08) / 2,
-                      marginTop: moderateScale(12, 0.3),
-                      marginLeft: moderateScale(5, 0.3),
-                      marginRight: moderateScale(8, 0.3),
-                    }}>
-                    <CustomImage
-                      source={item?.image}
+              <View
+                style={{
+                  width: windowWidth * 0.1,
+                  height: windowHeight * 0.9,
+                  // backgroundColor: themeColor[1],
+                  alignItems: 'center',
+                  zIndex: 1,
+                  left: 0,
+                  position: 'absolute',
+                  justifyContent: 'center',
+                }}>
+                {profiles.map(item => {
+                  return (
+                    <View
                       style={{
-                        height: '100%',
-                        width: '100%',
-                      }}
-                    />
-                  </View>
-                );
-              })}
-            </View>
+                        width: windowWidth * 0.08,
+                        height: windowWidth * 0.08,
+                        backgroundColor: 'white',
+                        overflow: 'hidden',
+                        // borderColor: item?.bubble ? 'yellow':'blue',
+                        // borderWidth: 2,
+                        borderRadius: (windowWidth * 0.08) / 2,
+                        marginTop: moderateScale(12, 0.3),
+                        marginLeft: moderateScale(5, 0.3),
+                        marginRight: moderateScale(8, 0.3),
+                      }}>
+                      <CustomImage
+                        source={item?.image}
+                        style={{
+                          height: '100%',
+                          width: '100%',
+                        }}
+                      />
+                    </View>
+                  );
+                })}
+              </View>
             </LinearGradient>
             <Image
-              source={ privacy == 'private'
-              ?require('../Assets/Images/animatedImage1.png'):
-              require('../Assets/Images/animatedImage.png')
-            }
+              source={
+                privacy == 'private'
+                  ? require('../Assets/Images/animatedImage1.png')
+                  : require('../Assets/Images/animatedImage.png')
+              }
               resizeMode={'cover'}
-              style={[{
-                width: '90%',
-                height: '100%',
-                position: 'absolute',
-                zIndex: 0,
-                top: -40,
-                transform: [{ scaleX: alignment == 'left'  ? 1 : -1 }],
-                // left:35,
-                
-              },alignment == 'left' && {right: 5} , alignment == 'right' && {left : 5}]}></Image>
+              style={[
+                {
+                  width: '90%',
+                  height: '100%',
+                  position: 'absolute',
+                  zIndex: 0,
+                  top: -40,
+                  transform: [{scaleX: alignment == 'left' ? 1 : -1}],
+                  // left:35,
+                },
+                alignment == 'left' && {right: 5},
+                alignment == 'right' && {left: 5},
+              ]}></Image>
+            <View
+              style={[
+                {
+                  position: 'absolute',
+                  // right: moderateScale(-4, 0.6),
+                  top: '40%',
+                  width: windowWidth * 0.06,
+                  height: windowHeight * 0.025,
+                  // backgroundColor: 'purple',
+                },
+                alignment == 'left'
+                  ? {right: moderateScale(-4, 0.6)}
+                  : {left: moderateScale(-4, 0.6)},
+              ]}>
+              <CustomImage
+                source={require('../Assets/Images/right-arrow.png')}
+                resizeMode={'cover'}
+                style={[
+                  {
+                    width: '100%',
+                    height: '100%',
+                  },
+                  alignment == 'left' && {transform: [{rotate: '180deg'}]},
+                ]}
+              />
+            </View>
+            <View style={[{position: 'absolute', top: '10%', right: 10}, alignment=='left' ? {right:10}: {left:10}]}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    width: 6,
+                    height: 6,
+                    backgroundColor: 'yellow',
+                    marginRight: moderateScale(5, 0.3),
+                  }}></View>
+                <CustomText style={{color: 'white'}}>Bubbles</CustomText>
+              </View>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View
+                  style={{
+                    width: 6,
+                    height: 6,
+                    backgroundColor: '#BF4F51',
+                    marginRight: moderateScale(5, 0.3),
+                  }}></View>
+                <CustomText style={{color: 'white'}}>Feeds</CustomText>
+              </View>
+            </View>
           </Animatable.View>
           <GestureHandlerRootView>
             <View
@@ -423,21 +490,21 @@ const HomeScreen = props => {
                 }}
                 setHighlightedIcon={setHighlightedIcon}
                 setAnimationStopped={setAnimationStopped}
-                rotationAngle={rotationAngle}alignment={alignment}
+                rotationAngle={rotationAngle}
+                alignment={alignment}
                 elevation={5}
               />
             </View>
-           
           </GestureHandlerRootView>
           <TouchableOpacity
-            style={[{
-              position: 'absolute',
-            
-              // top:10,
-              bottom: 100,
-              // backgroundColor: 'white',
-              // zIndex: 1,
-            } ,alignment == 'left' && {  right: 0} ,alignment == 'right' && {left : 0} ]}
+            style={[
+              {
+                position: 'absolute',
+                bottom: 100,
+              },
+              alignment == 'left' && {right: 0},
+              alignment == 'right' && {left: 0},
+            ]}
             onPress={() => {
               console.log('rotate=======>>>');
               setRotationAngle(prev => prev + 180);
@@ -445,7 +512,7 @@ const HomeScreen = props => {
             <CustomButton
               iconName={'rotate-360'}
               iconType={MaterialCommunityIcons}
-             iconStyle={{
+              iconStyle={{
                 color: 'white',
                 // backgroundColor:'purple',
 
@@ -459,18 +526,16 @@ const HomeScreen = props => {
               onPress={() => {
                 console.log('rotate=======>>>');
                 setRotationAngle(prev => prev + 180);
-                setAlignment(alignment == 'left' ? 'right' : 'left')
+                setAlignment(alignment == 'left' ? 'right' : 'left');
               }}
               width={windowWidth * 0.3}
               height={windowHeight * 0.09}
               text={'change Side'}
               fontSize={moderateScale(12, 0.3)}
               borderRadius={moderateScale(30, 0.3)}
-              
             />
           </TouchableOpacity>
         </View>
-
       </ImageBackground>
       {clicked && (
         <BlurView
@@ -540,6 +605,28 @@ const HomeScreen = props => {
                 isLoading ? (
                   <ActivityIndicator color={'#01E8E3'} size={'small'} />
                 ) : (
+                  'Join'
+                )
+              }
+              textColor={themeColor[1]}
+              width={windowWidth * 0.7}
+              height={windowHeight * 0.06}
+              marginTop={moderateScale(20, 0.3)}
+              onPress={() => {
+                setIsVisible(true)
+                // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
+                setclicked(false);
+                // navigationService.navigate('Bubble');
+              }}
+              bgColor={['#FFFFFF', '#FFFFFF']}
+              borderRadius={moderateScale(30, 0.3)}
+              isGradient
+            />
+            <CustomButton
+              text={
+                isLoading ? (
+                  <ActivityIndicator color={'#01E8E3'} size={'small'} />
+                ) : (
                   'Close'
                 )
               }
@@ -559,6 +646,7 @@ const HomeScreen = props => {
           </View>
         </BlurView>
       )}
+      <RequestModal setIsVisible={setIsVisible} isVisible={isVisible} />
     </>
   );
 };

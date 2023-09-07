@@ -11,13 +11,15 @@ import CustomButton from '../Components/CustomButton';
 import Header from '../Components/Header';
 import navigationService from '../navigationService';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
+import TextInputWithTitle from '../Components/TextInputWithTitle';
 
 const AddPost = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const [selectedTab, setSelectedTab] = useState('Tag People');
   const [loading, setLoading] = useState(false);
+  const [description, setDescription] = useState('')
 
   return (
     <>
@@ -25,13 +27,13 @@ const AddPost = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'ADD POST'} search />
+      <Header showBack Title={'ADD POST'} right/>
       <ImageBackground
-       source={
-        privacy == 'private'
-          ? require('../Assets/Images/theme2.jpg')
-          : require('../Assets/Images/Main.png')
-      }
+        source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         style={{
           width: windowWidth,
@@ -44,14 +46,31 @@ const AddPost = () => {
           isBold={true}
           children={' Write Captions'}
         />
-        <CustomText style={styles.text}>
+         <TextInputWithTitle
+              maxLength={2000}
+              secureText={false}
+              placeholder={'Description'}
+              setText={setDescription}
+              value={description}
+              viewHeight={0.22}
+              viewWidth={0.9}
+              inputWidth={0.85}
+              marginTop={moderateScale(5, 0.3)}
+              color={Color.red}
+              border={1}
+              marginLeft ={moderateScale(10,0.3)}
+              borderColor={Color.white}
+              placeholderColor={Color.themeLightGray}
+              multiline
+            />
+        {/* <CustomText style={styles.text}>
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
           since the 1500s, when an unknown printer took a galley of type and
           scrambled it to make a type specimen book. It has survived not only
           five centuries, but also the leap into electronic typesetting,
           remaining essentially unchanged.
-        </CustomText>
+        </CustomText> */}
         <View style={styles.plus}>
           <Icon name="plus" as={Entypo} size={25} color={'black'} />
         </View>
@@ -96,29 +115,30 @@ const AddPost = () => {
             children={'Add Music'}
           />
         </View>
-
-        <CustomButton
-          text={
-            loading ? (
-              <ActivityIndicator color={'#01E8E3'} size={'small'} />
-            ) : (
-              'Post'
-            )
-          }
-          textColor={themeColor[1]}
-          width={windowWidth * 0.7}
-          height={windowHeight * 0.06}
-          marginTop={moderateScale(40, 0.3)}
-          onPress={() => {
-            // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
-            // navigationService.navigate('Signup');
-          }}
-          bgColor={['#FFFFFF', '#FFFFFF']}
-          borderRadius={moderateScale(30, 0.3)}
-          isGradient
-          isBold={true}
-        />
-        <CustomButton
+        <View style={{position: 'absolute', bottom: 70}}>
+          <CustomButton
+            text={
+              loading ? (
+                <ActivityIndicator color={'#01E8E3'} size={'small'} />
+              ) : (
+                'Post'
+              )
+            }
+            textColor={themeColor[1]}
+            width={windowWidth * 0.7}
+            height={windowHeight * 0.06}
+            marginTop={moderateScale(40, 0.3)}
+            onPress={() => {
+              // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
+              // navigationService.navigate('Signup');
+            }}
+            bgColor={['#FFFFFF', '#FFFFFF']}
+            borderRadius={moderateScale(30, 0.3)}
+            isGradient
+            isBold={true}
+          />
+        </View>
+        {/* <CustomButton
           text={
             loading ? (
               <ActivityIndicator color={'#01E8E3'} size={'small'} />
@@ -138,7 +158,7 @@ const AddPost = () => {
           borderRadius={moderateScale(30, 0.3)}
           isGradient
           isBold={true}
-        />
+        /> */}
       </ImageBackground>
     </>
   );

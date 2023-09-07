@@ -93,7 +93,7 @@ const BubbleSelection = () => {
     <ScreenBoiler
       statusBarBackgroundColor={'white'}
       statusBarContentStyle={'dark-content'}>
-      <Header right Title={'Select Bubble'} search />
+      <Header right Title={'Select Bubble'} />
       <ImageBackground
          source={
           privacy == 'private'

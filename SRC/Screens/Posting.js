@@ -26,7 +26,7 @@ const Posting = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Posting'} search showBack />
+      <Header right Title={'Posting'} />
 
       <ImageBackground
          source={

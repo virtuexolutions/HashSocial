@@ -147,7 +147,7 @@ export const TabNavigation = () => {
             ?  require('./Assets/Images/add1.png') : require('./Assets/Images/add.png') 
 
             color = focused ? 'none' : 'none';
-            size = focused ? moderateScale(55, 0.3) : moderateScale(35, 0.3);
+            size = moderateScale(35, 0.3);
             borderWidth = focused ? 5 : 0
           } else if (route.name === 'BubbleSearch') {
             // type = AntDesign;

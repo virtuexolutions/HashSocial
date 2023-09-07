@@ -107,7 +107,7 @@ const AccountDetails = () => {
           isGradient
         //   isBold
         />
-        <CustomButton
+        {/* <CustomButton
           text={
             isLoading ? (
               <ActivityIndicator color={'#FFFFFF'} size={'small'} />
@@ -127,7 +127,7 @@ const AccountDetails = () => {
           borderRadius={moderateScale(30, 0.3)}
           isGradient
         //   isBold
-        />
+        /> */}
       </ImageBackground>
     </>
   );

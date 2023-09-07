@@ -114,7 +114,7 @@ const CreateNewBubble = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Create new Bubble'} search showBack/>
+      <Header right Title={'Create new Bubble'} showBack/>
 
       <ImageBackground
         source={

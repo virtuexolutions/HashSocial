@@ -36,7 +36,7 @@ const CreateNewFeed = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Create New Feed'} showBack search/>
+      <Header right Title={'Create New Feed'} showBack />
       <ImageBackground
         source={
           privacy == 'private'

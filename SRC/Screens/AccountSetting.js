@@ -32,7 +32,7 @@ const AccountSetting = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Account Setting'} search showBack />
+      <Header right Title={'Account Setting'} showBack />
 
       <ImageBackground
         source={

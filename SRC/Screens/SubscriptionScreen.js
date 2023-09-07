@@ -32,7 +32,7 @@ const SubscriptionScreen = () => {
       backgroundColor={Color.white}
       barStyle={'dark-content'}
     />
-    <Header showBack Title={'MemberShip plan'}  />
+    <Header showBack Title={'MemberShip plan'} right  />
 
     <ImageBackground
      source={
