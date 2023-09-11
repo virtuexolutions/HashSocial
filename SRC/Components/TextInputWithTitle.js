@@ -33,7 +33,7 @@ const TextInputWithTitle = props => {
             marginBottom: moderateScale(5, 0.3),
             width: windowWidth * props.viewWidth,
             marginTop: props.marginTop,
-            marginTop: moderateScale(10, 0.3),
+            marginTop: props?.marginTop ? props?.marginTop : moderateScale(10, 0.3),
             textAlign:'left',
           }}>
           {props?.title}

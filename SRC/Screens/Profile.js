@@ -3,7 +3,7 @@ import {
   StyleSheet,
   ImageBackground,
   TouchableOpacity,
-  ActivityIndicator
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState} from 'react';
 import {moderateScale} from 'react-native-size-matters';
@@ -19,20 +19,22 @@ import LinearGradient from 'react-native-linear-gradient';
 import CustomButton from '../Components/CustomButton';
 import Color from '../Assets/Utilities/Color';
 import navigationService from '../navigationService';
-import { useDispatch, useSelector } from 'react-redux';
-import { setAccountPrivate } from '../Store/slices/auth';
+import {useDispatch, useSelector} from 'react-redux';
+import {setAccountPrivate} from '../Store/slices/auth';
+import DropDownSingleSelect from '../Components/DropDownSingleSelect';
 
 const Profile = () => {
+  const dispatch = useDispatch();
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   // const theme = useSelector(state => state.authReducer.theme);
   // console.log("🚀 ~ file: Profile.js:28 ~ Profile ~ theme:", theme)
   const privacy = useSelector(state => state.authReducer.privacy);
-  console.log("🚀 ~ file: Profile.js:30 ~ Profile ~ privacy:", privacy)
+  console.log('🚀 ~ file: Profile.js:30 ~ Profile ~ privacy:', privacy);
   const [username, setUserName] = useState('');
   const [desc, setDesc] = useState('');
-  const [selectedTab, setSelectedTab] = useState(privacy? privacy :'');
-    const [isLoading, setIsLoading] = useState(false)
-    const dispatch = useDispatch();
+  const [selectedTab, setSelectedTab] = useState(privacy ? privacy : '');
+  const [isLoading, setIsLoading] = useState(false);
+  const [type, setType] = useState('Select Profile Type');
 
   return (
     <>
@@ -40,162 +42,239 @@ const Profile = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Create Profile'}  showBack/>
+      <Header right Title={'Create Profile'} showBack />
 
       <ImageBackground
-        source={privacy == 'private' ? require('../Assets/Images/theme2.jpg'): require('../Assets/Images/Main.png')}
+        source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         style={{
           width: windowWidth * 1,
           height: windowHeight * 0.9,
           alignItems: 'center',
         }}>
+        {/* Profile  Sectiopn Start */}
+        <View
+          style={[
+            styles.profileSection,
+            {
+              borderColor:
+                type == 'Content creator'
+                  ? 'yellow'
+                  : type == 'Entrepreneur'
+                  ? Color.green
+                  : type == 'Connector'
+                  ? 'pink'
+                  : type == 'Explore'
+                  ? 'blue'
+                  : 'black',
+            },
+          ]}>
+          <CustomImage
+            source={require('../Assets/Images/dummyUser.png')}
+            style={{
+              height: '100%',
+              width: '100%',
+            }}
+            resizeMode={'stretch'}
+          />
+        </View>
+        {/* Profile  Sectiopn Close */}
 
-          {/* Profile  Sectiopn Start */}
-          <View style={[styles.profileSection,{borderColor : privacy=='private' ? Color.red: Color.green}]}>
-            <CustomImage
-              source={require('../Assets/Images/dummyUser.png')}
-              style={{
-                height:'100%',
-                width: '100%',}}
-              resizeMode={'stretch'}
+        <LinearGradient
+          style={{
+            width: windowWidth * 0.9,
+
+            marginTop: moderateScale(30, 0.3),
+            borderRadius: moderateScale(20, 0.6),
+            borderLeftWidth: 4,
+            borderColor:
+            type == 'Content creator'
+              ? 'yellow'
+              : type == 'Entrepreneur'
+              ? Color.green
+              : type == 'Connector'
+              ? 'pink'
+              : type == 'Explore'
+              ? 'blue'
+              : 'black',
+            borderTopWidth: 4,
+            paddingVertical: moderateScale(20, 0.3),
+          }}
+          colors={['rgba(234, 234, 234 , 0.6)', 'rgba(209,209,209,0.6)']}>
+          <View
+            style={{
+              // justifyContent: 'center',
+
+              alignSelf: 'center',
+            }}>
+            <TextInputWithTitle
+              title={'User Name'}
+              secureText={false}
+              placeholder={'User Name'}
+              setText={setUserName}
+              value={username}
+              viewHeight={0.06}
+              viewWidth={0.82}
+              inputWidth={0.8}
+              border={1}
+              borderColor={'#353535'}
+              color={themeColor[1]}
+              placeholderColor={Color.themeLightGray}
+              borderRadius={moderateScale(10, 0.3)}
+              titleColor={'#353535'}
+            />
+              <CustomText
+          style={{
+            color: '#353535',
+            fontSize: moderateScale(10, 0.3),
+            marginBottom: moderateScale(5, 0.3),
+            width: windowWidth * 0.82,
+            // marginTop: props.marginTop,
+            marginTop: moderateScale(10, 0.3),
+            textAlign:'left',
+          }}>
+          Profile Type
+        </CustomText>
+            <DropDownSingleSelect
+              array={[
+                'Content creator',
+                'Entrepreneur',
+                'Connector',
+                'Explore',
+              ]}
+              item={type}
+              setItem={setType}
+              // width={windowWidth * 0.34}
+              placeholder={'Select Profile Type'}
+              fontSize={moderateScale(10, 0.5)}
+              dropdownStyle={{
+                marginTop: moderateScale(1, 0.3),
+                borderBottomWidth: 0,
+                width: windowWidth * 0.82,
+                height: windowHeight * 0.06,
+                // backgroundColor: 'red',
+              }}
+              btnStyle={{
+                backgroundColor: 'transparent',
+                width: windowWidth * 0.7,
+                height: windowHeight * 0.06,
+                borderRadius: moderateScale(10, 0.3),
+                borderWidth : 1,
+                
+              }}
+            />
+            <TextInputWithTitle
+              title={'Description '}
+              secureText={false}
+              placeholder={'Description'}
+              setText={setDesc}
+              value={desc}
+              viewHeight={0.16}
+              viewWidth={0.82}
+              inputWidth={0.8}
+              border={1}
+              borderColor={'#353535'}
+              color={themeColor[1]}
+              placeholderColor={Color.themeLightGray}
+              borderRadius={moderateScale(10, 0.3)}
+              titleColor={'#353535'}
+              multiline
+              marginTop={moderateScale(1, 0.3)}
             />
           </View>
-          {/* Profile  Sectiopn Close */}
 
-          <LinearGradient
+          <View
             style={{
-       
-              width: windowWidth * 0.9,
-   
-              marginTop: moderateScale(30,0.3),
-              borderRadius: moderateScale(20,0.6),
-              borderLeftWidth: 4,
-              borderColor: privacy == 'public' ? '#80dea8': '#FFABB0',
-              borderTopWidth: 4,
-              paddingVertical : moderateScale(20,0.3)
-            }}
-            colors={['rgba(234, 234, 234 , 0.6)','rgba(209,209,209,0.6)']}
-            >
-            <View
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: '90%',
+              alignSelf: 'center',
+              marginTop: moderateScale(10, 0.3),
+            }}>
+            <CustomText
               style={{
-                // justifyContent: 'center',
-                
-                alignSelf: 'center',
+                color: '#000',
+                fontSize: moderateScale(11, 0.6),
               }}>
-           
-              <TextInputWithTitle
-                title={'User Name'}
-                secureText={false}
-                placeholder={'User Name'}
-                setText={setUserName}
-                value={username}
-                viewHeight={0.06}
-                viewWidth={0.82}
-                inputWidth={0.8}
-                border={1}
-                borderColor={'#353535'}
-                color={themeColor[1]}
-                placeholderColor={Color.themeLightGray}
-                borderRadius={moderateScale(10, 0.3)}
-                titleColor={'#353535'}
-              />
-              <TextInputWithTitle
-                title={'Description '}
-                secureText={false}
-                placeholder={'Description'}
-                setText={setDesc}
-                value={desc}
-                viewHeight={0.06}
-                viewWidth={0.82}
-                inputWidth={0.8}
-                border={1}
-                borderColor={'#353535'}
-                color={themeColor[1]}
-                placeholderColor={Color.themeLightGray}
-                borderRadius={moderateScale(10, 0.3)}
-                titleColor={'#353535'}
-              />
-            
+              Privacy Setting
+            </CustomText>
+
+            <View style={[styles.radioButtonContainer]}>
+              <TouchableOpacity
+                onPress={() => {
+                  console.log('private');
+                  dispatch(setAccountPrivate('private'));
+                  setSelectedTab('private');
+                }}
+                style={[
+                  styles.radioButton,
+                  {
+                    backgroundColor:
+                      selectedTab == 'private'
+                        ? Color.red
+                        : Color.veryLightGray,
+                  },
+                ]}>
+                {/* <View style={styles.radioButtonIcon} /> */}
+              </TouchableOpacity>
+              <CustomText
+                onPress={() => {
+                  dispatch(setAccountPrivate('private'));
+                  setSelectedTab('private');
+                }}
+                style={styles.radioButtonText}>
+                Private
+              </CustomText>
+
+              <TouchableOpacity
+                onPress={() => {
+                  dispatch(setAccountPrivate('public'));
+                  setSelectedTab('public');
+                }}
+                style={[
+                  styles.radioButton,
+                  {
+                    backgroundColor:
+                      selectedTab == 'public'
+                        ? themeColor[1]
+                        : Color.veryLightGray,
+                  },
+                ]}></TouchableOpacity>
+              <CustomText
+                onPress={() => {
+                  dispatch(setAccountPrivate('public'));
+                  setSelectedTab('public');
+                }}
+                style={styles.radioButtonText}>
+                Public
+              </CustomText>
             </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: '90%',
-                alignSelf : 'center',
-                marginTop : moderateScale(10,0.3)
-              }}>
-                <CustomText
-                  style={{
-                    color: '#000',
-                    fontSize: moderateScale(11, 0.6),
-                  }}>
-                  Privacy Setting
-                </CustomText>
-
-              <View style={[styles.radioButtonContainer]}>
-                <TouchableOpacity
-                  onPress={() => {
-                    console.log('private')
-                    dispatch(setAccountPrivate('private'))
-                    setSelectedTab('private');
-                  }}
-                  style={[styles.radioButton,{
-                    backgroundColor : selectedTab == 'private' ? Color.red : Color.veryLightGray
-                  }]}>
-                  {/* <View style={styles.radioButtonIcon} /> */}
-                </TouchableOpacity>
-                <CustomText  onPress={() => {
-                  dispatch(setAccountPrivate('private'))
-                    setSelectedTab('private');
-                  }} style={styles.radioButtonText}>Private</CustomText>
-
-                <TouchableOpacity
-                  onPress={() => {
-                    dispatch(setAccountPrivate('public'))
-                    setSelectedTab('public');
-                  }}
-                  style={[styles.radioButton,{
-                    backgroundColor : selectedTab == 'public' ? themeColor[1] : Color.veryLightGray
-                  }]}>
-               
-                </TouchableOpacity>
-                <CustomText 
-                 onPress={() => {
-                  dispatch(setAccountPrivate('public'))
-                    setSelectedTab('public');
-                  }}
-                style={styles.radioButtonText}>Public</CustomText>
-              </View>
-            </View>
-            <CustomButton
+          </View>
+          <CustomButton
             text={
-
               isLoading ? (
                 <ActivityIndicator color={themeColor[1]} size={'small'} />
               ) : (
-               'Insert'
+                'Insert'
               )
             }
-            textColor={privacy == 'private' ? 'black':themeColor[1]}
+            textColor={privacy == 'private' ? 'black' : themeColor[1]}
             width={windowWidth * 0.3}
             height={windowHeight * 0.04}
             marginTop={moderateScale(20, 0.3)}
-            fontSize={moderateScale(12,0.3)}
+            fontSize={moderateScale(12, 0.3)}
             onPress={() => {
-              navigationService.navigate('ProfileList')
+              navigationService.navigate('ProfileList');
             }}
             bgColor={'#FFFFFF'}
             borderRadius={moderateScale(30, 0.3)}
             elevation
           />
-
-        
-          </LinearGradient>
-
-       
+        </LinearGradient>
       </ImageBackground>
     </>
   );
@@ -203,7 +282,7 @@ const Profile = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,    
+    // flex: 1,
     alignSelf: 'center',
   },
 
@@ -211,9 +290,9 @@ const styles = StyleSheet.create({
     height: windowWidth * 0.4,
     width: windowWidth * 0.4,
     backgroundColor: '#ACACAC',
-    borderRadius: (windowWidth * 0.4) /2,
+    borderRadius: (windowWidth * 0.4) / 2,
     marginTop: moderateScale(40, 0.3),
-    overflow :'hidden' ,
+    overflow: 'hidden',
     borderWidth: 4,
     // borderColor: '#33dd50',
     // justifyContent: 'center',
@@ -239,10 +318,10 @@ const styles = StyleSheet.create({
     paddingLeft: moderateScale(20, 0.3),
   },
   radioButton: {
-    height: moderateScale(11,0.6),
-    width: moderateScale(11,0.6),
+    height: moderateScale(11, 0.6),
+    width: moderateScale(11, 0.6),
     backgroundColor: '#e8e8e8',
-    borderRadius: moderateScale(11,0.6),
+    borderRadius: moderateScale(11, 0.6),
     borderWidth: 2,
     borderColor: '#fff',
     alignItems: 'center',
