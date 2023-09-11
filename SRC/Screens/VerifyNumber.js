@@ -7,6 +7,7 @@ import {
   TextInput,
   ToastAndroid,
   TouchableOpacity,
+  ScrollView,
   View,
 } from 'react-native';
 import {
@@ -24,7 +25,7 @@ import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 // import TextInputWithTitle from '../Components/TextInputWithTitle';
 // import FontAwesome from 'react-native-vector-icons/FontAwesome';
 // import CustomButton from '../Components/CustomButton';
-import {Image, ScrollView} from 'native-base';
+import {Image, } from 'native-base';
 import {useIsFocused} from '@react-navigation/native';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import {validateEmail} from '../Config';
@@ -156,6 +157,7 @@ const VerifyNumber = props => {
         barStyle={'dark-content'}
       />
       <Header right />
+      <ScrollView>
       <ImageBackground
          source={
           privacy == 'private'
@@ -238,6 +240,7 @@ const VerifyNumber = props => {
           />
           </View>
       </ImageBackground>
+      </ScrollView>
     </>
   );
 };

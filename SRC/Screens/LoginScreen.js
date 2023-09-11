@@ -7,6 +7,7 @@ import {
   TextInput,
   ToastAndroid,
   TouchableOpacity,
+  ScrollView,
   View,
 } from 'react-native';
 import Color from '../Assets/Utilities/Color';
@@ -48,6 +49,7 @@ const LoginScreen = () => {
         barStyle={'dark-content'}
       />
       <Header right />
+      <ScrollView>
       <ImageBackground
         source={
           privacy == 'private'
@@ -287,6 +289,7 @@ const LoginScreen = () => {
           isGradient
         />
       </ImageBackground>
+      </ScrollView>
     </>
   );
 };

@@ -4,11 +4,13 @@ import {
   ImageBackground,
   TouchableOpacity,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import React, {useState} from 'react';
 import {moderateScale} from 'react-native-size-matters';
 // const {height, width} = Dimensions.get('window');
 import Entypo from 'react-native-vector-icons/Entypo';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
 import CustomImage from '../Components/CustomImage';
@@ -22,6 +24,10 @@ import navigationService from '../navigationService';
 import {useDispatch, useSelector} from 'react-redux';
 import {setAccountPrivate} from '../Store/slices/auth';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import {Icon} from 'native-base';
+import ImagePickerModal from '../Components/ImagePickerModal';
+
 
 const Profile = () => {
   const dispatch = useDispatch();
@@ -34,7 +40,12 @@ const Profile = () => {
   const [desc, setDesc] = useState('');
   const [selectedTab, setSelectedTab] = useState(privacy ? privacy : '');
   const [isLoading, setIsLoading] = useState(false);
+  const [imagePickerModal, setImagePickerModal] = useState(false);
   const [type, setType] = useState('Select Profile Type');
+ const [image, setImage] = useState({})
+
+
+ 
 
   return (
     <>
@@ -43,6 +54,7 @@ const Profile = () => {
         barStyle={'dark-content'}
       />
       <Header right Title={'Create Profile'} showBack />
+      <ScrollView>
 
       <ImageBackground
         source={
@@ -57,32 +69,59 @@ const Profile = () => {
           alignItems: 'center',
         }}>
         {/* Profile  Sectiopn Start */}
-        <View
-          style={[
-            styles.profileSection,
-            {
-              borderColor:
-                type == 'Content creator'
-                  ? 'yellow'
-                  : type == 'Entrepreneur'
-                  ? Color.green
-                  : type == 'Connector'
-                  ? 'pink'
-                  : type == 'Explore'
-                  ? 'blue'
-                  : 'black',
-            },
-          ]}>
-          <CustomImage
-            source={require('../Assets/Images/dummyUser.png')}
-            style={{
-              height: '100%',
-              width: '100%',
+        <View>
+          <View
+            style={[
+              styles.profileSection,
+              {
+                borderColor:
+                  type == 'Content creator'
+                    ? 'yellow'
+                    : type == 'Entrepreneur'
+                    ? Color.green
+                    : type == 'Connector'
+                    ? 'pink'
+                    : type == 'Explore'
+                    ? 'blue'
+                    : 'black',
+              },
+            ]}>
+            <CustomImage
+              source={Object.keys(image).length>0 ? {uri:image?.uri} :require('../Assets/Images/dummyUser.png')}
+              style={{
+                height: '100%',
+                width: '100%',
+              }}
+              resizeMode={'stretch'}
+            />
+          </View>
+          <TouchableOpacity
+            onPress={() => {
+              setImagePickerModal(true);
             }}
-            resizeMode={'stretch'}
-          />
+            style={{
+              position: 'absolute',
+              right: 5,
+              bottom: 20,
+              backgroundColor: 'rgba(255,255,255,.8)',
+              justifyContent: 'center',
+              alignItems: 'center',
+              paddingLeft: moderateScale(5, 0.6),
+              borderRadius: (windowWidth * 0.08) / 2,
+              width: windowWidth * 0.08,
+              height: windowWidth * 0.08,
+            }}>
+            <Icon
+              name={'pencil'}
+              as={FontAwesome}
+              color={'black'}
+              size={6}
+              onPress={() => {
+                setImagePickerModal(true);
+              }}
+            />
+          </TouchableOpacity>
         </View>
-        {/* Profile  Sectiopn Close */}
 
         <LinearGradient
           style={{
@@ -92,15 +131,15 @@ const Profile = () => {
             borderRadius: moderateScale(20, 0.6),
             borderLeftWidth: 4,
             borderColor:
-            type == 'Content creator'
-              ? 'yellow'
-              : type == 'Entrepreneur'
-              ? Color.green
-              : type == 'Connector'
-              ? 'pink'
-              : type == 'Explore'
-              ? 'blue'
-              : 'black',
+              type == 'Content creator'
+                ? 'yellow'
+                : type == 'Entrepreneur'
+                ? Color.green
+                : type == 'Connector'
+                ? 'pink'
+                : type == 'Explore'
+                ? 'blue'
+                : 'black',
             borderTopWidth: 4,
             paddingVertical: moderateScale(20, 0.3),
           }}
@@ -127,18 +166,18 @@ const Profile = () => {
               borderRadius={moderateScale(10, 0.3)}
               titleColor={'#353535'}
             />
-              <CustomText
-          style={{
-            color: '#353535',
-            fontSize: moderateScale(10, 0.3),
-            marginBottom: moderateScale(5, 0.3),
-            width: windowWidth * 0.82,
-            // marginTop: props.marginTop,
-            marginTop: moderateScale(10, 0.3),
-            textAlign:'left',
-          }}>
-          Profile Type
-        </CustomText>
+            <CustomText
+              style={{
+                color: '#353535',
+                fontSize: moderateScale(10, 0.3),
+                marginBottom: moderateScale(5, 0.3),
+                width: windowWidth * 0.82,
+                // marginTop: props.marginTop,
+                marginTop: moderateScale(10, 0.3),
+                textAlign: 'left',
+              }}>
+              Profile Type
+            </CustomText>
             <DropDownSingleSelect
               array={[
                 'Content creator',
@@ -163,8 +202,7 @@ const Profile = () => {
                 width: windowWidth * 0.7,
                 height: windowHeight * 0.06,
                 borderRadius: moderateScale(10, 0.3),
-                borderWidth : 1,
-                
+                borderWidth: 1,
               }}
             />
             <TextInputWithTitle
@@ -276,6 +314,12 @@ const Profile = () => {
           />
         </LinearGradient>
       </ImageBackground>
+      </ScrollView>
+      <ImagePickerModal
+        show={imagePickerModal}
+        setShow={setImagePickerModal}
+        setFileObject={setImage}
+      />
     </>
   );
 };
@@ -289,11 +333,12 @@ const styles = StyleSheet.create({
   profileSection: {
     height: windowWidth * 0.4,
     width: windowWidth * 0.4,
-    backgroundColor: '#ACACAC',
+    backgroundColor: 'red',
     borderRadius: (windowWidth * 0.4) / 2,
     marginTop: moderateScale(40, 0.3),
     overflow: 'hidden',
     borderWidth: 4,
+
     // borderColor: '#33dd50',
     // justifyContent: 'center',
     // alignSelf: 'center',
