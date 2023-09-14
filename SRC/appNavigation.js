@@ -41,6 +41,7 @@ import FeedList from './Screens/FeedList';
 import MemberList from './Screens/MemberList';
 import { profilePicUrl } from './Config';
 import SubscriptionScreen from './Screens/SubscriptionScreen';
+import PostScreen from './Screens/PostScreen';
 
 // import AccountSetting from './Screens/AccountSetting';
 // import HomeScreen from './Screens/HomeScreen';
@@ -83,6 +84,7 @@ const AppNavigator = () => {
           {/* <RootNav.Screen name="HomeScreen" component={HomeScreen} /> */}
 
           
+          <RootNav.Screen name="PostScreen" component={PostScreen} />
           <RootNav.Screen name="FeedList" component={FeedList} />
           <RootNav.Screen name="Feeds" component={Feeds} />
           <RootNav.Screen name="BubbleSearch" component={BubbleSearch} />

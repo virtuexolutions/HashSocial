@@ -10,7 +10,7 @@ const CustomText = (props) => {
       style={[
         {
           textTransform: "capitalize",
-          textAlign:'center',
+          // textAlign:'center',
           // textTransform: "capitalize",
           color: Color.black,
         },
