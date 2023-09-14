@@ -6,6 +6,7 @@ import {
   Text,
   TextInput,
   ToastAndroid,
+  ScrollView,
   TouchableOpacity,
   View,
 } from 'react-native';
@@ -35,6 +36,7 @@ const EnterPhone = () => {
         barStyle={'dark-content'}
       />
       <Header right />
+      <ScrollView>
       <ImageBackground
         source={
           privacy == 'private'
@@ -103,6 +105,7 @@ const EnterPhone = () => {
           />
         </View>
       </ImageBackground>
+      </ScrollView>
     </>
   );
 };

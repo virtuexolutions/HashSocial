@@ -16,11 +16,11 @@ import Header from '../Components/Header';
 import {View} from 'react-native';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
-import { useDispatch, useSelector } from 'react-redux';
-import { setBubbleSelected } from '../Store/slices/auth';
+import {useDispatch, useSelector} from 'react-redux';
+import {setBubbleSelected} from '../Store/slices/auth';
 
 const BubbleSelection = () => {
-  const privacy = useSelector(state=> state.authReducer.privacy)
+  const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
 
   const dispatch = useDispatch();
@@ -87,15 +87,13 @@ const BubbleSelection = () => {
     BubbleImageArraty,
   );
 
-
- 
   return (
     <ScreenBoiler
       statusBarBackgroundColor={'white'}
       statusBarContentStyle={'dark-content'}>
       <Header right Title={'Select Bubble'} />
       <ImageBackground
-         source={
+        source={
           privacy == 'private'
             ? require('../Assets/Images/theme2.jpg')
             : require('../Assets/Images/Main.png')
@@ -120,16 +118,17 @@ const BubbleSelection = () => {
             width={windowWidth * 0.2}
             height={windowHeight * 0.04}
             onPress={() => {
-              if(BubbleImageArraty.some(item=> item.added == true)){
-                dispatch(setBubbleSelected(true))
+              if (BubbleImageArraty.some(item => item.added == true)) {
+                dispatch(setBubbleSelected(true));
                 ToastAndroid.show('Saved', ToastAndroid.SHORT);
                 // navigationService.navigate('TabNavigation')
-              }
-              else{
-                ToastAndroid.show('Please select any bubble', ToastAndroid.SHORT);
+              } else {
+                ToastAndroid.show(
+                  'Please select any bubble',
+                  ToastAndroid.SHORT,
+                );
                 // dispatch(setBubbleSelected(true))
               }
-              
             }}
             fontSize={moderateScale(12, 0.6)}
             bgColor={themeColor}
@@ -167,7 +166,10 @@ const BubbleSelection = () => {
             width: windowWidth,
           }}>
           {BubbleImageArraty.map((item, index) => {
-            console.log("🚀 ~ file: BubbleSelection.js:155 ~ {BubbleImageArraty.map ~ item:", item)
+            console.log(
+              '🚀 ~ file: BubbleSelection.js:155 ~ {BubbleImageArraty.map ~ item:',
+              item,
+            );
             return (
               <TouchableOpacity
                 onPress={() => {
@@ -189,7 +191,7 @@ const BubbleSelection = () => {
                   marginVertical: moderateScale(5, 0.3),
                   marginHorizontal: moderateScale(2, 0.3),
                 }}>
-                  <CustomImage
+                <CustomImage
                   onPress={() => {
                     const data = [...BubbleImageArraty];
                     data[index].added = !data[index].added;
@@ -203,41 +205,43 @@ const BubbleSelection = () => {
                   }}
                 />
                 {item.added && (
-                  <View style={{
-                    width: windowWidth * 0.3,
-                  height:
-                    index % 2 == 0 ? windowHeight * 0.3 : windowHeight * 0.17,
-                    backgroundColor:'rgba(0,0,0,0.5)',
-                    position:'absolute',
-                    zIndex:1,
-                  }}>
-                  <Animatable.View
-                    animation="pulse"
-                    easing="ease-out"
-                    iterationCount="infinite"
+                  <View
                     style={{
-                      width: moderateScale(60, 0.6),
-                      height: moderateScale(60, 0.6),
-                      // position: 'absolute',
-                      // zIndex: 1,
-                      alignSelf: 'center',
-                      top: '35%',
+                      width: windowWidth * 0.3,
+                      height:
+                        index % 2 == 0
+                          ? windowHeight * 0.3
+                          : windowHeight * 0.17,
+                      backgroundColor: 'rgba(0,0,0,0.5)',
+                      position: 'absolute',
+                      zIndex: 1,
                     }}>
-                    <CustomImage
-                      onPress={() => {
-                        const data = [...BubbleImageArraty];
-                        data[index].added = !data[index].added;
+                    <Animatable.View
+                      animation="pulse"
+                      easing="ease-out"
+                      iterationCount="infinite"
+                      style={{
+                        width: moderateScale(60, 0.6),
+                        height: moderateScale(60, 0.6),
+                        // position: 'absolute',
+                        // zIndex: 1,
+                        alignSelf: 'center',
+                        top: '35%',
+                      }}>
+                      <CustomImage
+                        onPress={() => {
+                          const data = [...BubbleImageArraty];
+                          data[index].added = !data[index].added;
 
-                        setBubbleImageArraty(data);
-                      }}
-                      source={require('../Assets/Images/heart.png')}
-                      resizeMode={'stretch'}
-                      style={{width: '100%', height: '100%'}}
-                    />
-                  </Animatable.View>
+                          setBubbleImageArraty(data);
+                        }}
+                        source={require('../Assets/Images/heart.png')}
+                        resizeMode={'stretch'}
+                        style={{width: '100%', height: '100%'}}
+                      />
+                    </Animatable.View>
                   </View>
                 )}
-                
               </TouchableOpacity>
             );
           })}

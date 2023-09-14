@@ -77,7 +77,7 @@ const HomeScreen = props => {
       bubble: false,
       image: (
         <Image
-          source={require('../Assets/Images/avatar.png')}
+          source={require('../Assets/Images/bubble11.png')}
           resizeMode="cover"
           style={style.icon}
         />
@@ -442,7 +442,7 @@ const HomeScreen = props => {
                 ]}
               />
             </View>
-            <View style={[{position: 'absolute', top: '10%', right: 10}, alignment=='left' ? {right:10}: {left:10}]}>
+            {/* <View style={[{position: 'absolute', top: '10%', right: 10}, alignment=='left' ? {right:10}: {left:10}]}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View
                   style={{
@@ -463,7 +463,7 @@ const HomeScreen = props => {
                   }}></View>
                 <CustomText style={{color: 'white'}}>Feeds</CustomText>
               </View>
-            </View>
+            </View> */}
           </Animatable.View>
           <GestureHandlerRootView>
             <View
@@ -656,6 +656,7 @@ const style = StyleSheet.create({
   icon: {
     width: '100%',
     height: '100%',
+    zIndex : 1,
   },
   centerImage: {
     width: '100%',

@@ -34,12 +34,11 @@ import {FloatingLabelInput} from 'react-native-floating-label-input';
 import Header from '../Components/Header';
 import navigationService from '../navigationService';
 
-
 const Signup = () => {
   const servicesArray = useSelector(state => state.commonReducer.servicesArray);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
 
-  const privacy = useSelector(state=> state.authReducer.privacy)
+  const privacy = useSelector(state => state.authReducer.privacy);
 
   const SelecteduserRole = useSelector(
     state => state.commonReducer.selectedRole,
@@ -144,129 +143,129 @@ const Signup = () => {
         barStyle={'dark-content'}
       />
       <Header right />
-      
-      <ImageBackground
+      <ScrollView>
+        <ImageBackground
           source={
             privacy == 'private'
               ? require('../Assets/Images/theme2.jpg')
               : require('../Assets/Images/Main.png')
           }
-        resizeMode={'cover'}
-        style={{
-          width: windowWidth,
-          height: windowHeight * 0.9,
-          // justifyContent : 'center',
-          alignItems: 'center',
-        }}>   
-        <CustomText
+          resizeMode={'cover'}
           style={{
-            fontSize: moderateScale(25, 0.6),
-            color: '#353434',
-            width: windowWidth * 0.9,
-            textAlign: 'center',
-            marginTop : moderateScale(10,0.3),
-          }}
-          isBold={true}
-          children={' Create an account'}
-        />
+            width: windowWidth,
+            height: windowHeight * 0.9,
+            // justifyContent : 'center',
+            alignItems: 'center',
+          }}>
+          <CustomText
+            style={{
+              fontSize: moderateScale(25, 0.6),
+              color: '#353434',
+              width: windowWidth * 0.9,
+              textAlign: 'center',
+              marginTop: moderateScale(10, 0.3),
+            }}
+            isBold={true}
+            children={' Create an account'}
+          />
 
-        <CustomText
-          style={{
-            fontSize: moderateScale(15, 0.6),
-            color: '#353434',
-            width: windowWidth * 0.9,
-            textAlign: 'center',
-          }}
-          children={'its quick and easy'}></CustomText>
-        <View style={styles.conatiner}>
-          <TextInputWithTitle
-            title={'First Name'}
-            secureText={false}
-            placeholder={'first Name'}
-            setText={setFirstName}
-            value={firstName}
-            viewHeight={0.07}
-            viewWidth={0.82}
-            inputWidth={0.8}
-            border={1}
-            borderColor={'#A7A7A7'}
-            backgroundColor={'#FFFFFF'}
-            // marginTop={moderateScale(20,0.3)}
-            color={themeColor[1]}
-            placeholderColor={Color.themeLightGray}
-            borderRadius={moderateScale(10, 0.3)}
-          />
-          <TextInputWithTitle
-            title={'Last Name'}
-            secureText={false}
-            placeholder={'Last Name'}
-            setText={setLastName}
-            value={lastName}
-            viewHeight={0.07}
-            viewWidth={0.82}
-            inputWidth={0.8}
-            border={1}
-            borderColor={'#A7A7A7'}
-            backgroundColor={'#FFFFFF'}
-            // marginTop={moderateScale(20,0.3)}
-            color={themeColor[1]}
-            placeholderColor={Color.themeLightGray}
-            borderRadius={moderateScale(10, 0.3)}
-          />
-          <TextInputWithTitle
-            title={'Email Address'}
-            secureText={false}
-            placeholder={'Email Address'}
-            setText={setEmail}
-            value={email}
-            viewHeight={0.07}
-            viewWidth={0.82}
-            inputWidth={0.8}
-            border={1}
-            borderColor={'#A7A7A7'}
-            backgroundColor={'#FFFFFF'}
-            // marginTop={moderateScale(20,0.3)}
-            color={themeColor[1]}
-            placeholderColor={Color.themeLightGray}
-            borderRadius={moderateScale(10, 0.3)}
-          />
-          <TextInputWithTitle
-            title={'password'}
-            titleText={'Password'}
-            secureText={true}
-            placeholder={'password'}
-            setText={setPassword}
-            value={password}
-            viewHeight={0.07}
-            viewWidth={0.82}
-            inputWidth={0.8}
-            border={1}
-            borderColor={'#A7A7A7'}
-            backgroundColor={'#FFFFFF'}
-            // marginTop={moderateScale(30,0.3)}
-            color={themeColor[1]}
-            placeholderColor={Color.themeLightGray}
-            borderRadius={moderateScale(10, 0.3)}
-          />
-          <TextInputWithTitle
-            title={'Confirm Password'}
-            titleText={'Confirm Password'}
-            secureText={true}
-            placeholder={'Confirm Password'}
-            setText={setConfirmPassword}
-            value={confirmPassword}
-            viewHeight={0.07}
-            viewWidth={0.82}
-            inputWidth={0.8}
-            border={1}
-            borderColor={'#A7A7A7'}
-            backgroundColor={'#FFFFFF'}
-            // marginTop={moderateScale(30,0.3)}
-            color={themeColor[1]}
-            placeholderColor={Color.themeLightGray}
-            borderRadius={moderateScale(10, 0.3)}
-          />
-          {/* <CustomText
+          <CustomText
+            style={{
+              fontSize: moderateScale(15, 0.6),
+              color: '#353434',
+              width: windowWidth * 0.9,
+              textAlign: 'center',
+            }}
+            children={'its quick and easy'}></CustomText>
+          <View style={styles.conatiner}>
+            <TextInputWithTitle
+              title={'First Name'}
+              secureText={false}
+              placeholder={'first Name'}
+              setText={setFirstName}
+              value={firstName}
+              viewHeight={0.07}
+              viewWidth={0.82}
+              inputWidth={0.8}
+              border={1}
+              borderColor={'#A7A7A7'}
+              backgroundColor={'#FFFFFF'}
+              // marginTop={moderateScale(20,0.3)}
+              color={themeColor[1]}
+              placeholderColor={Color.themeLightGray}
+              borderRadius={moderateScale(10, 0.3)}
+            />
+            <TextInputWithTitle
+              title={'Last Name'}
+              secureText={false}
+              placeholder={'Last Name'}
+              setText={setLastName}
+              value={lastName}
+              viewHeight={0.07}
+              viewWidth={0.82}
+              inputWidth={0.8}
+              border={1}
+              borderColor={'#A7A7A7'}
+              backgroundColor={'#FFFFFF'}
+              // marginTop={moderateScale(20,0.3)}
+              color={themeColor[1]}
+              placeholderColor={Color.themeLightGray}
+              borderRadius={moderateScale(10, 0.3)}
+            />
+            <TextInputWithTitle
+              title={'Email Address'}
+              secureText={false}
+              placeholder={'Email Address'}
+              setText={setEmail}
+              value={email}
+              viewHeight={0.07}
+              viewWidth={0.82}
+              inputWidth={0.8}
+              border={1}
+              borderColor={'#A7A7A7'}
+              backgroundColor={'#FFFFFF'}
+              // marginTop={moderateScale(20,0.3)}
+              color={themeColor[1]}
+              placeholderColor={Color.themeLightGray}
+              borderRadius={moderateScale(10, 0.3)}
+            />
+            <TextInputWithTitle
+              title={'password'}
+              titleText={'Password'}
+              secureText={true}
+              placeholder={'password'}
+              setText={setPassword}
+              value={password}
+              viewHeight={0.07}
+              viewWidth={0.82}
+              inputWidth={0.8}
+              border={1}
+              borderColor={'#A7A7A7'}
+              backgroundColor={'#FFFFFF'}
+              // marginTop={moderateScale(30,0.3)}
+              color={themeColor[1]}
+              placeholderColor={Color.themeLightGray}
+              borderRadius={moderateScale(10, 0.3)}
+            />
+            <TextInputWithTitle
+              title={'Confirm Password'}
+              titleText={'Confirm Password'}
+              secureText={true}
+              placeholder={'Confirm Password'}
+              setText={setConfirmPassword}
+              value={confirmPassword}
+              viewHeight={0.07}
+              viewWidth={0.82}
+              inputWidth={0.8}
+              border={1}
+              borderColor={'#A7A7A7'}
+              backgroundColor={'#FFFFFF'}
+              // marginTop={moderateScale(30,0.3)}
+              color={themeColor[1]}
+              placeholderColor={Color.themeLightGray}
+              borderRadius={moderateScale(10, 0.3)}
+            />
+            {/* <CustomText
             numberOfLines={1}
             children={'Forgot Password?'}
             style={{
@@ -276,36 +275,29 @@ const Signup = () => {
               textAlign: 'right',
             }}
           /> */}
-          <CustomButton
-            text={
-              isLoading ? (
-                <ActivityIndicator color={'#FFFFFF'} size={'small'} />
-              ) : (
-                'Sign Up'
-              )
-            }
-            textColor={Color.white}
-            width={windowWidth * 0.7}
-            height={windowHeight * 0.06}
-            marginTop={moderateScale(20, 0.3)}
-            onPress={() => {
-              navigationService.navigate('BubbleSelection')
-              // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
-            }}
-            bgColor={themeColor}
-            borderRadius={moderateScale(30, 0.3)}
-            isGradient
-          />
-         
-        </View>
-        
-       
-
-       
-
-    
-      </ImageBackground>
-    
+            <CustomButton
+              text={
+                isLoading ? (
+                  <ActivityIndicator color={'#FFFFFF'} size={'small'} />
+                ) : (
+                  'Sign Up'
+                )
+              }
+              textColor={Color.white}
+              width={windowWidth * 0.7}
+              height={windowHeight * 0.06}
+              marginTop={moderateScale(20, 0.3)}
+              onPress={() => {
+                navigationService.navigate('BubbleSelection');
+                // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
+              }}
+              bgColor={themeColor}
+              borderRadius={moderateScale(30, 0.3)}
+              isGradient
+            />
+          </View>
+        </ImageBackground>
+      </ScrollView>
     </>
   );
 };
