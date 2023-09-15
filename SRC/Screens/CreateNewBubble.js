@@ -233,10 +233,10 @@ const CreateNewBubble = () => {
               }}>
               <CustomText
                 style={{
-                  width: windowWidth * 0.35,
+                  width: windowWidth * 0.25,
                   color: Color.black,
                   fontSize: moderateScale(11, 0.6),
-                  paddingLeft: moderateScale(5, 0.6),
+                  paddingLeft: moderateScale(20, 0.6),
                 }}>
                 Moderator :
               </CustomText>
@@ -357,6 +357,7 @@ const CreateNewBubble = () => {
                     style={{
                       width: windowWidth * 0.25,
                       fontSize: moderateScale(12, 0.6),
+                      textAlign:'center'
                     }}>
                     {data?.title}
                   </CustomText>

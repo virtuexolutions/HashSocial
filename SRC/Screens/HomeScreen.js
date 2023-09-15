@@ -31,6 +31,7 @@ import CustomButton from '../Components/CustomButton';
 import {ActivityIndicator} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import RequestModal from '../Components/RequestModal';
 
@@ -42,7 +43,7 @@ const HomeScreen = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [alignment, setAlignment] = useState('left');
   const [highlightedIcon, setHighlightedIcon] = useState(null);
-  const [isVisible, setIsVisible] = useState(false)
+  const [isVisible, setIsVisible] = useState(false);
   console.log(
     '🚀 ~ file: HomeScreen.js:40 ~ HomeScreen ~ highlightedIcon:',
     highlightedIcon,
@@ -54,6 +55,7 @@ const HomeScreen = props => {
 
   const [content, setContent] = useState([
     {
+      private: false,
       bubble: true,
       image: (
         <Image
@@ -74,6 +76,7 @@ const HomeScreen = props => {
       },
     },
     {
+      private: true,
       bubble: false,
       image: (
         <Image
@@ -89,6 +92,7 @@ const HomeScreen = props => {
       },
     },
     {
+      private: false,
       bubble: false,
       image: (
         <Image
@@ -104,6 +108,7 @@ const HomeScreen = props => {
       },
     },
     {
+      private: true,
       bubble: false,
       image: (
         <Image
@@ -119,6 +124,7 @@ const HomeScreen = props => {
       },
     },
     {
+      private: true,
       bubble: true,
       image: (
         <Image
@@ -134,6 +140,7 @@ const HomeScreen = props => {
       },
     },
     {
+      private: false,
       bubble: true,
       image: (
         <Image
@@ -148,6 +155,7 @@ const HomeScreen = props => {
       },
     },
     {
+      private: true,
       bubble: false,
       image: (
         <Image
@@ -162,6 +170,7 @@ const HomeScreen = props => {
       },
     },
     {
+      private: true,
       bubble: false,
       image: (
         <Image
@@ -176,6 +185,7 @@ const HomeScreen = props => {
       },
     },
     {
+      private: false,
       bubble: false,
       image: (
         <Image
@@ -190,6 +200,7 @@ const HomeScreen = props => {
       },
     },
     {
+      private: false,
       bubble: false,
       image: (
         <Image
@@ -204,6 +215,7 @@ const HomeScreen = props => {
       },
     },
     {
+      private: true,
       bubble: true,
       image: (
         <Image
@@ -293,7 +305,7 @@ const HomeScreen = props => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Profile'}  />
+      <Header right Title={'Profile'} />
 
       <ImageBackground
         source={
@@ -475,25 +487,29 @@ const HomeScreen = props => {
                 marginLeft: moderateScale(20, 0.3),
                 zIndex: 2,
               }}>
-              <RoundMenu
-                centerContent={
-                  <ImageBackground
-                    source={require('../Assets/Images/dummyman1.png')}
-                    resizeMode="cover"
-                    style={style.centerImage}
-                  />
-                }
-                largeImageSize={width / 2.5}
-                content={content}
-                contentContainerStyle={{
-                  borderWidth: 3,
-                }}
-                setHighlightedIcon={setHighlightedIcon}
-                setAnimationStopped={setAnimationStopped}
-                rotationAngle={rotationAngle}
-                alignment={alignment}
-                elevation={5}
-              />
+              
+            
+
+                <RoundMenu
+                  centerContent={
+                    <ImageBackground
+                      source={require('../Assets/Images/dummyman1.png')}
+                      resizeMode="cover"
+                      style={style.centerImage}
+                    />
+                  }
+                  largeImageSize={width / 2.5}
+                  content={content}
+                  contentContainerStyle={{
+                    borderWidth: 3,
+                  }}
+                  setHighlightedIcon={setHighlightedIcon}
+                  setAnimationStopped={setAnimationStopped}
+                  rotationAngle={rotationAngle}
+                  alignment={alignment}
+                  elevation={5}
+                />
+              
             </View>
           </GestureHandlerRootView>
           <TouchableOpacity
@@ -600,7 +616,7 @@ const HomeScreen = props => {
               borderRadius={moderateScale(30, 0.3)}
               isGradient
             />
-             <CustomButton
+            <CustomButton
               text={
                 isLoading ? (
                   <ActivityIndicator color={'#01E8E3'} size={'small'} />
@@ -613,7 +629,7 @@ const HomeScreen = props => {
               height={windowHeight * 0.06}
               marginTop={moderateScale(20, 0.3)}
               onPress={() => {
-                setIsVisible(true)
+                setIsVisible(true);
                 // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
                 setclicked(false);
                 // navigationService.navigate('Bubble');
@@ -656,7 +672,7 @@ const style = StyleSheet.create({
   icon: {
     width: '100%',
     height: '100%',
-    zIndex : 1,
+    zIndex: 1,
   },
   centerImage: {
     width: '100%',
