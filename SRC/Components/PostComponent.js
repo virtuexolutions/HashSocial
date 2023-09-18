@@ -121,7 +121,7 @@ const  deletePost = ()=>{
                 resizeMode="cover"
               />
             ) : (
-              <VideoController />
+              <VideoController item={item}/>
             )}
           </View>
         )}

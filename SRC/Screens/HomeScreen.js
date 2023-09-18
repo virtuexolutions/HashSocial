@@ -44,6 +44,7 @@ const HomeScreen = props => {
   const [alignment, setAlignment] = useState('left');
   const [highlightedIcon, setHighlightedIcon] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [text, setText] = useState('')
   console.log(
     '🚀 ~ file: HomeScreen.js:40 ~ HomeScreen ~ highlightedIcon:',
     highlightedIcon,
@@ -70,9 +71,9 @@ const HomeScreen = props => {
         />
       ),
       onPress: () => {
-        setclicked(true);
+        // setclicked(true);
 
-        // navigationService.navigate('Bubble');
+        navigationService.navigate('PostScreen');
       },
     },
     {
@@ -86,9 +87,9 @@ const HomeScreen = props => {
         />
       ),
       onPress: () => {
-        setclicked(true);
+        // setclicked(true);
 
-        // navigationService.navigate('Bubble');
+        navigationService.navigate('PostScreen');
       },
     },
     {
@@ -102,9 +103,9 @@ const HomeScreen = props => {
         />
       ),
       onPress: () => {
-        setclicked(true);
+        // setclicked(true);
 
-        // navigationService.navigate('Bubble');
+        navigationService.navigate('PostScreen');
       },
     },
     {
@@ -118,9 +119,9 @@ const HomeScreen = props => {
         />
       ),
       onPress: () => {
-        setclicked(true);
+        // setclicked(true);
 
-        // navigationService.navigate('Bubble');
+        navigationService.navigate('PostScreen');
       },
     },
     {
@@ -134,9 +135,9 @@ const HomeScreen = props => {
         />
       ),
       onPress: () => {
-        setclicked(true);
+        // setclicked(true);
 
-        // navigationService.navigate('Bubble');
+        navigationService.navigate('PostScreen');
       },
     },
     {
@@ -150,8 +151,8 @@ const HomeScreen = props => {
         />
       ),
       onPress: () => {
-        setclicked(true);
-        // navigationService.navigate('Bubble');
+        // setclicked(true);
+        navigationService.navigate('PostScreen');
       },
     },
     {
@@ -165,8 +166,8 @@ const HomeScreen = props => {
         />
       ),
       onPress: () => {
-        setclicked(true);
-        // navigationService.navigate('Bubble');
+        // setclicked(true);
+        navigationService.navigate('PostScreen');
       },
     },
     {
@@ -180,8 +181,8 @@ const HomeScreen = props => {
         />
       ),
       onPress: () => {
-        setclicked(true);
-        // navigationService.navigate('Bubble');
+        // setclicked(true);
+        navigationService.navigate('PostScreen');
       },
     },
     {
@@ -195,8 +196,8 @@ const HomeScreen = props => {
         />
       ),
       onPress: () => {
-        setclicked(true);
-        // navigationService.navigate('Bubble');
+        // setclicked(true);
+        navigationService.navigate('PostScreen');
       },
     },
     {
@@ -210,8 +211,8 @@ const HomeScreen = props => {
         />
       ),
       onPress: () => {
-        setclicked(true);
-        // navigationService.navigate('Bubble');
+        // setclicked(true);
+        navigationService.navigate('PostScreen');
       },
     },
     {
@@ -225,8 +226,8 @@ const HomeScreen = props => {
         />
       ),
       onPress: () => {
-        setclicked(true);
-        // navigationService.navigate('Bubble');
+        // setclicked(true);
+        navigationService.navigate('PostScreen');
       },
     },
   ]);
@@ -508,6 +509,9 @@ const HomeScreen = props => {
                   rotationAngle={rotationAngle}
                   alignment={alignment}
                   elevation={5}
+                  setIsVisible={setIsVisible}
+                  setclicked={setclicked}
+                  setText={setText}
                 />
               
             </View>
@@ -600,7 +604,7 @@ const HomeScreen = props => {
                 isLoading ? (
                   <ActivityIndicator color={'#01E8E3'} size={'small'} />
                 ) : (
-                  'Feed'
+                  'Home'
                 )
               }
               textColor={themeColor[1]}
@@ -616,7 +620,7 @@ const HomeScreen = props => {
               borderRadius={moderateScale(30, 0.3)}
               isGradient
             />
-            <CustomButton
+            {/* <CustomButton
               text={
                 isLoading ? (
                   <ActivityIndicator color={'#01E8E3'} size={'small'} />
@@ -637,7 +641,7 @@ const HomeScreen = props => {
               bgColor={['#FFFFFF', '#FFFFFF']}
               borderRadius={moderateScale(30, 0.3)}
               isGradient
-            />
+            /> */}
             <CustomButton
               text={
                 isLoading ? (
@@ -662,7 +666,7 @@ const HomeScreen = props => {
           </View>
         </BlurView>
       )}
-      <RequestModal setIsVisible={setIsVisible} isVisible={isVisible} />
+      <RequestModal setIsVisible={setIsVisible} isVisible={isVisible} text={text} />
     </>
   );
 };

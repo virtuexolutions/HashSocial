@@ -12,7 +12,7 @@ import CustomImage from './CustomImage'
 
 
 
-const RequestModal = ({isVisible, setIsVisible}) => {
+const RequestModal = ({isVisible, setIsVisible, text}) => {
   return (
     <Modal
     isVisible={isVisible}
@@ -42,9 +42,10 @@ const RequestModal = ({isVisible, setIsVisible}) => {
             color: Color.black,
             fontSize: moderateScale(14, 0.6),
             marginTop: moderateScale(20, 0.3),
-            paddingHorizontal:moderateScale(10,.6  )
+            paddingHorizontal:moderateScale(30,.6),
+            textAlign:'center',
           }} isBold>
-          you need admins permission to get into the bubble
+          you need admins permission to get into the {text}
         </CustomText>
       </View>
       {/* <View style={styles.container2}>
@@ -73,6 +74,9 @@ const RequestModal = ({isVisible, setIsVisible}) => {
       </View> */}
       <CustomButton
         text={'Request to join'}
+        onPress={()=>{
+          setIsVisible(false)
+        }}
         textColor={Color.white}
         width={windowWidth * 0.65}
         height={windowHeight * 0.06}

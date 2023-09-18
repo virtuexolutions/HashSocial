@@ -121,6 +121,7 @@ const TextInputWithTitle = props => {
         {props.secureText ? (
           <>
             <TextInput
+            
               style={[
                 {
                   width: windowWidth * props.inputWidth,
@@ -138,6 +139,7 @@ const TextInputWithTitle = props => {
               }
               keyboardType={props.keyboardType}
               autoCapitalize="none"
+              onPressIn={props.onPressIn}
             />
             <TouchableOpacity
               onPress={() => {

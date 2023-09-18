@@ -8,7 +8,7 @@ import Color from '../Assets/Utilities/Color';
 import CustomImage from './CustomImage';
 import CustomText from './CustomText';
 
-const VideoController = () => {
+const VideoController = ({item}) => {
   const [clicked, setClicked] = useState(false);
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(null);
@@ -40,7 +40,7 @@ const VideoController = () => {
         <Video
           muted
           paused={paused}
-          source={{uri: 'https://vjs.zencdn.net/v/oceans.mp4'}}
+          source={{uri: item?.video}}
           ref={videoRef}
           onProgress={x => {
             setProgress(x);
@@ -59,9 +59,10 @@ const VideoController = () => {
             }}
             style={{
               width: '100%',
-              height: windowWidth * 0.42,
+              height:'100%',
+              // height: windowWidth * 0.42,
               position: 'absolute',
-              top: moderateScale(22, 0.3),
+              // top: moderateScale(22, 0.3),
               backgroundColor: 'rgba(0,0,0,.3)',
               justifyContent: 'center',
               alignItems: 'center',

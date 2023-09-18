@@ -20,6 +20,8 @@ import {useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import PostComponent from '../Components/PostComponent';
+import navigationService from '../navigationService';
+import { useNavigation } from '@react-navigation/native';
 
 const PostScreen = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -29,6 +31,7 @@ const PostScreen = () => {
     {key: 'first', title: 'Top'},
     {key: 'second', title: 'Latest'},
   ]);
+  const navigation = useNavigation()
 
   const PostData = [
     {
@@ -145,8 +148,8 @@ const PostScreen = () => {
           borderBottomWidth: 1,
           borderColor: Color.veryLightGray,
         }}>
-        <TouchableOpacity activeOpacity={0.8}>
-          <AntDesign name="arrowleft" size={28} color={Color.black} />
+        <TouchableOpacity activeOpacity={0.8} onPress={()=>{navigation.goBack() }}>
+          <Icon  as={AntDesign} name="arrowleft" size={28} color={Color.black} onPress={()=>{navigation.goBack() }} />
         </TouchableOpacity>
 
         <View
@@ -160,7 +163,7 @@ const PostScreen = () => {
             alignItems: 'center',
           }}>
           <TouchableOpacity activeOpacity={0.8}>
-            <AntDesign name="search1" size={20} color="#000" />
+            <Icon as={AntDesign} name="search1" size={15} color="#000" />
           </TouchableOpacity>
 
           <TextInput

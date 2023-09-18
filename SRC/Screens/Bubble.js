@@ -24,41 +24,17 @@ import navigationService from '../navigationService';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
 import {Icon, ScrollView} from 'native-base';
+import Home from '../Components/Home';
+import Posts from '../Components/Posts';
+import Events from '../Components/Events';
 
 const Bubble = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const [isLoading, setIsLoading] = useState(false);
-  const events = ['Members', 'Chats', 'Events', 'Store'];
-  const [selectedEvent, setSelectedEvent] = useState('');
-  const [selectedTab, setSelectedTab] = useState('Activity');
-  const [activityData, setactivityData] = useState([
-    {
-      id: 2,
-      url: require('../Assets/Images/activity1.png'),
-    },
-    {
-      id: 3,
-      url: require('../Assets/Images/activity2.png'),
-    },
-    {
-      id: 4,
-      url: require('../Assets/Images/activity3.png'),
-    },
-    {
-      id: 5,
-      url: require('../Assets/Images/activity1.png'),
-    },
-    {
-      id: 6,
-      url: require('../Assets/Images/activity2.png'),
-    },
-
-    {
-      id: 7,
-      url: require('../Assets/Images/activity3.png'),
-    },
-  ]);
+  const events = ['Posts', 'Home' ,'Chats', 'Events', 'Members' ];
+  const [selectedEvent, setSelectedEvent] = useState('Posts');
+ 
   return (
     <>
       <CustomStatusBar
@@ -239,231 +215,20 @@ const Bubble = () => {
                       setSelectedEvent(data);
                       if(data =='Members'){
                         navigationService.navigate('MemberList')
+                      }else if(data == 'Chats'){
+                        navigationService.navigate("ChatScreen")
                       }
                     }}
                   />
                 );
               })}
             </ScrollView>
+            {selectedEvent == 'Home' ?  <Home /> : selectedEvent == 'Events' ? <Events /> : selectedEvent == 'Posts' ? <Posts />  : <></>  }
 
-            <View
-              style={{
-                flexDirection: 'row',
-                marginLeft: moderateScale(10, 0.3),
-                marginRight: moderateScale(10, 0.3),
-              }}>
-              <View style={styles.image1}>
-                <CustomImage
-                  source={require('../Assets/Images/fitness2.png')}
-                  style={{
-                    height: '100%',
-                    width: '100%',
-                  }}
-                  resizeMode={'stretch'}
-                  //   resizeMode="s"
-                />
-              </View>
-              <View>
-                <View style={{flexDirection: 'row'}}>
-                  <View style={styles.profileImage}>
-                    <CustomImage
-                      source={require('../Assets/Images/fitness2.png')}
-                      style={{
-                        height: '100%',
-                        width: '100%',
-                      }}
-                      //   resizeMode={'stretch'}
-                    />
-                  </View>
-                  <View>
-                    <CustomText
-                      numberOfLines={1}
-                      children={'Meko Nakahara'}
-                      style={{
-                        fontSize: moderateScale(12, 0.6),
-                        color: 'black',
-                        marginTop: moderateScale(12, 0.3),
-                        marginRight: moderateScale(8, 0.3),
-                        textAlign: 'left',
-                      }}
-                      isBold
-                    />
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        justifyContent: 'space-between',
-                        width: windowWidth * 0.3,
-                      }}>
-                      <CustomText
-                        numberOfLines={1}
-                        children={'New York, USA'}
-                        style={{
-                          fontSize: moderateScale(10, 0.6),
-                          color: Color.veryLightGray,
-                          textAlign: 'center',
-                        }}
-                      />
-                      <CustomText
-                        numberOfLines={1}
-                        children={'1h Ago'}
-                        style={{
-                          fontSize: moderateScale(10, 0.6),
-                          color: Color.veryLightGray,
-                          textAlign: 'right',
-                        }}
-                      />
-                    </View>
-                  </View>
-                </View>
-                <CustomText style={styles.text} numberOfLines={9}>
-                  Lorem Ipsum is simply dummy text of the printing and
-                  typesetting industry. Lorem Ipsum has been the industry's
-                  standard dummy text ever since the 1500s, when an unknown
-                  printer took a galley of type and scrambled it to make a type
-                  specimen book. It has survived not only five centuries, but
-                  also the leap into electronic typesetting, remaining
-                  essentially unchanged.
-                </CustomText>
-              </View>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginTop: moderateScale(10, 0.3),
-              }}>
-              <CustomText
-                numberOfLines={1}
-                children={'Activity'}
-                style={{
-                  ...styles.activityText,
-                  ...{
-                    borderBottomColor:
-                      selectedTab == 'Activity' ? Color.white : 'black',
-                  },
-                }}
-                onPress={() => {
-                  setSelectedTab('Activity');
-                }}
-                isBold
-              />
-              <CustomText
-                numberOfLines={1}
-                children={'Archive'}
-                style={{
-                  ...styles.activityText,
-                  ...{
-                    borderBottomColor:
-                      selectedTab == 'Archive' ? Color.white : 'black',
-                  },
-                }}
-                onPress={() => {
-                  setSelectedTab('Archive');
-                }}
-                isBold
-              />
-            </View>
+            
+          
 
-            {selectedTab == 'Activity' ? (
-              <View style={styles.activityContainer}>
-                <FlatList
-                  numColumns={3}
-                  data={activityData}
-                  showsVerticalScrollIndicator={false}
-                  renderItem={({item, index}) => {
-                    //   console.log('index:', item);
-                    return (
-                      <TouchableOpacity
-                        style={styles.activityImage}
-                        onPress={() => {
-                          navigationService.navigate('Feeds');
-                        }}>
-                        <CustomImage
-                          onPress={() => {
-                            navigationService.navigate('Feeds');
-                          }}
-                          source={item?.uri ? {uri: item?.uri} : item?.url}
-                          style={{
-                            width: '100%',
-                            height: '100%',
-                            zIndex: 0,
-                          }}
-                          key={item?.id}
-                        />
-                      </TouchableOpacity>
-                    );
-                  }}
-                />
-              </View>
-            ) : (
-              
-              selectedTab == 'Archive' && (
-                <>
-                  <View style={{flexDirection: 'row'}}>
-                    <View style={styles.image2}>
-                      <CustomImage
-                        source={require('../Assets/Images/fitness2.png')}
-                        style={{
-                          height: '100%',
-                          width: '100%',
-                        }}
-                        //   resizeMode={'stretch'}
-                      />
-                    </View>
-                    <View>
-                      <CustomText
-                        numberOfLines={1}
-                        children={'Meiko Nakahara'}
-                        style={{
-                          fontSize: moderateScale(15, 0.6),
-                          color: 'black',
-                          marginTop: moderateScale(12, 0.3),
-                          marginRight: moderateScale(8, 0.3),
-                          textAlign: 'left',
-                        }}
-                        isBold
-                      />
-                      <View
-                        style={{
-                          flexDirection: 'row',
-                          justifyContent: 'space-between',
-                          width: windowWidth * 0.4,
-                        }}>
-                        <CustomText
-                          numberOfLines={1}
-                          children={'New York, USA'}
-                          style={{
-                            fontSize: moderateScale(12, 0.6),
-                            color: Color.veryLightGray,
-                            textAlign: 'center',
-                          }}
-                        />
-                        <CustomText
-                          numberOfLines={1}
-                          children={'1h Ago'}
-                          style={{
-                            fontSize: moderateScale(12, 0.6),
-                            color: Color.veryLightGray,
-                            textAlign: 'right',
-                          }}
-                        />
-                      </View>
-                    </View>
-                  </View>
-                  <View style={styles.card}>
-                    <CustomImage
-                      source={require('../Assets/Images/archive.png')}
-                      style={{
-                        height: '100%',
-                        width: '100%',
-                      }}
-                      //   resizeMode={'stretch'}
-                    />
-                  </View>
-                </>
-              )
-            )}
+           
           </View>
         </ScrollView>
       </ImageBackground>
