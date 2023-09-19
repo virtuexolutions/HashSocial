@@ -6,7 +6,7 @@ import {
   StyleSheet,
   ImageBackground,
   FlatList,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import React, {useState} from 'react';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -14,14 +14,14 @@ import {windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
 import CustomText from '../Components/CustomText';
-import {Icon, } from 'native-base';
+import {Icon} from 'native-base';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {useSelector} from 'react-redux';
 import LinearGradient from 'react-native-linear-gradient';
 import {TabView, SceneMap, TabBar} from 'react-native-tab-view';
 import PostComponent from '../Components/PostComponent';
 import navigationService from '../navigationService';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const PostScreen = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -31,9 +31,9 @@ const PostScreen = () => {
     {key: 'first', title: 'Top'},
     {key: 'second', title: 'Latest'},
   ]);
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
-  const PostData = [
+ const PostData = [
     {
       id: 1,
       Name: 'Travelling Tour Posted a video to playlist Special Content',
@@ -45,6 +45,36 @@ const PostScreen = () => {
       Like: 157,
       love: 1100,
       comment: 405,
+      commentData: [
+        {
+          id: 1,
+          name:'James',
+          comment:'Looking Geourgous',
+          pic:require('../Assets/Images/avatar6.jpg'),
+          Time:'16',
+        },
+        {
+          id: 2,
+          name:'Levik',
+          comment:'Nice',
+          pic:require('../Assets/Images/avatar4.png'),
+          Time:'3',
+        },
+        {
+          id: 3,
+          name:'Frank',
+          comment:'Good',
+          pic:require('../Assets/Images/avatar3.png'),
+          Time:'10',
+        },
+        {
+          id: 4,
+          name:'Salina',
+          comment:'Killer',
+          pic:require('../Assets/Images/avatar1.png'),
+          Time:'5',
+        },
+      ],
       View: null,
     },
     {
@@ -58,6 +88,36 @@ const PostScreen = () => {
       Like: 357,
       love: 4100,
       comment: 205,
+      commentData: [
+        {
+          id: 1,
+          name:'James',
+          comment:'Killer',
+          pic:require('../Assets/Images/avatar6.jpg'),
+          Time:'1',
+        },
+        {
+          id: 2,
+          name:'Levik',
+          comment:'Nice',
+          pic:require('../Assets/Images/avatar4.png'),
+          Time:'3',
+        },
+        {
+          id: 3,
+          name:'Frank',
+          comment:'Superb',
+          pic:require('../Assets/Images/avatar3.png'),
+          Time:'8',
+        },
+        {
+          id: 4,
+          name:'Salina',
+          comment:'Beauty',
+          pic:require('../Assets/Images/avatar1.png'),
+          Time:'5',
+        },
+      ],
       View: 1084,
     },
 
@@ -72,6 +132,36 @@ const PostScreen = () => {
       Like: 357,
       love: 4100,
       comment: 205,
+      commentData: [
+        {
+          id: 1,
+          name:'James',
+          comment:'Nice',
+          pic:require('../Assets/Images/avatar6.jpg'),
+          Time:'8',
+        },
+        {
+          id: 2,
+          name:'Levik',
+          comment:'Good',
+          pic:require('../Assets/Images/avatar4.png'),
+          Time:'6',
+        },
+        {
+          id: 3,
+          name:'Frank',
+          comment:'Looking',
+          pic:require('../Assets/Images/avatar3.png'),
+          Time:'3',
+        },
+        {
+          id: 4,
+          name:'Salina',
+          comment:'Smart',
+          pic:require('../Assets/Images/avatar1.png'),
+          Time:'7',
+        },
+      ],
       View: null,
     },
     {
@@ -85,6 +175,36 @@ const PostScreen = () => {
       Like: 457,
       love: 1800,
       comment: 905,
+      commentData: [
+        {
+          id: 1,
+          name:'James',
+          comment:'Killer',
+          pic:require('../Assets/Images/avatar6.jpg'),
+          Time:'2',
+        },
+        {
+          id: 2,
+          name:'Levik',
+          comment:'Nice',
+          pic:require('../Assets/Images/avatar4.png'),
+          Time:'20',
+        },
+        {
+          id: 3,
+          name:'Frank',
+          comment:'Looking Beauty',
+          pic:require('../Assets/Images/avatar3.png'),
+          Time:'15',
+        },
+        {
+          id: 4,
+          name:'Salina',
+          comment:'Nice',
+          pic:require('../Assets/Images/avatar1.png'),
+          Time:'3',
+        },
+      ],
       View: null,
     },
   ];
@@ -99,30 +219,29 @@ const PostScreen = () => {
   );
 
   const FirstRoute = () => (
-  
-      <FlatList
-        // scrollEnabled={false}
-        data={PostData}
-        contentContainerStyle={{
-          paddingBottom: moderateScale(80, 0.3),
-        }}
-        renderItem={({item, index}) => {
-          return <PostComponent item={item} />;
-        }}
-      />
+    <FlatList
+      // scrollEnabled={false}
+      data={PostData}
+      contentContainerStyle={{
+        paddingBottom: moderateScale(80, 0.3),
+      }}
+      renderItem={({item, index}) => {
+        return <PostComponent data={item} />;
+      }}
+    />
   );
 
   const SecondRoute = () => (
     <FlatList
-    // scrollEnabled={false}
-    data={PostData}
-    contentContainerStyle={{
-      paddingBottom: moderateScale(80, 0.3),
-    }}
-    renderItem={({item, index}) => {
-      return <PostComponent item={item} />;
-    }}
-  />
+      // scrollEnabled={false}
+      data={PostData}
+      contentContainerStyle={{
+        paddingBottom: moderateScale(80, 0.3),
+      }}
+      renderItem={({item, index}) => {
+        return <PostComponent data={item} />;
+      }}
+    />
   );
 
   const renderScene = SceneMap({
@@ -148,8 +267,20 @@ const PostScreen = () => {
           borderBottomWidth: 1,
           borderColor: Color.veryLightGray,
         }}>
-        <TouchableOpacity activeOpacity={0.8} onPress={()=>{navigation.goBack() }}>
-          <Icon  as={AntDesign} name="arrowleft" size={28} color={Color.black} onPress={()=>{navigation.goBack() }} />
+        <TouchableOpacity
+          activeOpacity={0.8}
+          onPress={() => {
+            navigation.goBack();
+          }}>
+          <Icon
+            as={AntDesign}
+            name="arrowleft"
+            size={28}
+            color={Color.black}
+            onPress={() => {
+              navigation.goBack();
+            }}
+          />
         </TouchableOpacity>
 
         <View
@@ -188,60 +319,58 @@ const PostScreen = () => {
           width: windowWidth * 1,
           height: windowHeight,
         }}>
-       
+        <View
+          style={{
+            flexDirection: 'row',
+            paddingLeft: moderateScale(15, 0.6),
+            paddingTop: moderateScale(10, 0.6),
+            width: windowWidth,
+            backgroundColor: Color.white,
+            alignItems: 'center',
+          }}>
+          <LinearGradient
+            style={{
+              width: windowWidth * 0.19,
+              height: windowHeight * 0.09,
+              alignItems: 'center',
+              justifyContent: 'center',
+              borderRadius: moderateScale(15, 0.3),
+            }}
+            start={{x: 0, y: 0}}
+            end={{x: 1, y: 0}}
+            colors={['#f5eefe', '#f4edfd']}>
+            <CustomText
+              style={{
+                fontSize: moderateScale(25, 0.6),
+                color: Color.veryLightGray,
+              }}
+              isBold>
+              #
+            </CustomText>
+          </LinearGradient>
           <View
             style={{
-              flexDirection: 'row',
-              paddingLeft: moderateScale(15, 0.6),
-              paddingTop : moderateScale(10,0.6),
-              width: windowWidth,
-              backgroundColor: Color.white,
-              alignItems: 'center',
+              width: windowWidth * 0.5,
+              marginLeft: moderateScale(15, 0.3),
             }}>
-            <LinearGradient
+            <CustomText
               style={{
-                width: windowWidth * 0.19,
-                height: windowHeight * 0.09,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: moderateScale(15, 0.3),
+                fontSize: moderateScale(18, 0.6),
+                color: Color.black,
+                textAlign: 'left',
               }}
-              start={{x: 0, y: 0}}
-              end={{x: 1, y: 0}}
-              colors={['#f5eefe', '#f4edfd']}>
-              <CustomText
-                style={{
-                  fontSize: moderateScale(25, 0.6),
-                  color: Color.veryLightGray,
-                }}
-                isBold>
-                #
-              </CustomText>
-            </LinearGradient>
-            <View
+              isBold>
+              #Travelling
+            </CustomText>
+            <CustomText
               style={{
-                width: windowWidth * 0.5,
-                marginLeft: moderateScale(15, 0.3),
+                fontSize: moderateScale(14, 0.6),
+                color: Color.veryLightGray,
+                textAlign: 'left',
               }}>
-              <CustomText
-                style={{
-                  fontSize: moderateScale(18, 0.6),
-                  color: Color.black,
-                  textAlign: 'left',
-                }}
-                isBold>
-                #Travelling
-              </CustomText>
-              <CustomText
-                style={{
-                  fontSize: moderateScale(14, 0.6),
-                  color: Color.veryLightGray,
-                  textAlign: 'left',
-                }}>
-                39M Posts
-              </CustomText>
-            </View>
- 
+              39M Posts
+            </CustomText>
+          </View>
 
           <TouchableOpacity activeOpacity={0.8}>
             <LinearGradient
@@ -266,16 +395,15 @@ const PostScreen = () => {
               </CustomText>
             </LinearGradient>
           </TouchableOpacity>
-          </View>
+        </View>
 
-          <TabView
-            navigationState={{index, routes}}
-            renderScene={renderScene}
-            onIndexChange={setIndex}
-            initialLayout={{width: windowWidth}}
-            renderTabBar={renderTabBar}
-          />
-
+        <TabView
+          navigationState={{index, routes}}
+          renderScene={renderScene}
+          onIndexChange={setIndex}
+          initialLayout={{width: windowWidth}}
+          renderTabBar={renderTabBar}
+        />
       </ImageBackground>
     </>
   );

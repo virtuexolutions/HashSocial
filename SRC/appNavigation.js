@@ -42,6 +42,7 @@ import MemberList from './Screens/MemberList';
 import { profilePicUrl } from './Config';
 import SubscriptionScreen from './Screens/SubscriptionScreen';
 import PostScreen from './Screens/PostScreen';
+import EventDetails from './Screens/EventDetails';
 
 // import AccountSetting from './Screens/AccountSetting';
 // import HomeScreen from './Screens/HomeScreen';
@@ -78,12 +79,13 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'Bubble'}
+          initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           {/* <RootNav.Screen name="HomeScreen" component={HomeScreen} /> */}
 
           
+          <RootNav.Screen name="EventDetails" component={EventDetails} />
           <RootNav.Screen name="PostScreen" component={PostScreen} />
           <RootNav.Screen name="FeedList" component={FeedList} />
           <RootNav.Screen name="Feeds" component={Feeds} />
