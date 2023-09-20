@@ -142,7 +142,7 @@ const Signup = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right />
+      <Header right showBack Title={'Sign up'}/>
       <ScrollView>
         <ImageBackground
           source={

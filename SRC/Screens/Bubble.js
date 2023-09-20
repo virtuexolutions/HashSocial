@@ -27,14 +27,97 @@ import {Icon, ScrollView} from 'native-base';
 import Home from '../Components/Home';
 import Posts from '../Components/Posts';
 import Events from '../Components/Events';
+import Entypo from 'react-native-vector-icons/Entypo';
+import Modal from 'react-native-modal';
+import Feather from 'react-native-vector-icons/Feather';
 
 const Bubble = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const [isLoading, setIsLoading] = useState(false);
-  const events = ['Posts', 'Home' ,'Chats', 'Events', 'Members' ];
+  const [isVisible, setIsVisible] = useState(false);
+  const events = ['Posts', 'Home', 'Chats', 'Events', 'Members'];
   const [selectedEvent, setSelectedEvent] = useState('Posts');
- 
+  const [search, setSearch] = useState('');
+  const SearchData = [
+    {
+      id: 1,
+      image: require('../Assets/Images/Ellipse2.png'),
+      name: 'Alchole',
+      Tags: '#Architecture',
+    },
+    {
+      id: 2,
+      image: require('../Assets/Images/Ellipse3.png'),
+      name: 'Alternative Fitness',
+      Tags: '#Architecture',
+    },
+    {
+      id: 3,
+      image: require('../Assets/Images/Ellipse4.png'),
+      name: 'Archery',
+      Tags: '#Architecture',
+    },
+    {
+      id: 4,
+      image: require('../Assets/Images/Ellipse5.png'),
+      name: 'architecture',
+      Tags: '#Architecture',
+    },
+    {
+      id: 5,
+      image: require('../Assets/Images/Ellipse6.png'),
+      name: 'art',
+      Tags: '#Architecture',
+    },
+    {
+      id: 6,
+      image: require('../Assets/Images/Ellipse2.png'),
+      name: 'Astrology',
+      Tags: '#Architecture',
+    },
+    {
+      id: 7,
+      image: require('../Assets/Images/Ellipse3.png'),
+      name: 'Beer',
+      Tags: '#Architecture',
+    },
+    {
+      id: 8,
+      image: require('../Assets/Images/Ellipse4.png'),
+      name: 'Author Books',
+      Tags: '#Architecture',
+    },
+    {
+      id: 9,
+      image: require('../Assets/Images/Ellipse5.png'),
+      name: 'Bird Watching',
+      Tags: '#Architecture',
+    },
+    {
+      id: 10,
+      image: require('../Assets/Images/Ellipse6.png'),
+      name: 'bolging',
+      Tags: '#Architecture',
+    },
+    {
+      id: 11,
+      image: require('../Assets/Images/Ellipse2.png'),
+      name: 'Author books',
+      Tags: '#Architecture',
+    },
+  ];
+  const [newData, setnewData] = useState(SearchData);
+  console.log('🚀 ~ file: Bubble.js:112 ~ Bubble ~ newData:', newData);
+
+  useEffect(() => {
+    setnewData(
+      SearchData.filter(
+        item => item?.name.toLowerCase().indexOf(search.toLowerCase()) > -1,
+      ),
+    );
+  }, [search]);
+
   return (
     <>
       <CustomStatusBar
@@ -89,13 +172,7 @@ const Bubble = () => {
                 />
               </View>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                marginTop: moderateScale(30, 0.3),
-                paddingHorizontal: moderateScale(30, 0.6),
-              }}>
+            <View style={styles.container2}>
               <View style={{justifyContent: 'center'}}>
                 <CustomText
                   numberOfLines={1}
@@ -172,15 +249,22 @@ const Bubble = () => {
                 isGradient
                 isBold
               />
-              <View style={styles.downIcon}>
+              <TouchableOpacity
+                onPress={() => {
+                  setIsVisible(true);
+                }}
+                style={styles.downIcon}>
                 <Icon
-                  name="chevron-down"
-                  as={EvilIcons}
+                  onPress={() => {
+                    setIsVisible(true);
+                  }}
+                  name="dots-three-vertical"
+                  as={Entypo}
                   color={themeColor[1]}
-                  size={10}
+                  size={6}
                   zIndex={1}
                 />
-              </View>
+              </TouchableOpacity>
             </View>
           </ImageBackground>
           <View
@@ -213,95 +297,125 @@ const Bubble = () => {
                     }}
                     onPress={() => {
                       setSelectedEvent(data);
-                      if(data =='Members'){
-                        navigationService.navigate('MemberList')
-                      }else if(data == 'Chats'){
-                        navigationService.navigate("ChatScreen")
+                      if (data == 'Members') {
+                        navigationService.navigate('MemberList');
                       }
+                      // else if(data == 'Chats'){
+                      //   navigationService.navigate("ChatScreen")
+                      // }
                     }}
                   />
                 );
               })}
             </ScrollView>
-            {selectedEvent == 'Home' ?  <Home /> : selectedEvent == 'Events' ? <Events /> : selectedEvent == 'Posts' ? <Posts />  : <></>  }
-
-            
-          
-
-           
+            {selectedEvent == 'Home' ? (
+              <Home />
+            ) : selectedEvent == 'Events' ? (
+              <Events />
+            ) : selectedEvent == 'Posts' ? (
+              <Posts />
+            ) : selectedEvent == 'Chats' ? (
+              <NullData />
+            ) : (
+              <></>
+            )}
           </View>
         </ScrollView>
       </ImageBackground>
+      <Modal
+        isVisible={isVisible}
+        onBackdropPress={() => {
+          setIsVisible(false);
+        }}
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          // backgroundColor:'red',
+          // paddingVertical:moderateScale(20,.6),
+        }}>
+        <View style={styles.container}>
+          <CustomText style={[styles.modalHeader,{backgroundColor:themeColor[1]}]} isBold>
+            Invite Members
+          </CustomText>
+
+          <TextInputWithTitle
+            iconName={'search'}
+            iconType={Feather}
+            secureText={false}
+            placeholder={'Alchole'}
+            setText={setSearch}
+            value={search}
+            viewHeight={0.05}
+            viewWidth={0.8}
+            inputWidth={0.7}
+            border={1}
+            borderColor={Color.veryLightGray}
+            marginTop={moderateScale(15, 0.3)}
+            // backgroundColor={'black'}
+            color={themeColor[1]}
+            placeholderColor={Color.veryLightGray}
+            borderRadius={moderateScale(25, 0.3)}
+          />
+
+          <FlatList
+            data={newData}
+            showsVerticalScrollIndicator={false}
+            contentContainerStyle={{
+              // marginBottom: moderateScale(10, 0.3),
+              paddingBottom: moderateScale(30, 0.6),
+              marginTop: moderateScale(10, 0.3),
+            }}
+            style={{
+              height: windowHeight * 0.5,
+            }}
+            renderItem={({item, index}) => {
+              return (
+                <View style={styles.row}>
+                  <View style={styles.profileSection2}>
+                    <CustomImage
+                      source={item.image}
+                      style={{
+                        height: '100%',
+                        width: '100%',
+                      }}
+                      resizeMode="contain"
+                    />
+                  </View>
+
+                  <View
+                    style={{
+                      marginLeft: moderateScale(15, 0.6),
+                      justifyContent: 'center',
+                    }}>
+                    <CustomText
+                      style={{
+                        fontSize: moderateScale(13, 0.6),
+                        color: '#000',
+                        textAlign: 'left',
+                      }}
+                      isBold>
+                      {item?.name}
+                    </CustomText>
+                    <CustomText
+                      style={{
+                        fontSize: moderateScale(9, 0.6),
+                        textAlign: 'left',
+                        color: '#000',
+                      }}>
+                      {item.Tags}
+                    </CustomText>
+                  </View>
+                </View>
+              );
+            }}
+          />
+        </View>
+      </Modal>
     </>
   );
 };
 
 const styles = ScaledSheet.create({
-  conatiner: {
-    width: windowWidth * 0.9,
-    paddingVertical: moderateScale(15, 0.6),
-    backgroundColor: Color.white,
-    alignSelf: 'center',
-    borderRadius: moderateScale(15, 0.6),
-    alignItems: 'center',
-    marginTop: moderateScale(20, 0.3),
-  },
-  textInput: {
-    height: windowHeight * 0.05,
-    width: windowWidth * 0.7,
-    borderWidth: 1,
-    borderColor: Color.darkGray,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-
-    elevation: 7,
-  },
-  bottomImage: {
-    width: windowWidth * 0.4,
-    backgroundColor: 'green',
-  },
-
-  textContainer: {
-    marginTop: moderateScale(20, 0.3),
-  },
-
-  Heading: {
-    fontSize: moderateScale(20, 0.3),
-    color: '#ffffff',
-    alignSelf: 'flex-start',
-  },
-
-  txt3: {
-    fontSize: moderateScale(10, 0.6),
-    alignSelf: 'center',
-    fontWeight: '600',
-  },
-  container2: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: windowWidth * 0.9,
-  },
-  txt4: {
-    color: Color.purple,
-    fontSize: moderateScale(15, 0.6),
-    marginTop: moderateScale(8, 0.3),
-    fontWeight: 'bold',
-  },
-  txt5: {
-    color: Color.white,
-    marginTop: moderateScale(10, 0.3),
-    fontSize: moderateScale(12, 0.6),
-  },
-  dropDown: {
-    backgroundColor: Color.red,
-  },
   checkIcon: {
     backgroundColor: Color.white,
     borderRadius: 20,
@@ -334,46 +448,6 @@ const styles = ScaledSheet.create({
     width: windowWidth * 0.11,
     padding: moderateScale(3, 0.6),
   },
-  text: {
-    fontSize: moderateScale(9, 0.6),
-    color: '#353434',
-    width: windowWidth * 0.45,
-    textAlign: 'left',
-    marginTop: moderateScale(5, 0.3),
-    marginLeft: moderateScale(10, 0.3),
-  },
-  profileImage: {
-    width: windowWidth * 0.1,
-    height: windowWidth * 0.1,
-    backgroundColor: Color.white,
-    overflow: 'hidden',
-    borderColor: 'yellow',
-    borderWidth: 1,
-    borderRadius: (windowWidth * 0.1) / 2,
-    marginTop: moderateScale(12, 0.3),
-    marginLeft: moderateScale(5, 0.3),
-    marginRight: moderateScale(8, 0.3),
-  },
-  image1: {
-    width: windowWidth * 0.45,
-    height: windowHeight * 0.2,
-    backgroundColor: Color.white,
-    overflow: 'hidden',
-    borderRadius: moderateScale(10, 0.6),
-    marginTop: moderateScale(12, 0.3),
-  },
-  image2: {
-    width: windowWidth * 0.13,
-    height: windowWidth * 0.13,
-    backgroundColor: Color.white,
-    overflow: 'hidden',
-    borderColor: 'yellow',
-    borderWidth: 1,
-    borderRadius: (windowWidth * 0.13) / 2,
-    marginTop: moderateScale(12, 0.3),
-    marginLeft: moderateScale(5, 0.3),
-    marginRight: moderateScale(8, 0.3),
-  },
   eventText: {
     fontSize: moderateScale(14, 0.6),
 
@@ -382,45 +456,67 @@ const styles = ScaledSheet.create({
     marginLeft: moderateScale(10, 0.3),
     paddingVertical: moderateScale(5, 0.6),
     borderRadius: moderateScale(5, 0.6),
-
     textAlign: 'center',
     alignItems: 'center',
   },
-  activityText: {
-    fontSize: moderateScale(17, 0.6),
-    color: Color.white,
-    width: windowWidth * 0.4,
-    height: windowHeight * 0.04,
-    textAlign: 'center',
-    borderBottomWidth: 1.5,
-  },
-  activityContainer: {
-    width: windowWidth * 0.9,
-    height: windowHeight * 0.65,
-    justifyContent: 'center',
-    alignSelf: 'center',
-    // alignItems:'center',
-    marginTop: moderateScale(20, 0.3),
-    flexDirection: 'row',
-    flexWrap: 'nowrap',
-  },
-  activityImage: {
-    height: windowHeight * 0.2,
-    width: windowWidth * 0.285,
+  container: {
+    width: windowWidth * 0.85,
+    // height: windowHeight * 0.55,
+    // paddingVertical: moderateScale(20, 0.6),
     backgroundColor: Color.white,
+    borderRadius: moderateScale(10, 0.6),
+    justifyContent: 'center',
+    alignItems: 'center',
     overflow: 'hidden',
-    marginVertical: moderateScale(5, 0.3),
-    marginHorizontal: moderateScale(2, 0.3),
   },
-  card: {
-    width: windowWidth * 0.9,
-    height: windowHeight * 0.2,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20,
-    marginTop: moderateScale(10, 0.3),
-    marginBottom: moderateScale(10, 0.3),
-    alignSelf: 'center',
+  profileSection2: {
+    height: windowHeight * 0.05,
+    width: windowHeight * 0.05,
+    backgroundColor: '#fff',
+    borderRadius: (windowHeight * 0.05) / 2,
+    borderWidth: 2,
+    borderColor: Color.green,
+    justifyContent: 'center',
+    overflow: 'hidden',
+    // alignSelf: 'center',
+  },
+  modalHeader: {
+    color: 'black',
+    fontSize: moderateScale(15, 0.6),
+    width: '100%',
+    textAlign: 'center',
+    color: 'white',
+    // backgroundColor: themeColor[1],
+    padding: moderateScale(10, 0.6),
+  },
+  row: {
+    width: windowWidth,
+    height: windowHeight * 0.06,
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingLeft: moderateScale(14, 0.6),
+    marginVertical: moderateScale(2, 0.3),
+    // backgroundColor:'red',
+  },
+  container2: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: moderateScale(30, 0.3),
+    paddingHorizontal: moderateScale(30, 0.6),
   },
 });
 
 export default Bubble;
+
+const NullData = () => {
+  return (
+    <View
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: windowHeight * 0.4,
+      }}>
+      <CustomText>Chats has not been implemented yet</CustomText>
+    </View>
+  );
+};

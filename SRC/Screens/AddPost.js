@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {ImageBackground, View} from 'react-native';
+import {ImageBackground, TouchableOpacity, View} from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
@@ -13,13 +13,28 @@ import navigationService from '../navigationService';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {useSelector} from 'react-redux';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
+import ImagePickerModal from '../Components/ImagePickerModal';
+import CustomImage from '../Components/CustomImage';
 
 const AddPost = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const [selectedTab, setSelectedTab] = useState('Tag People');
+  const [image, setImage] = useState({});
+  const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [description, setDescription] = useState('')
+  const [description, setDescription] = useState('');
+  const [imagePickerVisible, setImagePickerVisible] = useState(false);
+  const [hashtag, setHashtag] = useState('');
+  const [hashtags, setHashtags] = useState([]);
+  console.log('🚀 ~ file: AddPost.js:30 ~ AddPost ~ hashtags:', hashtags);
+
+  useEffect(() => {
+    if (Object.keys(image).length > 0) {
+      setImages(prev => [...prev, image]);
+      setImage({});
+    }
+  }, [image]);
 
   return (
     <>
@@ -27,7 +42,7 @@ const AddPost = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header showBack Title={'ADD POST'} right/>
+      <Header showBack Title={'ADD POST'} right />
       <ImageBackground
         source={
           privacy == 'private'
@@ -41,29 +56,43 @@ const AddPost = () => {
           // justifyContent : 'center',
           alignItems: 'center',
         }}>
-        <CustomText
-          style={styles.title}
-          isBold={true}
-          children={' Write Captions'}
-        />
-         <TextInputWithTitle
-              maxLength={2000}
-              secureText={false}
-              placeholder={'Description'}
-              setText={setDescription}
-              value={description}
-              viewHeight={0.22}
-              viewWidth={0.9}
-              inputWidth={0.85}
-              marginTop={moderateScale(5, 0.3)}
-              color={Color.red}
-              border={1}
-              marginLeft ={moderateScale(10,0.3)}
-              borderColor={Color.white}
-              placeholderColor={Color.themeLightGray}
-              multiline
-            />
-        {/* <CustomText style={styles.text}>
+        <ScrollView
+          contentContainerStyle={{
+            width: windowWidth,
+            // height: windowHeight * 0.9,
+            // justifyContent : 'center',
+            alignItems: 'center'
+          
+          }}
+          style={
+            {
+            
+              // minHeight:windowHeight * 0.9,
+            }
+          }>
+          <CustomText
+            style={styles.title}
+            isBold={true}
+            children={' Write Captions'}
+          />
+          <TextInputWithTitle
+            maxLength={2000}
+            secureText={false}
+            placeholder={'Description'}
+            setText={setDescription}
+            value={description}
+            viewHeight={0.22}
+            viewWidth={0.9}
+            inputWidth={0.85}
+            marginTop={moderateScale(5, 0.3)}
+            color={Color.red}
+            border={1}
+            // marginLeft={moderateScale(10, 0.3)}
+            borderColor={Color.white}
+            placeholderColor={Color.themeLightGray}
+            multiline
+          />
+          {/* <CustomText style={styles.text}>
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
           since the 1500s, when an unknown printer took a galley of type and
@@ -71,51 +100,149 @@ const AddPost = () => {
           five centuries, but also the leap into electronic typesetting,
           remaining essentially unchanged.
         </CustomText> */}
-        <View style={styles.plus}>
-          <Icon name="plus" as={Entypo} size={25} color={'black'} />
-        </View>
 
-        <View style={styles.conatiner}></View>
+          <CustomText
+            style={[styles.title, {marginTop: moderateScale(10, 0.3)}]}
+            isBold={true}
+            children={'Add Images'}
+          />
+          <View style={styles.imagesContainer}>
+            {images?.map(item => {
+              return (
+                <View style={styles.image}>
+                  <CustomImage
+                    style={{width: '100%', height: '100%'}}
+                    source={{uri: item?.uri}}
+                  />
+                </View>
+              );
+            })}
+            {images.length < 5 && (
+              <TouchableOpacity
+                style={styles.plus}
+                onPress={() => {
+                  if (images.length < 5) {
+                    setImagePickerVisible(true);
+                  } else {
+                    Platform.OS == 'android'
+                      ? ToastAndroid.show(
+                          'you can select only five images.',
+                          ToastAndroid.SHORT,
+                        )
+                      : Alert.alert('you can select only five images');
+                  }
+                }}>
+                <Icon
+                  name="plus"
+                  as={Entypo}
+                  size={25}
+                  color={'black'}
+                  onPress={() => {
+                    if (images.length < 5) {
+                      setImagePickerVisible(true);
+                    } else {
+                      Platform.OS == 'android'
+                        ? ToastAndroid.show(
+                            'you can select only five images.',
+                            ToastAndroid.SHORT,
+                          )
+                        : Alert.alert('you can select only five images.');
+                    }
+                  }}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+          <CustomText
+            style={[styles.title, {marginTop: moderateScale(10, 0.3)}]}
+            isBold={true}
+            children={'Add hashtag'}
+          />
+          <View
+            style={{
+              // backgroundColor: 'red',
+              width: windowWidth,
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+              paddingHorizontal: moderateScale(10, 0.6),
+              paddingVertical: moderateScale(5, 0.6),
+              // height: windowHeight * 0.1,
+            }}>
+            {hashtags.map(item => {
+              return (
+                <CustomText
+                  style={{
+                    backgroundColor: themeColor[1],
+                    color: 'white',
+                    fontSize: moderateScale(13, 0.6),
+                    marginHorizontal: moderateScale(5, 0.3),
+                    marginVertical: moderateScale(5, 0.3),
+                    padding: moderateScale(5, 0.6),
+                    borderRadius: moderateScale(10, 0.6),
+                  }}>
+                  {item}
+                </CustomText>
+              );
+            })}
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              // backgroundColor: 'red',
+              paddingVertical: moderateScale(5, 0.6),
+              width: windowWidth,
+              paddingHorizontal: moderateScale(15, 0.6),
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}>
+            <TextInputWithTitle
+              // title={'Title'}
+              secureText={false}
+              placeholder={'#Hashtags'}
+              setText={setHashtag}
+              value={hashtag}
+              viewHeight={0.06}
+              viewWidth={0.7}
+              inputWidth={0.65}
+              backgroundColor={'white'}
+              border={1}
+              // marginTop={moderateScale(10, 0.3)}
+              borderColor={'#FFFFFF'}
+              color={themeColor[1]}
+              placeholderColor={Color.themeLightGray}
+              borderRadius={moderateScale(10, 0.3)}
+            />
+            <CustomButton
+              text={'Add'}
+              textColor={themeColor[1]}
+              width={windowWidth * 0.2}
+              height={windowHeight * 0.05}
+              fontSize={moderateScale(13, 0.6)}
+              // marginTop={moderateScale(40, 0.3)}
+              onPress={() => {
+                setHashtags(prev => [...prev, hashtag]);
+                setHashtag('');
+              }}
+              bgColor={['#FFFFFF', '#FFFFFF']}
+              // borderRadius={moderateScale(10, 0.3)}
+              isGradient
+              isBold={true}
+            />
+          </View>
+        </ScrollView>
 
-        <View style={styles.tabStyles}>
-          <CustomText
-            style={{
-              ...{color: selectedTab == 'Tag People' ? 'white' : '#353434'},
-              ...styles.options,
-            }}
-            isBold={true}
-            children={'Tag people'}
-            onPress={() => {
-              setSelectedTab('Tag People');
-            }}
-          />
-          <View style={styles.line}></View>
-          <CustomText
-            style={{
-              ...{color: selectedTab == 'Add Location' ? 'white' : '#353434'},
-              ...styles.options,
-            }}
-            isBold={true}
-            onPress={() => {
-              setSelectedTab('Add Location');
-            }}
-            children={'Add Location'}
-          />
+        {/* <View style={styles.conatiner}></View> */}
 
-          <View style={styles.line}></View>
-          <CustomText
-            style={{
-              ...{color: selectedTab == 'Add Music' ? 'white' : '#353434'},
-              ...styles.options,
-            }}
-            isBold={true}
-            onPress={() => {
-              setSelectedTab('Add Music');
-            }}
-            children={'Add Music'}
-          />
-        </View>
-        <View style={{position: 'absolute', bottom: 70}}>
+        <View
+          style={{
+            position: 'absolute',
+            bottom: 40,
+            // backgroundColor: 'red',
+            width: windowWidth,
+            // height: windowHeight * 0.1,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
           <CustomButton
             text={
               loading ? (
@@ -127,7 +254,7 @@ const AddPost = () => {
             textColor={themeColor[1]}
             width={windowWidth * 0.7}
             height={windowHeight * 0.06}
-            marginTop={moderateScale(40, 0.3)}
+            // marginTop={moderateScale(40, 0.3)}
             onPress={() => {
               // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
               // navigationService.navigate('Signup');
@@ -160,57 +287,16 @@ const AddPost = () => {
           isBold={true}
         /> */}
       </ImageBackground>
+      <ImagePickerModal
+        show={imagePickerVisible}
+        setShow={setImagePickerVisible}
+        setFileObject={setImage}
+      />
     </>
   );
 };
 
 const styles = ScaledSheet.create({
-  conatiner: {
-    width: windowWidth * 0.9,
-    height: windowHeight * 0.0004,
-    backgroundColor: 'white',
-    alignSelf: 'center',
-    marginTop: moderateScale(20, 0.3),
-  },
-  textInput: {
-    height: windowHeight * 0.05,
-    width: windowWidth * 0.7,
-    borderWidth: 1,
-    borderColor: Color.darkGray,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 3,
-    },
-    shadowOpacity: 0.29,
-    shadowRadius: 4.65,
-    elevation: 7,
-  },
-  title: {
-    fontSize: moderateScale(22, 0.6),
-    color: '#353434',
-    width: windowWidth * 0.9,
-    textAlign: 'left',
-    marginTop: moderateScale(30, 0.3),
-  },
-  plus: {
-    width: windowWidth * 0.16,
-    height: windowWidth * 0.16,
-    backgroundColor: 'white',
-    borderRadius: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginLeft: moderateScale(18, 0.3),
-    alignSelf: 'flex-start',
-    marginTop: moderateScale(10, 0.3),
-  },
-  line: {
-    width: windowWidth * 0.006,
-    height: windowHeight * 0.02,
-    backgroundColor: 'black',
-    marginTop: moderateScale(10, 0.3),
-  },
   text: {
     fontSize: moderateScale(12, 0.6),
     color: '#353434',
@@ -218,16 +304,50 @@ const styles = ScaledSheet.create({
     textAlign: 'left',
     marginTop: moderateScale(10, 0.3),
   },
-  tabStyles: {
+
+  imagesContainer: {
+    width: windowWidth,
+    paddingHorizontal: moderateScale(10, 0.6),
     flexDirection: 'row',
+    marginVertical: moderateScale(5, 0.3),
+    flexWrap: 'wrap',
+    // justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor:'red',
+  },
+  conatiner: {
     width: windowWidth * 0.9,
-    justifyContent: 'space-between',
+    height: windowHeight * 0.0009,
+    backgroundColor: 'white',
+    alignSelf: 'center',
     marginTop: moderateScale(20, 0.3),
   },
-  options: {
-    fontSize: moderateScale(12, 0.6),
-    width: windowWidth * 0.2,
-    marginTop: moderateScale(10, 0.3),
+  image: {
+    width: windowWidth * 0.16,
+    height: windowWidth * 0.16,
+    borderRadius: moderateScale(10, 0.6),
+    overflow: 'hidden',
+    margin: moderateScale(5, 0.6),
+  },
+
+  title: {
+    fontSize: moderateScale(18, 0.6),
+    color: '#353434',
+    width: windowWidth * 0.9,
+    textAlign: 'left',
+    marginTop: moderateScale(15, 0.3),
+  },
+  plus: {
+    width: windowWidth * 0.16,
+    height: windowWidth * 0.16,
+    backgroundColor: 'white',
+    borderRadius: moderateScale(10, 0.6),
+    marginHorizontal: moderateScale(5, 0.3),
+    alignItems: 'center',
+    justifyContent: 'center',
+    // marginLeft: moderateScale(18, 0.3),
+    // alignSelf: 'flex-start',
+    // marginTop: moderateScale(10, 0.3),
   },
 });
 

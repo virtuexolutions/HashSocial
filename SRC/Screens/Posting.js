@@ -87,7 +87,7 @@ const Posting = () => {
             isLoading ? (
               <ActivityIndicator color={'#01E8E3'} size={'small'} />
             ) : (
-              'Create Feed'
+              'Create New Feed'
             )
           }
           textColor={themeColor[1]}

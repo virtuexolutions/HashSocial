@@ -81,41 +81,7 @@ const Notifications = () => {
           height: windowHeight * 0.9,
           alignItems: 'center',
         }}>
-        <View
-          style={{
-            width: windowWidth,
-            height: windowHeight * 0.09,
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            padding: moderateScale(8, 0.3),
-          }}>
-          <View style={styles.profileSection}>
-            <CustomImage
-              source={require('../Assets/Images/Ellipse1.png')}
-              style={{
-                height: '100%',
-                width: '100%',
-              }}
-            />
-          </View>
-
-          <TextInputWithTitle
-            secureText={false}
-            placeholder={'Alchole'}
-            setText={setSearch}
-            value={search}
-            viewHeight={0.06}
-            viewWidth={0.7}
-            inputWidth={0.7}
-            backgroundColor={Color.white}
-            color={themeColor[1]}
-            placeholderColor={Color.veryLightGray}
-            borderRadius={moderateScale(25, 0.3)}
-          />
-
-          <Icon as={Entypo} name="images" size={30} color="#fff" />
-        </View>
+       
 
         <View
           style={{
@@ -171,20 +137,13 @@ const Notifications = () => {
                       style={{
                         color: '#000',
                         fontSize: moderateScale(10, 0.6),
+                        // backgroundColor:'red',
+                        marginRight:moderateScale(10,.3),
                         textAlign: 'right',
                       }}>
                       5 min
                     </CustomText>
-                    <TouchableOpacity
-                      activeOpacity={0.8}
-                      style={{justifyContent: 'center'}}
-                      >
-                      <MaterialCommunityIcons
-                        name="dots-vertical"
-                        size={30}
-                        color="#fff"
-                      />
-                    </TouchableOpacity>
+                   
                   </View>
 
                   <View

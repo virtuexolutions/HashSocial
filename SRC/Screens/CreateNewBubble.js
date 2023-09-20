@@ -27,6 +27,7 @@ import ImagePickerModal from '../Components/ImagePickerModal';
 import navigationService from '../navigationService';
 import {ScaledSheet} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
+import Entypo from 'react-native-vector-icons/Entypo'
 
 const CreateNewBubble = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
@@ -170,7 +171,7 @@ const CreateNewBubble = () => {
                 {
                   height: windowHeight * 0.27,
                   width: width * 0.35,
-                  backgroundColor: '#dddbdb',
+                  backgroundColor: 'white',
                   borderRadius: moderateScale(20, 0.6),
                   marginLeft: moderateScale(25, 0.3),
                   justifyContent: 'center',
@@ -193,19 +194,10 @@ const CreateNewBubble = () => {
                   }}
                 />
               ) : (
-                <TouchableOpacity activeOpacity={0.7} style={styles.image}>
-                  <CustomText
-                    style={{
-                      color: Color.black,
-                      fontSize: moderateScale(9, 0.6),
-                    }}
-                    onPress={() => {
-                      // console.log('here')
-                      setShowModal(true);
-                    }}>
-                    Choose Your File
-                  </CustomText>
-                </TouchableOpacity>
+           
+                <Icon name={'camera'} as ={Entypo} size={moderateScale(45,.6)} onPress={()=>{ setShowModal(true)}}/>
+                 
+              
               )}
             </View>
           </View>
@@ -324,47 +316,7 @@ const CreateNewBubble = () => {
 
           <View style={styles.line}></View>
 
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              height: windowHeight * 0.12,
-              width: width * 0.9,
-              alignSelf: 'center',
-              // backgroundColor:'red',
-              marginTop: moderateScale(10, 0.3),
-            }}>
-            {memberships.map(data => {
-              return (
-                <View style={{justifyContent: 'center', alignItems: 'center'}}>
-                  <LinearGradient
-                    style={[styles.crownIcon, {borderColor: data?.border}]}
-                    colors={data?.color}>
-                    <View
-                      style={{
-                        width: windowWidth * 0.07,
-                        height: windowHeight * 0.03,
-                      }}>
-                      <CustomImage
-                        source={require('../Assets/Images/crown.png')}
-                        style={{height: '100%', width: '100%'}}
-                      />
-                    </View>
-                  </LinearGradient>
-                  <CustomText
-                    numberOfLines={2}
-                    style={{
-                      width: windowWidth * 0.25,
-                      fontSize: moderateScale(12, 0.6),
-                      textAlign:'center'
-                    }}>
-                    {data?.title}
-                  </CustomText>
-                </View>
-              );
-            })}
-          </View>
+      
 
           <View style={styles.switchContainer}>
             <CustomText

@@ -95,6 +95,7 @@ import {
                   check={item?.check}
                   close={item?.close}
                   edit={item?.edit}
+                  MemberList={true}
                   pending={item?.pending}
                 />
                   

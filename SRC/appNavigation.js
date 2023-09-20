@@ -42,6 +42,7 @@ import MemberList from './Screens/MemberList';
 import { profilePicUrl } from './Config';
 import SubscriptionScreen from './Screens/SubscriptionScreen';
 import PostScreen from './Screens/PostScreen';
+import AddEvents from './Screens/AddEvents';
 
 // import AccountSetting from './Screens/AccountSetting';
 // import HomeScreen from './Screens/HomeScreen';
@@ -78,12 +79,9 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'Bubble'}
+          initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
-          <RootNav.Screen name="LoginScreen" component={LoginScreen} />
-          {/* <RootNav.Screen name="HomeScreen" component={HomeScreen} /> */}
-
-          
+          <RootNav.Screen name="LoginScreen" component={LoginScreen} />  
           <RootNav.Screen name="PostScreen" component={PostScreen} />
           <RootNav.Screen name="FeedList" component={FeedList} />
           <RootNav.Screen name="Feeds" component={Feeds} />
@@ -101,6 +99,7 @@ const AppNavigator = () => {
           <RootNav.Screen name="EnterPhone" component={EnterPhone} />
           <RootNav.Screen name="BubbleList" component={BubbleList} />
           <RootNav.Screen name="Profile" component={Profile} />
+          <RootNav.Screen name="AddEvents" component={AddEvents} />
           <RootNav.Screen name="ProfileList" component={ProfileList} />
           <RootNav.Screen name="Notifications" component={Notifications} />
           <RootNav.Screen name="CreateNewFeed" component={CreateNewFeed} />

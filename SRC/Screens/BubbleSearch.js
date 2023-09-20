@@ -20,11 +20,11 @@ import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
 import Color from '../Assets/Utilities/Color';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const BubbleSearch = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
-  const privacy = useSelector(state=> state.authReducer.privacy)
+  const privacy = useSelector(state => state.authReducer.privacy);
   const [search, setSearch] = useState('');
   const SearchData = [
     {
@@ -32,77 +32,92 @@ const BubbleSearch = () => {
       image: require('../Assets/Images/Ellipse2.png'),
       name: 'Alchole',
       Tags: '#Architecture',
+      bubble: true,
     },
     {
       id: 2,
       image: require('../Assets/Images/Ellipse3.png'),
       name: 'Alternative Fitness',
       Tags: '#Architecture',
+      bubble: false,
     },
     {
       id: 3,
       image: require('../Assets/Images/Ellipse4.png'),
       name: 'Archery',
       Tags: '#Architecture',
+      bubble: true,
     },
     {
       id: 4,
       image: require('../Assets/Images/Ellipse5.png'),
       name: 'architecture',
       Tags: '#Architecture',
+      bubble: true,
     },
     {
       id: 5,
       image: require('../Assets/Images/Ellipse6.png'),
       name: 'art',
       Tags: '#Architecture',
-    }, {
+      bubble: false,
+    },
+    {
       id: 6,
       image: require('../Assets/Images/Ellipse2.png'),
       name: 'Astrology',
       Tags: '#Architecture',
+      bubble: true,
     },
     {
       id: 7,
       image: require('../Assets/Images/Ellipse3.png'),
       name: 'Beer',
       Tags: '#Architecture',
+      bubble: false,
     },
     {
       id: 8,
       image: require('../Assets/Images/Ellipse4.png'),
       name: 'Author Books',
       Tags: '#Architecture',
+      bubble: true,
     },
     {
       id: 9,
       image: require('../Assets/Images/Ellipse5.png'),
       name: 'Bird Watching',
       Tags: '#Architecture',
+      bubble: false,
     },
     {
       id: 10,
       image: require('../Assets/Images/Ellipse6.png'),
       name: 'bolging',
       Tags: '#Architecture',
-    }, {
+      bubble: true,
+    },
+    {
       id: 11,
       image: require('../Assets/Images/Ellipse2.png'),
       name: 'Author books',
       Tags: '#Architecture',
+      bubble: false,
     },
     {
-      id: 10,
+      id: 12,
       image: require('../Assets/Images/Ellipse6.png'),
       name: 'bolging',
       Tags: '#Architecture',
-    }, {
-      id: 11,
+      bubble: false,
+    },
+    {
+      id: 13,
       image: require('../Assets/Images/Ellipse2.png'),
       name: 'Author books',
       Tags: '#Architecture',
+      bubble: false,
     },
-   
   ];
   return (
     <>
@@ -113,26 +128,24 @@ const BubbleSearch = () => {
       <Header right Title={'Search'} search />
 
       <ImageBackground
-       source={
-        privacy == 'private'
-          ? require('../Assets/Images/theme2.jpg')
-          : require('../Assets/Images/Main.png')
-      }
+        source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
         resizeMode={'cover'}
         style={{
           width: windowWidth * 1,
           height: windowHeight * 0.9,
           // alignItems: 'center',
         }}>
-        <View
-          style={styles.topContainer}>
+        <View style={styles.topContainer}>
           <View style={styles.profileSection}>
             <CustomImage
               source={require('../Assets/Images/dummyman1.png')}
               style={{
                 height: '100%',
                 width: '100%',
-                
               }}
               resizeMode="contain"
             />
@@ -159,24 +172,32 @@ const BubbleSearch = () => {
           </TouchableOpacity>
         </View>
 
-        <View style={{width: windowWidth, marginBottom:moderateScale(35,.3) }}>
+        <View
+          style={{width: windowWidth, marginBottom: moderateScale(35, 0.3)}}>
           <FlatList
             data={SearchData}
-            showsHorizontalScrollIndicator={false}
+            showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               marginBottom: moderateScale(10, 0.3),
-              paddingBottom:moderateScale(130,.6),
-              marginTop:moderateScale(10,.3)
+              paddingBottom: moderateScale(130, 0.6),
+              marginTop: moderateScale(10, 0.3),
             }}
             renderItem={({item, index}) => {
+              console.log(
+                '🚀 ~ file: BubbleSearch.js:185 ~ BubbleSearch ~ item:',
+                item,
+              );
               return (
-                <View
-                  style={styles.row}>
-                  <View style={styles.profileSection2}>
+                <View style={styles.row}>
+                  <View
+                    style={[
+                      styles.profileSection2,
+                      item?.bubble ? {borderRadius: (windowHeight * 0.08) / 2} : {borderRadius:moderateScale(10,.6)}
+                    ]}>
                     <CustomImage
                       source={item.image}
                       style={{
-                        height:'100%',
+                        height: '100%',
                         width: '100%',
                       }}
                       resizeMode="contain"
@@ -192,13 +213,17 @@ const BubbleSearch = () => {
                       style={{
                         fontSize: moderateScale(16, 0.6),
                         color: '#000',
-                        textAlign:'left',
+                        textAlign: 'left',
                       }}
                       isBold>
                       {item?.name}
                     </CustomText>
                     <CustomText
-                      style={{fontSize: moderateScale(9, 0.6),  textAlign:'left', color: '#000'}}>
+                      style={{
+                        fontSize: moderateScale(9, 0.6),
+                        textAlign: 'left',
+                        color: '#000',
+                      }}>
                       {item.Tags}
                     </CustomText>
                   </View>
@@ -218,7 +243,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  topContainer:{
+  topContainer: {
     width: windowWidth,
     // height: windowHeight *0.1,
     flexDirection: 'row',
@@ -232,37 +257,37 @@ const styles = StyleSheet.create({
     height: windowHeight * 0.08,
     width: windowHeight * 0.08,
     backgroundColor: '#fff',
-    borderRadius:(windowHeight * 0.08 )/2,
+    borderRadius: (windowHeight * 0.08) / 2,
     borderWidth: 3,
     borderColor: Color.green,
     justifyContent: 'center',
-    overflow:'hidden',
+    overflow: 'hidden',
     // alignSelf: 'center',
   },
   profileSection2: {
     height: windowHeight * 0.06,
     width: windowHeight * 0.06,
     backgroundColor: '#fff',
-    borderRadius:(windowHeight * 0.06 )/2,
+    // borderRadius:(windowHeight * 0.06 )/2,
     borderWidth: 2,
     borderColor: Color.green,
     justifyContent: 'center',
-    overflow:'hidden',
+    overflow: 'hidden',
     // alignSelf: 'center',
   },
-  search:{
-    width: windowWidth*0.7,
+  search: {
+    width: windowWidth * 0.7,
     height: windowHeight * 0.06,
     backgroundColor: '#fff',
     borderRadius: 50,
     justifyContent: 'center',
-  //   marginLeft:moderateScale(10,0.3)
+    //   marginLeft:moderateScale(10,0.3)
   },
-  row:{
+  row: {
     width: windowWidth,
-    height: windowHeight *0.08,
+    height: windowHeight * 0.08,
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: moderateScale(14, 0.6),
-  }
+  },
 });

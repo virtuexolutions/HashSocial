@@ -29,19 +29,22 @@ import {Icon} from 'native-base';
 import ImagePickerModal from '../Components/ImagePickerModal';
 
 
-const Profile = () => {
+const Profile = (props) => {
+  const item = props?.route?.params?.item
+  console.log("🚀 ~ file: Profile.js:33 ~ Profile ~ item:", item)
   const dispatch = useDispatch();
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   // const theme = useSelector(state => state.authReducer.theme);
   // console.log("🚀 ~ file: Profile.js:28 ~ Profile ~ theme:", theme)
   const privacy = useSelector(state => state.authReducer.privacy);
   console.log('🚀 ~ file: Profile.js:30 ~ Profile ~ privacy:', privacy);
-  const [username, setUserName] = useState('');
-  const [desc, setDesc] = useState('');
-  const [selectedTab, setSelectedTab] = useState(privacy ? privacy : '');
+  const [username, setUserName] = useState(item?.name ? item?.name : '');
+  const [desc, setDesc] = useState(item?.desc ? item?.desc : '');
+  const [selectedTab, setSelectedTab] = useState(item?.title.toLowerCase() == 'Private Account'.toLowerCase() ? 'private' : 'public');
+  console.log("🚀 ~ file: Profile.js:44 ~ Profile ~ selectedTab:", selectedTab)
   const [isLoading, setIsLoading] = useState(false);
   const [imagePickerModal, setImagePickerModal] = useState(false);
-  const [type, setType] = useState('Select Profile Type');
+  const [type, setType] = useState(item?.profileType ? item?.profileType :'Select Profile Type');
  const [image, setImage] = useState({})
 
 
@@ -68,7 +71,7 @@ const Profile = () => {
           height: windowHeight * 0.9,
           alignItems: 'center',
         }}>
-        {/* Profile  Sectiopn Start */}
+       
         <View>
           <View
             style={[
@@ -77,7 +80,7 @@ const Profile = () => {
                 borderColor:
                   type == 'Content creator'
                     ? 'yellow'
-                    : type == 'Entrepreneur'
+                    : type == 'Enterpreneur'
                     ? Color.green
                     : type == 'Connector'
                     ? 'pink'
@@ -87,7 +90,7 @@ const Profile = () => {
               },
             ]}>
             <CustomImage
-              source={Object.keys(image).length>0 ? {uri:image?.uri} :require('../Assets/Images/dummyUser.png')}
+              source={Object.keys(image).length>0 ? {uri:image?.uri} :item?.image ? item?.image : require('../Assets/Images/dummyman1.png')}
               style={{
                 height: '100%',
                 width: '100%',
@@ -133,7 +136,7 @@ const Profile = () => {
             borderColor:
               type == 'Content creator'
                 ? 'yellow'
-                : type == 'Entrepreneur'
+                : type == 'Enterpreneur'
                 ? Color.green
                 : type == 'Connector'
                 ? 'pink'
@@ -181,14 +184,14 @@ const Profile = () => {
             <DropDownSingleSelect
               array={[
                 'Content creator',
-                'Entrepreneur',
+                'Enterpreneur',
                 'Connector',
                 'Explore',
               ]}
               item={type}
               setItem={setType}
               // width={windowWidth * 0.34}
-              placeholder={'Select Profile Type'}
+              placeholder={type}
               fontSize={moderateScale(10, 0.5)}
               dropdownStyle={{
                 marginTop: moderateScale(1, 0.3),

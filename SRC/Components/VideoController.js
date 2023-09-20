@@ -1,4 +1,4 @@
-import {View, Text, TouchableOpacity, Image} from 'react-native';
+import {View, Text, TouchableOpacity, Image, ActivityIndicator} from 'react-native';
 import React, {useState, useRef} from 'react';
 import Video from 'react-native-video';
 import Slider from '@react-native-community/slider';
@@ -13,6 +13,7 @@ const VideoController = ({item}) => {
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(null);
   const [fullScreen, setFullScreen] = useState(false);
+  const [loading, setLoading] = useState(false)
   const videoRef = useRef();
 
   const format = secound => {
@@ -43,15 +44,17 @@ const VideoController = ({item}) => {
           source={{uri: item?.video}}
           ref={videoRef}
           onProgress={x => {
+            console.log("🚀 ~ file: VideoController.js:46 ~ VideoController ~ x:", x)
             setProgress(x);
           }}
-          onBuffer={() => console.log('Play video Loding')}
+          onBuffer={() => setLoading(true)}
           style={{
             width: '100%',
             height: '100%',
             backgroundColor: Color.white,
           }}
         />
+        {loading  && <ActivityIndicator size={moderateScale(20,.6)} color={'white'} />}
         {clicked && (
           <TouchableOpacity
             onPress={() => {

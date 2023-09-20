@@ -17,6 +17,9 @@ import DropDownSingleSelect from '../Components/DropDownSingleSelect';
 import {useSelector} from 'react-redux';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
+import ImagePickerModal from '../Components/ImagePickerModal';
+import {Icon} from 'native-base';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 const CreateNewFeed = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
@@ -26,7 +29,8 @@ const CreateNewFeed = () => {
   const [Details, setDetails] = useState('');
   const [radio, setRadio] = useState('');
   const [isLoading, setisLoading] = useState(false);
-
+  const [image, setImage] = useState({});
+  const [showModal, setShowModal] = useState(false);
 
   const architecture = ['#architecture', 'ABC', 'BCD', 'CDE'];
   const [dropDownValue, setDropDownValue] = useState('#Architecture');
@@ -50,13 +54,68 @@ const CreateNewFeed = () => {
           alignItems: 'center',
         }}>
         <View style={styles.topContainer}>
-          <View style={{
-            // borderWidth : 1,
-            paddingRight : moderateScale(7,0.6),
-            paddingBottom : moderateScale(7,0.6),
-          
+          <View
+            style={
+              {
+                // borderWidth : 1,
+                // paddingRight : moderateScale(7,0.6),
+                // paddingBottom : moderateScale(7,0.6),
+                // paddingVertical:moderateScale(10,.6),
+                // backgroundColor:'green '
+              }
+            }>
+              <View
+            style={[
+              {
+                height: windowHeight * 0.27,
+                width: windowWidth *0.95,
+                backgroundColor: 'white',
+                borderRadius: moderateScale(20, 0.6),
+                marginLeft: moderateScale(5, 0.3),
+                justifyContent: 'center',
+                overflow: 'hidden',
+              },
+              Object.keys(image).length == 0 && {
+                alignItems: 'center',
+              },
+            ]}>
+            {Object.keys(image).length > 0 ? (
+              <CustomImage
+                source={{uri: image?.uri}}
+                style={{
+                  width: '100%',
+                  height: '100%',
+                }}
+                onPress={() => {
+                  setShowModal(true);
+                }}
+              />
+            ) : (
+              // <TouchableOpacity activeOpacity={0.7} style={styles.image}>
 
-          }}>
+              <Icon
+                name={'camera'}
+                as={Entypo}
+                size={moderateScale(45, 0.6)}
+                onPress={() => {
+                  setShowModal(true);
+                }}
+              />
+
+              // </TouchableOpacity>
+            )}
+          </View>
+            <CustomText
+              style={{
+                textAlign: 'left',
+                // width: windowWidth * 0.5,
+                marginTop:moderateScale(10,.3),
+                fontSize: moderateScale(15, 0.6),
+                marginLeft: moderateScale(30, 0.3),
+              }}
+              isBold>
+              Feed Title
+            </CustomText>
             <TextInputWithTitle
               titleText={'Feed title'}
               placeholder={'Feed Title'}
@@ -67,13 +126,13 @@ const CreateNewFeed = () => {
               inputWidth={0.6}
               marginBottom={moderateScale(-10, 0.3)}
               color={Color.black}
-              placeholderColor={Color.black}
+              placeholderColor={Color.themeLightGray}
               style={{fontWeight: 'bold'}}
               multiline
               numberOfLines={4}
             />
 
-            <TextInputWithTitle
+            {/* <TextInputWithTitle
               maxLength={2000}
               secureText={false}
               placeholder={'Description'}
@@ -85,34 +144,16 @@ const CreateNewFeed = () => {
               marginTop={moderateScale(5, 0.3)}
               color={Color.red}
               border={1}
-              marginLeft ={moderateScale(10,0.3)}
+              // marginLeft ={moderateScale(10,0.3)}
               borderColor={Color.white}
               placeholderColor={Color.themeLightGray}
               multiline
-            />
+            /> */}
           </View>
 
-          <View
-            style={{
-              height: windowHeight * 0.25,
-              width: windowWidth * 0.32,
-              backgroundColor: 'white',
-              borderRadius: 20,
-              overflow: 'hidden',
-            }}>
-            <CustomImage
-              source={require('../Assets/Images/gallery3.png')}
-              style={{
-                width: '100%',
-                height: '100%',
-                alignItems: 'center',
-              }}
-              // key={it}
-              resizeMode={'cover'}
-            />
-          </View>
+          
         </View>
-        <View style={styles.line}></View>
+        {/* <View style={styles.line}></View> */}
         <View
           style={{
             // width: windowWidth * 0.9,
@@ -129,7 +170,7 @@ const CreateNewFeed = () => {
               marginLeft: moderateScale(30, 0.3),
             }}
             isBold>
-            Add The Details
+            Add The description
           </CustomText>
           <TextInputWithTitle
             maxLength={2000}
@@ -146,24 +187,6 @@ const CreateNewFeed = () => {
             multiline
           />
         </View>
-
-        <View style={styles.line}></View>
-        <DropDownSingleSelect
-          array={architecture}
-          item={dropDownValue}
-          setItem={setDropDownValue}
-          width={windowWidth * 0.9}
-          placeholder={dropDownValue}
-          dropdownStyle={{
-            borderBottomWidth: 0,
-            width: windowWidth * 0.9,
-            marginTop: 10,
-          }}
-          btnStyle={{
-            backgroundColor: '#fff',
-            height: windowHeight * 0.05,
-          }}
-        />
 
         <View
           style={{
@@ -226,28 +249,33 @@ const CreateNewFeed = () => {
           </View>
         </View>
         <CustomButton
-            text={
-              isLoading ? (
-                <ActivityIndicator color={'#01E8E3'} size={'small'} />
-              ) : (
-                'Submit'
-              )
-            }
-            textColor={themeColor[1]}
-            width={windowWidth * 0.4}
-            height={windowHeight * 0.06}
-            // marginTop={moderateScale(10, 0.3)}
-            bgColor={['#FFFFFF', '#FFFFFF']}
-            borderRadius={moderateScale(30, 0.3)}
-            isGradient
-            isBold={true}
-            marginTop={moderateScale(20,0.3)}
-            // marginBottom={moderateScale(50)}
-            onPress={() => {
-              navigationService.navigate('HomeScreen');
-            }}
-          />
+          text={
+            isLoading ? (
+              <ActivityIndicator color={'#01E8E3'} size={'small'} />
+            ) : (
+              'Submit'
+            )
+          }
+          textColor={themeColor[1]}
+          width={windowWidth * 0.4}
+          height={windowHeight * 0.06}
+          // marginTop={moderateScale(10, 0.3)}
+          bgColor={['#FFFFFF', '#FFFFFF']}
+          borderRadius={moderateScale(30, 0.3)}
+          isGradient
+          isBold={true}
+          marginTop={moderateScale(30, 0.3)}
+          // marginBottom={moderateScale(50)}
+          onPress={() => {
+            navigationService.navigate('HomeScreen');
+          }}
+        />
       </ImageBackground>
+      <ImagePickerModal
+        show={showModal}
+        setShow={setShowModal}
+        setFileObject={setImage}
+      />
     </>
   );
 };
@@ -314,6 +342,14 @@ const styles = ScaledSheet.create({
     marginTop: moderateScale(8, 0.3),
     fontWeight: 'bold',
   },
+  image: {
+    height: windowHeight * 0.04,
+    width: windowWidth * 0.3,
+    backgroundColor: '#ffffff',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   txt5: {
     color: Color.white,
     marginTop: moderateScale(10, 0.3),
@@ -332,13 +368,15 @@ const styles = ScaledSheet.create({
   },
   topContainer: {
     width: windowWidth,
-    height: windowHeight * 0.28,
-    flexDirection: 'row',
+    // height: windowHeight * 0.28,
+    // flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    paddingHorizontal: moderateScale(10, 0.6),
     // marginTop: moderateScale(20, 0.3),
     // marginLeft: moderateScale(-20, 0.3),
-    // backgroundColor:'black'
+    // backgroundColor: 'black',
+    paddingVertical: moderateScale(10, 0.6),
   },
   radioButtonContainer: {
     flexDirection: 'row',
