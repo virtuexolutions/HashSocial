@@ -5,8 +5,9 @@ import {
   ImageBackground,
   video,
   Alert,
+  
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useState, useRef} from 'react';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
@@ -21,18 +22,24 @@ import CustomImage from './CustomImage';
 import ShowMoreAndShowLessText from './ShowMoreAndShowLessText';
 import VideoController from './VideoController';
 import OptionsMenu from 'react-native-options-menu';
+import RBSheet from 'react-native-raw-bottom-sheet';
+import { FlatList } from 'react-native';
 
-const PostComponent = ({item, video}) => {
+
+const PostComponent = ({data}) => {
+  const [like ,setLike] = useState(false)
+  console.log("HELLO",data)
+  const refRBSheet = useRef();
   const MoreIcon = require('../Assets/Images/threedots.png');
-const  editPost = ()=>{
-  Alert.alert("Edit Your Post")
-}
+  const editPost = () => {
+    Alert.alert('Edit Your Post');
+  };
 
-const  deletePost = ()=>{
-  Alert.alert("Edit Your Post")
-}
+  const deletePost = () => {
+    Alert.alert('Edit Your Post');
+  };
 
-
+ 
   return (
     <>
       <View
@@ -52,7 +59,7 @@ const  deletePost = ()=>{
           }}>
           <View style={styles.profileSection2}>
             <CustomImage
-              source={item?.profileImage}
+              source={data?.profileImage}
               style={{
                 height: '100%',
                 width: '100%',
@@ -62,7 +69,7 @@ const  deletePost = ()=>{
           </View>
 
           <View style={{width: windowWidth * 0.65, justifyContent: 'center'}}>
-            <CustomText numberOfLines={2}>{item?.Name}</CustomText>
+            <CustomText numberOfLines={2}>{data?.Name}</CustomText>
 
             <View
               style={{
@@ -71,26 +78,24 @@ const  deletePost = ()=>{
                 justifyContent: 'space-around',
                 alignItems: 'center',
               }}>
-              <CustomText style={{textAlign: 'left'}}>{item?.date}</CustomText>
+              <CustomText style={{textAlign: 'left'}}>{data?.date}</CustomText>
               <TouchableOpacity activeOpacity={0.7}>
                 <Entypo name="globe" size={14} color={Color.veryLightGray} />
               </TouchableOpacity>
             </View>
           </View>
 
-    
-            <OptionsMenu
-              button={MoreIcon}
-              buttonStyle={{
-                width: 36,
-                height: 30,
-                tintColor:'#000'
-              }} 
-              destructiveIndex={1}
-              options={['Edit', 'Delete', 'Cancel']}
-              actions={[editPost, deletePost]}
-            />
-            
+          <OptionsMenu
+            button={MoreIcon}
+            buttonStyle={{
+              width: 36,
+              height: 30,
+              tintColor: '#000',
+            }}
+            destructiveIndex={1}
+            options={['Edit', 'Delete', 'Cancel']}
+            actions={[editPost, deletePost]}
+          />
         </View>
 
         <View
@@ -98,21 +103,25 @@ const  deletePost = ()=>{
             width: windowWidth,
             marginTop: moderateScale(8, 0.3),
           }}>
-          <ShowMoreAndShowLessText
+          {/* <ShowMoreAndShowLessText
             minTextLength={12}
             style={{
               textAlign: 'left',
               marginLeft: moderateScale(15, 0.3),
               fontSize: moderateScale(13, 0.6),
             }}>
-            {item?.desc}
+            {data?.desc}
           </ShowMoreAndShowLessText>
+           */}
+           <CustomText style={{  textAlign: 'left',
+              marginLeft: moderateScale(15, 0.3),
+              fontSize: moderateScale(13, 0.6),}}>{data?.desc}</CustomText>
         </View>
-        {(item?.image || item?.video) && (
+        {(data?.image || data?.video) && (
           <View style={{width: windowWidth, height: windowHeight * 0.3}}>
-            {item?.image ? (
+            {data?.image ? (
               <CustomImage
-                source={item?.image}
+                source={data?.image}
                 style={{
                   height: '100%',
                   width: '100%',
@@ -121,7 +130,7 @@ const  deletePost = ()=>{
                 resizeMode="cover"
               />
             ) : (
-              <VideoController item={item}/>
+              <VideoController item={data} />
             )}
           </View>
         )}
@@ -168,7 +177,7 @@ const  deletePost = ()=>{
                 fontSize: moderateScale(13, 0.6),
                 width: windowWidth * 0.16,
               }}>
-              {item?.Like}K
+              {data?.Like}K
             </CustomText>
           </View>
 
@@ -187,11 +196,11 @@ const  deletePost = ()=>{
                   fontSize: moderateScale(13, 0.6),
                   width: windowWidth * 0.3,
                 },
-                item?.View == null && {textAlign: 'right', width: '90%'},
+                data?.View == null && {textAlign: 'right', width: '90%'},
               ]}>
-              {item?.comment} comments
+              {data?.comment} comments
             </CustomText>
-            {item?.View && (
+            {data?.View && (
               <CustomText
                 numberOfLines={1}
                 style={{
@@ -199,7 +208,7 @@ const  deletePost = ()=>{
                   fontSize: moderateScale(13, 0.6),
                   width: windowWidth * 0.3,
                 }}>
-                {item?.View} views
+                {data?.View} views
               </CustomText>
             )}
           </View>
@@ -220,11 +229,14 @@ const  deletePost = ()=>{
               alignItems: 'center',
               justifyContent: 'space-around',
             }}>
-            <TouchableOpacity activeOpacity={0.8}>
-              <AntDesign name="like2" size={23} color={Color.themeBlack} />
+            <TouchableOpacity activeOpacity={0.8} onPress={() => {
+                  setLike(!like)
+                }}>
+              <AntDesign name={like ? "like2" : "like1"}  size={23} color={like ? Color.themeBlack : "#2a95fd"} />
             </TouchableOpacity>
             <CustomText>Like</CustomText>
           </View>
+
           <View
             style={{
               flexDirection: 'row',
@@ -232,11 +244,92 @@ const  deletePost = ()=>{
               alignItems: 'center',
               justifyContent: 'space-around',
             }}>
-            <TouchableOpacity activeOpacity={0.8}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              onPress={() => refRBSheet.current.open()}>
               <Octicons name="comment" size={23} color={Color.themeBlack} />
             </TouchableOpacity>
             <CustomText>comments</CustomText>
           </View>
+
+          <RBSheet
+            ref={refRBSheet}
+            closeOnDragDown={true}
+            closeOnPressMask={false}
+            customStyles={{
+              draggableIcon: {
+                backgroundColor: Color.veryLightGray,
+              },
+            }}
+            height={700}>
+            <FlatList
+              data={data?.commentData}
+              renderItem={({item, index}) => {
+                console.log("asiuhdsah",item)
+                return (
+                  <View style={{width: windowWidth  }}>
+                  <View
+                    style={{
+                      width: windowWidth,
+                      marginTop: moderateScale(10, 0.3),
+                    }}>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        paddingHorizontal: moderateScale(10, 0.6),
+                        width: windowWidth,
+                      }}>
+                      <View style={styles.profileSection2}>
+                        <CustomImage
+                          source={item?.pic}
+                          style={{
+                            height: '100%',
+                            width: '100%',
+                          }}
+                          resizeMode="contain"
+                        />
+                      </View>
+    
+                      <View
+                        style={{
+                          width: windowWidth * 0.42,
+                          paddingVertical: moderateScale(5, 0.6),
+                          paddingHorizontal: moderateScale(10, 0.6),
+                          backgroundColor: Color.lightGrey,
+                          borderRadius: moderateScale(10, 0.6),
+                          marginLeft: moderateScale(10, 0.3),
+                        }}>
+                        <CustomText
+                          numberOfLines={1}
+                          style={{fontSize: moderateScale(14, 0.6)}}>
+                          {item?.name}
+                        </CustomText>
+                        <CustomText numberOfLines={3}>
+                          {item?.comment}
+                        </CustomText>
+                      </View>
+                    </View>
+    
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        width: windowWidth * 0.4,
+                        marginLeft: moderateScale(60, 0.3),
+                        justifyContent: 'space-evenly',
+                        marginTop: moderateScale(5, 0.3),
+                      }}>
+                      <CustomText>{item?.Time} h</CustomText>
+                      <CustomText>Like</CustomText>
+                      <CustomText>Reply</CustomText>
+                    </View>
+                  </View>
+                </View>
+                );
+              }}
+            />
+          
+          </RBSheet>
         </View>
       </View>
     </>
@@ -249,6 +342,17 @@ const styles = StyleSheet.create({
     width: windowHeight * 0.08,
     backgroundColor: '#336ecb',
     borderRadius: (windowHeight * 0.08) / 2,
+    borderWidth: 2,
+    borderColor: Color.themeColor,
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+
+  profileSection2: {
+    height: windowHeight * 0.06,
+    width: windowHeight * 0.06,
+    backgroundColor: '#336ecb',
+    borderRadius: (windowHeight * 0.06) / 2,
     borderWidth: 2,
     borderColor: Color.themeColor,
     justifyContent: 'center',

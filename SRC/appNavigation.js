@@ -43,6 +43,7 @@ import { profilePicUrl } from './Config';
 import SubscriptionScreen from './Screens/SubscriptionScreen';
 import PostScreen from './Screens/PostScreen';
 import AddEvents from './Screens/AddEvents';
+import EventDetails from './Screens/EventDetails';
 
 // import AccountSetting from './Screens/AccountSetting';
 // import HomeScreen from './Screens/HomeScreen';
