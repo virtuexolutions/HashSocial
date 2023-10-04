@@ -325,6 +325,17 @@ const AddEvents = () => {
         </View>
       </ImageBackground>
       <TimerPickerModal
+      styles={{
+        theme:'dark',
+        confirmButton:{
+          backgroundColor:themeColor[1],
+          borderColor:themeColor[1],
+        },
+        cancelButton:{
+          backgroundColor:themeColor[1],
+          borderColor:themeColor[1],
+        }
+      }}
       
         visible={timeVisible}
         setIsVisible={setTimeVisible}
@@ -339,12 +350,10 @@ const AddEvents = () => {
           setTimeVisible(false);
         }}
         modalTitle="Select Time"
-        onCancel={() => setShowPicker(false)}
+        onCancel={() => setTimeVisible(false)}
         closeOnOverlayPress
         // LinearGradient={}
-        styles={{
-          theme: 'dark',   
-        }}
+        
 
         confirmTextStyle={{backgroundColor:'purple'}}
         modalProps={{

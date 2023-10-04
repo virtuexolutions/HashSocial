@@ -10,7 +10,7 @@ import CustomText from './CustomText';
 
 const VideoController = ({item}) => {
   const [clicked, setClicked] = useState(false);
-  const [paused, setPaused] = useState(false);
+  const [paused, setPaused] = useState(true);
   const [progress, setProgress] = useState(null);
   const [fullScreen, setFullScreen] = useState(false);
   const [loading, setLoading] = useState(false)
@@ -47,14 +47,14 @@ const VideoController = ({item}) => {
             console.log("🚀 ~ file: VideoController.js:46 ~ VideoController ~ x:", x)
             setProgress(x);
           }}
-          onBuffer={() => setLoading(true)}
+          onBuffer={() => console.log('buffering video')}
           style={{
             width: '100%',
             height: '100%',
             backgroundColor: Color.white,
           }}
         />
-        {loading  && <ActivityIndicator size={moderateScale(20,.6)} color={'white'} />}
+        {/* {loading  && <ActivityIndicator size={moderateScale(20,.6)} color={'white'} />} */}
         {clicked && (
           <TouchableOpacity
             onPress={() => {

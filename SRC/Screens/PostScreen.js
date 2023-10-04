@@ -83,8 +83,9 @@ const PostScreen = () => {
       date: '24 Aug',
       desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry Lorem Ipsum has been the industry',
       profileImage: require('../Assets/Images/avatar3.png'),
-      image: null,
-      video: 'https://vjs.zencdn.net/v/oceans.mp4',
+      image: require('../Assets/Images/art.png'),
+      video: null,
+      // video: 'https://vjs.zencdn.net/v/oceans.mp4',
       Like: 357,
       love: 4100,
       comment: 205,
@@ -303,6 +304,7 @@ const PostScreen = () => {
             value={placeholdertext}
             placeholder="Search"
             keyboardType="numeric"
+            placeholderTextColor={'black'}
           />
         </View>
       </View>

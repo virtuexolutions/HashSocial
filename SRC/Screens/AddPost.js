@@ -1,10 +1,19 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {ImageBackground, TouchableOpacity, View} from 'react-native';
+import {
+  Alert,
+  ImageBackground,
+  Platform,
+  ToastAndroid,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  View,
+} from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
-import {Icon, Image, ScrollView} from 'native-base';
+import {Icon} from 'native-base';
 
 import CustomText from '../Components/CustomText';
 import CustomButton from '../Components/CustomButton';
@@ -43,33 +52,24 @@ const AddPost = () => {
         barStyle={'dark-content'}
       />
       <Header showBack Title={'ADD POST'} right />
-      <ImageBackground
-        source={
-          privacy == 'private'
-            ? require('../Assets/Images/theme2.jpg')
-            : require('../Assets/Images/Main.png')
-        }
-        resizeMode={'cover'}
-        style={{
-          width: windowWidth,
-          height: windowHeight * 0.9,
-          // justifyContent : 'center',
+      <ScrollView
+        contentContainerStyle={{
           alignItems: 'center',
+          minHeight: windowHeight * 0.9,
         }}>
-        <ScrollView
-          contentContainerStyle={{
+        <ImageBackground
+          source={
+            privacy == 'private'
+              ? require('../Assets/Images/theme2.jpg')
+              : require('../Assets/Images/Main.png')
+          }
+          resizeMode={'cover'}
+          style={{
             width: windowWidth,
-            // height: windowHeight * 0.9,
+            height: windowHeight * 0.9,
             // justifyContent : 'center',
-            alignItems: 'center'
-          
-          }}
-          style={
-            {
-            
-              // minHeight:windowHeight * 0.9,
-            }
-          }>
+            alignItems: 'center',
+          }}>
           <CustomText
             style={styles.title}
             isBold={true}
@@ -220,8 +220,18 @@ const AddPost = () => {
               fontSize={moderateScale(13, 0.6)}
               // marginTop={moderateScale(40, 0.3)}
               onPress={() => {
-                setHashtags(prev => [...prev, hashtag]);
-                setHashtag('');
+                if (hashtag == '') {
+                  Platform.OS == 'android'
+                    ? ToastAndroid.show(
+                        'Please add any hashtag',
+                        ToastAndroid.SHORT,
+                      )
+                    : Alert.alert('Please add any hashtag');
+                } else {
+                  setHashtags(prev => [hashtag, ...prev]);
+
+                  setHashtag('');
+                }
               }}
               bgColor={['#FFFFFF', '#FFFFFF']}
               // borderRadius={moderateScale(10, 0.3)}
@@ -229,43 +239,42 @@ const AddPost = () => {
               isBold={true}
             />
           </View>
-        </ScrollView>
 
-        {/* <View style={styles.conatiner}></View> */}
+          {/* <View style={styles.conatiner}></View> */}
 
-        <View
-          style={{
-            position: 'absolute',
-            bottom: 40,
-            // backgroundColor: 'red',
-            width: windowWidth,
-            // height: windowHeight * 0.1,
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <CustomButton
-            text={
-              loading ? (
-                <ActivityIndicator color={'#01E8E3'} size={'small'} />
-              ) : (
-                'Post'
-              )
-            }
-            textColor={themeColor[1]}
-            width={windowWidth * 0.7}
-            height={windowHeight * 0.06}
-            // marginTop={moderateScale(40, 0.3)}
-            onPress={() => {
-              // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
-              // navigationService.navigate('Signup');
-            }}
-            bgColor={['#FFFFFF', '#FFFFFF']}
-            borderRadius={moderateScale(30, 0.3)}
-            isGradient
-            isBold={true}
-          />
-        </View>
-        {/* <CustomButton
+          <View
+            style={{
+              position: 'absolute',
+              bottom: 40,
+              // backgroundColor: 'red',
+              width: windowWidth,
+              // height: windowHeight * 0.1,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <CustomButton
+              text={
+                loading ? (
+                  <ActivityIndicator color={'#01E8E3'} size={'small'} />
+                ) : (
+                  'Post'
+                )
+              }
+              textColor={themeColor[1]}
+              width={windowWidth * 0.7}
+              height={windowHeight * 0.06}
+              // marginTop={moderateScale(40, 0.3)}
+              onPress={() => {
+                // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
+                // navigationService.navigate('Signup');
+              }}
+              bgColor={['#FFFFFF', '#FFFFFF']}
+              borderRadius={moderateScale(30, 0.3)}
+              isGradient
+              isBold={true}
+            />
+          </View>
+          {/* <CustomButton
           text={
             loading ? (
               <ActivityIndicator color={'#01E8E3'} size={'small'} />
@@ -286,7 +295,8 @@ const AddPost = () => {
           isGradient
           isBold={true}
         /> */}
-      </ImageBackground>
+        </ImageBackground>
+      </ScrollView>
       <ImagePickerModal
         show={imagePickerVisible}
         setShow={setImagePickerVisible}

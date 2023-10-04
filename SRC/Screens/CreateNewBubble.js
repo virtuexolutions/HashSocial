@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Dimensions,
   ImageBackground,
+  ScrollView,
   ActivityIndicator,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
@@ -16,7 +17,7 @@ import {windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from '../Components/CustomText';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
-import {Icon, ScrollView} from 'native-base';
+import {Icon} from 'native-base';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import LinearGradient from 'react-native-linear-gradient';
 import CustomSwitch from '../Components/CustomSwitch';
@@ -116,6 +117,7 @@ const CreateNewBubble = () => {
         barStyle={'dark-content'}
       />
       <Header right Title={'Create new Bubble'} showBack/>
+      <ScrollView>
 
       <ImageBackground
         source={
@@ -360,6 +362,7 @@ const CreateNewBubble = () => {
           />
         </ScrollView>
       </ImageBackground>
+      </ScrollView>
       <ImagePickerModal
         show={showModal}
         setShow={setShowModal}

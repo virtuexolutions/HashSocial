@@ -4,6 +4,7 @@ import {
   ImageBackground,
   View,
   TouchableOpacity,
+  ScrollView
 } from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -40,99 +41,100 @@ const CreateNewFeed = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Create New Feed'} showBack />
-      <ImageBackground
-        source={
-          privacy == 'private'
-            ? require('../Assets/Images/theme2.jpg')
-            : require('../Assets/Images/Main.png')
-        }
-        resizeMode={'cover'}
-        style={{
-          width: windowWidth,
-          height: windowHeight * 0.9,
-          alignItems: 'center',
-        }}>
-        <View style={styles.topContainer}>
-          <View
-            style={
-              {
-                // borderWidth : 1,
-                // paddingRight : moderateScale(7,0.6),
-                // paddingBottom : moderateScale(7,0.6),
-                // paddingVertical:moderateScale(10,.6),
-                // backgroundColor:'green '
-              }
-            }>
+      <Header right Title={'New Feed'} showBack />
+      <ScrollView>
+        <ImageBackground
+          source={
+            privacy == 'private'
+              ? require('../Assets/Images/theme2.jpg')
+              : require('../Assets/Images/Main.png')
+          }
+          resizeMode={'cover'}
+          style={{
+            width: windowWidth,
+            height: windowHeight * 0.9,
+            alignItems: 'center',
+          }}>
+          <View style={styles.topContainer}>
+            <View
+              style={
+                {
+                  // borderWidth : 1,
+                  // paddingRight : moderateScale(7,0.6),
+                  // paddingBottom : moderateScale(7,0.6),
+                  // paddingVertical:moderateScale(10,.6),
+                  // backgroundColor:'green '
+                }
+              }>
               <View
-            style={[
-              {
-                height: windowHeight * 0.27,
-                width: windowWidth *0.95,
-                backgroundColor: 'white',
-                borderRadius: moderateScale(20, 0.6),
-                marginLeft: moderateScale(5, 0.3),
-                justifyContent: 'center',
-                overflow: 'hidden',
-              },
-              Object.keys(image).length == 0 && {
-                alignItems: 'center',
-              },
-            ]}>
-            {Object.keys(image).length > 0 ? (
-              <CustomImage
-                source={{uri: image?.uri}}
+                style={[
+                  {
+                    height: windowHeight * 0.27,
+                    width: windowWidth * 0.95,
+                    backgroundColor: 'white',
+                    borderRadius: moderateScale(20, 0.6),
+                    marginLeft: moderateScale(5, 0.3),
+                    justifyContent: 'center',
+                    overflow: 'hidden',
+                  },
+                  Object.keys(image).length == 0 && {
+                    alignItems: 'center',
+                  },
+                ]}>
+                {Object.keys(image).length > 0 ? (
+                  <CustomImage
+                    source={{uri: image?.uri}}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                    }}
+                    onPress={() => {
+                      setShowModal(true);
+                    }}
+                  />
+                ) : (
+                  // <TouchableOpacity activeOpacity={0.7} style={styles.image}>
+
+                  <Icon
+                    name={'camera'}
+                    as={Entypo}
+                    size={moderateScale(45, 0.6)}
+                    onPress={() => {
+                      setShowModal(true);
+                    }}
+                  />
+
+                  // </TouchableOpacity>
+                )}
+              </View>
+              <CustomText
                 style={{
-                  width: '100%',
-                  height: '100%',
+                  textAlign: 'left',
+                  // width: windowWidth * 0.5,
+                  marginTop: moderateScale(10, 0.3),
+                  fontSize: moderateScale(15, 0.6),
+                  marginLeft: moderateScale(30, 0.3),
                 }}
-                onPress={() => {
-                  setShowModal(true);
-                }}
+                isBold>
+                Feed Title
+              </CustomText>
+              <TextInputWithTitle
+                titleText={'Feed title'}
+                placeholder={'Feed Title'}
+                setText={setFeedTitle}
+                value={feedTitle}
+                viewHeight={0.05}
+                viewWidth={0.5}
+                inputWidth={0.6}
+                marginBottom={moderateScale(-10, 0.3)}
+                color={Color.black}
+                placeholderColor={Color.themeLightGray}
+                style={{fontWeight: 'bold'}}
+                multiline
+                numberOfLines={4}
               />
-            ) : (
-              // <TouchableOpacity activeOpacity={0.7} style={styles.image}>
 
-              <Icon
-                name={'camera'}
-                as={Entypo}
-                size={moderateScale(45, 0.6)}
-                onPress={() => {
-                  setShowModal(true);
-                }}
-              />
-
-              // </TouchableOpacity>
-            )}
-          </View>
-            <CustomText
-              style={{
-                textAlign: 'left',
-                // width: windowWidth * 0.5,
-                marginTop:moderateScale(10,.3),
-                fontSize: moderateScale(15, 0.6),
-                marginLeft: moderateScale(30, 0.3),
-              }}
-              isBold>
-              Feed Title
-            </CustomText>
-            <TextInputWithTitle
-              titleText={'Feed title'}
-              placeholder={'Feed Title'}
-              setText={setFeedTitle}
-              value={feedTitle}
-              viewHeight={0.05}
-              viewWidth={0.5}
-              inputWidth={0.6}
-              marginBottom={moderateScale(-10, 0.3)}
-              color={Color.black}
-              placeholderColor={Color.themeLightGray}
-              style={{fontWeight: 'bold'}}
-              multiline
-              numberOfLines={4}
-            />
-
-            {/* <TextInputWithTitle
+              {/* <TextInputWithTitle
               maxLength={2000}
               secureText={false}
               placeholder={'Description'}
@@ -149,128 +151,127 @@ const CreateNewFeed = () => {
               placeholderColor={Color.themeLightGray}
               multiline
             /> */}
+            </View>
           </View>
-
-          
-        </View>
-        {/* <View style={styles.line}></View> */}
-        <View
-          style={{
-            // width: windowWidth * 0.9,
-            height: windowHeight * 0.14,
-            marginTop: moderateScale(10, 0.3),
-            // backgroundColor:'red',
-            // marginLeft: moderateScale(-20, 0.3),
-          }}>
-          <CustomText
+          {/* <View style={styles.line}></View> */}
+          <View
             style={{
-              textAlign: 'left',
-              // width: windowWidth * 0.5,
-              fontSize: moderateScale(15, 0.6),
-              marginLeft: moderateScale(30, 0.3),
-            }}
-            isBold>
-            Add The description
-          </CustomText>
-          <TextInputWithTitle
-            maxLength={2000}
-            secureText={false}
-            placeholder={`Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`}
-            setText={setDetails}
-            value={Details}
-            viewHeight={0.13}
-            viewWidth={0.99}
-            inputWidth={0.99}
-            color={Color.red}
-            placeholderColor={Color.themeLightGray}
-            // backgroundColor={Color.black}
-            multiline
-          />
-        </View>
-
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            width: windowWidth * 0.9,
-            alignSelf: 'center',
-            // backgroundColor:'red',
-            marginTop: moderateScale(30, 0.3),
-          }}>
-          <CustomText
-            style={{
-              color: '#000',
-              fontSize: moderateScale(12, 0.6),
-              marginLeft: moderateScale(10, 0.3),
+              // width: windowWidth * 0.9,
+              height: windowHeight * 0.14,
+              marginTop: moderateScale(10, 0.3),
+              // backgroundColor:'red',
+              // marginLeft: moderateScale(-20, 0.3),
             }}>
-            Privacy Setting
-          </CustomText>
-
-          <View style={[styles.radioButtonContainer]}>
-            <TouchableOpacity
-              onPress={() => {
-                setRadio('private');
-              }}
-              style={[
-                styles.radioButton,
-                {
-                  backgroundColor:
-                    radio == 'private' ? themeColor[1] : Color.veryLightGray,
-                },
-              ]}>
-              {/* <View style={styles.radioButtonIcon} /> */}
-            </TouchableOpacity>
             <CustomText
-              onPress={() => {
-                setRadio('private');
+              style={{
+                textAlign: 'left',
+                // width: windowWidth * 0.5,
+                fontSize: moderateScale(15, 0.6),
+                marginLeft: moderateScale(30, 0.3),
               }}
-              style={styles.radioButtonText}>
-              Private
+              isBold>
+              Add The description
             </CustomText>
-
-            <TouchableOpacity
-              onPress={() => {
-                setRadio('public');
-              }}
-              style={[
-                styles.radioButton,
-                {
-                  backgroundColor:
-                    radio == 'public' ? themeColor[1] : Color.veryLightGray,
-                },
-              ]}></TouchableOpacity>
-            <CustomText
-              onPress={() => {
-                setRadio('public');
-              }}
-              style={styles.radioButtonText}>
-              Public
-            </CustomText>
+            <TextInputWithTitle
+              maxLength={2000}
+              secureText={false}
+              placeholder={`Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`}
+              setText={setDetails}
+              value={Details}
+              viewHeight={0.13}
+              viewWidth={0.99}
+              inputWidth={0.99}
+              color={Color.red}
+              placeholderColor={Color.themeLightGray}
+              // backgroundColor={Color.black}
+              multiline
+            />
           </View>
-        </View>
-        <CustomButton
-          text={
-            isLoading ? (
-              <ActivityIndicator color={'#01E8E3'} size={'small'} />
-            ) : (
-              'Submit'
-            )
-          }
-          textColor={themeColor[1]}
-          width={windowWidth * 0.4}
-          height={windowHeight * 0.06}
-          // marginTop={moderateScale(10, 0.3)}
-          bgColor={['#FFFFFF', '#FFFFFF']}
-          borderRadius={moderateScale(30, 0.3)}
-          isGradient
-          isBold={true}
-          marginTop={moderateScale(30, 0.3)}
-          // marginBottom={moderateScale(50)}
-          onPress={() => {
-            navigationService.navigate('HomeScreen');
-          }}
-        />
-      </ImageBackground>
+
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: windowWidth * 0.9,
+              alignSelf: 'center',
+              // backgroundColor:'red',
+              marginTop: moderateScale(30, 0.3),
+            }}>
+            <CustomText
+              style={{
+                color: '#000',
+                fontSize: moderateScale(12, 0.6),
+                marginLeft: moderateScale(10, 0.3),
+              }}>
+              Privacy Setting
+            </CustomText>
+
+            <View style={[styles.radioButtonContainer]}>
+              <TouchableOpacity
+                onPress={() => {
+                  setRadio('private');
+                }}
+                style={[
+                  styles.radioButton,
+                  {
+                    backgroundColor:
+                      radio == 'private' ? themeColor[1] : Color.veryLightGray,
+                  },
+                ]}>
+                {/* <View style={styles.radioButtonIcon} /> */}
+              </TouchableOpacity>
+              <CustomText
+                onPress={() => {
+                  setRadio('private');
+                }}
+                style={styles.radioButtonText}>
+                Private
+              </CustomText>
+
+              <TouchableOpacity
+                onPress={() => {
+                  setRadio('public');
+                }}
+                style={[
+                  styles.radioButton,
+                  {
+                    backgroundColor:
+                      radio == 'public' ? themeColor[1] : Color.veryLightGray,
+                  },
+                ]}></TouchableOpacity>
+              <CustomText
+                onPress={() => {
+                  setRadio('public');
+                }}
+                style={styles.radioButtonText}>
+                Public
+              </CustomText>
+            </View>
+          </View>
+          <CustomButton
+            text={
+              isLoading ? (
+                <ActivityIndicator color={'#01E8E3'} size={'small'} />
+              ) : (
+                'Submit'
+              )
+            }
+            textColor={themeColor[1]}
+            width={windowWidth * 0.4}
+            height={windowHeight * 0.06}
+            // marginTop={moderateScale(10, 0.3)}
+            bgColor={['#FFFFFF', '#FFFFFF']}
+            borderRadius={moderateScale(30, 0.3)}
+            isGradient
+            isBold={true}
+            marginTop={moderateScale(30, 0.3)}
+            // marginBottom={moderateScale(50)}
+            onPress={() => {
+              navigationService.navigate('HomeScreen');
+            }}
+          />
+        </ImageBackground>
+      </ScrollView>
       <ImagePickerModal
         show={showModal}
         setShow={setShowModal}

@@ -288,8 +288,8 @@ const Signup = () => {
               height={windowHeight * 0.06}
               marginTop={moderateScale(20, 0.3)}
               onPress={() => {
+                dispatch(setUserToken({token : 'fasdasd awdawdawdada'}))
                 navigationService.navigate('BubbleSelection');
-                // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
               }}
               bgColor={themeColor}
               borderRadius={moderateScale(30, 0.3)}

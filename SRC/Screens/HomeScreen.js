@@ -58,6 +58,7 @@ const HomeScreen = props => {
     {
       private: false,
       bubble: true,
+      source: require('../Assets/Images/gallery3.png'),
       image: (
         <Image
           source={require('../Assets/Images/gallery3.png')}
@@ -79,6 +80,7 @@ const HomeScreen = props => {
     {
       private: true,
       bubble: false,
+      source: require('../Assets/Images/bubble11.png'),
       image: (
         <Image
           source={require('../Assets/Images/bubble11.png')}
@@ -95,6 +97,7 @@ const HomeScreen = props => {
     {
       private: false,
       bubble: false,
+      source : require('../Assets/Images/dummyman1.png'),
       image: (
         <Image
           source={require('../Assets/Images/dummyman1.png')}
@@ -111,6 +114,7 @@ const HomeScreen = props => {
     {
       private: true,
       bubble: false,
+      source: require('../Assets/Images/bubble1.png'),
       image: (
         <Image
           source={require('../Assets/Images/bubble1.png')}
@@ -127,6 +131,7 @@ const HomeScreen = props => {
     {
       private: true,
       bubble: true,
+      source: require('../Assets/Images/fitness2.png'),
       image: (
         <Image
           source={require('../Assets/Images/fitness2.png')}
@@ -143,6 +148,7 @@ const HomeScreen = props => {
     {
       private: false,
       bubble: true,
+      source: require('../Assets/Images/gallery7.png'),
       image: (
         <Image
           source={require('../Assets/Images/gallery7.png')}
@@ -158,6 +164,7 @@ const HomeScreen = props => {
     {
       private: true,
       bubble: false,
+      source: require('../Assets/Images/gallery3.png'),
       image: (
         <Image
           source={require('../Assets/Images/gallery3.png')}
@@ -173,6 +180,7 @@ const HomeScreen = props => {
     {
       private: true,
       bubble: false,
+      source : require('../Assets/Images/gallery2.png'),
       image: (
         <Image
           source={require('../Assets/Images/gallery2.png')}
@@ -188,6 +196,7 @@ const HomeScreen = props => {
     {
       private: false,
       bubble: false,
+      source: require('../Assets/Images/gallery1.png'),
       image: (
         <Image
           source={require('../Assets/Images/gallery1.png')}
@@ -203,6 +212,7 @@ const HomeScreen = props => {
     {
       private: false,
       bubble: false,
+      source: require('../Assets/Images/gallery4.png'),
       image: (
         <Image
           source={require('../Assets/Images/gallery4.png')}
@@ -218,6 +228,7 @@ const HomeScreen = props => {
     {
       private: true,
       bubble: true,
+      source: require('../Assets/Images/gallery5.png'),
       image: (
         <Image
           source={require('../Assets/Images/gallery5.png')}

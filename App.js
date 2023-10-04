@@ -9,7 +9,7 @@
 import React, {useEffect, useState} from 'react';
 import {PersistGate} from 'redux-persist/integration/react';
 import {Provider, useDispatch, useSelector} from 'react-redux';
-// import {StripeProvider} from '@stripe/stripe-react-native';
+import {StripeProvider} from '@stripe/stripe-react-native';
 import {NativeBaseProvider} from 'native-base';
 
 import {store, persistor} from './SRC/Store/index';
@@ -42,11 +42,11 @@ const App = () => {
 
   console.reportErrorsAsExceptions = false;
   return (
-  //   <StripeProvider 
-  //   publishableKey={"pk_test_51McSueJ0WRwehn2Uuf4rm6WNHPQvaJY9NGU235gUEqPA3AJuc9Mq1x98Y8B8uE5eMfivo5l2xK4Vau21zau7ZBDp00g7qWfkx3"}
-  //   // merchantIdentifier="merchant.identifier" // required for Apple Pay
-  //   // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
-  // >
+    <StripeProvider 
+    publishableKey={"pk_test_51McSueJ0WRwehn2Uuf4rm6WNHPQvaJY9NGU235gUEqPA3AJuc9Mq1x98Y8B8uE5eMfivo5l2xK4Vau21zau7ZBDp00g7qWfkx3"}
+    // merchantIdentifier="merchant.identifier" // required for Apple Pay
+    // urlScheme="your-url-scheme" // required for 3D Secure and bank redirects
+  >
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <NativeBaseProvider>
@@ -54,7 +54,7 @@ const App = () => {
         </NativeBaseProvider>
       </PersistGate>
     </Provider>
-    // </StripeProvider>
+    </StripeProvider>
   );
 };
 

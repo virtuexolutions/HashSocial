@@ -17,7 +17,6 @@ import TextInputWithTitle from './TextInputWithTitle';
 import {useSelector} from 'react-redux';
 import navigationService from '../navigationService';
 import {FlatList} from 'react-native';
-import PostComponent from './PostComponent';
 // import { TextInput } from 'react-native-gesture-handler';
 
 const Events = () => {
@@ -163,10 +162,16 @@ const Events = () => {
           console.log('🚀 ~ file: Events.js:98 ~ Events ~ item:', item);
           return (
             <>
-              <View
+              <TouchableOpacity
+              onPress={()=>{
+                console.log('Her======>>>>')
+                navigationService.navigate('EventDetails', {item : item})}}
                 style={styles.eventCard}>
                 <View style={styles.profileImage}>
                   <CustomImage
+                  onPress={()=>{
+                    console.log('Her======>>>>')
+                    navigationService.navigate('EventDetails', {item : item})}}
                     source={item?.image}
                     style={{
                       height: '100%',
@@ -216,7 +221,7 @@ const Events = () => {
                     </View>
                   </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             </>
           );
         }}

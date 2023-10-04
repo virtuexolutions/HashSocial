@@ -29,95 +29,95 @@ const BubbleSearch = () => {
   const SearchData = [
     {
       id: 1,
-      image: require('../Assets/Images/Ellipse2.png'),
+      image: require('../Assets/Images/bubble1.png'),
       name: 'Alchole',
       Tags: '#Architecture',
       bubble: true,
     },
     {
       id: 2,
-      image: require('../Assets/Images/Ellipse3.png'),
+      image: require('../Assets/Images/bubble2.png'),
       name: 'Alternative Fitness',
       Tags: '#Architecture',
       bubble: false,
     },
     {
       id: 3,
-      image: require('../Assets/Images/Ellipse4.png'),
+      image: require('../Assets/Images/bubble3.png'),
       name: 'Archery',
       Tags: '#Architecture',
       bubble: true,
     },
     {
       id: 4,
-      image: require('../Assets/Images/Ellipse5.png'),
+      image: require('../Assets/Images/bubble4.png'),
       name: 'architecture',
       Tags: '#Architecture',
       bubble: true,
     },
     {
       id: 5,
-      image: require('../Assets/Images/Ellipse6.png'),
+      image: require('../Assets/Images/bubble5.png'),
       name: 'art',
       Tags: '#Architecture',
       bubble: false,
     },
     {
       id: 6,
-      image: require('../Assets/Images/Ellipse2.png'),
+      image: require('../Assets/Images/bubble6.png'),
       name: 'Astrology',
       Tags: '#Architecture',
       bubble: true,
     },
     {
       id: 7,
-      image: require('../Assets/Images/Ellipse3.png'),
+      image: require('../Assets/Images/bubble10.png'),
       name: 'Beer',
       Tags: '#Architecture',
       bubble: false,
     },
     {
       id: 8,
-      image: require('../Assets/Images/Ellipse4.png'),
+      image: require('../Assets/Images/bubble8.png'),
       name: 'Author Books',
       Tags: '#Architecture',
       bubble: true,
     },
     {
       id: 9,
-      image: require('../Assets/Images/Ellipse5.png'),
+      image: require('../Assets/Images/bubble9.png'),
       name: 'Bird Watching',
       Tags: '#Architecture',
       bubble: false,
     },
     {
       id: 10,
-      image: require('../Assets/Images/Ellipse6.png'),
+      image: require('../Assets/Images/bubble10.png'),
       name: 'bolging',
       Tags: '#Architecture',
       bubble: true,
     },
     {
       id: 11,
-      image: require('../Assets/Images/Ellipse2.png'),
+      image: require('../Assets/Images/bubble11.png'),
       name: 'Author books',
       Tags: '#Architecture',
       bubble: false,
     },
     {
       id: 12,
-      image: require('../Assets/Images/Ellipse6.png'),
+      image: require('../Assets/Images/bubble4.png'),
       name: 'bolging',
       Tags: '#Architecture',
       bubble: false,
     },
-    {
-      id: 13,
-      image: require('../Assets/Images/Ellipse2.png'),
-      name: 'Author books',
-      Tags: '#Architecture',
-      bubble: false,
-    },
+    // {
+    //   id: 13,
+    //   image: require('../Assets/Images/Ellipse2.png'),
+    //   name: 'Author books',
+    //   Tags: '#Architecture',
+    //   bubble: false,
+    // },
   ];
   return (
     <>
@@ -200,7 +200,7 @@ const BubbleSearch = () => {
                         height: '100%',
                         width: '100%',
                       }}
-                      resizeMode="contain"
+                      resizeMode="cover"
                     />
                   </View>
 

@@ -59,7 +59,7 @@ const BubbleList = () => {
     },
     {
       id: 4,
-      image: require('../Assets/Images/dummyUser.png'),
+      image: require('../Assets/Images/dummyman4.png'),
       name: 'Bords Shooting',
       Time:'Today 9:00 Am',
       title: 'Invite to bubble Need to help',

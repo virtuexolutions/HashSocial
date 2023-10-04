@@ -7,6 +7,9 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  Platform,
+  ToastAndroid,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 const {height, width} = Dimensions.get('window');
@@ -24,10 +27,13 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Modal from 'react-native-modal';
 import navigationService from '../navigationService';
+import TextInputWithTitle from './TextInputWithTitle';
 
 const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
+  console.log("🚀 ~ file: CardComponent.js:30 ~ CardComponent ~ item:", item)
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const [isVisible, setIsVisible] = useState(false);
+  const [msg, setMsg] = useState('');
   return (
     <>
       <View style={styles.row}>
@@ -38,30 +44,32 @@ const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
               style={{width: '100%', height: '100%'}}
             />
           </View>
-        { MemberList && <TouchableOpacity
-            onPress={() => {
-              setIsVisible(true);
-            }}
-            style={{
-              backgroundColor: 'white',
-              height: windowHeight * 0.03,
-              width: windowHeight * 0.03,
-              justifyContent: 'center',
-              alignItems: 'center',
-              borderRadius: (windowHeight * 0.03) / 2,
-              position: 'absolute',
-              top: 0,
-              right: 0,
-            }}>
-            <Icon
-              name="message1"
-              as={AntDesign}
-              color={themeColor[1]}
+          {MemberList && (
+            <TouchableOpacity
               onPress={() => {
                 setIsVisible(true);
               }}
-            />
-          </TouchableOpacity>}
+              style={{
+                backgroundColor: 'white',
+                height: windowHeight * 0.03,
+                width: windowHeight * 0.03,
+                justifyContent: 'center',
+                alignItems: 'center',
+                borderRadius: (windowHeight * 0.03) / 2,
+                position: 'absolute',
+                top: 0,
+                right: 0,
+              }}>
+              <Icon
+                name="message1"
+                as={AntDesign}
+                color={themeColor[1]}
+                onPress={() => {
+                  setIsVisible(true);
+                }}
+              />
+            </TouchableOpacity>
+          )}
         </View>
 
         <View
@@ -146,8 +154,8 @@ const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
           )}
           {edit && (
             <CustomButton
-              onPress ={()=>{
-                navigationService.navigate('Profile',{item:item})
+              onPress={() => {
+                navigationService.navigate('Profile', {item: item});
               }}
               text={'Edit'}
               textColor={Color.black}
@@ -292,6 +300,20 @@ const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
           alignItems: 'center',
         }}>
         <View style={styles.container}>
+          <View style={{backgroundColor:themeColor[1], alignItems:'center', justifyContent:'center'}}>
+          <CustomText
+            style={{
+              color: Color.white,
+              fontSize: moderateScale(15, 0.6),
+              // marginTop: moderateScale(20, 0.3),
+              paddingVertical:moderateScale(10,.6),
+              paddingHorizontal: moderateScale(30, 0.6),
+              textAlign: 'center',
+            }}
+            isBold>
+            send Message Request
+          </CustomText>
+          </View>
           <View
             // colors={['#286086', '#dfecf5']}
             style={{
@@ -302,11 +324,32 @@ const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
             }}>
             <View style={styles.circle}>
               <CustomImage
-                source={require('../Assets/Images/user.png')}
+                source={require('../Assets/Images/chat.png')}
                 style={{width: '100%', height: '100%'}}
               />
             </View>
+            <TextInputWithTitle
+              marginTop={moderateScale(10, 0.6)}
+              // title={'Title'}
+              secureText={false}
+              placeholder={'Write message here'}
+              setText={setMsg}
+              value={msg}
+              viewHeight={0.1}
+              viewWidth={0.7}
+              inputWidth={0.65}
+              backgroundColor={'white'}
+              border={1}
+              borderColor={Color.veryLightGray}
+              // marginTop={moderateScale(10, 0.3)}
+              // borderColor={'#FFFFFF'}
 
+              color={themeColor[1]}
+              placeholderColor={Color.themeLightGray}
+              borderRadius={moderateScale(10, 0.3)}
+            />
+
+            {/* 
             <CustomText
               style={{
                 color: Color.black,
@@ -317,22 +360,25 @@ const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
               }}
               isBold>
              By confirming a private chat will be created
-            </CustomText>
+            </CustomText> */}
           </View>
 
           <CustomButton
-            text={'Send Private message'}
+            text={'Send'}
             onPress={() => {
               setIsVisible(false);
+              Platform.OS == 'android' ? ToastAndroid.show('Message request sent', ToastAndroid.SHORT) : Alert.alert('Message request sent')
+
             }}
             textColor={Color.white}
-            width={windowWidth * 0.65}
+            width={windowWidth * 0.7}
             height={windowHeight * 0.06}
             marginTop={moderateScale(20, 0.3)}
             bgColor={Color.themeBgColor}
             borderRadius={moderateScale(25, 0.3)}
             elevation
             isGradient
+            multiline
             fontSize={moderateScale(14, 0.6)}
           />
         </View>
@@ -343,8 +389,6 @@ const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
 export default CardComponent;
 
 const styles = StyleSheet.create({
-
-
   profileSection: {
     height: windowWidth * 0.2,
     width: windowWidth * 0.2,
@@ -375,20 +419,19 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   circle: {
-    width: moderateScale(60, 0.6),
-    height: moderateScale(60, 0.6),
-    borderRadius: moderateScale(30, 0.6),
+    width: moderateScale(70, 0.6),
+    height: moderateScale(70, 0.6),
+    // borderRadius: moderateScale(30, 0.6),
     justifyContent: 'center',
     overflow: 'hidden',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.32,
-    shadowRadius: 5.46,
+    // shadowColor: '#000',
+    // shadowOffset: {
+    //   width: 0,
+    //   height: 4,
+    // },
+    // shadowOpacity: 0.32,
+    // shadowRadius: 5.46,
 
-    elevation: 9,
+    // elevation: 9,
   },
-  
 });

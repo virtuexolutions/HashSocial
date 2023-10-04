@@ -44,6 +44,8 @@ import SubscriptionScreen from './Screens/SubscriptionScreen';
 import PostScreen from './Screens/PostScreen';
 import AddEvents from './Screens/AddEvents';
 import EventDetails from './Screens/EventDetails';
+import AddCard from './Screens/AddCard';
+import PaymentMethod from './Screens/PaymentMethod';
 
 // import AccountSetting from './Screens/AccountSetting';
 // import HomeScreen from './Screens/HomeScreen';
@@ -86,6 +88,7 @@ const AppNavigator = () => {
           <RootNav.Screen name="PostScreen" component={PostScreen} />
           <RootNav.Screen name="FeedList" component={FeedList} />
           <RootNav.Screen name="Feeds" component={Feeds} />
+          <RootNav.Screen name="EventDetails" component={EventDetails} />
           <RootNav.Screen name="BubbleSearch" component={BubbleSearch} />
           <RootNav.Screen name="AccountDetails" component={AccountDetails} />
           <RootNav.Screen name="MemberList" component={MemberList} />
@@ -109,6 +112,10 @@ const AppNavigator = () => {
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
           <RootNav.Screen name="SubscriptionScreen" component={SubscriptionScreen} />
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
+          <RootNav.Screen name="AddCard" component={AddCard} />
+          <RootNav.Screen name="PaymentMethod" component={PaymentMethod} />
+
+
         </RootNav.Navigator>
       </NavigationContainer>
     );

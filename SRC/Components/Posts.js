@@ -45,8 +45,9 @@ const Posts = () => {
       date: '24 Aug',
       desc: 'The mountains are calling, and I must go!',
       profileImage: require('../Assets/Images/avatar3.png'),
-      image: null,
-      video: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
+      image: require('../Assets/Images/art.png'),
+      video: null,
+      // video: 'http://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4',
       Like: 357,
       love: 4100,
       comment: 205,
@@ -138,7 +139,7 @@ const Posts = () => {
           paddingBottom: moderateScale(80, 0.3),
         }}
         renderItem={({item, index}) => {
-          return <PostComponent item={item} />;
+          return <PostComponent data={item} />;
         }}
       />
     </View>
