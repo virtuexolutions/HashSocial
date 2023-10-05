@@ -589,7 +589,7 @@ const HomeScreen = props => {
               justifyContent: 'center',
               alignItems: 'center',
             }}>
-            <CustomButton
+            {/* <CustomButton
               text={
                 isLoading ? (
                   <ActivityIndicator color={'#01E8E3'} size={'small'} />
@@ -609,7 +609,7 @@ const HomeScreen = props => {
               bgColor={['#FFFFFF', '#FFFFFF']}
               borderRadius={moderateScale(30, 0.3)}
               isGradient
-            />
+            /> */}
             <CustomButton
               text={
                 isLoading ? (

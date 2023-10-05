@@ -108,6 +108,7 @@ const Bubble = () => {
     },
   ];
   const [newData, setnewData] = useState(SearchData);
+  const [invitedPeople, setInvitedPeople] = useState([]);
   console.log('🚀 ~ file: Bubble.js:112 ~ Bubble ~ newData:', newData);
 
   useEffect(() => {
@@ -250,6 +251,7 @@ const Bubble = () => {
                 isBold
               />
               <TouchableOpacity
+                activeOpacity={0.8}
                 onPress={() => {
                   setIsVisible(true);
                 }}
@@ -258,11 +260,11 @@ const Bubble = () => {
                   onPress={() => {
                     setIsVisible(true);
                   }}
-                  name="dots-three-vertical"
+                  name="add-user"
                   as={Entypo}
                   color={themeColor[1]}
                   size={6}
-                  zIndex={1}
+                  // zIndex={1}
                 />
               </TouchableOpacity>
             </View>
@@ -334,7 +336,9 @@ const Bubble = () => {
           // paddingVertical:moderateScale(20,.6),
         }}>
         <View style={styles.container}>
-          <CustomText style={[styles.modalHeader,{backgroundColor:themeColor[1]}]} isBold>
+          <CustomText
+            style={[styles.modalHeader, {backgroundColor: themeColor[1]}]}
+            isBold>
             Invite Members
           </CustomText>
 
@@ -362,7 +366,7 @@ const Bubble = () => {
             showsVerticalScrollIndicator={false}
             contentContainerStyle={{
               // marginBottom: moderateScale(10, 0.3),
-              paddingBottom: moderateScale(30, 0.6),
+              paddingBottom: moderateScale(70, 0.6),
               marginTop: moderateScale(10, 0.3),
             }}
             style={{
@@ -370,7 +374,25 @@ const Bubble = () => {
             }}
             renderItem={({item, index}) => {
               return (
-                <View style={styles.row}>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={styles.row}
+                  onPress={() => {
+                    if (
+                      invitedPeople?.some((data, index) => data?.id == item?.id)
+                    ) {
+                      const tempData = [...invitedPeople];
+                      tempData.splice(
+                        invitedPeople?.findIndex(
+                          (data, index) => data?.id == item?.id,
+                        ),
+                        1,
+                      );
+                      setInvitedPeople(tempData);
+                    } else {
+                      setInvitedPeople(prev => [...prev, item]);
+                    }
+                  }}>
                   <View style={styles.profileSection2}>
                     <CustomImage
                       source={item.image}
@@ -405,10 +427,81 @@ const Bubble = () => {
                       {item.Tags}
                     </CustomText>
                   </View>
-                </View>
+                  {invitedPeople?.some(
+                    (data, index) => data?.id == item?.id,
+                  ) && (
+                    <View
+                      style={[
+                        styles.checkIcon,
+                        {
+                          backgroundColor: themeColor[1],
+                          position: 'absolute',
+                          right: 10,
+                          top: 5,
+                          borderRadius: moderateScale(10, 0.6),
+                          height: moderateScale(20, 0.6),
+                          width: moderateScale(20, 0.6),
+                        },
+                      ]}>
+                      <Icon
+                        name="check"
+                        as={AntDesign}
+                        color={'white'}
+                        size={4}
+                        zIndex={1}
+                        onPress={() => {
+                          const tempData = [...invitedPeople];
+                          tempData.splice(
+                            invitedPeople?.findIndex(
+                              (data, index) => data?.id == item?.id,
+                            ),
+                            1,
+                          );
+                          setInvitedPeople(tempData);
+                        }}
+                      />
+                    </View>
+                  )}
+                </TouchableOpacity>
               );
             }}
           />
+          {invitedPeople?.length > 0 && (
+            <View
+              style={{
+                position: 'absolute',
+                alignSelf: 'center',
+                bottom: 20,
+                backgroundColor: 'transparent',
+              }}>
+              <CustomButton
+                text={
+                  isLoading ? (
+                    <ActivityIndicator color={'#01E8E3'} size={'small'} />
+                  ) : (
+                    'invite'
+                  )
+                }
+                textColor={'white'}
+                width={windowWidth * 0.4}
+                height={windowHeight * 0.05}
+                // marginTop={moderateScale(20, 0.3)}
+                onPress={() => {
+                  Platform.OS == 'android'
+                    ? ToastAndroid.show(
+                        'invited successfully',
+                        ToastAndroid.SHORT,
+                      )
+                    : alert('invited successfully');
+                  // disptach(setUserToken({token : 'fasdasd awd   awdawdada'}))
+                  setIsVisible(false);
+                }}
+                bgColor={themeColor}
+                borderRadius={moderateScale(30, 0.3)}
+                isGradient
+              />
+            </View>
+          )}
         </View>
       </Modal>
     </>
@@ -418,11 +511,11 @@ const Bubble = () => {
 const styles = ScaledSheet.create({
   checkIcon: {
     backgroundColor: Color.white,
-    borderRadius: 20,
-    height: 25,
+    borderRadius: moderateScale(12.5, 0.6),
+    height: moderateScale(25, 0.6),
     justifyContent: 'center',
     alignItems: 'center',
-    width: 25,
+    width: moderateScale(25, 0.6),
     padding: moderateScale(3, 0.6),
   },
   followCount: {
@@ -490,7 +583,7 @@ const styles = ScaledSheet.create({
     padding: moderateScale(10, 0.6),
   },
   row: {
-    width: windowWidth,
+    width: windowWidth * 0.85,
     height: windowHeight * 0.06,
     flexDirection: 'row',
     alignItems: 'center',

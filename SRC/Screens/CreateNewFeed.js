@@ -4,7 +4,7 @@ import {
   ImageBackground,
   View,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
 } from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -32,6 +32,7 @@ const CreateNewFeed = () => {
   const [isLoading, setisLoading] = useState(false);
   const [image, setImage] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [hashtags, setHashTags] = useState([]);
 
   const architecture = ['#architecture', 'ABC', 'BCD', 'CDE'];
   const [dropDownValue, setDropDownValue] = useState('#Architecture');
@@ -116,44 +117,85 @@ const CreateNewFeed = () => {
                   marginLeft: moderateScale(30, 0.3),
                 }}
                 isBold>
-                Feed Title
+                Add Hashtag
               </CustomText>
-              <TextInputWithTitle
-                titleText={'Feed title'}
-                placeholder={'Feed Title'}
-                setText={setFeedTitle}
-                value={feedTitle}
-                viewHeight={0.05}
-                viewWidth={0.5}
-                inputWidth={0.6}
-                marginBottom={moderateScale(-10, 0.3)}
-                color={Color.black}
-                placeholderColor={Color.themeLightGray}
-                style={{fontWeight: 'bold'}}
-                multiline
-                numberOfLines={4}
-              />
-
-              {/* <TextInputWithTitle
-              maxLength={2000}
-              secureText={false}
-              placeholder={'Description'}
-              setText={setDescription}
-              value={description}
-              viewHeight={0.22}
-              viewWidth={0.6}
-              inputWidth={0.55}
-              marginTop={moderateScale(5, 0.3)}
-              color={Color.red}
-              border={1}
-              // marginLeft ={moderateScale(10,0.3)}
-              borderColor={Color.white}
-              placeholderColor={Color.themeLightGray}
-              multiline
-            /> */}
+              <View
+                style={{
+                  width: windowWidth * 0.8,
+                  flexDirection: 'row',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  //  backgroundColor : 'red',
+                  alignSelf: 'center',
+                  borderBottomWidth: 1,
+                  borderColor: Color.lightGrey,
+                }}>
+                <TextInputWithTitle
+                  titleText={'Feed Hashtag'}
+                  placeholder={'Feed Hashtag'}
+                  setText={setFeedTitle}
+                  value={feedTitle}
+                  viewHeight={0.05}
+                  viewWidth={0.6}
+                  inputWidth={0.6}
+                  color={Color.black}
+                  placeholderColor={Color.themeLightGray}
+                  style={{fontWeight: 'bold'}}
+                />
+                {feedTitle != '' && (
+                  <CustomButton
+                    text={
+                      isLoading ? (
+                        <ActivityIndicator color={'#01E8E3'} size={'small'} />
+                      ) : (
+                        'Add'
+                      )
+                    }
+                    textColor={themeColor[1]}
+                    fontSize={11}
+                    paddingHorizontal={10}
+                    bgColor={'#FFFFFF'}
+                    borderRadius={moderateScale(30, 0.3)}
+                    // marginTop={moderateScale(30, 0.3)}
+                    // marginBottom={moderateScale(50)}
+                    onPress={() => {
+                      setHashTags(prev => [...prev, `#${feedTitle}`]);
+                      setFeedTitle('');
+                    }}
+                  />
+                )}
+              </View>
             </View>
           </View>
-          {/* <View style={styles.line}></View> */}
+          <View
+            style={{
+              width: windowWidth * 0.8,
+              flexWrap: 'wrap',
+              flexDirection: 'row',
+            }}>
+            {hashtags.map((item, index) => {
+              return (
+                <View
+                  style={{
+                    paddingHorizontal: moderateScale(10, 0.6),
+                    paddingVertical: moderateScale(5, 0.6),
+                    borderWidth: 1,
+                    borderRadius: moderateScale(10, 0.6),
+                    borderColor: Color.white,
+                    marginHorizontal: moderateScale(5, 0.3),
+                  }}>
+                  <CustomText
+                    isBold
+                    style={{
+                      fontSize: moderateScale(11, 0.6),
+                      color: Color.white,
+                    }}>
+                    {item}
+                  </CustomText>
+                </View>
+              );
+            })}
+          </View>
           <View
             style={{
               // width: windowWidth * 0.9,
@@ -167,7 +209,7 @@ const CreateNewFeed = () => {
                 textAlign: 'left',
                 // width: windowWidth * 0.5,
                 fontSize: moderateScale(15, 0.6),
-                marginLeft: moderateScale(30, 0.3),
+                // marginLeft: moderateScale(30, 0.3),
               }}
               isBold>
               Add The description
@@ -175,14 +217,16 @@ const CreateNewFeed = () => {
             <TextInputWithTitle
               maxLength={2000}
               secureText={false}
-              placeholder={`Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`}
+              placeholder={`Enter description`}
               setText={setDetails}
               value={Details}
               viewHeight={0.13}
-              viewWidth={0.99}
+              viewWidth={0.85}
               inputWidth={0.99}
               color={Color.red}
               placeholderColor={Color.themeLightGray}
+              borderBottomWidth={1}
+              borderColor={Color.lightGrey}
               // backgroundColor={Color.black}
               multiline
             />
