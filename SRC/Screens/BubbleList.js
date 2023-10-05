@@ -16,6 +16,7 @@ import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
 import { useSelector } from 'react-redux';
 import CardComponent from '../Components/CardComponent';
+import BubbleCard from '../Components/BubbleCard';
 // const {height, width} = Dimensions.get('window');
 
 const BubbleList = () => {
@@ -23,7 +24,7 @@ const BubbleList = () => {
   const BubbleListData = [
     {
       id: 1,
-      image: require('../Assets/Images/dummyman1.png'),
+      image: require('../Assets/Images/gallery3.png'),
       name: 'Book Author',
       Time:'Today 9:00 Am',
       title: 'Owner Mood Admin',
@@ -32,22 +33,28 @@ const BubbleList = () => {
       check: false,
       edit: true,
       pending: false,
+      author:'alvin',
+     moderator:'zenith',
+     architecture:'Creator',
     },
     {
       id: 2,
-      image: require('../Assets/Images/dummyman4.png'),
+      image : require('../Assets/Images/dummyman1.png'),
       name: 'Alternative fitness',
       Time:'Today 9:00 Am',
       title: 'Member',
       bubble:true,
       close: true,
-      check: false,
+      check: true,
       edit: false,
       pending: false,
+      author:'alvin',
+     moderator:'zenith',
+     architecture:'Creator',
     },
     {
       id: 3,
-      image: require('../Assets/Images/avatar.png'),
+      image: require('../Assets/Images/bubble11.png'),
       name: 'Alchol',
       Time:'Today 9:00 Am',
       title: 'Request to join awaiting Response',
@@ -56,20 +63,64 @@ const BubbleList = () => {
       check: false,
       edit: false,
       pending: true,
+      author:'alvin',
+      moderator:'zenith',
+      architecture:'Creator',
     },
     {
       id: 4,
-      image: require('../Assets/Images/dummyman4.png'),
-      name: 'Bords Shooting',
+      image: require('../Assets/Images/bubble1.png'),
+      name: 'Adventure',
       Time:'Today 9:00 Am',
       title: 'Invite to bubble Need to help',
+      close: true,
+      bubble:true,
+      check: false,
+      edit: true,
+      pending: false,
+      author:'jonathan',
+      moderator:'alvin',
+      architecture:'Creator',
+    },
+    {
+      id: 5,
+      image: require('../Assets/Images/gallery5.png'),
+      name: 'Bords Shooting',
+      Time:'Today 9:00 Am',
+      title: 'Requested to join awaiting for response',
+      close: false,
+      bubble:true,
+      check: false,
+      edit: false,
+      pending: true,
+      author:'alvin',
+      moderator:'zenith',
+      architecture:'Creator',
+    },
+    {
+      id: 6,
+      image: require('../Assets/Images/fitness2.png'),
+      name: 'Bords Shooting',
+      Time:'Today 9:00 Am',
+      title: 'Member',
       close: true,
       bubble:true,
       check: true,
       edit: false,
       pending: false,
+      author:'alvin',
+      moderator:'zenith',
+      architecture:'Creator',
     },
+    
+ 
+  
+
+
+
+
   ];
+ 
 
   return (
     <>
@@ -106,7 +157,7 @@ const BubbleList = () => {
             renderItem={({item, index}) => {
 
               return (
-                <CardComponent
+                <BubbleCard
                 item={item}
                 check={item?.check}
                 close={item?.close}

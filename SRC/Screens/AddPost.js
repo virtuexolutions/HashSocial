@@ -14,7 +14,7 @@ import CustomStatusBar from '../Components/CustomStatusBar';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import {Icon} from 'native-base';
-
+import Video from 'react-native-video';
 import CustomText from '../Components/CustomText';
 import CustomButton from '../Components/CustomButton';
 import Header from '../Components/Header';
@@ -34,7 +34,11 @@ const AddPost = () => {
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState('');
   const [imagePickerVisible, setImagePickerVisible] = useState(false);
+  const [videoPicker, setVideoPicker] = useState(false);
   const [hashtag, setHashtag] = useState('');
+  const [video, setVideo] = useState({});
+  const [videos, setVideos] = useState([]);
+  console.log('🚀 ~ file: AddPost.js:40 ~ AddPost ~ video:', video);
   const [hashtags, setHashtags] = useState([]);
   console.log('🚀 ~ file: AddPost.js:30 ~ AddPost ~ hashtags:', hashtags);
 
@@ -44,6 +48,13 @@ const AddPost = () => {
       setImage({});
     }
   }, [image]);
+
+  useEffect(() => {
+    if (Object.keys(video).length > 0) {
+      setVideos(prev => [...prev, video]);
+      setVideo({});
+    }
+  }, [video]);
 
   return (
     <>
@@ -140,6 +151,53 @@ const AddPost = () => {
                   onPress={() => {
                     if (images.length < 5) {
                       setImagePickerVisible(true);
+                    } else {
+                      Platform.OS == 'android'
+                        ? ToastAndroid.show(
+                            'you can select only five images.',
+                            ToastAndroid.SHORT,
+                          )
+                        : Alert.alert('you can select only five images.');
+                    }
+                  }}
+                />
+              </TouchableOpacity>
+            )}
+          </View>
+          <CustomText
+            style={[styles.title, {marginTop: moderateScale(10, 0.3)}]}
+            isBold={true}
+            children={'Add Video'}
+          />
+          <View style={styles.imagesContainer}>
+            {videos?.map(item => {
+              return (
+                <VideoComponent item={item}/>
+              );
+            })}
+            {videos.length < 5 && (
+              <TouchableOpacity
+                style={styles.plus}
+                onPress={() => {
+                  if (videos.length < 5) {
+                    setVideoPicker(true);
+                  } else {
+                    Platform.OS == 'android'
+                      ? ToastAndroid.show(
+                          'you can select only five images.',
+                          ToastAndroid.SHORT,
+                        )
+                      : Alert.alert('you can select only five images');
+                  }
+                }}>
+                <Icon
+                  name="plus"
+                  as={Entypo}
+                  size={25}
+                  color={'black'}
+                  onPress={() => {
+                    if (videos.length < 5) {
+                      setVideoPicker(true);
                     } else {
                       Platform.OS == 'android'
                         ? ToastAndroid.show(
@@ -274,33 +332,18 @@ const AddPost = () => {
               isBold={true}
             />
           </View>
-          {/* <CustomButton
-          text={
-            loading ? (
-              <ActivityIndicator color={'#01E8E3'} size={'small'} />
-            ) : (
-              'Add Bubble'
-            )
-          }
-          textColor={themeColor[1]}
-          width={windowWidth * 0.7}
-          height={windowHeight * 0.06}
-          marginTop={moderateScale(10, 0.3)}
-          onPress={() => {
-            // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
-            navigationService.navigate('CreateNewBubble');
-          }}
-          bgColor={['#FFFFFF', '#FFFFFF']}
-          borderRadius={moderateScale(30, 0.3)}
-          isGradient
-          isBold={true}
-        /> */}
         </ImageBackground>
       </ScrollView>
       <ImagePickerModal
         show={imagePickerVisible}
         setShow={setImagePickerVisible}
         setFileObject={setImage}
+      />
+      <ImagePickerModal
+        show={videoPicker}
+        type={'video'}
+        setShow={setVideoPicker}
+        setFileObject={setVideo}
       />
     </>
   );
@@ -362,3 +405,56 @@ const styles = ScaledSheet.create({
 });
 
 export default AddPost;
+
+const VideoComponent =({item})=>{
+  const [isPlaying, setIsPlaying] = useState(false)
+  return(
+  <View style={styles.image}>
+  <TouchableOpacity
+  onPress={()=>{
+    setIsPlaying(!isPlaying);
+  }}
+    style={{
+      position: 'absolute',
+      zIndex: 1,
+      width: windowWidth * 0.16,
+      height: windowWidth * 0.16,
+      justifyContent: 'center',
+      alignItems: 'center',
+      // backgroundColor: 'green',
+      alignSelf: 'center',
+    }}>{!isPlaying && 
+    <Icon
+     onPress={()=>{
+      setIsPlaying(!isPlaying);
+    }}
+      name={'controller-play'}
+      as={Entypo}
+      size={10}
+      color={'rgba(255,255,255,.9)'}
+    />}
+  </TouchableOpacity>
+  <Video
+    // muted
+    paused={!isPlaying}
+    repeat={true}
+    // controls={true}
+    source={{uri: item?.uri}}
+    // ref={videoRef}
+    // onProgress={x => {
+    //   console.log(
+    //     '🚀 ~ file: VideoController.js:46 ~ VideoController ~ x:',
+    //     x,
+    //   );
+    //   setProgress(x);
+    // }}
+    // onBuffer={() => console.log('buffering video')}
+    style={{
+      width: '100%',
+      height: '100%',
+      backgroundColor: Color.white,
+    }}
+  />
+</View>
+)
+}

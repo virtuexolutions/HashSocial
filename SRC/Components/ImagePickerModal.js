@@ -45,11 +45,11 @@ const requestCameraPermission = async () => {
 
 const ImagePickerModal = props => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
-  let {show, setShow, setFileObject, setMultiImages, crop} = props;
+  let {show, setShow, setFileObject, setMultiImages, crop, type} = props;
 
   const openGallery = () => {
     let options = {
-      mediaType: 'photo',
+      mediaType: type ? type : 'photo',
       maxWidth: 500,
       maxHeight: 500,
       quailty: 0.9,

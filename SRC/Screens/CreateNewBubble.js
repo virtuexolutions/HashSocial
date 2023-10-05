@@ -30,13 +30,15 @@ import {ScaledSheet} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo'
 
-const CreateNewBubble = () => {
+const CreateNewBubble = (props) => {
+  const item = props?.route?.params?.item
+  console.log("🚀 ~ file: CreateNewBubble.js:35 ~ CreateNewBubble ~ item:", item)
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const [CreateBubble, setCreateBubble] = useState('');
-  const [Admin, setAdmin] = useState('');
-  const [bubbleTitle, setBubbleTitle] = useState('');
-  const [moderator, setModerator] = useState('');
+  const [Admin, setAdmin] = useState(item?.author ? item?.author : '');
+  const [bubbleTitle, setBubbleTitle] = useState(item?.name ? item?.name :'');
+  const [moderator, setModerator] = useState(item?.moderator ? item?.moderator : '');
   const [showModal, setShowModal] = useState(false);
   const [profilePicture, setProfilePicture] = useState({});
   const [isLoading, setisLoading] = useState(false);
@@ -168,7 +170,8 @@ const CreateNewBubble = () => {
               }}
             />
 
-            <View
+            <TouchableOpacity
+            onPress={()=>{ setShowModal(true)}}
               style={[
                 {
                   height: windowHeight * 0.27,
@@ -183,9 +186,9 @@ const CreateNewBubble = () => {
                   alignItems: 'center',
                 },
               ]}>
-              {Object.keys(profilePicture).length > 0 ? (
+              {item?.image || Object.keys(profilePicture).length > 0 ? (
                 <CustomImage
-                  source={{uri: profilePicture?.uri}}
+                  source={item?.image ? item?.image : {uri: profilePicture?.uri}}
                   style={{
                     width: '100%',
                     height: '100%',
@@ -201,7 +204,7 @@ const CreateNewBubble = () => {
                  
               
               )}
-            </View>
+            </TouchableOpacity>
           </View>
 
           <View style={styles.line}></View>
