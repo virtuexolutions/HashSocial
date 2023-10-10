@@ -11,14 +11,16 @@ import LinearGradient from 'react-native-linear-gradient';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 
-const Feeds = () => {
-  const privacy = useSelector(state=> state.authReducer.privacy)
+const Feeds = props => {
+  const navigation = useNavigation();
+  const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  const image = props?.route?.params?.image;
 
   const [selectedTab, SetSelectedTab] = useState('Fitness');
-  
 
   feedsArray = [
     {
@@ -93,80 +95,88 @@ const Feeds = () => {
   ];
 
   return (
-   
-      <View style={{width: windowWidth}}>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
+    <View style={{width: windowWidth}}>
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        style={{
+          marginTop: moderateScale(40, 0.3),
+          position: 'absolute',
+          zIndex: 1,
+          marginLeft: moderateScale(20, 0.3),
+        }}>
+        <TouchableOpacity
+        onPress={()=>{
+          navigation.goBack()
+        }}
+          activeOpacity={0.7}
           style={{
-            marginTop: moderateScale(40, 0.3),
-            position: 'absolute',
-            zIndex: 1,
-            marginLeft: moderateScale(20, 0.3),
+            justifyContent: 'center',
+            marginRight: moderateScale(5, 0.3),
           }}>
-          <TouchableOpacity
-            activeOpacity={0.7}
-            style={{
-              justifyContent: 'center',
-              marginRight: moderateScale(5, 0.3),
-            }}>
-            <Icon name={'arrowleft'} as={AntDesign} color={'white'} size={5} />
-          </TouchableOpacity>
+          <Icon name={'arrowleft'} as={AntDesign} color={'white'} size={5} 
+           onPress={()=>{
+            navigation.goBack()
+           }}
+          />
+        </TouchableOpacity>
 
-          {Fitness?.map(item => {
-            return (
-              <LinearGradient
-                start={{x: 0, y: 0}}
-                end={{x: 0, y: 0.9}}
-                colors={
-                  selectedTab == item?.name
-                    ? themeColor
-                    : ['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.4)']
-                }
+        {Fitness?.map(item => {
+          return (
+            <LinearGradient
+              start={{x: 0, y: 0}}
+              end={{x: 0, y: 0.9}}
+              colors={
+                selectedTab == item?.name
+                  ? themeColor
+                  : ['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.4)']
+              }
+              style={{
+                width: windowWidth * 0.2,
+                height: windowHeight * 0.04,
+                borderRadius: (windowHeight * 0.04) / 5,
+                margin: moderateScale(10, 0.3),
+              }}>
+              <TouchableOpacity
+                onPress={() => {
+                  SetSelectedTab(item?.name);
+                }}
+                activeOpacity={0.8}
                 style={{
-                  width: windowWidth * 0.2,
-                  height: windowHeight * 0.04,
-                  borderRadius: (windowHeight * 0.04) / 5,
-                  margin: moderateScale(10, 0.3),
+                  width: '100%',
+                  height: '100%',
+                  alignItems: 'center',
+                  justifyContent: 'center',
                 }}>
-                <TouchableOpacity
-                  onPress={() => {
-                    SetSelectedTab(item?.name);
-                  }}
-                  activeOpacity={0.8}
+                <CustomText
                   style={{
-                    width: '100%',
-                    height: '100%',
-                    alignItems: 'center',
-                    justifyContent: 'center',
+                    fontSize: moderateScale(12, 0.6),
+                    color: Color.white,
                   }}>
-                  <CustomText
-                    style={{
-                      fontSize: moderateScale(12, 0.6),
-                      color: Color.white,
-                    }}>
-                    {item?.name}
-                  </CustomText>
-                </TouchableOpacity>
-              </LinearGradient>
-            );
-          })}
-        </ScrollView>
+                  {item?.name}
+                </CustomText>
+              </TouchableOpacity>
+            </LinearGradient>
+          );
+        })}
+      </ScrollView>
+    
+      <FeedContainer item={{image: image}} />
+    </View>
+  );
+};
 
-        <FlatList
+export default Feeds;
+
+
+  {/* <FlatList
           vertical={true}
           showsVerticalScrollIndicator={true}
           data={feedsArray}
           contentContainerStyle={{
             zIndex: 0,
           }}
-          renderItem={({item, index}) => {
-            return <FeedContainer item={item} />;
-          }}
-        />
-      </View>
-  
-  );
-};
-
-export default Feeds;
+          renderItem={({item, index}) => { */}
+      {/* return */}
+      {/* }} */}
+      {/* /> */}

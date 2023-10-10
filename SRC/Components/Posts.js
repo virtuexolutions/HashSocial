@@ -16,8 +16,9 @@ import {Icon} from 'native-base';
 import TextInputWithTitle from './TextInputWithTitle';
 import {useSelector} from 'react-redux';
 import navigationService from '../navigationService';
-import { FlatList } from 'react-native';
-import PostComponent from './PostComponent';
+import {FlatList} from 'react-native';
+import PostComponentBubble from './PostComponentBubble';
+
 // import { TextInput } from 'react-native-gesture-handler';
 
 const Posts = () => {
@@ -28,20 +29,51 @@ const Posts = () => {
   const PostData = [
     {
       id: 1,
-      Name: 'Travelling Tour Posted a video to playlist Special Content',
+      Name: 'Meiko Nakahara',
       date: '19 July',
       desc: `124 degrees can't stop us from running into the desert for some quick potraits`,
       profileImage: require('../Assets/Images/avatar3.png'),
-      image: require('../Assets/Images/tour1.jpg'),
+      image: require('../Assets/Images/archive.png'),
       video: null,
       Like: 15,
       love: 1100,
       comment: 44,
       View: null,
+      blueTick: true,
+      commentData: [
+        {
+          id: 1,
+          name: 'James',
+          comment: 'Looking Geourgous',
+          pic: require('../Assets/Images/avatar6.jpg'),
+          Time: '16',
+        },
+        {
+          id: 2,
+          name: 'Levik',
+          comment: 'Nice',
+          pic: require('../Assets/Images/avatar4.png'),
+          Time: '3',
+        },
+        {
+          id: 3,
+          name: 'Frank',
+          comment: 'Good',
+          pic: require('../Assets/Images/avatar3.png'),
+          Time: '10',
+        },
+        {
+          id: 4,
+          name: 'Salina',
+          comment: 'Killer',
+          pic: require('../Assets/Images/avatar1.png'),
+          Time: '5',
+        },
+      ],
     },
     {
       id: 2,
-      Name: 'We hope you got to enjoy the great weather today, Vienna! 🥂✨ by WaitsForYou ',
+      Name: 'Angelina julie',
       date: '24 Aug',
       desc: 'The mountains are calling, and I must go!',
       profileImage: require('../Assets/Images/avatar3.png'),
@@ -52,6 +84,37 @@ const Posts = () => {
       love: 4100,
       comment: 205,
       View: 1084,
+      blueTick: false,
+      commentData: [
+        {
+          id: 1,
+          name: 'James',
+          comment: 'Looking Geourgous',
+          pic: require('../Assets/Images/avatar6.jpg'),
+          Time: '16',
+        },
+        {
+          id: 2,
+          name: 'Levik',
+          comment: 'Nice',
+          pic: require('../Assets/Images/avatar4.png'),
+          Time: '3',
+        },
+        {
+          id: 3,
+          name: 'Frank',
+          comment: 'Good',
+          pic: require('../Assets/Images/avatar3.png'),
+          Time: '10',
+        },
+        {
+          id: 4,
+          name: 'Salina',
+          comment: 'Killer',
+          pic: require('../Assets/Images/avatar1.png'),
+          Time: '5',
+        },
+      ],
     },
 
     {
@@ -66,22 +129,84 @@ const Posts = () => {
       love: 4100,
       comment: 205,
       View: null,
+      blueTick: true,
+      commentData: [
+        {
+          id: 1,
+          name: 'James',
+          comment: 'Looking Geourgous',
+          pic: require('../Assets/Images/avatar6.jpg'),
+          Time: '16',
+        },
+        {
+          id: 2,
+          name: 'Levik',
+          comment: 'Nice',
+          pic: require('../Assets/Images/avatar4.png'),
+          Time: '3',
+        },
+        {
+          id: 3,
+          name: 'Frank',
+          comment: 'Good',
+          pic: require('../Assets/Images/avatar3.png'),
+          Time: '10',
+        },
+        {
+          id: 4,
+          name: 'Salina',
+          comment: 'Killer',
+          pic: require('../Assets/Images/avatar1.png'),
+          Time: '5',
+        },
+      ],
     },
     {
       id: 4,
-      Name: 'Travelling Tour Posted We hope you got to enjoy the great',
+      Name: 'Great John',
       date: '4 Dec',
       desc: `Capturing the pure joy of childhood creativity! These little artists are turning blank canvases into vibrant masterpieces. It's incredible to witness their boundless imaginations at work.`,
       profileImage: require('../Assets/Images/avatar3.png'),
-      image: require('../Assets/Images/art.png'),
+      image: require('../Assets/Images/tour1.jpg'),
       video: null,
       Like: 457,
       love: 1800,
       comment: 905,
       View: null,
+      blueTick: true,
+      commentData: [
+        {
+          id: 1,
+          name: 'James',
+          comment: 'Looking Geourgous',
+          pic: require('../Assets/Images/avatar6.jpg'),
+          Time: '16',
+        },
+        {
+          id: 2,
+          name: 'Levik',
+          comment: 'Nice',
+          pic: require('../Assets/Images/avatar4.png'),
+          Time: '3',
+        },
+        {
+          id: 3,
+          name: 'Frank',
+          comment: 'Good',
+          pic: require('../Assets/Images/avatar3.png'),
+          Time: '10',
+        },
+        {
+          id: 4,
+          name: 'Salina',
+          comment: 'Killer',
+          pic: require('../Assets/Images/avatar1.png'),
+          Time: '5',
+        },
+      ],
     },
   ];
-  
+
   return (
     <View>
       <View
@@ -119,7 +244,11 @@ const Posts = () => {
             navigationService.navigate('AddPost');
           }}>
           <CustomText
-            style={{color: 'black', fontSize: moderateScale(13, 0.6), width:windowWidth*0.6}}
+            style={{
+              color: 'black',
+              fontSize: moderateScale(13, 0.6),
+              width: windowWidth * 0.6,
+            }}
             onPress={() => {
               console.log('here===========>>>>>>>>');
               navigationService.navigate('AddPost');
@@ -139,7 +268,7 @@ const Posts = () => {
           paddingBottom: moderateScale(80, 0.3),
         }}
         renderItem={({item, index}) => {
-          return <PostComponent data={item} />;
+          return <PostComponentBubble data={item} />;
         }}
       />
     </View>

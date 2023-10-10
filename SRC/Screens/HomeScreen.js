@@ -44,7 +44,7 @@ const HomeScreen = props => {
   const [alignment, setAlignment] = useState('left');
   const [highlightedIcon, setHighlightedIcon] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
-  const [text, setText] = useState('')
+  const [text, setText] = useState('');
   console.log(
     '🚀 ~ file: HomeScreen.js:40 ~ HomeScreen ~ highlightedIcon:',
     highlightedIcon,
@@ -97,7 +97,7 @@ const HomeScreen = props => {
     {
       private: false,
       bubble: false,
-      source : require('../Assets/Images/dummyman1.png'),
+      source: require('../Assets/Images/dummyman1.png'),
       image: (
         <Image
           source={require('../Assets/Images/dummyman1.png')}
@@ -180,7 +180,7 @@ const HomeScreen = props => {
     {
       private: true,
       bubble: false,
-      source : require('../Assets/Images/gallery2.png'),
+      source: require('../Assets/Images/gallery2.png'),
       image: (
         <Image
           source={require('../Assets/Images/gallery2.png')}
@@ -444,6 +444,38 @@ const HomeScreen = props => {
               style={[
                 {
                   position: 'absolute',
+                  top: 20,
+                },
+                alignment == 'right' && {
+                  right: 50,
+                },
+                alignment == 'left' && {
+                  left: 50,
+                },
+              ]}>
+              <CustomText
+                isBold
+                style={{
+                  color: Color.black,
+                  fontSize: moderateScale(25, 0.6),
+                  textTransform : 'uppercase'
+                }}>
+                Hi !
+              </CustomText>
+              <CustomText
+                isBold
+                style={{
+                  color: Color.white,
+                  fontSize: moderateScale(25, 0.6),
+                  textTransform : 'uppercase'
+                }}>
+                Jonathan
+              </CustomText>
+            </View>
+            <View
+              style={[
+                {
+                  position: 'absolute',
                   // right: moderateScale(-4, 0.6),
                   top: '40%',
                   width: windowWidth * 0.06,
@@ -499,32 +531,28 @@ const HomeScreen = props => {
                 marginLeft: moderateScale(20, 0.3),
                 zIndex: 2,
               }}>
-              
-            
-
-                <RoundMenu
-                  centerContent={
-                    <ImageBackground
-                      source={require('../Assets/Images/dummyman1.png')}
-                      resizeMode="cover"
-                      style={style.centerImage}
-                    />
-                  }
-                  largeImageSize={width / 2.5}
-                  content={content}
-                  contentContainerStyle={{
-                    borderWidth: 3,
-                  }}
-                  setHighlightedIcon={setHighlightedIcon}
-                  setAnimationStopped={setAnimationStopped}
-                  rotationAngle={rotationAngle}
-                  alignment={alignment}
-                  elevation={5}
-                  setIsVisible={setIsVisible}
-                  setclicked={setclicked}
-                  setText={setText}
-                />
-              
+              <RoundMenu
+                centerContent={
+                  <ImageBackground
+                    source={require('../Assets/Images/dummyman1.png')}
+                    resizeMode="cover"
+                    style={style.centerImage}
+                  />
+                }
+                largeImageSize={width / 2.5}
+                content={content}
+                contentContainerStyle={{
+                  borderWidth: 3,
+                }}
+                setHighlightedIcon={setHighlightedIcon}
+                setAnimationStopped={setAnimationStopped}
+                rotationAngle={rotationAngle}
+                alignment={alignment}
+                elevation={5}
+                setIsVisible={setIsVisible}
+                setclicked={setclicked}
+                setText={setText}
+              />
             </View>
           </GestureHandlerRootView>
           <TouchableOpacity
@@ -677,7 +705,11 @@ const HomeScreen = props => {
           </View>
         </BlurView>
       )}
-      <RequestModal setIsVisible={setIsVisible} isVisible={isVisible} text={text} />
+      <RequestModal
+        setIsVisible={setIsVisible}
+        isVisible={isVisible}
+        text={text}
+      />
     </>
   );
 };

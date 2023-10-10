@@ -18,12 +18,13 @@ import Feather from 'react-native-vector-icons/Feather';
 
 import CustomText from '../Components/CustomText';
 import {Icon} from 'native-base';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 
 const FeedContainer = ({item}) => {
+  console.log('🚀 ~ file: FeedContainer.js:24 ~ FeedContainer ~ item:', item);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
 
-  console.log('ITEM==>', item);
+  console.log('ITEM==>', item?.image);
   return (
     <TouchableOpacity
       // onPress={() => {
@@ -45,7 +46,9 @@ const FeedContainer = ({item}) => {
         //     fromSearch: true,
         //   });
         // }}
-        source={item?.Image}
+        source={
+          item?.image ? item?.image : require('../Assets/Images/Feed.png')
+        }
         resizeMethod={'stretch'}
       />
       {/* </SharedElement>  */}
@@ -71,7 +74,12 @@ const FeedContainer = ({item}) => {
             width: windowWidth * 0.7,
             // backgroundColor: 'black',
           }}>
-          <View style={{flexDirection: 'row', paddingTop:moderateScale(40,.6),paddingLeft:moderateScale(5,0.6)}}>
+          <View
+            style={{
+              flexDirection: 'row',
+              paddingTop: moderateScale(40, 0.6),
+              paddingLeft: moderateScale(5, 0.6),
+            }}>
             <View
               style={{
                 width: windowWidth * 0.1,
@@ -86,14 +94,14 @@ const FeedContainer = ({item}) => {
                 marginRight: moderateScale(8, 0.3),
               }}>
               <CustomImage
-                source={item?.postUser?.profilepicture}
+                source={require('../Assets/Images/avatar3.png')}
                 style={{
                   height: '100%',
                   width: '100%',
                 }}
               />
             </View>
-            <View style={{justifyContent:'space-between'}}>
+            <View style={{justifyContent: 'space-between'}}>
               <CustomText
                 numberOfLines={1}
                 style={{
@@ -104,7 +112,7 @@ const FeedContainer = ({item}) => {
                   textAlign: 'left',
                 }}
                 isBold>
-                {item?.postUser?.name}
+                steven
               </CustomText>
 
               <CustomText
@@ -115,19 +123,45 @@ const FeedContainer = ({item}) => {
                   // marginRight: moderateScale(8, 0.3),
                   textAlign: 'left',
                 }}>
-                {item?.postUser?.city}
+                new york
               </CustomText>
             </View>
           </View>
-          <View style={{flexDirection:'row',justifyContent:'space-evenly',width:windowWidth*0.5,alignItems:'center',marginTop:moderateScale(30,0.3),paddingLeft:moderateScale(5,0.6)}}>
-            <CustomText style={{fontSize:moderateScale(14,.6), color:Color.white}}>{item?.views} Views</CustomText>
-            <View style={{width:1,height:windowHeight*0.02,backgroundColor:'#fff'}}></View>
-            <CustomText style={{fontSize:moderateScale(14,.6), color:Color.white}}>{item?.comments} comments</CustomText>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-evenly',
+              width: windowWidth * 0.5,
+              alignItems: 'center',
+              marginTop: moderateScale(30, 0.3),
+              paddingLeft: moderateScale(5, 0.6),
+            }}>
+            <CustomText
+              style={{fontSize: moderateScale(14, 0.6), color: Color.white}}>
+              50 Views
+            </CustomText>
+            <View
+              style={{
+                width: 1,
+                height: windowHeight * 0.02,
+                backgroundColor: '#fff',
+              }}></View>
+            <CustomText
+              style={{fontSize: moderateScale(14, 0.6), color: Color.white}}>
+              20 comments
+            </CustomText>
           </View>
 
-     
-          <CustomText style={{fontSize:moderateScale(12,.6), color:Color.white,textAlign:'left',paddingLeft:moderateScale(15,0.6),marginTop:moderateScale(10,0.3)}}>{item?.description}</CustomText>
-
+          <CustomText
+            style={{
+              fontSize: moderateScale(12, 0.6),
+              color: Color.white,
+              textAlign: 'left',
+              paddingLeft: moderateScale(15, 0.6),
+              marginTop: moderateScale(10, 0.3),
+            }}>
+            lorem ipsum
+          </CustomText>
         </View>
         <View
           style={{
@@ -138,7 +172,7 @@ const FeedContainer = ({item}) => {
             // backgroundColor: 'black',
             // height: windowHeight * 0.4,
           }}>
-          <View style={{marginTop:moderateScale(20,.3)}}>
+          <View style={{marginTop: moderateScale(20, 0.3)}}>
             <TouchableOpacity
               style={{
                 height: moderateScale(30, 0.6),
@@ -153,11 +187,11 @@ const FeedContainer = ({item}) => {
             <CustomText
               numberOfLines={1}
               style={{fontSize: moderateScale(12, 0.6), color: Color.white}}>
-              {item?.likes}k
+              2k
             </CustomText>
           </View>
 
-          <View style={{marginTop:moderateScale(20,.3)}}>
+          <View style={{marginTop: moderateScale(20, 0.3)}}>
             <TouchableOpacity
               style={{
                 height: moderateScale(30, 0.6),
@@ -172,10 +206,10 @@ const FeedContainer = ({item}) => {
             <CustomText
               numberOfLines={1}
               style={{fontSize: moderateScale(12, 0.6), color: Color.white}}>
-              {item?.dislikes}k
+              3k
             </CustomText>
           </View>
-          <View style={{marginTop:moderateScale(20,.3)}}>
+          <View style={{marginTop: moderateScale(20, 0.3)}}>
             <TouchableOpacity
               style={{
                 height: moderateScale(30, 0.6),
@@ -190,63 +224,12 @@ const FeedContainer = ({item}) => {
             <CustomText
               numberOfLines={1}
               style={{fontSize: moderateScale(12, 0.6), color: Color.white}}>
-              {item?.downloads}k
+              1k
             </CustomText>
           </View>
         </View>
-        {/* <View style={styles.view}>
-          <View>
-            <CustomText
-              style={
-                styles.text
-              }>Hello</CustomText>
-            <CustomText style={styles.text1}>
-              Hello
-            </CustomText>
-          </View>
-          <View
-            style={{
-              alignItems: 'center',
-            }}>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <Icon
-                name={'location-outline'}
-                as={Ionicons}
-                size={moderateScale(17, 0.6)}
-                color={themeColor[1]}
-              />
-              <CustomText isBold style={styles.text}>{`5 Ml`}</CustomText>
-            </View>
-            <TouchableOpacity
-              style={styles.israelite}
-              activeOpacity={0.9}
-              // onPress={() => {
-              //   navigationService.navigate('Israeliteinfo');
-              // }}
-              >
-              <CustomImage
-                source={item?.postUser?.profilepicture}
-                resizeMode={'contain'}
-                style={{
-                  width: windowWidth * 0.2,
-                  height: windowHeight * 0.03,
-                  // tintColor : themeColor[1]
-                }}
-                // onPress={() => {
-                //   navigationService.navigate('Israeliteinfo', {user: card});
-                // }}
-              />
-            </TouchableOpacity>
-          
-          </View>
-        </View> */}
       </LinearGradient>
     </TouchableOpacity>
-
   );
 };
 

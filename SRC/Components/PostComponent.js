@@ -23,6 +23,7 @@ import VideoController from './VideoController';
 import OptionsMenu from 'react-native-options-menu';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import {FlatList} from 'react-native';
+import navigationService from '../navigationService';
 
 const PostComponent = ({data}) => {
   const [like, setLike] = useState(false);
@@ -124,6 +125,9 @@ const PostComponent = ({data}) => {
           <View style={{width: windowWidth, height: windowHeight * 0.3}}>
             {data?.image ? (
               <CustomImage
+              onPress={()=>{
+                navigationService.navigate('Feeds',{image : data?.image})
+              }}
                 source={data?.image}
                 style={{
                   height: '100%',
