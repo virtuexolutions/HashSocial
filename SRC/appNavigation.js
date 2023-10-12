@@ -47,15 +47,6 @@ import EventDetails from './Screens/EventDetails';
 import AddCard from './Screens/AddCard';
 import PaymentMethod from './Screens/PaymentMethod';
 
-// import AccountSetting from './Screens/AccountSetting';
-// import HomeScreen from './Screens/HomeScreen';
-// import MyAccounts from './Screens/MyAccounts';
-// import ChangePassword from './Screens/ChangePassword';
-// import Support from './Screens/Support';
-// import FriendRequest from './Screens/FriendRequest';
-// import SeeAllScreen from './Screens/SeeAllScreen';
-// import SelectedChat from './Screens/SelectedChat';
-
 const AppNavigator = () => {
   // const isLogin = false;
   const isGoalCreated = useSelector(state => state.authReducer.isGoalCreated);

@@ -30,6 +30,8 @@ import Events from '../Components/Events';
 import Entypo from 'react-native-vector-icons/Entypo';
 import Modal from 'react-native-modal';
 import Feather from 'react-native-vector-icons/Feather';
+import OptionsMenu from 'react-native-options-menu';
+
 
 const Bubble = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
@@ -111,6 +113,16 @@ const Bubble = () => {
   const [invitedPeople, setInvitedPeople] = useState([]);
   console.log('🚀 ~ file: Bubble.js:112 ~ Bubble ~ newData:', newData);
 
+  const MoreIcon = require('../Assets/Images/threedots.png');
+
+  const InviteMember = () => {
+   setIsVisible(true);
+  };
+
+  const BubbleMangement = () => {
+    navigationService.navigate('BubbleManagement')
+  };
+
   useEffect(() => {
     setnewData(
       SearchData.filter(
@@ -125,7 +137,7 @@ const Bubble = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title="Bubble" search showBack />
+        <Header  Title="Bubble" showBack />
       <ImageBackground
         source={
           privacy == 'private'
@@ -252,19 +264,18 @@ const Bubble = () => {
               />
               <TouchableOpacity
                 activeOpacity={0.8}
-                onPress={() => {
-                  setIsVisible(true);
-                }}
+             
                 style={styles.downIcon}>
-                <Icon
-                  onPress={() => {
-                    setIsVisible(true);
+                 <OptionsMenu
+                  button={MoreIcon}
+                  buttonStyle={{
+                    width: 40,
+                    height: 30,
+                    tintColor: '#000',
                   }}
-                  name="add-user"
-                  as={Entypo}
-                  color={themeColor[1]}
-                  size={6}
-                  // zIndex={1}
+                  destructiveIndex={1}
+                  options={['Invite Member', 'Bubble Management',]}
+                  actions={[InviteMember, BubbleMangement]}
                 />
               </TouchableOpacity>
             </View>

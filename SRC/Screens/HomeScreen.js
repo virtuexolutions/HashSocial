@@ -362,10 +362,37 @@ const HomeScreen = props => {
               position: 'absolute',
               flexDirection: 'row',
             }}>
+              <View
+                style={[{
+                  width: windowWidth * 0.08,
+                  height: windowHeight * 0.9,
+                  backgroundColor: Color.black,
+                  alignItems: 'center',
+                  zIndex: 1,
+                
+                  position: 'absolute',
+                  justifyContent: 'center',
+                },
+                alignment == 'left' && {left: 0},
+                alignment == 'right' && {right: 0},
+                ]}>
+                <CustomText
+                  isBold
+                  style={{
+                    width: windowWidth,
+                    fontSize: moderateScale(20, 0.6),
+                    color: Color.white,
+                    transform: [{rotate: '270deg'}],
+                    textAlign: 'center',
+                    textTransform: 'uppercase',
+                  }}>
+                  Johnathon
+                </CustomText>
+              </View>
             <LinearGradient
               style={[
                 {
-                  width: windowWidth * 0.1,
+                  width: windowWidth * 0.08,
                   height: windowHeight * 0.9,
 
                   alignItems: 'center',
@@ -375,8 +402,9 @@ const HomeScreen = props => {
                   position: 'absolute',
                   justifyContent: 'center',
                 },
-                alignment == 'left' && {left: 0},
-                alignment == 'right' && {right: 0},
+                alignment == 'left' && {left: windowWidth * 0.08,},
+                alignment == 'right' && {right: windowWidth * 0.08,},
+              
               ]}
               // start={{x: 0, y: 0}}
               // end={{x: 1, y: 0}}
@@ -386,10 +414,10 @@ const HomeScreen = props => {
                 style={{
                   width: windowWidth * 0.1,
                   height: windowHeight * 0.9,
-                  // backgroundColor: themeColor[1],
+                   backgroundColor: themeColor,
                   alignItems: 'center',
                   zIndex: 1,
-                  left: 0,
+                  // left: 0,
                   position: 'absolute',
                   justifyContent: 'center',
                 }}>
@@ -397,16 +425,16 @@ const HomeScreen = props => {
                   return (
                     <View
                       style={{
-                        width: windowWidth * 0.08,
-                        height: windowWidth * 0.08,
+                        width: windowWidth * 0.06,
+                        height: windowWidth * 0.06,
                         backgroundColor: 'white',
                         overflow: 'hidden',
                         // borderColor: item?.bubble ? 'yellow':'blue',
                         // borderWidth: 2,
-                        borderRadius: (windowWidth * 0.08) / 2,
+                        borderRadius: (windowWidth * 0.06) / 2,
                         marginTop: moderateScale(12, 0.3),
-                        marginLeft: moderateScale(5, 0.3),
-                        marginRight: moderateScale(8, 0.3),
+                        // marginLeft: moderateScale(5, 0.3),
+                        // marginRight: moderateScale(8, 0.3),
                       }}>
                       <CustomImage
                         source={item?.image}
@@ -440,7 +468,7 @@ const HomeScreen = props => {
                 alignment == 'left' && {right: 5},
                 alignment == 'right' && {left: 5},
               ]}></Image>
-            <View
+            {/* <View
               style={[
                 {
                   position: 'absolute',
@@ -497,7 +525,7 @@ const HomeScreen = props => {
                   alignment == 'left' && {transform: [{rotate: '180deg'}]},
                 ]}
               />
-            </View>
+            </View> */}
             {/* <View style={[{position: 'absolute', top: '10%', right: 10}, alignment=='left' ? {right:10}: {left:10}]}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <View
@@ -524,11 +552,11 @@ const HomeScreen = props => {
           <GestureHandlerRootView>
             <View
               style={{
-                width: windowWidth * 0.9,
+                // width: windowWidth * 0.9,
                 height: windowHeight * 0.75,
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginLeft: moderateScale(20, 0.3),
+                marginLeft:  alignment == 'left' ? moderateScale(20, 0.3) : moderateScale(-10, 0.3),
                 zIndex: 2,
               }}>
               <RoundMenu
