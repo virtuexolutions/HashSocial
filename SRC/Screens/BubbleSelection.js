@@ -178,7 +178,7 @@ const BubbleSelection = () => {
 
                   setBubbleImageArraty(data);
                   // setSavedBubbles(prev => [...prev, item])
-                }}
+                }}    
                 style={{
                   width: windowWidth * 0.3,
                   height:

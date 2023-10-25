@@ -362,33 +362,34 @@ const HomeScreen = props => {
               position: 'absolute',
               flexDirection: 'row',
             }}>
-              <View
-                style={[{
+            <View
+              style={[
+                {
                   width: windowWidth * 0.08,
                   height: windowHeight * 0.9,
                   backgroundColor: Color.black,
                   alignItems: 'center',
                   zIndex: 1,
-                
+
                   position: 'absolute',
                   justifyContent: 'center',
                 },
                 alignment == 'left' && {left: 0},
                 alignment == 'right' && {right: 0},
-                ]}>
-                <CustomText
-                  isBold
-                  style={{
-                    width: windowWidth,
-                    fontSize: moderateScale(20, 0.6),
-                    color: Color.white,
-                    transform: [{rotate: '270deg'}],
-                    textAlign: 'center',
-                    textTransform: 'uppercase',
-                  }}>
-                  Johnathon
-                </CustomText>
-              </View>
+              ]}>
+              <CustomText
+                isBold
+                style={{
+                  width: windowWidth,
+                  fontSize: moderateScale(20, 0.6),
+                  color: Color.white,
+                  transform: [{rotate: '270deg'}],
+                  textAlign: 'center',
+                  textTransform: 'uppercase',
+                }}>
+                Johnathon
+              </CustomText>
+            </View>
             <LinearGradient
               style={[
                 {
@@ -402,9 +403,8 @@ const HomeScreen = props => {
                   position: 'absolute',
                   justifyContent: 'center',
                 },
-                alignment == 'left' && {left: windowWidth * 0.08,},
-                alignment == 'right' && {right: windowWidth * 0.08,},
-              
+                alignment == 'left' && {left: windowWidth * 0.08},
+                alignment == 'right' && {right: windowWidth * 0.08},
               ]}
               // start={{x: 0, y: 0}}
               // end={{x: 1, y: 0}}
@@ -414,7 +414,7 @@ const HomeScreen = props => {
                 style={{
                   width: windowWidth * 0.1,
                   height: windowHeight * 0.9,
-                   backgroundColor: themeColor,
+                  backgroundColor: themeColor,
                   alignItems: 'center',
                   zIndex: 1,
                   // left: 0,
@@ -556,7 +556,10 @@ const HomeScreen = props => {
                 height: windowHeight * 0.75,
                 alignItems: 'center',
                 justifyContent: 'center',
-                marginLeft:  alignment == 'left' ? moderateScale(20, 0.3) : moderateScale(-10, 0.3),
+                marginLeft:
+                  alignment == 'left'
+                    ? moderateScale(20, 0.3)
+                    : moderateScale(-10, 0.3),
                 zIndex: 2,
               }}>
               <RoundMenu
