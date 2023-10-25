@@ -46,6 +46,7 @@ import AddEvents from './Screens/AddEvents';
 import EventDetails from './Screens/EventDetails';
 import AddCard from './Screens/AddCard';
 import PaymentMethod from './Screens/PaymentMethod';
+import BubbleManagement from './Screens/BubbleManagement';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -78,6 +79,7 @@ const AppNavigator = () => {
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />  
           <RootNav.Screen name="PostScreen" component={PostScreen} />
           <RootNav.Screen name="FeedList" component={FeedList} />
+          <RootNav.Screen name="BubbleManagement" component={BubbleManagement} />
           <RootNav.Screen name="Feeds" component={Feeds} />
           <RootNav.Screen name="EventDetails" component={EventDetails} />
           <RootNav.Screen name="BubbleSearch" component={BubbleSearch} />
