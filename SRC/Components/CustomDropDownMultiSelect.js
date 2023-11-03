@@ -106,7 +106,7 @@ const CustomDropDownMultiSelect = ({min, max, item, setItem, array, title , maxH
 const styles = StyleSheet.create({
   container: {
     marginTop: Dimensions.get('window').height * 0.01,
-    backgroundColor : 'red',
+    backgroundColor : 'transprent',
    },
   text: {
     fontWeight: 'bold',

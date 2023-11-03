@@ -316,12 +316,12 @@ const BubbleManagement = () => {
             }}
             activeOpacity={0.7}
             style={{
-              width: windowWidth * 0.22,
-              height: windowHeight * 0.04,
+              width: windowWidth * 0.3,
+              height: windowHeight * 0.05,
               backgroundColor: Color.white,
               borderRadius: moderateScale(5, 0.3),
               flexDirection: 'row',
-              justifyContent: 'space-evenly',
+              justifyContent: 'center',
               marginTop: moderateScale(20, 0.3),
               alignItems: 'center',
               shadowColor: '#000000',
@@ -336,17 +336,22 @@ const BubbleManagement = () => {
             <Icon
               name={'zip-disk'}
               as={MaterialCommunityIcons}
-              size={moderateScale(18, 0.6)}
+              size={moderateScale(25, 0.6)}
               color={Color.black}
+              style={{
+                width : 30,
+
+              }}
             />
 
             <CustomText
-              style={{fontSize: moderateScale(14, 0.3), color: Color.black}}>
+            // isBold
+              style={{fontSize: moderateScale(15, 0.3), color: Color.black}}>
               Save
             </CustomText>
           </TouchableOpacity>
 
-          <CustomText
+          {/* <CustomText
             style={{
               width: windowWidth,
               paddingHorizontal: moderateScale(10, 0.6),
@@ -355,7 +360,7 @@ const BubbleManagement = () => {
             }}>
             "Owner can Search and change moderate and admin and these people
             represent bubble management
-          </CustomText>
+          </CustomText> */}
 
           {/* <CustomText
             style={{
