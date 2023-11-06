@@ -9,6 +9,8 @@ const initialState = {
   isGoalCreated : false ,
   bubbleSelected: false,
   privacy:'public',
+  numOfProfiles:0,
+  profileSelected:false,
   ThemeColor : ['#01E8E3', '#1296AF']
 };
 
@@ -37,6 +39,13 @@ const AuthSlice = createSlice({
     setBubbleSelected(state, action) {
       state.bubbleSelected = action.payload;
     },
+    setNumOfProfiles(state, action){
+      console.log("🚀 ~ file: common.js:46 ~ setNumOfProfiles ~ action:", action?.payload)
+      state.numOfProfiles = action.payload
+    },
+    setProfileSelcted(state, action){
+      state.profileSelected = action.payload
+    },
     setAccountPrivate(state,action){
       console.log("🚀 ~ file: common.js:68 ~ setAccountPrivate ~ action:", action.payload)
       if(action.payload == 'private'){
@@ -64,7 +73,9 @@ export const {
   SetFCMToken,
   setWalkThrough,
   setBubbleSelected,
-  setAccountPrivate
+  setAccountPrivate,
+  setNumOfProfiles,
+  setProfileSelcted
   
   
 } = AuthSlice.actions;

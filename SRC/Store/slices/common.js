@@ -7,6 +7,7 @@ const initialState = {
   categoryProperties: [],
   financeBreakDown: [],
   notification : false,
+  selectedProfile :[],
   // theme: require('../../Assets/Images/Main.png'),
  
   selectedRole : '',
@@ -40,6 +41,10 @@ const CommonSlice = createSlice({
     setSelectedRole(state,action){
       state.selectedRole = action.payload
     },
+     
+    setSelectedProfileData(state, action){
+      state.selectedProfile = action.payload
+    }
    
   },
 });
@@ -52,6 +57,8 @@ export const {
   setFinanceBreakDown,
   setNotification,
   setSelectedRole,
+
+  setSelectedProfileData
 } = CommonSlice.actions;
 
 export default CommonSlice.reducer;

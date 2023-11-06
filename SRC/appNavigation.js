@@ -39,7 +39,7 @@ import EmptyScreen from './Screens/EmptyScreen';
 import AccountDetails from './Screens/AccountDetails';
 import FeedList from './Screens/FeedList';
 import MemberList from './Screens/MemberList';
-import { profilePicUrl } from './Config';
+import {profilePicUrl} from './Config';
 import SubscriptionScreen from './Screens/SubscriptionScreen';
 import PostScreen from './Screens/PostScreen';
 import AddEvents from './Screens/AddEvents';
@@ -55,7 +55,23 @@ const AppNavigator = () => {
   const isVerified = useSelector(state => state.authReducer.isVerified);
   const token = useSelector(state => state.authReducer.token);
   const bubbleSelected = useSelector(state => state.authReducer.bubbleSelected);
-  console.log("🚀 ~ file: appNavigation.js:58 ~ AppNavigator ~ bubbleSelected:", bubbleSelected)
+  const numOfProfile = useSelector(state => state.authReducer.numOfProfiles);
+  console.log(
+    '🚀 ~ file: appNavigation.js:59 ~ AppNavigator ~ numOfProfile:',
+    numOfProfile,
+  );
+  const profileSelected = useSelector(
+    state => state.authReducer.profileSelected,
+  );
+  console.log(
+    '🚀 ~ file: appNavigation.js:62 ~ AppNavigator ~ profileSelected:',
+    profileSelected,
+  );
+
+  console.log(
+    '🚀 ~ file: appNavigation.js:58 ~ AppNavigator ~ bubbleSelected:',
+    bubbleSelected,
+  );
 
   // console.log('token>>>>', token);
   // console.log('isVerified', isGoalCreated);
@@ -64,22 +80,28 @@ const AppNavigator = () => {
   const RootNavLogged = createNativeStackNavigator();
 
   const AppNavigatorContainer = () => {
-    const firstScreen =
-    bubbleSelected
-        ? 'TabNavigation' :
-      token != null
-        ? 'BubbleSelection'
-        : 'LoginScreen';
+    const firstScreen = bubbleSelected
+      ? 'TabNavigation'
+      : token != null
+      ? numOfProfile > 0
+        ? profileSelected
+          ? 'BubbleSelection'
+          : 'ProfileList'
+        : 'Profile'
+      : 'LoginScreen';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
           initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
-          <RootNav.Screen name="LoginScreen" component={LoginScreen} />  
+          <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="PostScreen" component={PostScreen} />
           <RootNav.Screen name="FeedList" component={FeedList} />
-          <RootNav.Screen name="BubbleManagement" component={BubbleManagement} />
+          <RootNav.Screen
+            name="BubbleManagement"
+            component={BubbleManagement}
+          />
           <RootNav.Screen name="Feeds" component={Feeds} />
           <RootNav.Screen name="EventDetails" component={EventDetails} />
           <RootNav.Screen name="BubbleSearch" component={BubbleSearch} />
@@ -103,12 +125,13 @@ const AppNavigator = () => {
           <RootNav.Screen name="Signup" component={Signup} />
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
-          <RootNav.Screen name="SubscriptionScreen" component={SubscriptionScreen} />
+          <RootNav.Screen
+            name="SubscriptionScreen"
+            component={SubscriptionScreen}
+          />
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
           <RootNav.Screen name="AddCard" component={AddCard} />
           <RootNav.Screen name="PaymentMethod" component={PaymentMethod} />
-
-
         </RootNav.Navigator>
       </NavigationContainer>
     );
@@ -122,7 +145,10 @@ export const TabNavigation = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
 
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
-  console.log("🚀 ~ file: appNavigation.js:119 ~ TabNavigation ~ themeColor:", themeColor)
+  console.log(
+    '🚀 ~ file: appNavigation.js:119 ~ TabNavigation ~ themeColor:',
+    themeColor,
+  );
   console.log(
     '🚀 ~ file: appNavigation.js:83 ~ TabNavigation ~ userRole:',
     userRole,
@@ -137,65 +163,67 @@ export const TabNavigation = () => {
           let color = themeColor[1];
           let size = moderateScale(20, 0.3);
           let type = Ionicons;
-         let borderWidth = 0
+          let borderWidth = 0;
 
           if (route.name === 'HomeScreen') {
             iconName = require('./Assets/Images/home.png');
             color = focused ? themeColor[1] : Color.themeLightGray;
             size = focused ? moderateScale(23, 0.3) : moderateScale(20, 0.3);
-            borderWidth = focused ? 5 : 0
+            borderWidth = focused ? 5 : 0;
           } else if (route.name === 'Posting') {
-            iconName =  privacy == 'private'
-            ?  require('./Assets/Images/add1.png') : require('./Assets/Images/add.png') 
+            iconName =
+              privacy == 'private'
+                ? require('./Assets/Images/add1.png')
+                : require('./Assets/Images/add.png');
 
             color = focused ? 'none' : 'none';
             size = moderateScale(35, 0.3);
-            borderWidth = focused ? 5 : 0
+            borderWidth = focused ? 5 : 0;
           } else if (route.name === 'BubbleSearch') {
             // type = AntDesign;
             iconName = require('./Assets/Images/loading.png');
             color = focused ? themeColor[1] : Color.themeLightGray;
             size = focused ? moderateScale(23, 0.3) : moderateScale(20, 0.3);
-            borderWidth = focused ? 5 : 0
+            borderWidth = focused ? 5 : 0;
           } else if (route.name === 'Inbox') {
             type = Ionicons;
             iconName = require('./Assets/Images/messenger.png');
 
             color = focused ? themeColor[1] : Color.themeLightGray;
             size = focused ? moderateScale(23, 0.3) : moderateScale(20, 0.3);
-            borderWidth = focused ? 5 : 0
+            borderWidth = focused ? 5 : 0;
           } else {
             iconName = require('./Assets/Images/profile.png');
             color = focused ? themeColor[1] : Color.themeLightGray;
             size = focused ? moderateScale(23, 0.3) : moderateScale(20, 0.3);
-            borderWidth = focused ? 5 : 0
+            borderWidth = focused ? 5 : 0;
           }
           return (
-            <View style={{
-              height : '90%',
-              borderBottomWidth : borderWidth,
-              justifyContent : 'center',
-              borderColor : themeColor[1],
-              // backgroundColor : 'red',
-              width : windowWidth * 0.18,
-              alignItems : 'center',
-            }}>
-
-            <Image
-              source={iconName}
+            <View
               style={{
-                width: size,
-                height: size,
-                tintColor: color,
-                // color:'white',
-                // backgroundColor:themeColor[1]
-              }}
+                height: '90%',
+                borderBottomWidth: borderWidth,
+                justifyContent: 'center',
+                borderColor: themeColor[1],
+                // backgroundColor : 'red',
+                width: windowWidth * 0.18,
+                alignItems: 'center',
+              }}>
+              <Image
+                source={iconName}
+                style={{
+                  width: size,
+                  height: size,
+                  tintColor: color,
+                  // color:'white',
+                  // backgroundColor:themeColor[1]
+                }}
               />
-              </View>
+            </View>
           );
         },
         tabBarShowLabel: false,
-      
+
         tabBarStyle: {
           position: 'absolute',
           // backgroundColor:'black',
@@ -211,11 +239,10 @@ export const TabNavigation = () => {
           borderTopRightRadius: moderateScale(30, 0.6),
           borderTopLeftRadius: moderateScale(30, 0.6),
           height: windowHeight * 0.08,
-          overflow : 'hidden'
+          overflow: 'hidden',
           // backgroundColor : 'red'
-          
         },
-      
+
         // headerBackgroundContainerStyle :{
         //   backgroundColor :'red'
         // }

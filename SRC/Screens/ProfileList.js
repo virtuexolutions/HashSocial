@@ -8,7 +8,7 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 const {height, width} = Dimensions.get('window');
 import {moderateScale} from 'react-native-size-matters';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -22,9 +22,31 @@ import Color from '../Assets/Utilities/Color';
 import {Icon, ScrollView} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CardComponent from '../Components/CardComponent';
+import {Get} from '../Axios/AxiosInterceptorFunction';
 
 const ProfileList = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
+  const token = useSelector(state => state.authReducer.token);
+  const [listingData, setListingData] = useState([])
+
+  const profileListing = async () => {
+    const url = 'auth/profile';
+    setIsLoading(true);
+    const response = await Get(url, token);
+    setIsLoading(false);
+    if (response != undefined) {
+      return console.log(
+        '🚀 ~ file: ProfileList.js:37 ~ profileListing ~ response:',
+        response?.data,
+      );
+
+      setListingData(response?.data)
+    }
+  };
+
+  useEffect(() => {
+    // profileListing();
+  }, []);
 
   const ProfileListData = [
     {
@@ -159,5 +181,3 @@ const styles = StyleSheet.create({
     // paddingBottom : 20,
   },
 });
-
-
