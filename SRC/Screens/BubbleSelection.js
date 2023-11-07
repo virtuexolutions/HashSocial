@@ -21,20 +21,22 @@ import navigationService from '../navigationService';
 import {useDispatch, useSelector} from 'react-redux';
 import {setBubbleSelected} from '../Store/slices/auth';
 import {Post} from '../Axios/AxiosInterceptorFunction';
-import { setSelectedBubbles } from '../Store/slices/common';
+import { setSelectedBubbles, setSelectedProfileData } from '../Store/slices/common';
 
 const BubbleSelection = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
+  const profileData = useSelector(state=> state.commonReducer.selectedProfile)
+  // console.log("🚀 ~ file: BubbleSelection.js:31 ~ profileData:", profileData)
   const [isLaoding, setIsLaoding] = useState(false);
   // console.log("🚀 ~ file: BubbleSelection.js:26 ~ BubbleSelection ~ token:", token)
 
   const [selectedBubble, setSelectedBubble] = useState([]);
-  console.log(
-    '🚀 ~ file: BubbleSelection.js:29 ~ BubbleSelection ~ selectedBubble:',
-    selectedBubble,
-  );
+  // console.log(
+  //   '🚀 ~ file: BubbleSelection.js:29 ~ BubbleSelection ~ selectedBubble:',
+  //   selectedBubble,
+  // );
 
   const selectedProfile = useSelector(
     state => state.commonReducer.selectedProfile,
@@ -117,18 +119,25 @@ const BubbleSelection = () => {
   ]);
 
   const sendSelectedBubble = async () => {
-    const url = 'auth/bubble';
+    const url = 'auth/subscribe';
     const body = {
-      bubbles: selectedBubble,
+      id:profileData?.id,
+      bubble: selectedBubble,
     };
+    // console.log("🚀 ~ file: BubbleSelection.js:127 ~ sendSelectedBubble ~ body:", body)
     setIsLaoding(true);
     const response = await Post(url, body, apiHeader(token));
     setIsLaoding(false);
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: BubbleSelection.js:116 ~ sendSelectedBubble ~ response:',
-        response?.data,
-      );
+      // let data =   JSON.parse(response?.data?.profile_info?.bubbles)
+      // return console.log("🚀 ~ file: BubbleSelection.js:133 ~ sendSelectedBubble ~ data:", data[0])
+      // return console.log(
+      //   '🚀 ~ file: BubbleSelection.js:116 ~ sendSelectedBubble ~ response:',
+      //   JSON.parse(response?.data?.profile_info?.bubbles),
+      //   );
+      dispatch(setSelectedProfileData(response?.data?.profile_info))
+      dispatch(setBubbleSelected(true))
+      dispatch(setSelectedBubbles(selectedBubble))
     }
   };
 
@@ -164,8 +173,8 @@ const BubbleSelection = () => {
             height={windowHeight * 0.04}
             onPress={() => {
               if (selectedBubble.length > 0) {
-                dispatch(setBubbleSelected(true))
-                dispatch(setSelectedBubbles(selectedBubble))
+               
+                sendSelectedBubble()
                 Platform.OS == 'android'
                   ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
                   : Alert.alert('Saved');

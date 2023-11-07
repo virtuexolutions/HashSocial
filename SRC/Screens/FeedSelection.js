@@ -11,6 +11,7 @@ import {
   ScrollView,
   ToastAndroid,
   TouchableOpacity,
+  Platform, Alert,
 } from 'react-native';
 import Header from '../Components/Header';
 import {View} from 'react-native';
@@ -19,12 +20,14 @@ import navigationService from '../navigationService';
 import {useDispatch, useSelector} from 'react-redux';
 import {setBubbleSelected, setFeedsSelected} from '../Store/slices/auth';
 import {Post} from '../Axios/AxiosInterceptorFunction';
-import { setSelectedFeeds } from '../Store/slices/common';
+import { setSelectedFeeds, setSelectedProfileData } from '../Store/slices/common';
 
 const FeedSelection = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
+  const profileData = useSelector(state=> state.commonReducer.selectedProfile)
+
   const [isLaoding, setIsLaoding] = useState(false);
 
   const [selectedBubble, setSelectedBubble] = useState([]);
@@ -41,91 +44,96 @@ const FeedSelection = () => {
   const [BubbleImageArraty, setBubbleImageArraty] = useState([
     {
       id: 1,
-      image: require('../Assets/Images/bubble1.png'),
+      image: require('../Assets/Images/guitar.jpg'),
       added: false,
-      name: 'Alchol',
+      name: 'music',
     },
     {
       id: 2,
-      image: require('../Assets/Images/bubble2.png'),
+      image: require('../Assets/Images/image.jpg'),
       added: false,
       name: 'Alternative Fitness',
     },
     {
       id: 3,
-      image: require('../Assets/Images/bubble3.png'),
+      image: require('../Assets/Images/liberty.jpg'),
       added: false,
-      name: 'Archery',
+      name: 'statue',
     },
     {
       id: 4,
-      image: require('../Assets/Images/bubble4.png'),
+      image: require('../Assets/Images/nature.jpg'),
       added: false,
       name: 'Architecture',
     },
     {
       id: 5,
-      image: require('../Assets/Images/bubble5.png'),
+      image: require('../Assets/Images/santorini.jpg'),
       added: false,
       name: 'Art',
     },
     {
       id: 6,
-      image: require('../Assets/Images/bubble6.png'),
+      image: require('../Assets/Images/sunset.jpg'),
       added: false,
       name: 'Astrology',
     },
     {
       id: 7,
-      image: require('../Assets/Images/bubble1.png'),
+      image: require('../Assets/Images/violin.jpg'),
       added: false,
       name: 'Author books',
     },
     {
       id: 8,
-      image: require('../Assets/Images/bubble8.png'),
+      image: require('../Assets/Images/street.jpg'),
       added: false,
       name: 'Beer',
     },
     {
       id: 9,
-      image: require('../Assets/Images/bubble9.png'),
+      image: require('../Assets/Images/beach.jpg'),
       added: false,
-      name: 'Bird Watching',
+      name: 'beach',
     },
     {
       id: 10,
-      image: require('../Assets/Images/bubble10.png'),
+      image: require('../Assets/Images/light.jpg'),
       added: false,
-      name: 'Bolging',
+      name: 'lights',
     },
     {
       id: 11,
-      image: require('../Assets/Images/bubble11.png'),
+      image: require('../Assets/Images/sunset.jpg'),
       added: false,
       name: 'politics',
     },
     {
       id: 12,
-      image: require('../Assets/Images/bubble3.png'),
+      image: require('../Assets/Images/beach.jpg'),
       added: false,
       name: 'politics',
     },
-  ]);
+  ])
 
   const sendSelectedFeeds = async () => {
-    const url = '';
+    const url = 'auth/subscribe';
     const body = {
-      bubbles: selectedBubble,
+      id:profileData?.id,
+      feed: selectedBubble,
     };
     setIsLaoding(true);
     const response = await Post(url, body, apiHeader(token));
     setIsLaoding(false);
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: BubbleSelection.js:116 ~ sendSelectedBubble ~ response:',
-        response?.data,
-      );
+    // return console.log(
+    //     '🚀 ~ file: BubbleSelection.js:116 ~ sendSelectedBubble ~ response:',
+    //     response?.data,
+    //   );
+      dispatch(setSelectedProfileData(response?.data?.profile_info))
+      dispatch(setFeedsSelected(true))
+      dispatch(setSelectedFeeds(selectedBubble))
+
     }
   };
 
@@ -161,8 +169,8 @@ const FeedSelection = () => {
             height={windowHeight * 0.04}
             onPress={() => {
               if (selectedBubble.length > 0) {
-                dispatch(setFeedsSelected(true));
-                dispatch(setSelectedFeeds(selectedBubble));
+                sendSelectedFeeds()
+              
                 Platform.OS == 'android'
                   ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
                   : Alert.alert('Saved');

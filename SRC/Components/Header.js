@@ -64,11 +64,11 @@ const Header = props => {
       onPress: () => {
         dispatch(setUserToken(null))
         dispatch(setBubbleSelected(false))
-        setModalVisible(!modalVisible);
         dispatch(setProfileSelcted(false))
         dispatch(setNumOfProfiles(0))
         dispatch(setFeedsSelected(false))
-        navigationService.navigate('LoginScreen');
+        setModalVisible(!modalVisible);
+        // navigationService.navigate('LoginScreen');
       },
     },
   ];

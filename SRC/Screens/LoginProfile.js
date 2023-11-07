@@ -38,6 +38,7 @@ const LoginProfile = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
+  console.log("🚀 ~ file: LoginProfile.js:41 ~ LoginProfile ~ token:", token)
   const [isLoading, setIsLoading] = useState(false);
   const [bubbleData, setBubbleData] = useState([]);
   const [modal, setModal] = useState(false);
@@ -52,8 +53,8 @@ const LoginProfile = props => {
     };
     if (passCode == '') {
       return Platform.OS == 'android'
-        ? ToastAndroid.show('Message request sent', ToastAndroid.SHORT)
-        : Alert.alert('Message request sent');
+        ? ToastAndroid.show('Passcode is required', ToastAndroid.SHORT)
+        : Alert.alert('Passcode is required');
     }
     console.log('🚀 ~ file: LoginProfile.js:50 ~ loginProfile ~ body:', body);
     setIsLoading(true);
@@ -69,8 +70,8 @@ const LoginProfile = props => {
       setModal(false);
       dispatch(setSelectedProfileData(response?.data?.profile_info));
       dispatch(setProfileSelcted(true));
-      dispatch(setBubbleSelected(response?.data?.profile_info?.bubbles == 0 ? false : true ))
-      dispatch(setFeedsSelected(response?.data?.profile_info?.feeds == 0 ? false : true))
+      dispatch(setBubbleSelected(response?.data?.profile_info?.bubbles?.length > 0 ? true : false ))
+      dispatch(setFeedsSelected(response?.data?.profile_info?.feed?.length>0 ? true : false))
     }
   };
 

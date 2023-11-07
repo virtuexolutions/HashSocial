@@ -23,7 +23,7 @@ import {Icon, ScrollView} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CardComponent from '../Components/CardComponent';
 import {Get, Post} from '../Axios/AxiosInterceptorFunction';
-import {setAccountPrivate, setProfileSelcted} from '../Store/slices/auth';
+import {setAccountPrivate, setBubbleSelected, setFeedsSelected, setProfileSelcted} from '../Store/slices/auth';
 import {setSelectedProfileData} from '../Store/slices/common';
 import navigationService from '../navigationService';
 
@@ -90,9 +90,10 @@ const ProfilesListing = (props) => {
                       navigationService.navigate('LoginProfile', {item});
                     } else {
                       dispatch(setAccountPrivate('public'))
-
                       dispatch(setSelectedProfileData(item));
                       dispatch(setProfileSelcted(true));
+                      dispatch(setBubbleSelected([0,"0", undefined, null,[]].includes(item?.bubbles) ? false : true))
+                      dispatch(setFeedsSelected([0, "0", undefined, null,[]].includes(item?.feed) ? false : true))
                   
                     }
                   }}
@@ -115,9 +116,10 @@ const ProfilesListing = (props) => {
                           navigationService.navigate('LoginProfile', {item});
                         } else {
                           dispatch(setAccountPrivate('public'))
-
                           dispatch(setSelectedProfileData(item));
                           dispatch(setProfileSelcted(true));
+                          dispatch(setBubbleSelected(["0",0, undefined, null,[]].includes(item?.bubbles) ? false : true))
+                          dispatch(setFeedsSelected([0, "0",,undefined, null,[]].includes(item?.feed) ? false : true))
                         }
                       }}
                       style={{

@@ -38,14 +38,8 @@ import RequestModal from '../Components/RequestModal';
 const HomeScreen = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
-  const userData = useSelector(state => state.commonReducer.userData);
-  const profileData = useSelector(state => state.commonReducer.selectedProfile);
-  console.log("🚀 ~ file: HomeScreen.js:43 ~ HomeScreen ~ profileData:", profileData)
-  const bubbles = useSelector(state => state.commonReducer.selectedBubble);
-  console.log('🚀 ~ file: HomeScreen.js:44 ~ HomeScreen ~ bubbles:', bubbles);
-  const Feeds = useSelector(state => state.commonReducer.selectedFeeds);
-  console.log('🚀 ~ file: HomeScreen.js:46 ~ HomeScreen ~ Feeds:', Feeds);
-
+  const profileData = useSelector(state=>state.commonReducer.selectedProfile)
+  console.log("🚀 ~ file: HomeScreen.js:42 ~ HomeScreen ~ profileData:", profileData)
   const data = props?.route?.params?.data;
   const [clicked, setclicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -53,65 +47,11 @@ const HomeScreen = props => {
   const [highlightedIcon, setHighlightedIcon] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [text, setText] = useState('');
-  const [roundMenuContent, setRoundMenuContent] = useState([]);
-  console.log("🚀 ~ file: HomeScreen.js:56 ~ HomeScreen ~ roundMenuContent:", roundMenuContent)
 
   const [animationStopped, setAnimationStopped] = useState(false);
 
   const backRef = useRef(null);
   const [rotationAngle, setRotationAngle] = useState(0);
-
-  useEffect(() => {
-     setRoundMenuContent(bubbles.map(item => {
-      return {
-        private:false,
-        name: item?.name,
-        source: item?.image,
-        bubble: true,
-        onPress: () => {
-          navigationService.navigate('PostScreen');
-        },
-        image: (
-          <Image
-            source={item?.image}
-            resizeMode="cover"
-            style={[
-              style.icon,
-              {
-                borderColor: 'red',
-              },
-            ]}
-          />
-        ),
-      };
-    }))
-    setRoundMenuContent(prev=>[...prev,...(Feeds.map(item=> {
-      return {
-        private:true,
-        name: item?.name,
-        source: item?.image,
-        bubble: false,
-        onPress: () => {
-          navigationService.navigate('PostScreen');
-        },
-        image: (
-          <Image
-            source={item?.image}
-            resizeMode="cover"
-            style={[
-              style.icon,
-              {
-                borderColor: 'red',
-              },
-            ]}
-          />
-        ),
-      };
-    }))])
-    
-
-    
-  }, []);
 
   const [content, setContent] = useState([
     {
@@ -407,8 +347,7 @@ const HomeScreen = props => {
                 alignment == 'right' && {right: windowWidth * 0.08},
               ]}
               colors={themeColor}>
-              <View
-                style={[style.profileContainer, {backgroundColor: themeColor}]}>
+              <View style={[style.profileContainer,{backgroundColor: themeColor,}]}>
                 {profiles.map(item => {
                   return (
                     <View style={style.profile}>
@@ -447,13 +386,13 @@ const HomeScreen = props => {
               <RoundMenu
                 centerContent={
                   <ImageBackground
-                    source={{uri: profileData?.photo}}
+                    source={require('../Assets/Images/dummyman1.png')}
                     resizeMode="cover"
                     style={style.centerImage}
                   />
                 }
                 largeImageSize={width / 2.5}
-                content={roundMenuContent}
+                content={content}
                 contentContainerStyle={{
                   borderWidth: 3,
                 }}
@@ -579,7 +518,7 @@ const style = StyleSheet.create({
   profileContainer: {
     width: windowWidth * 0.1,
     height: windowHeight * 0.9,
-
+    
     alignItems: 'center',
     zIndex: 1,
     position: 'absolute',

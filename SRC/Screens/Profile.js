@@ -99,7 +99,7 @@ const Profile = props => {
       formData.append('passcode', passCode);
     }
     
-    console.log("🚀 ~ file: Profile.js:70 ~ createProfile ~ formData:", formData)
+  //  return console.log("🚀 ~ file: Profile.js:70 ~ createProfile ~ formData:", formData)
     setIsLoading(true);
     const response = await Post(url, formData, apiHeader(token));
     setIsLoading(false);
