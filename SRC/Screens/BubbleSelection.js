@@ -117,7 +117,7 @@ const BubbleSelection = () => {
   ]);
 
   const sendSelectedBubble = async () => {
-    const url = '';
+    const url = 'auth/bubble';
     const body = {
       bubbles: selectedBubble,
     };

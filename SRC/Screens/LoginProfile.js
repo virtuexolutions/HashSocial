@@ -8,13 +8,16 @@ import {
   Image,
   TouchableOpacity,
   ActivityIndicator,
+  Platform,
+  ToastAndroid,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 const {height, width} = Dimensions.get('window');
 import {moderateScale} from 'react-native-size-matters';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
 import {useDispatch, useSelector} from 'react-redux';
@@ -23,68 +26,56 @@ import Color from '../Assets/Utilities/Color';
 import {Icon, ScrollView} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CardComponent from '../Components/CardComponent';
-import {Get} from '../Axios/AxiosInterceptorFunction';
-import {setProfileSelcted} from '../Store/slices/auth';
+import {Get, Post} from '../Axios/AxiosInterceptorFunction';
+import {setBubbleSelected, setFeedsSelected, setProfileSelcted} from '../Store/slices/auth';
 import {setSelectedProfileData} from '../Store/slices/common';
 import Modal from 'react-native-modal';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 
-const LoginProfile = () => {
+const LoginProfile = props => {
+  const item = props?.route?.params?.item;
+  console.log('🚀 ~ file: LoginProfile.js:34 ~ LoginProfile ~ item:', item);
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
   const [isLoading, setIsLoading] = useState(false);
   const [bubbleData, setBubbleData] = useState([]);
   const [modal, setModal] = useState(false);
+  const [passCode, setPassCode] = useState('');
   const dispatch = useDispatch();
 
-  const profileListing = async () => {
-    const url = 'auth/profile';
+  const loginProfile = async () => {
+    const url = 'auth/profile_login';
+    const body = {
+      name: item?.name,
+      passcode: passCode,
+    };
+    if (passCode == '') {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show('Message request sent', ToastAndroid.SHORT)
+        : Alert.alert('Message request sent');
+    }
+    console.log('🚀 ~ file: LoginProfile.js:50 ~ loginProfile ~ body:', body);
     setIsLoading(true);
-    const response = await Get(url, token);
+    const response = await Post(url, body, apiHeader(token));
     setIsLoading(false);
-    if (response != undefined) {
-      console.log(
-        '🚀 ~ file: ProfileList.js:37 ~ profileListing ~ response:',
+   
+    if (response?.data?.success) {
+    console.log(
+        '🚀 ~ file: ProfilesListing.js:62 ~ loginProfile ~ response:',
         response?.data,
       );
-
-      setBubbleData(response?.data?.profile_info);
+      setPassCode('');
+      setModal(false);
+      dispatch(setSelectedProfileData(response?.data?.profile_info));
+      dispatch(setProfileSelcted(true));
+      dispatch(setBubbleSelected(response?.data?.profile_info?.bubbles == 0 ? false : true ))
+      dispatch(setFeedsSelected(response?.data?.profile_info?.feeds == 0 ? false : true))
     }
   };
 
-  // const data = [
-  //   {
-  //     image: require('../Assets/Images/avatar4.png'),
-  //     name: 'njdfhjdf',
-  //   },
-  //   {
-  //     image: require('../Assets/Images/avatar4.png'),
-  //     name: 'hey',
-  //   },
-  //   {
-  //     image: require('../Assets/Images/avatar4.png'),
-  //     name: 'bye',
-  //   },
-  //   {
-  //     image: require('../Assets/Images/avatar4.png'),
-  //     name: 'good',
-  //   },
-  //   {
-  //     image: require('../Assets/Images/avatar4.png'),
-  //     name: 'great',
-  //   },
-  //   {
-  //     image: require('../Assets/Images/avatar4.png'),
-  //     name: 'great',
-  //   },
-  // ];
   useEffect(() => {
     setModal(true);
-  }, []);
-
-  useEffect(() => {
-    profileListing();
   }, []);
 
   return (
@@ -93,7 +84,7 @@ const LoginProfile = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Profile List'} showBack search />
+      {/* <Header right Title={'Profile List'} showBack search /> */}
 
       <ImageBackground
         source={
@@ -104,125 +95,109 @@ const LoginProfile = () => {
         resizeMode={'cover'}
         style={{
           width: windowWidth * 1,
-          height: windowHeight * 0.9,
+          height: windowHeight,
           alignItems: 'center',
+          backgroundColor: 'green',
         }}>
         <View
           style={{
             alignItems: 'center',
             justifyContent: 'center',
-            // backgroundColor:'red',
-            height: windowWidth,
+            height: windowHeight,
+            // backgroundColor:'green',
+            // height: windowWidth,
           }}>
           <View
             style={{
               height: windowHeight * 0.2,
-              width: windowWidth * 0.4,
+              width: windowHeight * 0.2,
+              borderRadius: moderateScale(2, 0.6),
+              overflow: 'hidden',
+              marginBottom: moderateScale(50, 0.6),
             }}>
             <CustomImage
-            onPress={()=> {
-                console.log('first')
-                setModal(true)}}
-              source={require('../Assets/Images/chat.png')}
+              onPress={() => {
+                console.log('first');
+                setModal(true);
+              }}
+              source={{uri: item?.photo}}
               style={{width: '100%', height: '100%'}}
             />
           </View>
-          <ActivityIndicator color="red" size={'large'} />
+          <ActivityIndicator color="red" size={moderateScale(60, 0.6)} />
         </View>
         <Modal
-        style={{
-            backgroundColor:'grey',
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
             // height:windowHeight*0.3,
-            paddingVertical:moderateScale(20 , 0.3),
-            paddingHorizontal:moderateScale(20,0.3)
-        }}
-         isVisible={modal}
-         hasBackdrop={true}
-         onBackdropPress={()=>{
-            setModal(false)
+          }}
+          isVisible={modal}
+          hasBackdrop={true}
+          onBackdropPress={() => {
+            setModal(false);
             // setIsVisible(false)
-          }}>   
-          <TextInputWithTitle
-            title={'Passcode'}
-            secureText={false}
-            placeholder={'Passcode'}
-            //   setText={setUserName}
-            //   value={username}
-            viewHeight={0.06}
-            viewWidth={0.82}
-            inputWidth={0.8}
-            border={1}
-            borderColor={'#353535'}
-            color={themeColor[1]}
-            placeholderColor={Color.themeLightGray}
-            borderRadius={moderateScale(10, 0.3)}
-            titleColor={'#353535'}
-            // textAlign={'center'}
-          />
-          <CustomButton
-            // onPress={() => {
-            //   navigationService.navigate('Profile', {item: item});
-            // }}
-            text={'OK'}
-            textColor={Color.black}
-            width={windowWidth * 0.13}
-            height={windowHeight * 0.05}
-            fontSize={moderateScale(10, 0.6)}
-            borderRadius={moderateScale(10, 0.3)}
-            bgColor={'#FFFFFF'}
-            paddingHorizontal={moderateScale(5, 0.3)}
-            marginRight={moderateScale(5, 0.3)}
-          />
+          }}>
+          <View
+            style={{
+              backgroundColor: 'black',
+              // height:windowHeight*0.3,
+              borderRadius: moderateScale(10, 0.6),
+              paddingVertical: moderateScale(20, 0.3),
+              paddingHorizontal: moderateScale(20, 0.3),
+            }}>
+            <CustomText
+              style={{
+                color: Color.white,
+                fontSize: moderateScale(18, 0.6),
+                // marginTop: moderateScale(20, 0.3),
+                paddingHorizontal: moderateScale(30, 0.6),
+                textAlign: 'center',
+              }}
+              isBold>
+              Enter Your Passcode
+            </CustomText>
+            <TextInputWithTitle
+              secureText={true}
+              placeholder={'Passcode'}
+              setText={setPassCode}
+              value={passCode}
+              viewHeight={0.06}
+              viewWidth={0.82}
+              inputWidth={0.8}
+              border={1}
+              borderColor={'#353535'}
+              color={themeColor[1]}
+              placeholderColor={Color.themeLightGray}
+              borderRadius={moderateScale(10, 0.3)}
+              titleColor={'#353535'}
+              marginTop={moderateScale(15, 0.3)}
+              // textAlign={'center'}
+            />
+            <CustomButton
+              onPress={() => {
+                loginProfile();
+                // navigationService.navigate('Profile', {item: item});
+              }}
+              marginTop={moderateScale(20, 0.3)}
+              text={
+                isLoading ? (
+                  <ActivityIndicator size={'small'} color={'black'} />
+                ) : (
+                  'OK'
+                )
+              }
+              textColor={Color.black}
+              width={windowWidth * 0.15}
+              height={windowHeight * 0.06}
+              fontSize={moderateScale(15, 0.6)}
+              borderRadius={moderateScale(10, 0.3)}
+              bgColor={'#FFFFFF'}
+              paddingHorizontal={moderateScale(5, 0.3)}
+              marginRight={moderateScale(5, 0.3)}
+            />
+          </View>
         </Modal>
-        {/* <CustomText
-            // numberOfLines={1}
-            style={styles.Text}>
-            who's watching?
-          </CustomText> */}
-        {/* <View
-            style={styles.mapview}>
-            <View
-              style={styles.View}>
-              {bubbleData.map((item, index) => {
-                return (
-                  <TouchableOpacity
-                    onPress={() => {
-                      dispatch(setSelectedProfileData(item));
-                      dispatch(setProfileSelcted(true));
-                    }}
-                    style={{
-                      width: windowWidth * 0.4,
-                      paddingVertical: moderateScale(10, 0.3),
-                      paddingHorizontal: moderateScale(30, 0.3),
-                    }}>
-                    <View
-                      style={{
-                        height: windowHeight * 0.12,
-                        width: windowHeight * 0.12,
-                        borderRadius: (windowHeight * 0.12) / 2,
-                        overflow: 'hidden',
-                      }}>
-                      <CustomImage
-                        onPress={() => {
-                          dispatch(setSelectedProfileData(item));
-                          dispatch(setProfileSelcted(true));
-                        }}
-                        style={{
-                          height: '100%',
-                          width: '100%',
-                        }}
-                        source={{uri: item?.photo}}
-                      />
-                    </View>
-                    <CustomText  
-                      style={styles.text2}>
-                      {item?.name}
-                    </CustomText>
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
-          </View> */}
       </ImageBackground>
     </>
   );

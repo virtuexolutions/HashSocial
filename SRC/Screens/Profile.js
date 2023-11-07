@@ -67,38 +67,39 @@ const Profile = props => {
     };
 
     const formData = new FormData();
-
+    
     if (Object.keys(image).length > 0) {
       formData.append('photo', image);
     } else {
       return Platform.OS == 'android'
-        ? ToastAndroid.show(`Uplaod profile photo`, ToastAndroid.SHORT)
-        : Alert.alert(`Uplaod profile photo`);
+      ? ToastAndroid.show(`Uplaod profile photo`, ToastAndroid.SHORT)
+      : Alert.alert(`Uplaod profile photo`);
     }
-
+    
     for (let key in body) {
       if (body[key] == '') {
         return Platform.OS == 'android'
-          ? ToastAndroid.show(`${key} cannot be empty`, ToastAndroid.SHORT)
-          : Alert.alert(`${key} cannot be empty`);
+        ? ToastAndroid.show(`${key} cannot be empty`, ToastAndroid.SHORT)
+        : Alert.alert(`${key} cannot be empty`);
       }
       formData.append(key, body[key]);
     }
-
+    
     if (desc.length < 30) {
       return Platform.OS == 'android'
-        ? ToastAndroid.show(`Description is too short`, ToastAndroid.SHORT)
-        : Alert.alert(`Description is too short`);
+      ? ToastAndroid.show(`Description is too short`, ToastAndroid.SHORT)
+      : Alert.alert(`Description is too short`);
     }
-
-    if (type == 'private' && passCode == '') {
+    
+    if (privacy == 'private' && passCode == '') {
       return Platform.OS == 'android'
-        ? ToastAndroid.show(`passcode is required`, ToastAndroid.SHORT)
-        : Alert.alert(`passcode is required`);
-    } else if (type == 'private' && passCode != '') {
+      ? ToastAndroid.show(`passcode is required`, ToastAndroid.SHORT)
+      : Alert.alert(`passcode is required`);
+    } else if (privacy == 'private' && passCode != '') {
       formData.append('passcode', passCode);
     }
-
+    
+    console.log("🚀 ~ file: Profile.js:70 ~ createProfile ~ formData:", formData)
     setIsLoading(true);
     const response = await Post(url, formData, apiHeader(token));
     setIsLoading(false);

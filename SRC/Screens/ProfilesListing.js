@@ -23,11 +23,12 @@ import {Icon, ScrollView} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CardComponent from '../Components/CardComponent';
 import {Get, Post} from '../Axios/AxiosInterceptorFunction';
-import {setProfileSelcted} from '../Store/slices/auth';
+import {setAccountPrivate, setProfileSelcted} from '../Store/slices/auth';
 import {setSelectedProfileData} from '../Store/slices/common';
 import navigationService from '../navigationService';
 
-const ProfilesListing = () => {
+const ProfilesListing = (props) => {
+  const back = props?.route?.params?.back
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,26 +50,6 @@ const ProfilesListing = () => {
     }
   };
 
-  const loginProfile = async () => {
-    const url = 'auth/profile_login';
-    const body = {
-      name: '',
-      passcode: '',
-    };
-    setIsLoading(true);
-    const response = await Post(url, body, apiHeader(token));
-    setIsLoading(true);
-
-    if (response != undefined) {
-      return console.log(
-        '🚀 ~ file: ProfilesListing.js:62 ~ loginProfile ~ response:',
-        response,
-      );
-      dispatch(setSelectedProfileData(response?.data));
-      dispatch(setProfileSelcted(true));
-    }
-  };
-
   useEffect(() => {
     profileListing();
   }, []);
@@ -79,7 +60,7 @@ const ProfilesListing = () => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Profile List'} showBack search />
+      <Header right Title={'Profile List'} showBack={back} search />
 
       <ImageBackground
         source={
@@ -104,8 +85,16 @@ const ProfilesListing = () => {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    
-                    navigationService.navigate('ProfileLogin', {item});
+                    if (item?.privacy == 'private') {
+                      dispatch(setAccountPrivate('private'))
+                      navigationService.navigate('LoginProfile', {item});
+                    } else {
+                      dispatch(setAccountPrivate('public'))
+
+                      dispatch(setSelectedProfileData(item));
+                      dispatch(setProfileSelcted(true));
+                  
+                    }
                   }}
                   style={{
                     width: windowWidth * 0.4,
@@ -121,7 +110,15 @@ const ProfilesListing = () => {
                     }}>
                     <CustomImage
                       onPress={() => {
-                        navigationService.navigate('ProfileLogin', {item});
+                        if (item?.privacy == 'private') {
+                          dispatch(setAccountPrivate('private'))
+                          navigationService.navigate('LoginProfile', {item});
+                        } else {
+                          dispatch(setAccountPrivate('public'))
+
+                          dispatch(setSelectedProfileData(item));
+                          dispatch(setProfileSelcted(true));
+                        }
                       }}
                       style={{
                         height: '100%',

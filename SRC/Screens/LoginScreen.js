@@ -53,7 +53,7 @@ const LoginScreen = () => {
     setIsLoading(false);
 
     if (response != undefined) {
-      console.log("🚀 ~ file: LoginScreen.js:56 ~ Login ~ response:", response)
+      console.log("🚀 ~ file: LoginScreen.js:56 ~ Login ~ response:", response?.data)
       Platform.OS == 'android'
         ? ToastAndroid.show('User LoggedIn successfully', ToastAndroid.SHORT)
         : Alert.alert('User LoggedIn successfully');
@@ -61,8 +61,8 @@ const LoginScreen = () => {
       dispatch(setUserToken({token: response?.data?.token}));
       dispatch(setUserData(response?.data?.user_info));
       dispatch(setNumOfProfiles(response?.data?.user_info?.total_profile));
-      // dispatch(setBubbleSelected(response?.data?.user_info?.bubbleSelected));
-      // dispatch(setFeedsSelected(response?.data?.user_info?.feedsSelected));
+      // dispatch(setBubbleSelected(response?.data?.user_info?.bubbles ? true : false));
+      // dispatch(setFeedsSelected(response?.data?.user_info?.feeds ? true : false));
     }
   };
 

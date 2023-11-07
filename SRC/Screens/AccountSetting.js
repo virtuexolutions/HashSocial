@@ -105,7 +105,7 @@ const AccountSetting = () => {
           marginTop={moderateScale(10, 0.3)}
           fontSize={moderateScale(12, 0.6)}
           onPress={() => {
-            navigationService.navigate('ProfileList');
+            navigationService.navigate('ProfilesListing',{back:true});
           }}
           bgColor={['#FFFFFF', '#FFFFFF']}
           borderRadius={moderateScale(30, 0.3)}
