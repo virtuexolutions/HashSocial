@@ -217,42 +217,20 @@ const AddPost = () => {
             children={'Add hashtag'}
           />
           <View
-            style={{
-              // backgroundColor: 'red',
-              width: windowWidth,
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              paddingHorizontal: moderateScale(10, 0.6),
-              paddingVertical: moderateScale(5, 0.6),
-              // height: windowHeight * 0.1,
-            }}>
+            style={styles.mapview}>
             {hashtags.map(item => {
               return (
                 <CustomText
-                  style={{
-                    backgroundColor: themeColor[1],
-                    color: 'white',
-                    fontSize: moderateScale(13, 0.6),
-                    marginHorizontal: moderateScale(5, 0.3),
-                    marginVertical: moderateScale(5, 0.3),
-                    padding: moderateScale(5, 0.6),
-                    borderRadius: moderateScale(10, 0.6),
-                  }}>
+                  style={[styles.mapText ,{
+                    backgroundColor: themeColor[1]
+                  }]}>
                   {item}
                 </CustomText>
               );
             })}
           </View>
           <View
-            style={{
-              flexDirection: 'row',
-              // backgroundColor: 'red',
-              paddingVertical: moderateScale(5, 0.6),
-              width: windowWidth,
-              paddingHorizontal: moderateScale(15, 0.6),
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}>
+            style={styles.hashtagview}>
             <TextInputWithTitle
               // title={'Title'}
               secureText={false}
@@ -301,15 +279,7 @@ const AddPost = () => {
           {/* <View style={styles.conatiner}></View> */}
 
           <View
-            style={{
-              position: 'absolute',
-              bottom: 40,
-              // backgroundColor: 'red',
-              width: windowWidth,
-              // height: windowHeight * 0.1,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+            style={styles.postView}>
             <CustomButton
               text={
                 loading ? (
@@ -402,6 +372,41 @@ const styles = ScaledSheet.create({
     // alignSelf: 'flex-start',
     // marginTop: moderateScale(10, 0.3),
   },
+  hashtagview:{
+    flexDirection: 'row',
+    // backgroundColor: 'red',
+    paddingVertical: moderateScale(5, 0.6),
+    width: windowWidth,
+    paddingHorizontal: moderateScale(15, 0.6),
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  mapview:{
+    // backgroundColor: 'red',
+    width: windowWidth,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    paddingHorizontal: moderateScale(10, 0.6),
+    paddingVertical: moderateScale(5, 0.6),
+    // height: windowHeight * 0.1,
+  },
+  mapText:{
+    color: 'white',
+    fontSize: moderateScale(13, 0.6),
+    marginHorizontal: moderateScale(5, 0.3),
+    marginVertical: moderateScale(5, 0.3),
+    padding: moderateScale(5, 0.6),
+    borderRadius: moderateScale(10, 0.6),
+  },
+  postView:{
+    position: 'absolute',
+    bottom: 40,
+    // backgroundColor: 'red',
+    width: windowWidth,
+    // height: windowHeight * 0.1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
 });
 
 export default AddPost;

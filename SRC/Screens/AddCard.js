@@ -158,11 +158,7 @@ const AddCard = () => {
             }}
           />
           <CardContainer
-            style={{
-              height: windowHeight * 0.5,
-              paddingTop: moderateScale(30, 0.3),
-              alignItems: 'center',
-            }}>
+            style={styles.CardContainer}>
             <CardField
               postalCodeEnabled={false}
               placeholders={{
@@ -176,13 +172,7 @@ const AddCard = () => {
                 textColor: '#000000',
                 borderRadius: moderateScale(25, 0.3),
               }}
-              style={{
-                width: windowWidth * 0.75,
-                height: windowHeight * 0.05,
-                marginVertical: moderateScale(12, 0.3),
-
-                borderColor: Color.lightGrey,
-              }}
+              style={styles.card}
               onCardChange={cardDetails => {
                 console.log('cardDetails', cardDetails);
               }}
@@ -426,6 +416,18 @@ const styles = ScaledSheet.create({
     marginRight: moderateScale(10, 0.3),
     backgroundColor: '#EAEAEA',
   },
+  CardContainer:{
+    height: windowHeight * 0.5,
+    paddingTop: moderateScale(30, 0.3),
+    alignItems: 'center',
+  },
+  card:
+  {
+    width: windowWidth * 0.75,
+    height: windowHeight * 0.05,
+    marginVertical: moderateScale(12, 0.3),
+    borderColor: Color.lightGrey,
+  }
 });
 
 export default AddCard;

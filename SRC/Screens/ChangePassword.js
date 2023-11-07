@@ -69,13 +69,7 @@ const ChangePassword = () => {
           alignItems: 'center',
         }}>
         <CustomText
-          style={{
-            fontSize: moderateScale(25, 0.6),
-            color: '#353434',
-            width: windowWidth * 0.9,
-            textAlign: 'left',
-            marginTop: moderateScale(10, 0.3),
-          }}
+          style={styles.mainheading}
           isBold={true}
           children={'Change password'}
         />
@@ -196,11 +190,11 @@ const styles = ScaledSheet.create({
     marginTop: moderateScale(20, 0.3),
   },
 
-  Heading: {
-    fontSize: moderateScale(20, 0.3),
-    color: '#ffffff',
-    alignSelf: 'flex-start',
-  },
+  // Heading: {
+  //   fontSize: moderateScale(20, 0.3),
+  //   color: '#ffffff',
+  //   alignSelf: 'flex-start',
+  // },
 
   txt3: {
     fontSize: moderateScale(10, 0.6),
@@ -227,6 +221,13 @@ const styles = ScaledSheet.create({
   dropDown: {
     backgroundColor: Color.red,
   },
+  mainheading:{
+    fontSize: moderateScale(25, 0.6),
+    color: '#353434',
+    width: windowWidth * 0.9,
+    textAlign: 'left',
+    marginTop: moderateScale(10, 0.3),
+  }
 });
 
 export default ChangePassword;

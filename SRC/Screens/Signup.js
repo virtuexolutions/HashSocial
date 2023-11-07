@@ -138,24 +138,13 @@ const Signup = () => {
             alignItems: 'center',
           }}>
           <CustomText
-            style={{
-              fontSize: moderateScale(25, 0.6),
-              color: '#353434',
-              width: windowWidth * 0.9,
-              textAlign: 'center',
-              marginTop: moderateScale(10, 0.3),
-            }}
+            style={styles.mainHeading}
             isBold={true}
             children={' Create an account'}
           />
 
           <CustomText
-            style={{
-              fontSize: moderateScale(15, 0.6),
-              color: '#353434',
-              width: windowWidth * 0.9,
-              textAlign: 'center',
-            }}
+            style={styles.text}
             children={'its quick and easy'}></CustomText>
           <View style={styles.conatiner}>
             <TextInputWithTitle
@@ -346,4 +335,17 @@ const styles = ScaledSheet.create({
   dropDown: {
     backgroundColor: Color.red,
   },
+  mainHeading:{
+    fontSize: moderateScale(25, 0.6),
+    color: '#353434',
+    width: windowWidth * 0.9,
+    textAlign: 'center',
+    marginTop: moderateScale(10, 0.3),
+  },
+  text:{
+    fontSize: moderateScale(15, 0.6),
+    color: '#353434',
+    width: windowWidth * 0.9,
+    textAlign: 'center',
+  }
 });

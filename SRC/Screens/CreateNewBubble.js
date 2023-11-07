@@ -210,24 +210,9 @@ const CreateNewBubble = (props) => {
           <View style={styles.line}></View>
 
           <View
-            style={{
-              height: windowHeight * 0.27,
-              width: windowWidth * 0.9,
-              alignSelf: 'center',
-              marginTop: moderateScale(18, 0.3),
-              alignItems: 'center',
-            }}>
+            style={styles.view}>
             <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-evenly',
-                alignItems: 'center',
-                height: windowHeight * 0.045,
-                width: windowWidth * 0.9,
-                backgroundColor: '#fff',
-                borderRadius: 20,
-                marginTop: moderateScale(10, 0.3),
-              }}>
+              style={styles.Row}>
               <CustomText
                 style={{
                   width: windowWidth * 0.25,
@@ -320,8 +305,6 @@ const CreateNewBubble = (props) => {
           </View>
 
           <View style={styles.line}></View>
-
-      
 
           <View style={styles.switchContainer}>
             <CustomText
@@ -422,4 +405,21 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
+  view:{
+    height: windowHeight * 0.27,
+    width: windowWidth * 0.9,
+    alignSelf: 'center',
+    marginTop: moderateScale(18, 0.3),
+    alignItems: 'center',
+  },
+  Row:{
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+    height: windowHeight * 0.045,
+    width: windowWidth * 0.9,
+    backgroundColor: '#fff',
+    borderRadius: 20,
+    marginTop: moderateScale(10, 0.3),
+  }
 });

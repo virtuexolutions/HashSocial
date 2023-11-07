@@ -48,6 +48,7 @@ import AddCard from './Screens/AddCard';
 import PaymentMethod from './Screens/PaymentMethod';
 import BubbleManagement from './Screens/BubbleManagement';
 import ProfilesListing from './Screens/ProfilesListing'
+import LoginProfile from './Screens/LoginProfile';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -95,7 +96,7 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'FeedList'}
+          initialRouteName={'PaymentMethod'}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="PostScreen" component={PostScreen} />
@@ -127,14 +128,12 @@ const AppNavigator = () => {
           <RootNav.Screen name="Signup" component={Signup} />
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
-          <RootNav.Screen
-            name="SubscriptionScreen"
-            component={SubscriptionScreen}
-          />
+          <RootNav.Screen name="SubscriptionScreen" component={SubscriptionScreen}/>
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
           <RootNav.Screen name="AddCard" component={AddCard} />
           <RootNav.Screen name="PaymentMethod" component={PaymentMethod} />
           <RootNav.Screen name="ProfilesListing" component={ProfilesListing} />
+          <RootNav.Screen name="LoginProfile" component={LoginProfile} />
 
 
 
