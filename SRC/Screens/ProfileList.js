@@ -29,20 +29,7 @@ const ProfileList = () => {
   const token = useSelector(state => state.authReducer.token);
   const [listingData, setListingData] = useState([])
 
-  const profileListing = async () => {
-    const url = 'auth/profile';
-    setIsLoading(true);
-    const response = await Get(url, token);
-    setIsLoading(false);
-    if (response != undefined) {
-      return console.log(
-        '🚀 ~ file: ProfileList.js:37 ~ profileListing ~ response:',
-        response?.data,
-      );
-
-      setListingData(response?.data)
-    }
-  };
+  
 
   useEffect(() => {
     // profileListing();

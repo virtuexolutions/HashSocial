@@ -25,19 +25,24 @@ import CustomButton from '../Components/CustomButton';
 import Color from '../Assets/Utilities/Color';
 import navigationService from '../navigationService';
 import {useDispatch, useSelector} from 'react-redux';
-import {setAccountPrivate, setNumOfProfiles, setProfileSelcted, setUserToken} from '../Store/slices/auth';
+import {
+  setAccountPrivate,
+  setNumOfProfiles,
+  setProfileSelcted,
+  setUserToken,
+} from '../Store/slices/auth';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Icon} from 'native-base';
 import ImagePickerModal from '../Components/ImagePickerModal';
 import {Post} from '../Axios/AxiosInterceptorFunction';
-import { setSelectedProfileData} from '../Store/slices/common';
+import {setSelectedProfileData} from '../Store/slices/common';
 
 const Profile = props => {
   const item = props?.route?.params?.item;
   const token = useSelector(state => state.authReducer.token);
   const numOfProfiles = useSelector(state => state.authReducer.numOfProfiles);
-  console.log("🚀 ~ file: Profile.js:40 ~ Profile ~ numOfProfiles:", numOfProfiles)
+  // console.log("🚀 ~ file: Profile.js:40 ~ Profile ~ numOfProfiles:", numOfProfiles)
   const dispatch = useDispatch();
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -58,7 +63,7 @@ const Profile = props => {
       type: type,
       description: desc,
       privacy: selectedTab,
-      passcode: '000',
+      passcode: passCode,
     };
 
     const formData = new FormData();
@@ -85,24 +90,28 @@ const Profile = props => {
         ? ToastAndroid.show(`Description is too short`, ToastAndroid.SHORT)
         : Alert.alert(`Description is too short`);
     }
-    console.log(
-      '🚀 ~ file: Profile.js:65 ~ createProfile ~ formData:',
-      formData,
-    );
+    // console.log(
+    //   '🚀 ~ file: Profile.js:65 ~ createProfile ~ formData:',
+    //   formData,
+    // );
 
     setIsLoading(true);
     const response = await Post(url, formData, apiHeader(token));
     setIsLoading(false);
 
     if (response?.data?.success) {
-    console.log(
-        '🚀 ~ file: Profile.js:77 ~ createProfile ~ response:',
-        response?.data?.profile_info,
+      // console.log(
+      //     '🚀 ~ file: Profile.js:77 ~ createProfile ~ response:',
+      //     response?.data?.profile_info,
+      //   );
+      dispatch(setSelectedProfileData(response?.data?.profile_info));
+      dispatch(setUserToken({token: response?.data?.token}));
+      dispatch(
+        setNumOfProfiles(
+          response?.data?.profile_info?.user_info[0]?.total_profile,
+        ),
       );
-      dispatch(setSelectedProfileData(response?.data?.profile_info))
-      dispatch(setUserToken({token:response?.data?.token}))
-      dispatch(setNumOfProfiles(response?.data?.profile_info?.user_info[0]?.total_profile));
-      dispatch(setProfileSelcted(true))
+      dispatch(setProfileSelcted(true));
     }
   };
 
@@ -112,7 +121,7 @@ const Profile = props => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Create Profile'} showBack={item ? true : false}/>
+      <Header right Title={'Create Profile'} showBack={item ? true : false} />
       <ScrollView>
         <ImageBackground
           source={
@@ -276,7 +285,7 @@ const Profile = props => {
                 value={desc}
                 viewHeight={0.16}
                 viewWidth={0.82}
-                inputWidth={0.8}
+                inputWidth={0.76}
                 border={1}
                 borderColor={'#353535'}
                 color={themeColor[1]}
@@ -319,9 +328,7 @@ const Profile = props => {
                           ? Color.red
                           : Color.veryLightGray,
                     },
-                  ]}>
-                  {/* <View style={styles.radioButtonIcon} /> */}
-                </TouchableOpacity>
+                  ]}></TouchableOpacity>
                 <CustomText
                   onPress={() => {
                     dispatch(setAccountPrivate('private'));
@@ -355,6 +362,7 @@ const Profile = props => {
                 </CustomText>
               </View>
             </View>
+           
             <CustomButton
               text={
                 isLoading ? (

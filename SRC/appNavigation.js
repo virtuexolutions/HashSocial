@@ -55,6 +55,7 @@ const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
   const isVerified = useSelector(state => state.authReducer.isVerified);
   const token = useSelector(state => state.authReducer.token);
+  console.log("🚀 ~ file: appNavigation.js:58 ~ AppNavigator ~ token:", token)
   const bubbleSelected = useSelector(state => state.authReducer.bubbleSelected);
   const numOfProfile = useSelector(state => state.authReducer.numOfProfiles);
   console.log(
@@ -87,14 +88,14 @@ const AppNavigator = () => {
       ? numOfProfile > 0
         ? profileSelected
           ? 'BubbleSelection'
-          : 'ProfileList'
+          : 'ProfilesListing'
         : 'Profile'
       : 'LoginScreen';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'ProfilesListing'}
+          initialRouteName={firstScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="PostScreen" component={PostScreen} />
