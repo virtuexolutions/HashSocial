@@ -542,23 +542,13 @@ const PaymentMethod = props => {
 
       <Modal
         hasBackdrop={true}
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
+        style={styles.modalstyle}
         isVisible={isModalVisible}
         onBackdropPress={() => {
           setIsModalVisible(false);
         }}>
         <View
-          style={{
-            overflow: 'hidden',
-            borderRadius: moderateScale(5, 0.3),
-            width: windowWidth * 0.9,
-            height: windowHeight * 0.5,
-            backgroundColor: 'white',
-            alignItems: 'center',
-          }}>
+          style={styles.Modalview}>
           <View style={[styles.header,{
             backgroundColor: Color.themeColor
           }]}>
@@ -991,6 +981,18 @@ const styles = ScaledSheet.create({
     fontSize: moderateScale(17, 0.3),
     fontWeight: 'bold',
   },
+  modalstyle:{
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  Modalview:{
+    overflow: 'hidden',
+    borderRadius: moderateScale(5, 0.3),
+    width: windowWidth * 0.9,
+    height: windowHeight * 0.5,
+    backgroundColor: 'white',
+    alignItems: 'center',
+  }
 });
 
 export default PaymentMethod;

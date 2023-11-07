@@ -132,8 +132,7 @@ import {
     flatlistview:{
       width: windowWidth ,
       marginTop: moderateScale(5, 0.3),
-      marginBottom:moderateScale(20,.3)
-      
+      marginBottom:moderateScale(20,.3)  
     }
   });
   

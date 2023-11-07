@@ -88,13 +88,7 @@ const SubscriptionScreen = () => {
         }}
         ListHeaderComponent={()=>{
             return(
-                <CustomText isBold style={{
-                    color : Color.white,
-                    width : windowWidth * 0.9,
-                    textAlign : 'left',
-                    fontSize : moderateScale(17,0.6),
-                    marginBottom : moderateScale(10,0.3)
-                }}>Select a membership plan</CustomText>
+                <CustomText isBold style={styles.text}>Select a membership plan</CustomText>
             )
         }}
         
@@ -105,4 +99,12 @@ const SubscriptionScreen = () => {
 
 export default SubscriptionScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    text : {
+        color : Color.white,
+        width : windowWidth * 0.9,
+        textAlign : 'left',
+        fontSize : moderateScale(17,0.6),
+        marginBottom : moderateScale(10,0.3)
+    }
+})

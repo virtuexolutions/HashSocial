@@ -204,26 +204,13 @@ const AddEvents = () => {
           </View>
 
           <View
-            style={{
-              justifyContent: 'center',
-              flexDirection: 'row',
-              width: windowWidth,
-              paddingHorizontal: moderateScale(10, 0.6),
-            }}>
+            style={styles.mapcontainer}>
             {data?.map(item => {
               return (
                 <View
-                  style={{
-                    margin: moderateScale(10, 0.6),
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}>
+                  style={styles.mapview}>
                   <CustomText
-                    styel={{
-                      width: windowWidth * 0.25,
-                      color: 'black',
-                      fontSize: moderateScale(15, 0.6),
-                    }}
+                    styel={styles.maptext}
                     isBold>
                     {item?.title}
                   </CustomText>
@@ -463,6 +450,22 @@ const styles = ScaledSheet.create({
     width: windowWidth * 0.2,
     marginTop: moderateScale(10, 0.3),
   },
+  mapview:{
+    margin: moderateScale(10, 0.6),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  maptext:{
+    width: windowWidth * 0.25,
+    color: 'black',
+    fontSize: moderateScale(15, 0.6),
+  },
+  mapcontainer:{
+    justifyContent: 'center',
+    flexDirection: 'row',
+    width: windowWidth,
+    paddingHorizontal: moderateScale(10, 0.6),
+  }
 });
 
 export default AddEvents;
