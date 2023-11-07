@@ -96,7 +96,7 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'PaymentMethod'}
+          initialRouteName={'LoginProfile'}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="PostScreen" component={PostScreen} />
