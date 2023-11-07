@@ -3,12 +3,11 @@ import {
   ActivityIndicator,
   ImageBackground,
   Platform,
-  Text,
-  TextInput,
   ToastAndroid,
   TouchableOpacity,
   ScrollView,
   View,
+  Alert,
 } from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -23,6 +22,8 @@ import Header from '../Components/Header';
 import navigationService from '../navigationService';
 import {
   setAccountPrivate,
+  setBubbleSelected,
+  setFeedsSelected,
   setNumOfProfiles,
   setUserToken,
 } from '../Store/slices/auth';
@@ -35,7 +36,6 @@ const LoginScreen = () => {
 
   const dispatch = useDispatch();
   const [selectedTab, setSelectedTab] = useState(privacy);
-
 
   const disptach = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -53,12 +53,16 @@ const LoginScreen = () => {
     setIsLoading(false);
 
     if (response != undefined) {
-     
+      console.log("🚀 ~ file: LoginScreen.js:56 ~ Login ~ response:", response)
+      Platform.OS == 'android'
+        ? ToastAndroid.show('User LoggedIn successfully', ToastAndroid.SHORT)
+        : Alert.alert('User LoggedIn successfully');
+
       dispatch(setUserToken({token: response?.data?.token}));
       dispatch(setUserData(response?.data?.user_info));
       dispatch(setNumOfProfiles(response?.data?.user_info?.total_profile));
-
-      // dispatch(set)
+      // dispatch(setBubbleSelected(response?.data?.user_info?.bubbleSelected));
+      // dispatch(setFeedsSelected(response?.data?.user_info?.feedsSelected));
     }
   };
 

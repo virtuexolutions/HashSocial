@@ -50,6 +50,7 @@ const Profile = props => {
   const [desc, setDesc] = useState(item?.desc ? item?.desc : '');
   const [selectedTab, setSelectedTab] = useState(privacy);
   const [isLoading, setIsLoading] = useState(false);
+  const [passCode, setPassCode] = useState('');
   const [imagePickerModal, setImagePickerModal] = useState(false);
   const [type, setType] = useState(
     item?.profileType ? item?.profileType : 'Select Profile Type',
@@ -63,7 +64,6 @@ const Profile = props => {
       type: type,
       description: desc,
       privacy: selectedTab,
-      passcode: '000',
     };
 
     const formData = new FormData();
@@ -90,22 +90,26 @@ const Profile = props => {
         ? ToastAndroid.show(`Description is too short`, ToastAndroid.SHORT)
         : Alert.alert(`Description is too short`);
     }
-    // console.log(
-    //   '🚀 ~ file: Profile.js:65 ~ createProfile ~ formData:',
-    //   formData,
-    // );
+
+    if (type == 'private' && passCode == '') {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show(`passcode is required`, ToastAndroid.SHORT)
+        : Alert.alert(`passcode is required`);
+    } else if (type == 'private' && passCode != '') {
+      formData.append('passcode', passCode);
+    }
 
     setIsLoading(true);
     const response = await Post(url, formData, apiHeader(token));
     setIsLoading(false);
-
+    
     if (response?.data?.success) {
-      // console.log(
-      //     '🚀 ~ file: Profile.js:77 ~ createProfile ~ response:',
-      //     response?.data?.profile_info,
-      //   );
+      console.log("🚀 ~ file: Profile.js:104 ~ createProfile ~ response:", response?.data)
       dispatch(setSelectedProfileData(response?.data?.profile_info));
-      dispatch(setUserToken({token: response?.data?.token}));
+      // dispatch(setUserToken({token: response?.data?.token}));
+      // dispatch(setSelectedProfileData({name:'userrr'}))
+      // dispatch(setUserToken({token:'sdjhfjsfdsjfksdjfsdjhksdjfhfhkj'}))
+      // dispatch(setNumOfProfiles(1))
       dispatch(
         setNumOfProfiles(
           response?.data?.profile_info?.user_info[0]?.total_profile,
@@ -122,18 +126,22 @@ const Profile = props => {
         barStyle={'dark-content'}
       />
       <Header right Title={'Create Profile'} showBack={item ? true : false} />
-      <ScrollView>
-        <ImageBackground
-          source={
-            privacy == 'private'
-              ? require('../Assets/Images/theme2.jpg')
-              : require('../Assets/Images/Main.png')
-          }
-          resizeMode={'cover'}
-          style={{
-            width: windowWidth * 1,
-            height: windowHeight * 0.9,
+
+      <ImageBackground
+        source={
+          privacy == 'private'
+            ? require('../Assets/Images/theme2.jpg')
+            : require('../Assets/Images/Main.png')
+        }
+        resizeMode={'cover'}
+        style={{
+          width: windowWidth * 1,
+        }}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
             alignItems: 'center',
+            paddingBottom: moderateScale(80, 0.6),
           }}>
           <View>
             <View
@@ -254,7 +262,6 @@ const Profile = props => {
                   borderBottomWidth: 0,
                   width: windowWidth * 0.82,
                   height: windowHeight * 0.06,
-                  // backgroundColor: 'red',
                 }}
                 btnStyle={{
                   backgroundColor: 'transparent',
@@ -271,8 +278,8 @@ const Profile = props => {
                 setText={setDesc}
                 value={desc}
                 viewHeight={0.16}
-                viewWidth={0.82}
-                inputWidth={0.76}
+                viewWidth={0.84}
+                inputWidth={0.8}
                 border={1}
                 borderColor={'#353535'}
                 color={themeColor[1]}
@@ -284,8 +291,7 @@ const Profile = props => {
               />
             </View>
 
-            <View
-              style={styles.View}>
+            <View style={styles.View}>
               <CustomText
                 style={{
                   color: '#000',
@@ -343,16 +349,17 @@ const Profile = props => {
                 </CustomText>
               </View>
             </View>
-           {privacy == 'private' &&
-           <View style={{
-            alignItems:'center'
-           }}>
-             <TextInputWithTitle
+            {privacy == 'private' && (
+              <View
+                style={{
+                  alignItems: 'center',
+                }}>
+                <TextInputWithTitle
+                secureText
                   title={'Passcode'}
-                  secureText={false}
                   placeholder={'Passcode'}
-                  setText={setUserName}
-                  value={username}
+                  setText={setPassCode}
+                  value={passCode}
                   viewHeight={0.06}
                   viewWidth={0.82}
                   inputWidth={0.8}
@@ -364,8 +371,8 @@ const Profile = props => {
                   titleColor={'#353535'}
                   // textAlign={'center'}
                 />
-           </View>
-}
+              </View>
+            )}
             <CustomButton
               text={
                 isLoading ? (
@@ -387,8 +394,9 @@ const Profile = props => {
               elevation
             />
           </LinearGradient>
-        </ImageBackground>
-      </ScrollView>
+        </ScrollView>
+      </ImageBackground>
+
       <ImagePickerModal
         show={imagePickerModal}
         setShow={setImagePickerModal}
@@ -400,7 +408,6 @@ const Profile = props => {
 
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
     alignSelf: 'center',
   },
 
@@ -412,11 +419,6 @@ const styles = StyleSheet.create({
     marginTop: moderateScale(40, 0.3),
     overflow: 'hidden',
     borderWidth: 4,
-
-    // borderColor: '#33dd50',
-    // justifyContent: 'center',
-    // alignSelf: 'center',
-    // alignItems: 'center',
   },
 
   textInput: {
@@ -457,7 +459,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#000',
   },
-Editbtn:  {
+  Editbtn: {
     position: 'absolute',
     right: 5,
     bottom: 20,
@@ -469,13 +471,13 @@ Editbtn:  {
     width: windowWidth * 0.08,
     height: windowWidth * 0.08,
   },
-  View:{
+  View: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '90%',
     alignSelf: 'center',
     marginTop: moderateScale(10, 0.3),
-  }
+  },
 });
 
 export default Profile;

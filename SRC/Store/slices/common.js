@@ -8,7 +8,8 @@ const initialState = {
   financeBreakDown: [],
   notification: false,
   selectedProfile: [],
-  selectedBubble:[],
+  selectedBubble: [],
+  selectedFeeds: [],
   // theme: require('../../Assets/Images/Main.png'),
 
   selectedRole: '',
@@ -55,6 +56,9 @@ const CommonSlice = createSlice({
     setSelectedBubbles(state, action) {
       state.selectedBubble = action.payload;
     },
+    setSelectedFeeds(state, action) {
+      state.selectedFeeds = action.payload;
+    },
   },
 });
 
@@ -68,6 +72,7 @@ export const {
   setSelectedRole,
   setSelectedBubbles,
   setSelectedProfileData,
+  setSelectedFeeds,
 } = CommonSlice.actions;
 
 export default CommonSlice.reducer;

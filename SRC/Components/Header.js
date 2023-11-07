@@ -15,7 +15,8 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import {useDispatch, useSelector} from 'react-redux';
 import navigationService from '../navigationService';
 import Modal from 'react-native-modal';
-import { setBubbleSelected, setNumOfProfiles, setProfileSelcted, setUserToken } from '../Store/slices/auth';
+import { setBubbleSelected, setFeedsSelected, setNumOfProfiles, setProfileSelcted, setUserToken } from '../Store/slices/auth';
+import { setSelectedBubbles } from '../Store/slices/common';
 
 const Header = props => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
@@ -66,6 +67,7 @@ const Header = props => {
         setModalVisible(!modalVisible);
         dispatch(setProfileSelcted(false))
         dispatch(setNumOfProfiles(0))
+        dispatch(setFeedsSelected(false))
         navigationService.navigate('LoginScreen');
       },
     },

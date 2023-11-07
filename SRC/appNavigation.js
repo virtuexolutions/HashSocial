@@ -48,6 +48,7 @@ import AddCard from './Screens/AddCard';
 import PaymentMethod from './Screens/PaymentMethod';
 import BubbleManagement from './Screens/BubbleManagement';
 import ProfilesListing from './Screens/ProfilesListing';
+import FeedSelection from './Screens/FeedSelection';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -55,8 +56,13 @@ const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
   const isVerified = useSelector(state => state.authReducer.isVerified);
   const token = useSelector(state => state.authReducer.token);
+  console.log("🚀 ~ file: appNavigation.js:59 ~ AppNavigator ~ token:", token)
   const bubbleSelected = useSelector(state => state.authReducer.bubbleSelected);
+  console.log("🚀 ~ file: appNavigation.js:60 ~ AppNavigator ~ bubbleSelected:", bubbleSelected)
   const numOfProfile = useSelector(state => state.authReducer.numOfProfiles);
+  console.log("🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ numOfProfile:", numOfProfile)
+  const feedsSelected = useSelector(state => state.authReducer.feedsSelected);
+  console.log("🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ feedsSelected:", feedsSelected)
   const profileSelected = useSelector(
     state => state.authReducer.profileSelected,
   );
@@ -65,20 +71,26 @@ const AppNavigator = () => {
   const RootNavLogged = createNativeStackNavigator();
 
   const AppNavigatorContainer = () => {
-    const firstScreen = bubbleSelected
-      ? 'TabNavigation'
-      : token != null
-      ? numOfProfile > 0
-        ? profileSelected
-          ? 'BubbleSelection'
-          : 'ProfilesListing'
-        : 'Profile'
-      : 'LoginScreen';
+    const secondScreen =
+    token != null
+    ? numOfProfile == 0
+    ? 'Profile'
+    : !profileSelected
+    ? 'ProfilesListing'
+    : !bubbleSelected
+    ? 'BubbleSelection'
+    : !feedsSelected
+    ? 'FeedSelection'
+    : 'TabNavigation'
+    : 'LoginScreen';
+    
+    console.log("🚀 ~ file: appNavigation.js:74 ~ AppNavigatorContainer ~ secondScreen:", secondScreen)
+  
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'FeedList'}
+          initialRouteName={secondScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="PostScreen" component={PostScreen} />
@@ -100,6 +112,7 @@ const AppNavigator = () => {
           <RootNav.Screen name="Bubble" component={Bubble} />
           <RootNav.Screen name="MyGallery" component={MyGallery} />
           <RootNav.Screen name="BubbleSelection" component={BubbleSelection} />
+          <RootNav.Screen name="FeedSelection" component={FeedSelection} />
           <RootNav.Screen name="EnterPhone" component={EnterPhone} />
           <RootNav.Screen name="BubbleList" component={BubbleList} />
           <RootNav.Screen name="Profile" component={Profile} />

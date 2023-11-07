@@ -13,7 +13,7 @@ const {height, width} = Dimensions.get('window');
 import {moderateScale} from 'react-native-size-matters';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
 import {useDispatch, useSelector} from 'react-redux';
@@ -22,16 +22,17 @@ import Color from '../Assets/Utilities/Color';
 import {Icon, ScrollView} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CardComponent from '../Components/CardComponent';
-import {Get} from '../Axios/AxiosInterceptorFunction';
+import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 import {setProfileSelcted} from '../Store/slices/auth';
 import {setSelectedProfileData} from '../Store/slices/common';
+import navigationService from '../navigationService';
 
 const ProfilesListing = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
   const [isLoading, setIsLoading] = useState(false);
   const [bubbleData, setBubbleData] = useState([]);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const profileListing = async () => {
     const url = 'auth/profile';
@@ -48,32 +49,25 @@ const ProfilesListing = () => {
     }
   };
 
-  const data = [
-    {
-      image: require('../Assets/Images/avatar4.png'),
-      name: 'njdfhjdf',
-    },
-    {
-      image: require('../Assets/Images/avatar4.png'),
-      name: 'hey',
-    },
-    {
-      image: require('../Assets/Images/avatar4.png'),
-      name: 'bye',
-    },
-    {
-      image: require('../Assets/Images/avatar4.png'),
-      name: 'good',
-    },
-    {
-      image: require('../Assets/Images/avatar4.png'),
-      name: 'great',
-    },
-    {
-      image: require('../Assets/Images/avatar4.png'),
-      name: 'great',
-    },
-  ];
+  const loginProfile = async () => {
+    const url = 'auth/profile_login';
+    const body = {
+      name: '',
+      passcode: '',
+    };
+    setIsLoading(true);
+    const response = await Post(url, body, apiHeader(token));
+    setIsLoading(true);
+
+    if (response != undefined) {
+      return console.log(
+        '🚀 ~ file: ProfilesListing.js:62 ~ loginProfile ~ response:',
+        response,
+      );
+      dispatch(setSelectedProfileData(response?.data));
+      dispatch(setProfileSelcted(true));
+    }
+  };
 
   useEffect(() => {
     profileListing();
@@ -104,16 +98,14 @@ const ProfilesListing = () => {
           style={styles.Text}>
           who's watching?
         </CustomText>
-        <View
-          style={styles.mapview}>
-          <View
-            style={styles.View}>
+        <View style={styles.mapview}>
+          <View style={styles.View}>
             {bubbleData.map((item, index) => {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    dispatch(setSelectedProfileData(item));
-                    dispatch(setProfileSelcted(true));
+                    
+                    navigationService.navigate('ProfileLogin', {item});
                   }}
                   style={{
                     width: windowWidth * 0.4,
@@ -129,8 +121,7 @@ const ProfilesListing = () => {
                     }}>
                     <CustomImage
                       onPress={() => {
-                        dispatch(setSelectedProfileData(item));
-                        dispatch(setProfileSelcted(true));
+                        navigationService.navigate('ProfileLogin', {item});
                       }}
                       style={{
                         height: '100%',
@@ -139,10 +130,7 @@ const ProfilesListing = () => {
                       source={{uri: item?.photo}}
                     />
                   </View>
-                  <CustomText  
-                    style={styles.text2}>
-                    {item?.name}
-                  </CustomText>
+                  <CustomText style={styles.text2}>{item?.name}</CustomText>
                 </TouchableOpacity>
               );
             })}
@@ -185,27 +173,27 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.5)',
     // paddingBottom : 20,
   },
-  Text:{
+  Text: {
     fontSize: moderateScale(19, 0.6),
     color: Color.white,
     fontWeight: '700',
     textAlign: 'center',
     paddingVertical: moderateScale(20, 0.3),
   },
-  View:{
+  View: {
     justifyContent: 'center',
     flexDirection: 'row',
     flexWrap: 'wrap',
   },
-  text2:{
+  text2: {
     fontSize: moderateScale(15, 0.6),
     color: Color.white,
     fontWeight: '500',
     textAlign: 'center',
   },
-  mapview:{
+  mapview: {
     width: windowWidth,
     marginBottom: moderateScale(10, 0.3),
     marginTop: moderateScale(10, 0.3),
-  }
+  },
 });

@@ -11,24 +11,21 @@ import {
   ScrollView,
   ToastAndroid,
   TouchableOpacity,
-  Platform,
-  Alert,
 } from 'react-native';
 import Header from '../Components/Header';
 import {View} from 'react-native';
 import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
 import {useDispatch, useSelector} from 'react-redux';
-import {setBubbleSelected} from '../Store/slices/auth';
+import {setBubbleSelected, setFeedsSelected} from '../Store/slices/auth';
 import {Post} from '../Axios/AxiosInterceptorFunction';
-import { setSelectedBubbles } from '../Store/slices/common';
+import { setSelectedFeeds } from '../Store/slices/common';
 
-const BubbleSelection = () => {
+const FeedSelection = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
   const [isLaoding, setIsLaoding] = useState(false);
-  // console.log("🚀 ~ file: BubbleSelection.js:26 ~ BubbleSelection ~ token:", token)
 
   const [selectedBubble, setSelectedBubble] = useState([]);
   console.log(
@@ -116,7 +113,7 @@ const BubbleSelection = () => {
     },
   ]);
 
-  const sendSelectedBubble = async () => {
+  const sendSelectedFeeds = async () => {
     const url = '';
     const body = {
       bubbles: selectedBubble,
@@ -136,7 +133,7 @@ const BubbleSelection = () => {
     <ScreenBoiler
       statusBarBackgroundColor={'white'}
       statusBarContentStyle={'dark-content'}>
-      <Header right Title={'Select Bubble'} />
+      <Header right Title={'Select Feeds'} />
       <ImageBackground
         source={
           privacy == 'private'
@@ -164,15 +161,15 @@ const BubbleSelection = () => {
             height={windowHeight * 0.04}
             onPress={() => {
               if (selectedBubble.length > 0) {
-                dispatch(setBubbleSelected(true))
-                dispatch(setSelectedBubbles(selectedBubble))
+                dispatch(setFeedsSelected(true));
+                dispatch(setSelectedFeeds(selectedBubble));
                 Platform.OS == 'android'
                   ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
                   : Alert.alert('Saved');
-              }else{
+              } else {
                 Platform.OS == 'android'
-                ? ToastAndroid.show('Select any Bubble', ToastAndroid.SHORT)
-                : Alert.alert('Select any Bubble');
+                  ? ToastAndroid.show('Select any Bubble', ToastAndroid.SHORT)
+                  : Alert.alert('Select any Bubble');
               }
             }}
             fontSize={moderateScale(12, 0.6)}
@@ -187,8 +184,8 @@ const BubbleSelection = () => {
             height={windowHeight * 0.04}
             fontSize={moderateScale(12, 0.6)}
             onPress={() => {
-              dispatch(setBubbleSelected(true))
-            //  navigationService.navigate('FeedSelection')
+              dispatch(setFeedsSelected(true));
+              // navigationService.navigate('')
             }}
             marginTop={moderateScale(10, 0.3)}
             bgColor={['#ffffff', '#ffffff']}
@@ -333,4 +330,4 @@ const styles = ScaledSheet.create({
   },
 });
 
-export default BubbleSelection;
+export default FeedSelection;

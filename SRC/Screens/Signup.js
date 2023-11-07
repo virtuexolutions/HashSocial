@@ -112,9 +112,7 @@ const Signup = () => {
     }
   };
  
-  // useEffect(() => {
-  //   dispatch(setSelectedRole(userRole));
-  // }, [userRole]);
+  
 
   return (
     <>

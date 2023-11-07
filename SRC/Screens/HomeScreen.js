@@ -327,64 +327,29 @@ const HomeScreen = props => {
         )}
 
         <View style={style.container2}>
-          <Animatable.View
-            ref={backRef}
-            style={style.animatedView}>
+          <Animatable.View ref={backRef} style={style.animatedView}>
             <View
               style={[
-                {
-                  width: windowWidth * 0.08,
-                  height: windowHeight * 0.9,
-                  backgroundColor: Color.black,
-                  alignItems: 'center',
-                  zIndex: 1,
-                  position: 'absolute',
-                  justifyContent: 'center',
-                },
+                style.container4,
                 alignment == 'left' && {left: 0},
                 alignment == 'right' && {right: 0},
               ]}>
-              <CustomText
-                isBold
-                style={style.name}>
+              <CustomText isBold style={style.name}>
                 Johnathon
               </CustomText>
             </View>
             <LinearGradient
               style={[
-               style.gradient,
+                style.gradient,
                 alignment == 'left' && {left: windowWidth * 0.08},
                 alignment == 'right' && {right: windowWidth * 0.08},
               ]}
-             
               colors={themeColor}>
-              <View
-                style={{
-                  width: windowWidth * 0.1,
-                  height: windowHeight * 0.9,
-                  backgroundColor: themeColor,
-                  alignItems: 'center',
-                  zIndex: 1,
-                  // left: 0,
-                  position: 'absolute',
-                  justifyContent: 'center',
-                }}>
+              <View style={[style.profileContainer,{backgroundColor: themeColor,}]}>
                 {profiles.map(item => {
                   return (
-                    <View
-                      style={{
-                        width: windowWidth * 0.06,
-                        height: windowWidth * 0.06,
-                        backgroundColor: 'white',
-                        overflow: 'hidden',
-
-                        borderRadius: (windowWidth * 0.06) / 2,
-                        marginTop: moderateScale(12, 0.3),
-                      }}>
-                      <CustomImage
-                        source={item?.image}
-                        style={style.image}
-                      />
+                    <View style={style.profile}>
+                      <CustomImage source={item?.image} style={style.image} />
                     </View>
                   );
                 })}
@@ -398,15 +363,9 @@ const HomeScreen = props => {
               }
               resizeMode={'cover'}
               style={[
-                {
-                  width: '90%',
-                  height: '100%',
-                  position: 'absolute',
-                  zIndex: 0,
-                  top: -40,
-                  transform: [{scaleX: alignment == 'left' ? 1 : -1}],
-                  // left:35,
-                },
+                style.image,
+                style.image2,
+                {transform: [{scaleX: alignment == 'left' ? 1 : -1}]},
                 alignment == 'left' && {right: 5},
                 alignment == 'right' && {left: 5},
               ]}></Image>
@@ -518,9 +477,7 @@ const HomeScreen = props => {
               height={windowHeight * 0.06}
               marginTop={moderateScale(20, 0.3)}
               onPress={() => {
-                // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
                 setclicked(false);
-                // navigationService.navigate('Bubble');
               }}
               bgColor={['#FFFFFF', '#FFFFFF']}
               borderRadius={moderateScale(30, 0.3)}
@@ -547,7 +504,25 @@ const style = StyleSheet.create({
     height: windowHeight * 0.015,
     fontSize: moderateScale(20, 0.6),
   },
-  image:{
+  container4: {
+    width: windowWidth * 0.08,
+    height: windowHeight * 0.9,
+    backgroundColor: Color.black,
+    alignItems: 'center',
+    zIndex: 1,
+    position: 'absolute',
+    justifyContent: 'center',
+  },
+  profileContainer: {
+    width: windowWidth * 0.1,
+    height: windowHeight * 0.9,
+    
+    alignItems: 'center',
+    zIndex: 1,
+    position: 'absolute',
+    justifyContent: 'center',
+  },
+  image: {
     height: '100%',
     width: '100%',
   },
@@ -555,6 +530,19 @@ const style = StyleSheet.create({
     width: '100%',
     height: '100%',
     zIndex: 1,
+  },
+  profile: {
+    width: windowWidth * 0.06,
+    height: windowWidth * 0.06,
+    backgroundColor: 'white',
+    overflow: 'hidden',
+    borderRadius: (windowWidth * 0.06) / 2,
+    marginTop: moderateScale(12, 0.3),
+  },
+  image2: {
+    position: 'absolute',
+    zIndex: 0,
+    top: -40,
   },
   gradient: {
     width: windowWidth * 0.08,
@@ -612,18 +600,18 @@ const style = StyleSheet.create({
 
     zIndex: 2,
   },
-  animatedView:{
+  animatedView: {
     width: windowWidth,
     height: windowHeight * 0.9,
     position: 'absolute',
     flexDirection: 'row',
   },
-  name:{
+  name: {
     width: windowWidth,
     fontSize: moderateScale(20, 0.6),
     color: Color.white,
     transform: [{rotate: '270deg'}],
     textAlign: 'center',
     textTransform: 'uppercase',
-  }
+  },
 });
