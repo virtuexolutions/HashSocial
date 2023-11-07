@@ -258,16 +258,7 @@ const PostScreen = () => {
       />
       {/* Header START  */}
       <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-evenly',
-          width: windowWidth,
-          height: windowHeight * 0.07,
-          backgroundColor: Color.white,
-          alignItems: 'center',
-          borderBottomWidth: 1,
-          borderColor: Color.veryLightGray,
-        }}>
+        style={styles.headerview1}>
         <TouchableOpacity
           activeOpacity={0.8}
           onPress={() => {
@@ -285,15 +276,7 @@ const PostScreen = () => {
         </TouchableOpacity>
 
         <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-evenly',
-            width: windowWidth * 0.82,
-            height: windowHeight * 0.05,
-            borderRadius: moderateScale(20, 0.3),
-            backgroundColor: '#eff3f6',
-            alignItems: 'center',
-          }}>
+          style={styles.headerview2}>
           <TouchableOpacity activeOpacity={0.8}>
             <Icon as={AntDesign} name="search1" size={15} color="#000" />
           </TouchableOpacity>
@@ -322,22 +305,9 @@ const PostScreen = () => {
           height: windowHeight,
         }}>
         <View
-          style={{
-            flexDirection: 'row',
-            paddingLeft: moderateScale(15, 0.6),
-            paddingTop: moderateScale(10, 0.6),
-            width: windowWidth,
-            backgroundColor: Color.white,
-            alignItems: 'center',
-          }}>
+          style={styles.container}>
           <LinearGradient
-            style={{
-              width: windowWidth * 0.19,
-              height: windowHeight * 0.09,
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRadius: moderateScale(15, 0.3),
-            }}
+            style={styles.LinearGradient1}
             start={{x: 0, y: 0}}
             end={{x: 1, y: 0}}
             colors={['#f5eefe', '#f4edfd']}>
@@ -376,14 +346,7 @@ const PostScreen = () => {
 
           <TouchableOpacity activeOpacity={0.8}>
             <LinearGradient
-              style={{
-                width: windowWidth * 0.18,
-                height: windowHeight * 0.05,
-                backgroundColor: Color.black,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: moderateScale(10, 0.3),
-              }}
+              style={styles.LinearGradient}
               start={{x: 0, y: 0}}
               end={{x: 1, y: 0}}
               colors={['#e9f4ff', '#e8f4ff']}>
@@ -428,6 +391,48 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 15,
     color: Color.black,
+  },
+  headerview1:{
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: windowWidth,
+    height: windowHeight * 0.07,
+    backgroundColor: Color.white,
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderColor: Color.veryLightGray,
+  },
+  headerview2:{
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    width: windowWidth * 0.82,
+    height: windowHeight * 0.05,
+    borderRadius: moderateScale(20, 0.3),
+    backgroundColor: '#eff3f6',
+    alignItems: 'center',
+  },
+  container:{
+    flexDirection: 'row',
+    paddingLeft: moderateScale(15, 0.6),
+    paddingTop: moderateScale(10, 0.6),
+    width: windowWidth,
+    backgroundColor: Color.white,
+    alignItems: 'center',
+  },
+  LinearGradient1:{
+    width: windowWidth * 0.19,
+    height: windowHeight * 0.09,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: moderateScale(15, 0.3),
+  },  
+  LinearGradient: {
+    width: windowWidth * 0.18,
+    height: windowHeight * 0.05,
+    backgroundColor: Color.black,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: moderateScale(10, 0.3),
   },
 });
 

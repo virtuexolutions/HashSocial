@@ -48,56 +48,6 @@ const ProfilesListing = () => {
     }
   };
 
-  // const ProfileListData = [
-  //   {
-  //     id: 1,
-  //     image: require('../Assets/Images/dummyman1.png'),
-  //     desc : 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-  //     name: 'Book Author',
-  //     profileType: 'Content creator',
-  //     title: 'Private Account',
-  //     close: true,
-  //     check: false,
-  //     edit: true,
-  //     pending: false,
-  //   },
-  //   {
-  //     id: 2,
-  //     desc : 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-  //     image: require('../Assets/Images/dummyman4.png'),
-  //     name: 'Alternative fitness',
-  //     profileType: 'Enterpreneur',
-  //     title: 'Public Account',
-  //     close: true,
-  //     check: false,
-  //     edit: true,
-  //     pending: false,
-  //   },
-  //   {
-  //     id: 3,
-  //     image: require('../Assets/Images/avatar.png'),
-  //     desc : 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-  //     name: 'Alchol',
-  //     profileType: 'Connector',
-  //     title: 'Public Account',
-  //     close: true,
-  //     check: false,
-  //     edit: true,
-  //     pending: false,
-  //   },
-  //   {
-  //     id: 4,
-  //     image: require('../Assets/Images/dummyUser.png'),
-  //     name: 'Bords Shooting',
-  //     desc : 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-  //     title: 'Private Account',
-  //     close: true,
-  //     profileType: 'Explore',
-  //     check: false,
-  //     edit: true,
-  //     pending: false,
-  //   },
-  // ];
   const data = [
     {
       image: require('../Assets/Images/avatar4.png'),
@@ -151,30 +101,13 @@ const ProfilesListing = () => {
         }}>
         <CustomText
           // numberOfLines={1}
-          style={{
-            fontSize: moderateScale(19, 0.6),
-            color: Color.white,
-            fontWeight: '700',
-            textAlign: 'center',
-            paddingVertical: moderateScale(20, 0.3),
-          }}>
+          style={styles.Text}>
           who's watching?
         </CustomText>
         <View
-          style={{
-            width: windowWidth,
-            marginBottom: moderateScale(10, 0.3),
-            marginTop: moderateScale(10, 0.3),
-          }}>
+          style={styles.mapview}>
           <View
-            style={{
-              //   alignItems:'center',
-              justifyContent: 'center',
-              //   backgroundColor:'green',
-              flexDirection: 'row',
-              flexWrap: 'wrap',
-              // width:windowWidth*0.2
-            }}>
+            style={styles.View}>
             {bubbleData.map((item, index) => {
               return (
                 <TouchableOpacity
@@ -186,8 +119,6 @@ const ProfilesListing = () => {
                     width: windowWidth * 0.4,
                     paddingVertical: moderateScale(10, 0.3),
                     paddingHorizontal: moderateScale(30, 0.3),
-                    // marginHorizontal:moderateScale(10,0.3),
-                    // backgroundColor: 'red',
                   }}>
                   <View
                     style={{
@@ -205,40 +136,16 @@ const ProfilesListing = () => {
                         height: '100%',
                         width: '100%',
                       }}
-                      // source={require('../Assets/Images/crown.png')}
                       source={{uri: item?.photo}}
                     />
                   </View>
-                  <CustomText
-                    // numberOfLines={1}
-                    style={{
-                      fontSize: moderateScale(15, 0.6),
-                      color: Color.white,
-                      fontWeight: '500',
-                      textAlign: 'center',
-                    }}>
+                  <CustomText  
+                    style={styles.text2}>
                     {item?.name}
                   </CustomText>
                 </TouchableOpacity>
               );
             })}
-            {/* <FlatList
-              data={ProfileListData}
-              contentContainerStyle={{
-                marginBottom: moderateScale(30, 0.3),
-              }}
-              renderItem={({item, index}) => {
-                return (
-                  <CardComponent
-                    item={item}
-                    check={item?.check}
-                    close={item?.close}
-                    edit={item?.edit}
-                    pending={item?.pending}
-                  />
-                );
-              }}
-            /> */}
           </View>
         </View>
       </ImageBackground>
@@ -278,4 +185,27 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.5)',
     // paddingBottom : 20,
   },
+  Text:{
+    fontSize: moderateScale(19, 0.6),
+    color: Color.white,
+    fontWeight: '700',
+    textAlign: 'center',
+    paddingVertical: moderateScale(20, 0.3),
+  },
+  View:{
+    justifyContent: 'center',
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+  },
+  text2:{
+    fontSize: moderateScale(15, 0.6),
+    color: Color.white,
+    fontWeight: '500',
+    textAlign: 'center',
+  },
+  mapview:{
+    width: windowWidth,
+    marginBottom: moderateScale(10, 0.3),
+    marginTop: moderateScale(10, 0.3),
+  }
 });

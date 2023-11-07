@@ -171,18 +171,7 @@ const Profile = props => {
               onPress={() => {
                 setImagePickerModal(true);
               }}
-              style={{
-                position: 'absolute',
-                right: 5,
-                bottom: 20,
-                backgroundColor: 'rgba(255,255,255,.8)',
-                justifyContent: 'center',
-                alignItems: 'center',
-                paddingLeft: moderateScale(5, 0.6),
-                borderRadius: (windowWidth * 0.08) / 2,
-                width: windowWidth * 0.08,
-                height: windowWidth * 0.08,
-              }}>
+              style={styles.Editbtn}>
               <Icon
                 name={'pencil'}
                 as={FontAwesome}
@@ -218,8 +207,6 @@ const Profile = props => {
             colors={['rgba(234, 234, 234 , 0.6)', 'rgba(209,209,209,0.6)']}>
             <View
               style={{
-                // justifyContent: 'center',
-
                 alignSelf: 'center',
               }}>
               <TextInputWithTitle
@@ -298,13 +285,7 @@ const Profile = props => {
             </View>
 
             <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: '90%',
-                alignSelf: 'center',
-                marginTop: moderateScale(10, 0.3),
-              }}>
+              style={styles.View}>
               <CustomText
                 style={{
                   color: '#000',
@@ -362,7 +343,29 @@ const Profile = props => {
                 </CustomText>
               </View>
             </View>
-           
+           {privacy == 'private' &&
+           <View style={{
+            alignItems:'center'
+           }}>
+             <TextInputWithTitle
+                  title={'Passcode'}
+                  secureText={false}
+                  placeholder={'Passcode'}
+                  setText={setUserName}
+                  value={username}
+                  viewHeight={0.06}
+                  viewWidth={0.82}
+                  inputWidth={0.8}
+                  border={1}
+                  borderColor={'#353535'}
+                  color={themeColor[1]}
+                  placeholderColor={Color.themeLightGray}
+                  borderRadius={moderateScale(10, 0.3)}
+                  titleColor={'#353535'}
+                  // textAlign={'center'}
+                />
+           </View>
+}
             <CustomButton
               text={
                 isLoading ? (
@@ -454,6 +457,25 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: '#000',
   },
+Editbtn:  {
+    position: 'absolute',
+    right: 5,
+    bottom: 20,
+    backgroundColor: 'rgba(255,255,255,.8)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingLeft: moderateScale(5, 0.6),
+    borderRadius: (windowWidth * 0.08) / 2,
+    width: windowWidth * 0.08,
+    height: windowWidth * 0.08,
+  },
+  View:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '90%',
+    alignSelf: 'center',
+    marginTop: moderateScale(10, 0.3),
+  }
 });
 
 export default Profile;

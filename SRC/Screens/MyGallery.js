@@ -105,13 +105,7 @@ const MyGallery = () => {
           alignItems: 'center',
         }}>
         <View
-          style={{
-            flexDirection: 'row',
-            width: windowWidth * 0.9,
-            justifyContent: 'space-between',
-            marginTop: moderateScale(10, 0.3),
-            alignItems: 'center',
-          }}>
+          style={styles.View}>
           <CustomText
           style={[{ color: selectedTab === 'All' ? Color.white : '#353434' },styles.heading ]}
             isBold={true}
@@ -324,6 +318,13 @@ const styles = ScaledSheet.create({
     textAlign: 'center',
     marginTop: moderateScale(10, 0.3),
   },
+  View:{
+    flexDirection: 'row',
+    width: windowWidth * 0.9,
+    justifyContent: 'space-between',
+    marginTop: moderateScale(10, 0.3),
+    alignItems: 'center',
+  }
 });
 
 export default MyGallery;
