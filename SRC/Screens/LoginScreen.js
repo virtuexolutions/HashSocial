@@ -32,14 +32,10 @@ import {setUserData} from '../Store/slices/common';
 const LoginScreen = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
-  console.log(
-    '🚀 ~ file: LoginScreen.js:28 ~ LoginScreen ~ themeColor:',
-    themeColor,
-  );
+
   const dispatch = useDispatch();
   const [selectedTab, setSelectedTab] = useState(privacy);
 
-  console.log('🚀 ~ file: LoginScreen.js:28 ~ LoginScreen ~ theme:', privacy);
 
   const disptach = useDispatch();
   const [isLoading, setIsLoading] = useState(false);
@@ -57,10 +53,7 @@ const LoginScreen = () => {
     setIsLoading(false);
 
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: LoginScreen.js:54 ~ Login ~ response:',
-        response?.data,
-      );
+     
       dispatch(setUserToken({token: response?.data?.token}));
       dispatch(setUserData(response?.data?.user_info));
       dispatch(setNumOfProfiles(response?.data?.user_info?.total_profile));
@@ -156,7 +149,6 @@ const LoginScreen = () => {
                 textAlign: 'right',
               }}
               onPress={() => {
-                console.log('here');
                 navigationService.navigate('EnterPhone');
               }}
             />
@@ -201,7 +193,6 @@ const LoginScreen = () => {
             <View style={[styles.radioButtonContainer]}>
               <TouchableOpacity
                 onPress={() => {
-                  console.log('private');
                   dispatch(setAccountPrivate('private'));
                   setSelectedTab('private');
                 }}

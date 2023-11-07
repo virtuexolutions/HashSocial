@@ -44,7 +44,6 @@ const height = Dimensions.get('window').height;
 const AddCard = () => {
   const privacy = useSelector(state=> state.authReducer.privacy)
   const userRole = useSelector(state => state.commonReducer.selectedRole);
-  console.log("🚀 ~ file: AddCard.js:48 ~ AddCard ~ userRole:", userRole)
   const token = useSelector(state => state.authReducer.token);
   const dispatch = useDispatch();
   const {userData} = useSelector(state => state.commonReducer);
@@ -89,14 +88,10 @@ const AddCard = () => {
       //   billingDetails,
       // }
     });
-    console.log(
-      '🚀 ~ file: AddCard.js:90 ~ addCard ~ responseData',
-      JSON.stringify(responseData, null, 2),
-    );
+   
 
     if (responseData.error) {
       setIsLoading(false);
-      console.log(responseData.error);
     }
     if (responseData != undefined) {
       dispatch(setUserToken({token: 'dasdawradawdawrtfeasfzs'}));

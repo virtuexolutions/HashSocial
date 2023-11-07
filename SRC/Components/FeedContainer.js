@@ -21,10 +21,8 @@ import {Icon} from 'native-base';
 import {useSelector} from 'react-redux';
 
 const FeedContainer = ({item}) => {
-  console.log('🚀 ~ file: FeedContainer.js:24 ~ FeedContainer ~ item:', item);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
 
-  console.log('ITEM==>', item?.image);
   return (
     <TouchableOpacity
       // onPress={() => {

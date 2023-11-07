@@ -112,7 +112,6 @@ const Events = () => {
         <TouchableOpacity
           style={styles.search}
           onPress={() => {
-            console.log('here===========>>>>>>>>');
             navigationService.navigate('AddEvents');
           }}>
           <CustomText
@@ -122,7 +121,6 @@ const Events = () => {
               width: windowWidth * 0.6,
             }}
             onPress={() => {
-              console.log('here===========>>>>>>>>');
               navigationService.navigate('AddEvents');
             }}>
             any up Coming event?
@@ -159,18 +157,15 @@ const Events = () => {
           paddingBottom: moderateScale(30, 0.6),
         }}
         renderItem={({item}) => {
-          console.log('🚀 ~ file: Events.js:98 ~ Events ~ item:', item);
           return (
             <>
               <TouchableOpacity
               onPress={()=>{
-                console.log('Her======>>>>')
                 navigationService.navigate('EventDetails', {item : item})}}
                 style={styles.eventCard}>
                 <View style={styles.profileImage}>
                   <CustomImage
                   onPress={()=>{
-                    console.log('Her======>>>>')
                     navigationService.navigate('EventDetails', {item : item})}}
                     source={item?.image}
                     style={{

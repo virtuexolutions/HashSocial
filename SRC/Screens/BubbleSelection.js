@@ -23,6 +23,10 @@ const BubbleSelection = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
 
+  const selectedProfile = useSelector(
+    state => state.commonReducer.selectedProfile,
+  );
+
   const dispatch = useDispatch();
   const [BubbleImageArraty, setBubbleImageArraty] = useState([
     {
@@ -82,10 +86,6 @@ const BubbleSelection = () => {
       name: 'politics',
     },
   ]);
-  console.log(
-    '🚀 ~ file: BubbleSelection.js:29 ~ BubbleSelection ~ BubbleImageArraty:',
-    BubbleImageArraty,
-  );
 
   return (
     <ScreenBoiler
@@ -166,10 +166,6 @@ const BubbleSelection = () => {
             width: windowWidth,
           }}>
           {BubbleImageArraty.map((item, index) => {
-            console.log(
-              '🚀 ~ file: BubbleSelection.js:155 ~ {BubbleImageArraty.map ~ item:',
-              item,
-            );
             return (
               <TouchableOpacity
                 onPress={() => {
@@ -178,7 +174,7 @@ const BubbleSelection = () => {
 
                   setBubbleImageArraty(data);
                   // setSavedBubbles(prev => [...prev, item])
-                }}    
+                }}
                 style={{
                   width: windowWidth * 0.3,
                   height:

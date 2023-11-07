@@ -207,7 +207,6 @@ const TextInputWithTitle = props => {
               numberOfLines={props.numberOfLines || 1}
               editable={props.disable ? false : true}
               autoCapitalize="none"
-              // onPressIn={()=>{console.log('fdadsas');}}
               // textAlignVertical={props.textAlignVertical}
             />
           </TouchableOpacity>

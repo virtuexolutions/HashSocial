@@ -111,7 +111,6 @@ const Chat = () => {
           <FlatList
             data={BubbleListData}
             renderItem={({item, index}) => {
-              console.log('New Data1', item);
 
               return (
                 <>

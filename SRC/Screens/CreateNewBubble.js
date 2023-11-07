@@ -32,7 +32,6 @@ import Entypo from 'react-native-vector-icons/Entypo'
 
 const CreateNewBubble = (props) => {
   const item = props?.route?.params?.item
-  console.log("🚀 ~ file: CreateNewBubble.js:35 ~ CreateNewBubble ~ item:", item)
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const [CreateBubble, setCreateBubble] = useState('');
@@ -42,10 +41,7 @@ const CreateNewBubble = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [profilePicture, setProfilePicture] = useState({});
   const [isLoading, setisLoading] = useState(false);
-  console.log(
-    '🚀 ~ file: CreateNewBubble.js:35 ~ CreateNewBubble ~ profilePicture:',
-    profilePicture,
-  );
+  
   const architecture = ['ABC', 'BCD', 'CDE'];
   const [architectureValue, setArchitectureValue] = useState('#Architecture');
   const [switchValue, setSwitchValue] = useState('Private');
@@ -64,13 +60,11 @@ const CreateNewBubble = (props) => {
   const [MembershipCostValue, setMembershipCost] = useState('Member ship Cost');
 
   const onSelectSwitch = index => {
-    console.log('Selected index: ' + index);
     if (index == 1) {
       setSwitchValue('private');
     } else if (index == 2) {
       setSwitchValue('public');
     }
-    console.log(switchValue);
   };
 
   const memberships = [
@@ -105,10 +99,7 @@ const CreateNewBubble = (props) => {
 
   useEffect(() => {
     if (Object.keys(profilePicture).length > 0) {
-      console.log(
-        '🚀 ~ file: CreateNewBubble.js:72 ~ useEffect ~ profilePicture:',
-        profilePicture,
-      );
+      
     }
   }, [profilePicture]);
 

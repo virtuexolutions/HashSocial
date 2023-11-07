@@ -47,7 +47,7 @@ import EventDetails from './Screens/EventDetails';
 import AddCard from './Screens/AddCard';
 import PaymentMethod from './Screens/PaymentMethod';
 import BubbleManagement from './Screens/BubbleManagement';
-import ProfilesListing from './Screens/ProfilesListing'
+import ProfilesListing from './Screens/ProfilesListing';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -55,28 +55,11 @@ const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
   const isVerified = useSelector(state => state.authReducer.isVerified);
   const token = useSelector(state => state.authReducer.token);
-  console.log("🚀 ~ file: appNavigation.js:58 ~ AppNavigator ~ token:", token)
   const bubbleSelected = useSelector(state => state.authReducer.bubbleSelected);
   const numOfProfile = useSelector(state => state.authReducer.numOfProfiles);
-  console.log(
-    '🚀 ~ file: appNavigation.js:59 ~ AppNavigator ~ numOfProfile:',
-    numOfProfile,
-  );
   const profileSelected = useSelector(
     state => state.authReducer.profileSelected,
   );
-  console.log(
-    '🚀 ~ file: appNavigation.js:62 ~ AppNavigator ~ profileSelected:',
-    profileSelected,
-  );
-
-  console.log(
-    '🚀 ~ file: appNavigation.js:58 ~ AppNavigator ~ bubbleSelected:',
-    bubbleSelected,
-  );
-
-  // console.log('token>>>>', token);
-  // console.log('isVerified', isGoalCreated);
 
   const RootNav = createNativeStackNavigator();
   const RootNavLogged = createNativeStackNavigator();
@@ -135,10 +118,6 @@ const AppNavigator = () => {
           <RootNav.Screen name="AddCard" component={AddCard} />
           <RootNav.Screen name="PaymentMethod" component={PaymentMethod} />
           <RootNav.Screen name="ProfilesListing" component={ProfilesListing} />
-
-
-
-
         </RootNav.Navigator>
       </NavigationContainer>
     );
@@ -150,16 +129,7 @@ const AppNavigator = () => {
 export const TabNavigation = () => {
   const userRole = useSelector(state => state.commonReducer.selectedRole);
   const privacy = useSelector(state => state.authReducer.privacy);
-
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
-  console.log(
-    '🚀 ~ file: appNavigation.js:119 ~ TabNavigation ~ themeColor:',
-    themeColor,
-  );
-  console.log(
-    '🚀 ~ file: appNavigation.js:83 ~ TabNavigation ~ userRole:',
-    userRole,
-  );
   const Tabs = createBottomTabNavigator();
   return (
     <Tabs.Navigator

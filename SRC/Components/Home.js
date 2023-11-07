@@ -164,7 +164,6 @@ const Home = () => {
                   data={activityData}
                   showsVerticalScrollIndicator={false}
                   renderItem={({item, index}) => {
-                    //   console.log('index:', item);
                     return (
                       <TouchableOpacity
                         style={styles.activityImage}

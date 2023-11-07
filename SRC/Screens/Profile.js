@@ -63,7 +63,7 @@ const Profile = props => {
       type: type,
       description: desc,
       privacy: selectedTab,
-      passcode: passCode,
+      passcode: '000',
     };
 
     const formData = new FormData();
@@ -72,8 +72,8 @@ const Profile = props => {
       formData.append('photo', image);
     } else {
       return Platform.OS == 'android'
-        ? ToastAndroid.show(`Image is empty`, ToastAndroid.SHORT)
-        : Alert.alert(`Image is empty`);
+        ? ToastAndroid.show(`Uplaod profile photo`, ToastAndroid.SHORT)
+        : Alert.alert(`Uplaod profile photo`);
     }
 
     for (let key in body) {

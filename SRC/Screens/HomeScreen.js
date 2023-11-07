@@ -45,10 +45,7 @@ const HomeScreen = props => {
   const [highlightedIcon, setHighlightedIcon] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [text, setText] = useState('');
-  console.log(
-    '🚀 ~ file: HomeScreen.js:40 ~ HomeScreen ~ highlightedIcon:',
-    highlightedIcon,
-  );
+
   const [animationStopped, setAnimationStopped] = useState(false);
 
   const backRef = useRef(null);
@@ -72,8 +69,6 @@ const HomeScreen = props => {
         />
       ),
       onPress: () => {
-        // setclicked(true);
-
         navigationService.navigate('PostScreen');
       },
     },
@@ -326,42 +321,15 @@ const HomeScreen = props => {
             : require('../Assets/Images/Main.png')
         }
         resizeMode={'cover'}
-        style={{
-          width: windowWidth,
-          height: windowHeight * 0.9,
-          overflow: 'hidden',
-          justifyContent: 'center',
-        }}>
+        style={style.container}>
         {highlightedIcon && (
-          <View
-            style={{
-              width: windowWidth,
-              height: windowHeight,
-              position: 'absolute',
-              zIndex: 0,
-              top: -40,
-            }}>
-            {highlightedIcon}
-          </View>
+          <View style={style.highlightedIcon}>{highlightedIcon}</View>
         )}
 
-        <View
-          style={{
-            width: windowWidth,
-            height: windowHeight * 0.9,
-            positon: 'absolute',
-            overflow: 'hidden',
-            flexDirection: 'row',
-            backgroundColor: 'rgba(0,0,0,.8)',
-          }}>
+        <View style={style.container2}>
           <Animatable.View
             ref={backRef}
-            style={{
-              width: windowWidth,
-              height: windowHeight * 0.9,
-              position: 'absolute',
-              flexDirection: 'row',
-            }}>
+            style={style.animatedView}>
             <View
               style={[
                 {
@@ -370,7 +338,6 @@ const HomeScreen = props => {
                   backgroundColor: Color.black,
                   alignItems: 'center',
                   zIndex: 1,
-
                   position: 'absolute',
                   justifyContent: 'center',
                 },
@@ -379,36 +346,17 @@ const HomeScreen = props => {
               ]}>
               <CustomText
                 isBold
-                style={{
-                  width: windowWidth,
-                  fontSize: moderateScale(20, 0.6),
-                  color: Color.white,
-                  transform: [{rotate: '270deg'}],
-                  textAlign: 'center',
-                  textTransform: 'uppercase',
-                }}>
+                style={style.name}>
                 Johnathon
               </CustomText>
             </View>
             <LinearGradient
               style={[
-                {
-                  width: windowWidth * 0.08,
-                  height: windowHeight * 0.9,
-
-                  alignItems: 'center',
-                  zIndex: 1,
-
-                  // right : 0,
-                  position: 'absolute',
-                  justifyContent: 'center',
-                },
+               style.gradient,
                 alignment == 'left' && {left: windowWidth * 0.08},
                 alignment == 'right' && {right: windowWidth * 0.08},
               ]}
-              // start={{x: 0, y: 0}}
-              // end={{x: 1, y: 0}}
-              // colors={['#43ebeb','#00d8e1', '#00bac7', '#39e9e9']}
+             
               colors={themeColor}>
               <View
                 style={{
@@ -429,19 +377,13 @@ const HomeScreen = props => {
                         height: windowWidth * 0.06,
                         backgroundColor: 'white',
                         overflow: 'hidden',
-                        // borderColor: item?.bubble ? 'yellow':'blue',
-                        // borderWidth: 2,
+
                         borderRadius: (windowWidth * 0.06) / 2,
                         marginTop: moderateScale(12, 0.3),
-                        // marginLeft: moderateScale(5, 0.3),
-                        // marginRight: moderateScale(8, 0.3),
                       }}>
                       <CustomImage
                         source={item?.image}
-                        style={{
-                          height: '100%',
-                          width: '100%',
-                        }}
+                        style={style.image}
                       />
                     </View>
                   );
@@ -468,100 +410,18 @@ const HomeScreen = props => {
                 alignment == 'left' && {right: 5},
                 alignment == 'right' && {left: 5},
               ]}></Image>
-            {/* <View
-              style={[
-                {
-                  position: 'absolute',
-                  top: 20,
-                },
-                alignment == 'right' && {
-                  right: 50,
-                },
-                alignment == 'left' && {
-                  left: 50,
-                },
-              ]}>
-              <CustomText
-                isBold
-                style={{
-                  color: Color.black,
-                  fontSize: moderateScale(25, 0.6),
-                  textTransform : 'uppercase'
-                }}>
-                Hi !
-              </CustomText>
-              <CustomText
-                isBold
-                style={{
-                  color: Color.white,
-                  fontSize: moderateScale(25, 0.6),
-                  textTransform : 'uppercase'
-                }}>
-                Jonathan
-              </CustomText>
-            </View>
-            <View
-              style={[
-                {
-                  position: 'absolute',
-                  // right: moderateScale(-4, 0.6),
-                  top: '40%',
-                  width: windowWidth * 0.06,
-                  height: windowHeight * 0.025,
-                  // backgroundColor: 'purple',
-                },
-                alignment == 'left'
-                  ? {right: moderateScale(-4, 0.6)}
-                  : {left: moderateScale(-4, 0.6)},
-              ]}>
-              <CustomImage
-                source={require('../Assets/Images/right-arrow.png')}
-                resizeMode={'cover'}
-                style={[
-                  {
-                    width: '100%',
-                    height: '100%',
-                  },
-                  alignment == 'left' && {transform: [{rotate: '180deg'}]},
-                ]}
-              />
-            </View> */}
-            {/* <View style={[{position: 'absolute', top: '10%', right: 10}, alignment=='left' ? {right:10}: {left:10}]}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <View
-                  style={{
-                    width: 6,
-                    height: 6,
-                    backgroundColor: 'yellow',
-                    marginRight: moderateScale(5, 0.3),
-                  }}></View>
-                <CustomText style={{color: 'white'}}>Bubbles</CustomText>
-              </View>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <View
-                  style={{
-                    width: 6,
-                    height: 6,
-                    backgroundColor: '#BF4F51',
-                    marginRight: moderateScale(5, 0.3),
-                  }}></View>
-                <CustomText style={{color: 'white'}}>Feeds</CustomText>
-              </View>
-            </View> */}
           </Animatable.View>
           <GestureHandlerRootView>
             <View
-              style={{
-                // width: windowWidth * 0.9,
-                height: windowHeight * 0.75,
-                alignItems: 'center',
-                justifyContent: 'center',
-                marginLeft:
-                  alignment == 'left'
-                    ? moderateScale(20, 0.3)
-                    : moderateScale(-10, 0.3),
-                zIndex: 2,
-              }}>
+              style={[
+                style.menuView,
+                {
+                  marginLeft:
+                    alignment == 'left'
+                      ? moderateScale(20, 0.3)
+                      : moderateScale(-10, 0.3),
+                },
+              ]}>
               <RoundMenu
                 centerContent={
                   <ImageBackground
@@ -596,25 +456,14 @@ const HomeScreen = props => {
               alignment == 'right' && {left: 0},
             ]}
             onPress={() => {
-              console.log('rotate=======>>>');
               setRotationAngle(prev => prev + 180);
             }}>
             <CustomButton
               iconName={'rotate-360'}
               iconType={MaterialCommunityIcons}
-              iconStyle={{
-                color: 'white',
-                // backgroundColor:'purple',
-
-                marginRight: moderateScale(5, 0.3),
-                width: windowWidth * 0.06,
-                height: windowHeight * 0.015,
-                fontSize: moderateScale(20, 0.6),
-              }}
+              iconStyle={style.iconStyle}
               textColor={Color.white}
-              // bgColor={'black'}
               onPress={() => {
-                console.log('rotate=======>>>');
                 setRotationAngle(prev => prev + 180);
                 setAlignment(alignment == 'left' ? 'right' : 'left');
               }}
@@ -630,45 +479,10 @@ const HomeScreen = props => {
       {clicked && (
         <BlurView
           // intensity={100}
-          style={{
-            position: 'absolute',
-            height: windowHeight * 0.87,
-            width: windowWidth,
-            justifyContent: 'center',
-            alignItems: 'center',
-
-            bottom: 0,
-          }}
+          style={style.blurView}
           blurRadius={5}
           blurType={'light'}>
-          <View
-            style={{
-              height: windowHeight * 0.8,
-              width: windowWidth,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            {/* <CustomButton
-              text={
-                isLoading ? (
-                  <ActivityIndicator color={'#01E8E3'} size={'small'} />
-                ) : (
-                  'Bubble Info'
-                )
-              }
-              textColor={themeColor[1]}
-              width={windowWidth * 0.7}
-              height={windowHeight * 0.06}
-              // marginTop={moderateScale(40, 0.3)}
-              onPress={() => {
-                // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
-                setclicked(false);
-                navigationService.navigate('BubbleDetail');
-              }}
-              bgColor={['#FFFFFF', '#FFFFFF']}
-              borderRadius={moderateScale(30, 0.3)}
-              isGradient
-            /> */}
+          <View style={style.container3}>
             <CustomButton
               text={
                 isLoading ? (
@@ -690,28 +504,7 @@ const HomeScreen = props => {
               borderRadius={moderateScale(30, 0.3)}
               isGradient
             />
-            {/* <CustomButton
-              text={
-                isLoading ? (
-                  <ActivityIndicator color={'#01E8E3'} size={'small'} />
-                ) : (
-                  'Join'
-                )
-              }
-              textColor={themeColor[1]}
-              width={windowWidth * 0.7}
-              height={windowHeight * 0.06}
-              marginTop={moderateScale(20, 0.3)}
-              onPress={() => {
-                setIsVisible(true);
-                // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
-                setclicked(false);
-                // navigationService.navigate('Bubble');
-              }}
-              bgColor={['#FFFFFF', '#FFFFFF']}
-              borderRadius={moderateScale(30, 0.3)}
-              isGradient
-            /> */}
+
             <CustomButton
               text={
                 isLoading ? (
@@ -747,13 +540,90 @@ const HomeScreen = props => {
 
 export default HomeScreen;
 const style = StyleSheet.create({
+  iconStyle: {
+    color: 'white',
+    marginRight: moderateScale(5, 0.3),
+    width: windowWidth * 0.06,
+    height: windowHeight * 0.015,
+    fontSize: moderateScale(20, 0.6),
+  },
+  image:{
+    height: '100%',
+    width: '100%',
+  },
   icon: {
     width: '100%',
     height: '100%',
     zIndex: 1,
   },
+  gradient: {
+    width: windowWidth * 0.08,
+    height: windowHeight * 0.9,
+    alignItems: 'center',
+    zIndex: 1,
+    position: 'absolute',
+    justifyContent: 'center',
+  },
   centerImage: {
     width: '100%',
     height: '100%',
   },
+  container: {
+    width: windowWidth,
+    height: windowHeight * 0.9,
+    overflow: 'hidden',
+    justifyContent: 'center',
+  },
+  highlightedIcon: {
+    width: windowWidth,
+    height: windowHeight,
+    position: 'absolute',
+    zIndex: 0,
+    top: -40,
+  },
+  container2: {
+    width: windowWidth,
+    height: windowHeight * 0.9,
+    positon: 'absolute',
+    overflow: 'hidden',
+    flexDirection: 'row',
+    backgroundColor: 'rgba(0,0,0,.8)',
+  },
+  blurView: {
+    position: 'absolute',
+    height: windowHeight * 0.87,
+    width: windowWidth,
+    justifyContent: 'center',
+    alignItems: 'center',
+
+    bottom: 0,
+  },
+  container3: {
+    height: windowHeight * 0.8,
+    width: windowWidth,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  menuView: {
+    // width: windowWidth * 0.9,
+    height: windowHeight * 0.75,
+    alignItems: 'center',
+    justifyContent: 'center',
+
+    zIndex: 2,
+  },
+  animatedView:{
+    width: windowWidth,
+    height: windowHeight * 0.9,
+    position: 'absolute',
+    flexDirection: 'row',
+  },
+  name:{
+    width: windowWidth,
+    fontSize: moderateScale(20, 0.6),
+    color: Color.white,
+    transform: [{rotate: '270deg'}],
+    textAlign: 'center',
+    textTransform: 'uppercase',
+  }
 });

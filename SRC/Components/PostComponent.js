@@ -27,7 +27,6 @@ import navigationService from '../navigationService';
 
 const PostComponent = ({data}) => {
   const [like, setLike] = useState(false);
-  console.log('HELLO', data);
   const refRBSheet = useRef();
   const MoreIcon = require('../Assets/Images/threedots.png');
   const editPost = () => {
@@ -297,7 +296,6 @@ const PostComponent = ({data}) => {
             <FlatList
               data={data?.commentData}
               renderItem={({item, index}) => {
-                console.log('asiuhdsah', item);
                 return (
                   <View style={{width: windowWidth}}>
                     <View

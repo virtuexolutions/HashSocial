@@ -44,7 +44,6 @@ const VideoController = ({item}) => {
           source={{uri: item?.video}}
           ref={videoRef}
           onProgress={x => {
-            console.log("🚀 ~ file: VideoController.js:46 ~ VideoController ~ x:", x)
             setProgress(x);
           }}
           onBuffer={() => console.log('buffering video')}
