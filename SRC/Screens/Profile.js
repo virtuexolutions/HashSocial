@@ -27,6 +27,8 @@ import navigationService from '../navigationService';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   setAccountPrivate,
+  setBubbleSelected,
+  setFeedsSelected,
   setNumOfProfiles,
   setProfileSelcted,
   setUserToken,
@@ -117,6 +119,8 @@ const Profile = props => {
         ),
       );
       dispatch(setProfileSelcted(true));
+      dispatch(setBubbleSelected([null, "0", 0, [], undefined].includes(response?.data?.profile_info?.bubbles) ? false : true))
+      dispatch(setFeedsSelected([null, "0", 0, [], undefined].includes(response?.data?.profile_info?.feed) ? false : true))
     }
   };
 
