@@ -59,11 +59,11 @@ const AppNavigator = () => {
   const token = useSelector(state => state.authReducer.token);
   // console.log("🚀 ~ file: appNavigation.js:59 ~ AppNavigator ~ token:", token)
   const bubbleSelected = useSelector(state => state.authReducer.bubbleSelected);
-  // console.log("🚀 ~ file: appNavigation.js:60 ~ AppNavigator ~ bubbleSelected:", bubbleSelected)
+  console.log("🚀 ~ file: appNavigation.js:60 ~ AppNavigator ~ bubbleSelected:", bubbleSelected)
   const numOfProfile = useSelector(state => state.authReducer.numOfProfiles);
-  // console.log("🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ numOfProfile:", numOfProfile)
+  console.log("🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ numOfProfile:", numOfProfile)
   const feedsSelected = useSelector(state => state.authReducer.feedsSelected);
-  // console.log("🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ feedsSelected:", feedsSelected)
+  console.log("🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ feedsSelected:", feedsSelected)
   const profileSelected = useSelector(
     state => state.authReducer.profileSelected,
   );
@@ -85,6 +85,7 @@ const AppNavigator = () => {
     : 'TabNavigation'
     : 'LoginScreen';
     
+    console.log("🚀 ~ file: appNavigation.js:76 ~ AppNavigatorContainer ~ secondScreen:", secondScreen)
     // console.log("🚀 ~ file: appNavigation.js:74 ~ AppNavigatorContainer ~ secondScreen:", secondScreen)
   
 

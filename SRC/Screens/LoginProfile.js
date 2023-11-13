@@ -73,6 +73,8 @@ const LoginProfile = props => {
       );
       setPassCode('');
       setModal(false);
+      dispatch(setSelectedProfileData({}));
+
       dispatch(setSelectedProfileData(response?.data?.profile_info));
       dispatch(setProfileSelcted(true));
       dispatch(

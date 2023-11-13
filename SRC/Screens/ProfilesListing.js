@@ -89,6 +89,9 @@ const ProfilesListing = (props) => {
                       dispatch(setAccountPrivate('private'))
                       navigationService.navigate('LoginProfile', {item});
                     } else {
+                      dispatch(setBubbleSelected(false))
+                      dispatch(setFeedsSelected(false))
+                      dispatch(setProfileSelcted(false));
                       dispatch(setAccountPrivate('public'))
                       dispatch(setSelectedProfileData(item));
                       dispatch(setProfileSelcted(true));
@@ -115,6 +118,9 @@ const ProfilesListing = (props) => {
                           dispatch(setAccountPrivate('private'))
                           navigationService.navigate('LoginProfile', {item});
                         } else {
+                          dispatch(setBubbleSelected(false))
+                          dispatch(setFeedsSelected(false))
+                          dispatch(setProfileSelcted(false));
                           dispatch(setAccountPrivate('public'))
                           dispatch(setSelectedProfileData(item));
                           dispatch(setProfileSelcted(true));
