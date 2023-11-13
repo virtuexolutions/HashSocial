@@ -34,23 +34,54 @@ import {FloatingLabelInput} from 'react-native-floating-label-input';
 import Header from '../Components/Header';
 import navigationService from '../navigationService';
 
-const ResetPassword = () => {
-  const privacy = useSelector(state=> state.authReducer.privacy)
+const ResetPassword = props => {
+  const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
-
-
+  const phoneNumber = props?.route?.params?.phoneNumber;
+  console.log(
+    '🚀 ~ file: ResetPassword.js:41 ~ ResetPassword ~ phoneNumber:',
+    phoneNumber,
+  );
 
   const disptach = useDispatch();
-  const [firstSection, setFirstSection] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [username, setusername] = useState('');
-  const [email, setEmail] = useState();
+
   const [password, setPassword] = useState('');
-  
+
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [selectedRole, setSelectedType] = useState('Qbid Member');
 
+  const resetPassword = async () => {
+    const url = 'password/reset';
+    const body = {
+      email: phoneNumber,
+      password: password,
+      confirm_password: confirmPassword,
+    };
 
+    for (let key in body) {
+      if (['', null, undefined].includes(body[key])) {
+        return Platform.OS == 'android'
+          ? ToastAndroid.show('required field is empty', ToastAndroid.SHORT)
+          : alert('required field is empty');
+      }
+    }
+    if (password != confirmPassword) {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show('Passwords does not match', ToastAndroid.SHORT)
+        : alert('Passwords does not match');
+    }
+
+    setIsLoading(true);
+    const response = await Post(url, body, apiHeader());
+    setIsLoading(false);
+    if (response != undefined) {
+      Platform.OS == 'android'
+      ? ToastAndroid.show('Password sucessfully reset \n please login to continue', ToastAndroid.SHORT)
+      : alert('Password sucessfully reset \n please login to continue');
+      // return console.log('response data =>', response?.data);
+      navigationService.navigate('LoginScreen');
+    }
+  };
 
   return (
     <>
@@ -60,7 +91,7 @@ const ResetPassword = () => {
       />
       <Header right />
       <ImageBackground
-         source={
+        source={
           privacy == 'private'
             ? require('../Assets/Images/theme2.jpg')
             : require('../Assets/Images/Main.png')
@@ -84,7 +115,6 @@ const ResetPassword = () => {
           children={'Reset Password'}
         />
 
-      
         <View style={styles.conatiner}>
           <TextInputWithTitle
             title={'password'}
@@ -123,7 +153,7 @@ const ResetPassword = () => {
             placeholderColor={Color.themeLightGray}
             borderRadius={moderateScale(10, 0.3)}
           />
-        
+
           <CustomButton
             text={
               isLoading ? (
@@ -137,20 +167,13 @@ const ResetPassword = () => {
             height={windowHeight * 0.06}
             marginTop={moderateScale(20, 0.3)}
             onPress={() => {
-              ToastAndroid.show('Password Reset' , ToastAndroid.SHORT)
-              navigationService.navigate('LoginScreen')
-              // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
+              resetPassword();
             }}
             bgColor={themeColor}
             borderRadius={moderateScale(30, 0.3)}
             isGradient
           />
         </View>
-
-
-     
-
-      
       </ImageBackground>
     </>
   );
@@ -165,7 +188,7 @@ const styles = ScaledSheet.create({
     alignSelf: 'center',
     borderRadius: moderateScale(15, 0.6),
     alignItems: 'center',
-    marginTop: windowHeight*0.2 ,
+    marginTop: windowHeight * 0.2,
   },
   textInput: {
     height: windowHeight * 0.05,

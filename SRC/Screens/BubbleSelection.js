@@ -18,6 +18,7 @@ import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
 import {useDispatch, useSelector} from 'react-redux';
 import {setBubbleSelected} from '../Store/slices/auth';
+import {setSelectedBubbles} from '../Store/slices/common';
 
 const BubbleSelection = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -28,6 +29,9 @@ const BubbleSelection = () => {
   );
 
   const dispatch = useDispatch();
+  const selectedBubbles = useSelector(
+    state => state.commonReducer.selectedBubble);
+
   const [BubbleImageArraty, setBubbleImageArraty] = useState([
     {
       image: require('../Assets/Images/bubble1.png'),
@@ -86,6 +90,26 @@ const BubbleSelection = () => {
       name: 'politics',
     },
   ]);
+
+  const handleBubbleSelection = (index) => {
+    const updatedBubbleArray = [...BubbleImageArraty];
+    updatedBubbleArray[index].added = !updatedBubbleArray[index].added;
+    setBubbleImageArraty(updatedBubbleArray);
+
+    const selectedBubblesArray = updatedBubbleArray
+      .filter(bubble => bubble.added)
+      .map(bubble => bubble.name);
+    dispatch(setSelectedBubbles(selectedBubblesArray));
+  };
+
+  const saveSelection = () => {
+    if (selectedBubbles.length > 0) {
+      dispatch(setBubbleSelected(true));
+      ToastAndroid.show('Saved', ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show('Please select any bubble', ToastAndroid.SHORT);
+    }
+  };
 
   return (
     <ScreenBoiler
@@ -169,11 +193,11 @@ const BubbleSelection = () => {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  const data = [...BubbleImageArraty];
-                  data[index].added = !data[index].added;
+                  handleBubbleSelection(index)
+                  // const data = [...BubbleImageArraty];
+                  // data[index].added = !data[index].added;
 
-                  setBubbleImageArraty(data);
-                  // setSavedBubbles(prev => [...prev, item])
+                  // setBubbleImageArraty(data);
                 }}
                 style={{
                   width: windowWidth * 0.3,
