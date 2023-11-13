@@ -20,6 +20,7 @@ import CustomText from '../Components/CustomText';
 import CustomButton from '../Components/CustomButton';
 import Header from '../Components/Header';
 import navigationService from '../navigationService';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
 const EnterPhone = () => {
   const privacy = useSelector(state=> state.authReducer.privacy)
@@ -29,13 +30,35 @@ const EnterPhone = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [phone, setPhone] = useState('');
 
+  const sendOTP = async () => {
+    const url = 'password/email';
+    if (['', null, undefined].includes(phone)) {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show('Phone number is required', ToastAndroid.SHORT)
+        : alert('Phone number is required');
+    }
+    setIsLoading(true);
+    const response = await Post(url, {email: phone}, apiHeader());
+    setIsLoading(false);
+    if (response != undefined) {
+      alert(response?.data?.data[0]?.code);
+      Platform.OS == 'android'
+        ? ToastAndroid.show(`OTP sent to ${phone}`, ToastAndroid.SHORT)
+        : alert(`OTP sent to ${phone}`);
+     
+        navigationService.navigate('VerifyNumber', {
+            phoneNumber: `${phone}`,
+          });
+    }
+  };
+
   return (
     <>
       <CustomStatusBar
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right />
+      <Header  showBack/>
       <ScrollView>
       <ImageBackground
         source={
@@ -65,10 +88,10 @@ const EnterPhone = () => {
 
         <View style={styles.conatiner}>
           <TextInputWithTitle
-            title={'Phone Number'}
-            titleText={'Phone Number'}
+            title={'email'}
+            titleText={'Email'}
             secureText={false}
-            placeholder={'Phone Number'}
+            placeholder={'Enter your email address'}
             setText={setPhone}
             value={phone}
             viewHeight={0.07}
@@ -96,8 +119,9 @@ const EnterPhone = () => {
             height={windowHeight * 0.06}
             marginTop={moderateScale(20, 0.3)}
             onPress={() => {
+              sendOTP()
               // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
-              navigationService.navigate('VerifyNumber', {phoneNumber: phone});
+              // navigationService.navigate('VerifyNumber', {phoneNumber: phone});
             }}
             bgColor={themeColor}
             borderRadius={moderateScale(30, 0.3)}
