@@ -20,8 +20,12 @@ import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
 import {useDispatch, useSelector} from 'react-redux';
 import {setBubbleSelected} from '../Store/slices/auth';
+<<<<<<< HEAD
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import { setSelectedBubbles, setSelectedProfileData } from '../Store/slices/common';
+=======
+import {setSelectedBubbles} from '../Store/slices/common';
+>>>>>>> origin/osama
 
 const BubbleSelection = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -43,6 +47,9 @@ const BubbleSelection = () => {
   );
 
   const dispatch = useDispatch();
+  const selectedBubbles = useSelector(
+    state => state.commonReducer.selectedBubble);
+
   const [BubbleImageArraty, setBubbleImageArraty] = useState([
     {
       id: 1,
@@ -118,6 +125,7 @@ const BubbleSelection = () => {
     },
   ]);
 
+<<<<<<< HEAD
   const sendSelectedBubble = async () => {
     const url = 'auth/subscribe';
     const body = {
@@ -138,6 +146,25 @@ const BubbleSelection = () => {
       dispatch(setSelectedProfileData(response?.data?.profile_info))
       dispatch(setBubbleSelected(true))
       dispatch(setSelectedBubbles(selectedBubble))
+=======
+  const handleBubbleSelection = (index) => {
+    const updatedBubbleArray = [...BubbleImageArraty];
+    updatedBubbleArray[index].added = !updatedBubbleArray[index].added;
+    setBubbleImageArraty(updatedBubbleArray);
+
+    const selectedBubblesArray = updatedBubbleArray
+      .filter(bubble => bubble.added)
+      .map(bubble => bubble.name);
+    dispatch(setSelectedBubbles(selectedBubblesArray));
+  };
+
+  const saveSelection = () => {
+    if (selectedBubbles.length > 0) {
+      dispatch(setBubbleSelected(true));
+      ToastAndroid.show('Saved', ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show('Please select any bubble', ToastAndroid.SHORT);
+>>>>>>> origin/osama
     }
   };
 
@@ -224,6 +251,7 @@ const BubbleSelection = () => {
             return (
               <TouchableOpacity
                 onPress={() => {
+<<<<<<< HEAD
                   console.log('Here');
                   // setBubbleSelected(prev=> [...prev, item])
                   if (selectedBubble.findIndex(i => i.id == item?.id) != -1) {
@@ -235,9 +263,13 @@ const BubbleSelection = () => {
                   }
                   const data = [...BubbleImageArraty];
                   data[index].added = !data[index].added;
+=======
+                  handleBubbleSelection(index)
+                  // const data = [...BubbleImageArraty];
+                  // data[index].added = !data[index].added;
+>>>>>>> origin/osama
 
-                  setBubbleImageArraty(data);
-                  // setSavedBubbles(prev => [...prev, item])
+                  // setBubbleImageArraty(data);
                 }}
                 style={{
                   width: windowWidth * 0.3,

@@ -46,6 +46,7 @@
     "react-native-multiple-select": "^0.5.9",
     "react-native-options-menu": "^2.0.2",
     "react-native-pager-view": "^6.2.1",
+    "react-native-popover-view": "^5.1.8",
     "react-native-raw-bottom-sheet": "^2.2.0",
     "react-native-reanimated": "~2.2.0",
     "react-native-rotating-menu": "^1.0.2",
@@ -64,7 +65,8 @@
     "react-redux": "^8.0.2",
     "redux": "^4.2.0",
     "redux-persist": "^6.0.0",
-    "rn-fetch-blob": "^0.12.0"
+    "rn-fetch-blob": "^0.12.0",
+    "uninstall": "^0.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

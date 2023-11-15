@@ -50,6 +50,8 @@ import BubbleManagement from './Screens/BubbleManagement';
 import ProfilesListing from './Screens/ProfilesListing';
 import FeedSelection from './Screens/FeedSelection';
 import LoginProfile from './Screens/LoginProfile';
+import QuestionScreen from './Screens/QuestionScreen';
+import ProfileType from './Screens/ProfileType';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -72,6 +74,7 @@ const AppNavigator = () => {
   const RootNavLogged = createNativeStackNavigator();
 
   const AppNavigatorContainer = () => {
+<<<<<<< HEAD
     const secondScreen =
     token != null
     ? numOfProfile == 0
@@ -88,6 +91,17 @@ const AppNavigator = () => {
     console.log("🚀 ~ file: appNavigation.js:76 ~ AppNavigatorContainer ~ secondScreen:", secondScreen)
     // console.log("🚀 ~ file: appNavigation.js:74 ~ AppNavigatorContainer ~ secondScreen:", secondScreen)
   
+=======
+    const firstScreen = bubbleSelected
+      ? 'TabNavigation'
+      : token != null
+      ? numOfProfile > 0
+        ? profileSelected
+          ? 'BubbleSelection'
+          : 'ProfilesListing'
+        : 'ProfileType'
+      : 'LoginScreen';
+>>>>>>> origin/osama
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
@@ -102,6 +116,8 @@ const AppNavigator = () => {
             component={BubbleManagement}
           />
           <RootNav.Screen name="Feeds" component={Feeds} />
+          <RootNav.Screen name="ProfileType" component={ProfileType} />
+          <RootNav.Screen name="QuestionScreen" component={QuestionScreen} />
           <RootNav.Screen name="EventDetails" component={EventDetails} />
           <RootNav.Screen name="BubbleSearch" component={BubbleSearch} />
           <RootNav.Screen name="AccountDetails" component={AccountDetails} />
