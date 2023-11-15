@@ -27,18 +27,24 @@ import navigationService from '../navigationService';
 const ProfileType = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
-  const [category, setCategory] = useState('');
+  const [highlightedBox, setHighlightedBox] = useState(null);
 
-  const renderBox = (imageSource, text, onPress) => (
+  const handleBoxPress = text => {
+    setHighlightedBox(prevHighlightedBox =>
+      prevHighlightedBox === text ? null : text,
+    );
+  };
+
+
+  const renderBox = (imageSource, text) => (
     <BoxCardComponent
-    setCategory={setCategory}
-      category={category}
+    // setCategory={setCategory}
+      // category={category}
       imageSource={imageSource}
       text={text}
       tooltipText={`Tooltip for ${text}`}
-      // onPress={() => {
-      //   setCategory(text);
-      // }}
+      highlighted={text === highlightedBox}
+      onPress={() => handleBoxPress(text)}
     />
   );
 
