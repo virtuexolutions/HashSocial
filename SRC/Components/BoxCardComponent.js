@@ -6,8 +6,11 @@ import {moderateScale} from 'react-native-size-matters';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import {Icon, Tooltip} from 'native-base';
+import { useSelector } from 'react-redux';
 
-const BoxCardComponent = ({imageSource, text, onPress,}) => {
+const BoxCardComponent = ({imageSource, text, onPress,category, setCategory}) => {
+  console.log("🚀 ~ file: BoxCardComponent.js:11 ~ BoxCardComponent ~ category:", category)
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const [tooltipAnchor, setTooltipAnchor] = useState(null);
   const [isTooltipVisible, setTooltipVisible] = useState(false);
   const [tooltipText, setTooltipText] = useState('');
@@ -56,7 +59,11 @@ const BoxCardComponent = ({imageSource, text, onPress,}) => {
   };
 
   return (
-    <View style={styles.box}>
+    <TouchableOpacity 
+    onPress={()=>{
+      setCategory(text)
+    }}
+    style={[styles.box, {borderColor :category == text ? themeColor[1] : 'white', borderWidth:3}]}>
       <Image source={imageSource} style={styles.image} />
       <View style={styles.textContainer}>
         <CustomText isBold style={styles.text}>
@@ -84,7 +91,7 @@ const BoxCardComponent = ({imageSource, text, onPress,}) => {
           </View>
         </Tooltip>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 

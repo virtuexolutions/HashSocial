@@ -52,6 +52,9 @@ const ProfilesListing = (props) => {
 
   useEffect(() => {
     profileListing();
+    dispatch(setBubbleSelected(false))
+    dispatch(setFeedsSelected(false))
+    dispatch(setProfileSelcted(false));
   }, []);
 
   return (

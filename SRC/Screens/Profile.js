@@ -42,9 +42,10 @@ import {setSelectedProfileData} from '../Store/slices/common';
 
 const Profile = props => {
   const item = props?.route?.params?.item;
+  const category = props?.route?.params?.category;
+  console.log("🚀 ~ file: Profile.js:46 ~ Profile ~ category:", category)
   const token = useSelector(state => state.authReducer.token);
   const numOfProfiles = useSelector(state => state.authReducer.numOfProfiles);
-  // console.log("🚀 ~ file: Profile.js:40 ~ Profile ~ numOfProfiles:", numOfProfiles)
   const dispatch = useDispatch();
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -55,7 +56,7 @@ const Profile = props => {
   const [passCode, setPassCode] = useState('');
   const [imagePickerModal, setImagePickerModal] = useState(false);
   const [type, setType] = useState(
-    item?.profileType ? item?.profileType : 'Select Profile Type',
+    item?.profileType ? item?.profileType :category ? category : 'Select Profile Type',
   );
   const [image, setImage] = useState({});
 
@@ -121,6 +122,7 @@ const Profile = props => {
       dispatch(setProfileSelcted(true));
       dispatch(setBubbleSelected([null, "0", 0, [], undefined].includes(response?.data?.profile_info?.bubbles) ? false : true))
       dispatch(setFeedsSelected([null, "0", 0, [], undefined].includes(response?.data?.profile_info?.feed) ? false : true))
+      navigationService.navigate('QuestionScreen', {type:type})
     }
   };
 
@@ -154,13 +156,13 @@ const Profile = props => {
                 styles.profileSection,
                 {
                   borderColor:
-                    type == 'Content creator'
+                  type == 'Content Creator'
                       ? 'yellow'
-                      : type == 'Enterpreneur'
+                      : type == 'Business & Entrepreneurship'
                       ? Color.green
-                      : type == 'Connector'
+                      : type == 'Community & Connection'
                       ? 'pink'
-                      : type == 'Explore'
+                      : type == 'Learning & Exploring'
                       ? 'blue'
                       : 'black',
                 },
@@ -205,15 +207,15 @@ const Profile = props => {
               borderRadius: moderateScale(20, 0.6),
               borderLeftWidth: 4,
               borderColor:
-                type == 'Content creator'
-                  ? 'yellow'
-                  : type == 'Enterpreneur'
-                  ? Color.green
-                  : type == 'Connector'
-                  ? 'pink'
-                  : type == 'Explore'
-                  ? 'blue'
-                  : 'black',
+              type == 'Content Creator'
+              ? 'yellow'
+              : type == 'Business & Entrepreneurship'
+              ? Color.green
+              : type == 'Community & Connection'
+              ? 'pink'
+              : type == 'Learning & Exploring'
+              ? 'blue'
+              : 'black',
               borderTopWidth: 4,
               paddingVertical: moderateScale(20, 0.3),
             }}
@@ -252,10 +254,10 @@ const Profile = props => {
               </CustomText>
               <DropDownSingleSelect
                 array={[
-                  'Content creator',
-                  'Enterpreneur',
-                  'Connector',
-                  'Explore',
+                  'Content Creator',
+                  'Business & Entrepreneurship',
+                  'Community & Connection',
+                  'Learning & Exploring',
                 ]}
                 item={type}
                 setItem={setType}
@@ -392,7 +394,9 @@ const Profile = props => {
               marginTop={moderateScale(20, 0.3)}
               fontSize={moderateScale(12, 0.3)}
               onPress={() => {
-                createProfile();
+                // createProfile();
+                dispatch(setNumOfProfiles(1))
+                navigationService.navigate('QuestionScreen',{type:type})
               }}
               bgColor={'#FFFFFF'}
               borderRadius={moderateScale(30, 0.3)}

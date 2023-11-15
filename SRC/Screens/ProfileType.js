@@ -22,18 +22,23 @@ import {Icon, Tooltip} from 'native-base';
 import Color from '../Assets/Utilities/Color';
 import BoxCardComponent from '../Components/BoxCardComponent';
 import CustomButton from '../Components/CustomButton';
+import navigationService from '../navigationService';
 
 const ProfileType = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
-;
-
+  const [category, setCategory] = useState('');
 
   const renderBox = (imageSource, text, onPress) => (
     <BoxCardComponent
+    setCategory={setCategory}
+      category={category}
       imageSource={imageSource}
       text={text}
       tooltipText={`Tooltip for ${text}`}
+      // onPress={() => {
+      //   setCategory(text);
+      // }}
     />
   );
 
@@ -78,13 +83,16 @@ const ProfileType = () => {
             )}
           </View>
           <CustomButton
-            text={'Procced'}
+            text={'Proceed'}
             textColor={Color.black}
             width={windowWidth * 0.5}
             height={windowHeight * 0.06}
             marginTop={moderateScale(20, 0.3)}
             bgColor={Color.white}
             borderRadius={moderateScale(30, 0.3)}
+            onPress={() => {
+              navigationService.navigate('Profile', {category: category});
+            }}
           />
         </View>
       </ImageBackground>
