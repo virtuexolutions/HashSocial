@@ -74,7 +74,6 @@ const AppNavigator = () => {
   const RootNavLogged = createNativeStackNavigator();
 
   const AppNavigatorContainer = () => {
-<<<<<<< HEAD
     const secondScreen =
     token != null
     ? numOfProfile == 0
@@ -91,7 +90,6 @@ const AppNavigator = () => {
     console.log("🚀 ~ file: appNavigation.js:76 ~ AppNavigatorContainer ~ secondScreen:", secondScreen)
     // console.log("🚀 ~ file: appNavigation.js:74 ~ AppNavigatorContainer ~ secondScreen:", secondScreen)
   
-=======
     const firstScreen = bubbleSelected
       ? 'TabNavigation'
       : token != null
@@ -101,7 +99,6 @@ const AppNavigator = () => {
           : 'ProfilesListing'
         : 'ProfileType'
       : 'LoginScreen';
->>>>>>> origin/osama
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
