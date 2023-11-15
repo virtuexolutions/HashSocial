@@ -26,14 +26,22 @@ import CustomButton from '../Components/CustomButton';
 const ProfileType = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
-;
+  const [highlightedBox, setHighlightedBox] = useState(null);
+
+  const handleBoxPress = text => {
+    setHighlightedBox(prevHighlightedBox =>
+      prevHighlightedBox === text ? null : text,
+    );
+  };
 
 
-  const renderBox = (imageSource, text, onPress) => (
+  const renderBox = (imageSource, text) => (
     <BoxCardComponent
       imageSource={imageSource}
       text={text}
       tooltipText={`Tooltip for ${text}`}
+      highlighted={text === highlightedBox}
+      onPress={() => handleBoxPress(text)}
     />
   );
 

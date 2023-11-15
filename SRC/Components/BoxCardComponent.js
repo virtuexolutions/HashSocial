@@ -7,7 +7,8 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import {Icon, Tooltip} from 'native-base';
 
-const BoxCardComponent = ({imageSource, text, onPress,}) => {
+const BoxCardComponent = ({imageSource, text, onPress, highlighted}) => {
+  console.log('Box:', text, 'Highlighted:', highlighted);
   const [tooltipAnchor, setTooltipAnchor] = useState(null);
   const [isTooltipVisible, setTooltipVisible] = useState(false);
   const [tooltipText, setTooltipText] = useState('');
@@ -55,36 +56,43 @@ const BoxCardComponent = ({imageSource, text, onPress,}) => {
     setTooltipAnchor(null);
   };
 
+  const handlePress = () => {
+    onPress(text);
+    hideTooltip();
+  };
+
   return (
-    <View style={styles.box}>
-      <Image source={imageSource} style={styles.image} />
-      <View style={styles.textContainer}>
-        <CustomText isBold style={styles.text}>
-          {text}
-        </CustomText>
-        <TouchableOpacity
-          activeOpacity={0.7}
-          onPress={() => toggleTooltip(text, text)}>
-          <Icon
-            name="infocirlceo"
-            as={AntDesign}
-            color={Color.black}
-            size={moderateScale(18, 0.3)}
-          />
-        </TouchableOpacity>
+    <TouchableOpacity activeOpacity={0.7} onPress={handlePress}>
+      <View style={[styles.box, highlighted && styles.highlightedBox]}>
+        <Image source={imageSource} style={styles.image} />
+        <View style={styles.textContainer}>
+          <CustomText isBold style={styles.text}>
+            {text}
+          </CustomText>
+          <TouchableOpacity
+            activeOpacity={0.7}
+            onPress={() => toggleTooltip(text, text)}>
+            <Icon
+              name="infocirlceo"
+              as={AntDesign}
+              color={Color.black}
+              size={moderateScale(18, 0.3)}
+            />
+          </TouchableOpacity>
+        </View>
+        {tooltipAnchor == text && (
+          <Tooltip
+            isVisible={isTooltipVisible}
+            onBackdropPress={hideTooltip}
+            anchor={tooltipAnchor}
+            placement="top">
+            <View style={styles.tooltipMain}>
+              <CustomText style={styles.tooltipText}>{tooltipText}</CustomText>
+            </View>
+          </Tooltip>
+        )}
       </View>
-      {tooltipAnchor == text && (
-        <Tooltip
-          isVisible={isTooltipVisible}
-          onBackdropPress={hideTooltip}
-          anchor={tooltipAnchor}
-          placement="top">
-          <View style={styles.tooltipMain}>
-            <CustomText style={styles.tooltipText}>{tooltipText}</CustomText>
-          </View>
-        </Tooltip>
-      )}
-    </View>
+    </TouchableOpacity>
   );
 };
 
@@ -129,6 +137,12 @@ const styles = StyleSheet.create({
     color: Color.white,
     paddingHorizontal: moderateScale(10, 0.6),
     fontSize: moderateScale(11, 0.3),
+  },
+
+  highlightedBox: {
+    width: windowWidth * 0.42,
+    height: windowHeight * 0.30,
+    borderColor: Color.themeBgColor,
   },
 });
 
