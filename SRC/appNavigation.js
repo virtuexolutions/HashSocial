@@ -48,6 +48,8 @@ import AddCard from './Screens/AddCard';
 import PaymentMethod from './Screens/PaymentMethod';
 import BubbleManagement from './Screens/BubbleManagement';
 import ProfilesListing from './Screens/ProfilesListing';
+import QuestionScreen from './Screens/QuestionScreen';
+import ProfileType from './Screens/ProfileType';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -72,7 +74,7 @@ const AppNavigator = () => {
         ? profileSelected
           ? 'BubbleSelection'
           : 'ProfilesListing'
-        : 'Profile'
+        : 'ProfileType'
       : 'LoginScreen';
 
     return (
@@ -88,6 +90,8 @@ const AppNavigator = () => {
             component={BubbleManagement}
           />
           <RootNav.Screen name="Feeds" component={Feeds} />
+          <RootNav.Screen name="ProfileType" component={ProfileType} />
+          <RootNav.Screen name="QuestionScreen" component={QuestionScreen} />
           <RootNav.Screen name="EventDetails" component={EventDetails} />
           <RootNav.Screen name="BubbleSearch" component={BubbleSearch} />
           <RootNav.Screen name="AccountDetails" component={AccountDetails} />
