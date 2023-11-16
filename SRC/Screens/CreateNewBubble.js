@@ -7,13 +7,16 @@ import {
   ImageBackground,
   ScrollView,
   ActivityIndicator,
+  Platform,
+  ToastAndroid,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 const {height, width} = Dimensions.get('window');
 import {moderateScale} from 'react-native-size-matters';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from '../Components/CustomText';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
@@ -29,11 +32,18 @@ import navigationService from '../navigationService';
 import {ScaledSheet} from 'react-native-size-matters';
 import {useDispatch, useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { setBubbleCreated } from '../Store/slices/auth';
+import {setBubbleCreated} from '../Store/slices/auth';
+import {Post} from '../Axios/AxiosInterceptorFunction';
 
 const CreateNewBubble = props => {
   const item = props?.route?.params?.item;
-  const dispatch = useDispatch()
+  const token = useSelector(state => state.authReducer.token);
+  console.log(
+    '🚀 ~ file: CreateNewBubble.js:38 ~ CreateNewBubble ~ token:',
+    token,
+  );
+
+  const dispatch = useDispatch();
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const [CreateBubble, setCreateBubble] = useState('');
@@ -44,25 +54,49 @@ const CreateNewBubble = props => {
   );
   const [showModal, setShowModal] = useState(false);
   const [profilePicture, setProfilePicture] = useState({});
-  const [isLoading, setisLoading] = useState(false);
-
+  const [isLoading, setIsLoading] = useState(false);
+  const [allCanPost, setAllCanPost] = useState('Yes');
+  const [openToAll, setOpenToAll] = useState('Yes');
+  console.log(
+    '🚀 ~ file: CreateNewBubble.js:59 ~ CreateNewBubble ~ allCanPost:',
+    allCanPost,
+  );
+  const [teamRemoveCmmnts, setTeamRemoveCmnts] = useState('Yes');
+  console.log(
+    '🚀 ~ file: CreateNewBubble.js:64 ~ CreateNewBubble ~ teamRemoveCmmnts:',
+    teamRemoveCmmnts,
+  );
+  const [teamCanRemoveContent, setTeamCanRemoveContent] = useState('Yes');
+  const [allCanSendInvite, setAllCanSendInvite] = useState('Yes');
   const architecture = ['ABC', 'BCD', 'CDE'];
   const [architectureValue, setArchitectureValue] = useState('#Architecture');
   const [switchValue, setSwitchValue] = useState('Private');
-
   const ApprovalForAdmittance = ['yes', 'No'];
-
   const [ApprovalForAdmittanceValue, SetApprovalForAdmittance] = useState(
-    'Approval For Admittance',
+    '',
   );
-
-  const ApprovaltoPost = ['yes', 'No'];
-  const [ApprovalToPostValue, setApprovalToPostValue] =
-    useState('Approval To Post');
-
-  const MembershipCost = ['yes', 'No'];
-  const [MembershipCostValue, setMembershipCost] = useState('Member ship Cost');
-
+  const Data = [
+    {
+      text: 'All Bubble Member Post',
+      Answer: '(N) Only bubble team posts',
+    },
+    {
+      text: 'Bubble team can remove comments',
+      Answer: '(N) Only bubble owner can remove comments',
+    },
+    {
+      text: 'Bubble team can remove content',
+      Answer: '(N) Only bubble owner can remove content',
+    },
+    {
+      text: 'Entire bubble can invite new members',
+      Answer: '(N) Only bubble team can send invites',
+    },
+    {
+      text: 'Joining is open to everyone',
+      Answer: '(N) Only bubble team can accept request',
+    },
+  ];
   const onSelectSwitch = index => {
     if (index == 1) {
       setSwitchValue('private');
@@ -70,35 +104,66 @@ const CreateNewBubble = props => {
       setSwitchValue('public');
     }
   };
+  const ApprovaltoPost = ['yes', 'No'];
+  const [ApprovalToPostValue, setApprovalToPostValue] =
+    useState('');
 
-  const memberships = [
-    {
-      title: 'Gold \n Membership',
-      color: ['#f0cd60', '#f8e290', '#d8ad3f', '#915711'],
-      border: '#975e18',
-    },
-    {
-      title: 'platinum \n Membership',
-      color: ['#ebebeb', '#b3b3b5', '#9c9a9f'],
-      border: '#dfdfe0',
-    },
-    {
-      title: 'silver \n Membership',
-      color: ['#ebebeb', '#b3b3b5', '#9c9a9f'],
-      border: '#dfdfe0',
-    },
-  ];
+  const MembershipCost = ['yes', 'No'];
+  const [MembershipCostValue, setMembershipCost] = useState('');
 
-  const body = {
-    bubbleTitle: bubbleTitle,
-    architecture: architectureValue,
-    image: profilePicture,
-    moderator: moderator,
-    admin: Admin,
-    ApprovalForAdmittance: ApprovalForAdmittanceValue,
-    ApprovaltoPost: ApprovalToPostValue,
-    MembershipCost: MembershipCostValue,
-    privacy: switchValue,
+  const createBubble = async () => {
+    const url = 'auth/community';
+    const body = {
+      title: bubbleTitle,
+      moderator: moderator,
+      admin: Admin,
+      approval_admittance: ApprovalForAdmittanceValue,
+      approval_post: ApprovalToPostValue,
+      membership_cost: MembershipCostValue,
+      privacy: openToAll,
+      post_privacy: allCanPost,
+      remove_content: teamCanRemoveContent,
+      remove_comments: teamRemoveCmmnts,
+      invite_members: allCanSendInvite,
+    };
+    const formData = new FormData();
+    for (let key in body) {
+      if (body[key] == '') {
+        return Platform.OS == 'android'
+          ? ToastAndroid.show(`${key} is required`, ToastAndroid.SHORT)
+          : Alert.alert(`${key} is required`);
+      } else {
+        formData.append(key, body[key]);
+      }
+    }
+
+    if (Object.keys(profilePicture).length > 0) {
+      formData.append('image', profilePicture);
+    } else {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show(`image is empty`, ToastAndroid.SHORT)
+        : Alert.alert(`image is empty`);
+    }
+
+    console.log(
+      '🚀 ~ file: CreateNewBubble.js:132 ~ createBubble ~ formData:',
+      formData,
+    );
+
+    setIsLoading(true);
+    const response = await Post(url, formData, apiHeader(token));
+    setIsLoading(false);
+
+    if (response != undefined) {
+      console.log(
+        '🚀 ~ file: CreateNewBubble.js:92 ~ createBubble ~ response:',
+        response?.data,
+      );
+      dispatch(setBubbleCreated(true));
+      Platform.OS == 'android'
+        ? ToastAndroid.show('Bubble created Successfully', ToastAndroid.SHORT)
+        : Alert.alert('Bubble created Successfully');
+    }
   };
 
   useEffect(() => {
@@ -112,7 +177,7 @@ const CreateNewBubble = props => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Create new Bubble'} showBack />
+      <Header right Title={'Create new Bubble'} menu={true} />
       <ScrollView>
         <ImageBackground
           source={
@@ -137,9 +202,7 @@ const CreateNewBubble = props => {
                 inputHeight={0.05}
                 inputWidth={0.23}
                 color={Color.black}
-                // backgroundColor={'red'}
                 placeholderColor={Color.black}
-                // style={{fontWeight: '900'}}
                 isBold
               />
 
@@ -191,7 +254,6 @@ const CreateNewBubble = props => {
                       height: '100%',
                     }}
                     onPress={() => {
-                      // console.log('here')
                       setShowModal(true);
                     }}
                   />
@@ -305,22 +367,50 @@ const CreateNewBubble = props => {
 
             <View style={styles.line}></View>
 
-            <View style={styles.switchContainer}>
+            <View
+              style={{
+                marginTop: moderateScale(10, 0.3),
+                marginBottom: moderateScale(20, 0.3),
+              }}>
               <CustomText
+                isBold
                 style={{
-                  color: Color.black,
-                  fontSize: moderateScale(13, 0.6),
+                  width: windowWidth,
+                  paddingHorizontal: moderateScale(10, 0.6),
+                  fontSize: moderateScale(15, 0.6),
+                  marginTop: moderateScale(10, 0.6),
                 }}>
-                Privacy Setting
+                Team Role | Perms
               </CustomText>
-
-              <CustomSwitch
-                selectionMode={2}
-                roundCorner={true}
-                option1={'Private'}
-                option2={'Public'}
-                onSelectSwitch={onSelectSwitch}
-                selectionColor={'#12d50e'}
+              <SwitchComponent
+                text1={'All Bubble Member Post'}
+                text2={'(N) Only bubble team posts'}
+                value={allCanPost}
+                setValue={setAllCanPost}
+              />
+              <SwitchComponent
+                text1={'Bubble team can remove comments'}
+                text2={'(N) Only bubble owner can remove comments'}
+                value={teamRemoveCmmnts}
+                setValue={setTeamRemoveCmnts}
+              />
+              <SwitchComponent
+                text1={'Bubble team can remove content'}
+                text2={'Only bubble owner can remove content'}
+                value={teamCanRemoveContent}
+                setValue={setTeamCanRemoveContent}
+              />
+              <SwitchComponent
+                text1={'Entire bubble can invite new members'}
+                text2={'(N) Only bubble team can send invites'}
+                value={allCanSendInvite}
+                setValue={setAllCanSendInvite}
+              />
+              <SwitchComponent
+                text1={'Joining is open to everyone'}
+                text2={'(N) Only bubble team can accept request'}
+                value={openToAll}
+                setValue={setOpenToAll}
               />
             </View>
             <View
@@ -333,7 +423,7 @@ const CreateNewBubble = props => {
               <CustomButton
                 text={
                   isLoading ? (
-                    <ActivityIndicator color={'#01E8E3'} size={'small'} />
+                    <ActivityIndicator color={themeColor[1]} size={'small'} />
                   ) : (
                     'Next'
                   )
@@ -348,17 +438,12 @@ const CreateNewBubble = props => {
                 isBold={true}
                 marginBottom={moderateScale(50)}
                 onPress={() => {
+                  createBubble();
                   // navigationService.navigate('HomeScreen', {data: body});
                 }}
               />
               <CustomButton
-                text={
-                  isLoading ? (
-                    <ActivityIndicator color={'#01E8E3'} size={'small'} />
-                  ) : (
-                    'cancel'
-                  )
-                }
+                text={'cancel'}
                 textColor={themeColor[1]}
                 width={windowWidth * 0.4}
                 height={windowHeight * 0.06}
@@ -369,7 +454,7 @@ const CreateNewBubble = props => {
                 isBold={true}
                 marginBottom={moderateScale(50)}
                 onPress={() => {
-                  dispatch(setBubbleCreated(true))
+                  dispatch(setBubbleCreated(true));
                   // navigationService.navigate('HomeScreen', {data: body});
                 }}
               />
@@ -451,3 +536,56 @@ const styles = ScaledSheet.create({
     marginTop: moderateScale(10, 0.3),
   },
 });
+
+const SwitchComponent = ({text1, text2, setValue, value}) => {
+  const onSelectSwitch = index => {
+    if (index == 1) {
+      setValue('Yes');
+    } else if (index == 2) {
+      setValue('No');
+    }
+  };
+  return (
+    <View style={{flexDirection: 'row'}}>
+      <View
+        style={{
+          width: windowWidth * 0.7,
+          paddingVertical: moderateScale(8, 0.6),
+          paddingHorizontal: moderateScale(10, 0.6),
+        }}>
+        <CustomText
+          style={{
+            fontSize: moderateScale(13, 0.6),
+            color: Color.veryLightGray,
+          }}>
+          {text1}
+        </CustomText>
+        <CustomText
+          style={{
+            fontSize: moderateScale(11, 0.6),
+            color: Color.black,
+          }}>
+          {text2}
+        </CustomText>
+      </View>
+      <View
+        style={{
+          width: windowWidth * 0.3,
+          alignItems: 'flex-end',
+          justifyContent: 'center',
+          paddingHorizontal: moderateScale(10, 0.6),
+        }}>
+        <CustomSwitch
+          selectionMode={1}
+          roundCorner={true}
+          option1={'Yes'}
+          option2={'No'}
+          value={value}
+          setValue={setValue}
+          onSelectSwitch={onSelectSwitch}
+          selectionColor={'#11d40d'}
+        />
+      </View>
+    </View>
+  );
+};

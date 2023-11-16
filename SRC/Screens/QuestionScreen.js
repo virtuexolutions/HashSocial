@@ -121,6 +121,7 @@ const QuestionScreen = props => {
         '🚀 ~ file: QuestionScreen.js:104 ~ postAnswer ~ response:',
         response?.data,
       );
+      dispatch(setBubbleCreated(false))
       dispatch(setProfileSelcted(true));
       dispatch(setSelectedProfileData(response?.data?.profile_info));
       dispatch(setQuestionAnswered(response?.data?.profile_info?.qa_status));
@@ -259,30 +260,32 @@ const QuestionScreen = props => {
         <CustomButton
           text={
             isLoading ? (
-              <ActivityIndicator size={'small'} color={'white'} />
+              <ActivityIndicator size={'small'} color={themeColor[1]} />
             ) : (
               'Submit'
             )
           }
-          textColor={Color.white}
+          textColor={themeColor[1]}
           width={windowWidth * 0.3}
           height={windowHeight * 0.05}
           marginTop={moderateScale(20, 0.3)}
           onPress={() => {
             postAnswer();
           }}
-          bgColor={Color.black}
-          borderColor={Color.black}
-          borderWidth={1}
+          isGradient
+          bgColor={['#FFFFFF', '#FFFFFF']}
+          // borderColor={Color.black}
+          // borderWidth={1}
           borderRadius={moderateScale(30, 0.3)}
         />
 
         <CustomButton
           text={'Logout'}
-          textColor={Color.white}
+          textColor={themeColor[1]}
           width={windowWidth * 0.3}
           height={windowHeight * 0.05}
           marginTop={moderateScale(20, 0.3)}
+          isGradient
           onPress={() => {
             dispatch(setUserToken(null));
             dispatch(setBubbleSelected(false));
@@ -293,7 +296,7 @@ const QuestionScreen = props => {
             dispatch(setQuestionAnswered(false));
             dispatch(setBubbleCreated(false));
           }}
-          bgColor={Color.black}
+          bgColor={['#FFFFFF', '#FFFFFF']}
           borderColor={Color.black}
           borderWidth={1}
           borderRadius={moderateScale(30, 0.3)}
