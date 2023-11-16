@@ -15,12 +15,12 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import {useDispatch, useSelector} from 'react-redux';
 import navigationService from '../navigationService';
 import Modal from 'react-native-modal';
-import { setAccountPrivate, setBubbleSelected, setFeedsSelected, setNumOfProfiles, setProfileSelcted, setUserToken } from '../Store/slices/auth';
+import { setAccountPrivate, setBubbleCreated, setBubbleSelected, setFeedsSelected, setNumOfProfiles, setProfileSelcted, setQuestionAnswered, setUserToken } from '../Store/slices/auth';
 import { setSelectedBubbles } from '../Store/slices/common';
 
 const Header = props => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
-  const {showBack, Title, right, search, signup} = props;
+  const {showBack, Title, right, search, signup, menu} = props;
   const token = useSelector(state => state.authReducer.token);
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
@@ -69,6 +69,8 @@ const Header = props => {
         dispatch(setFeedsSelected(false))
         setModalVisible(!modalVisible);
         dispatch(setAccountPrivate('public'))
+        dispatch(setQuestionAnswered(false))
+        dispatch(setBubbleCreated(false))
         // navigationService.navigate('LoginScreen');
       },
     },
@@ -154,14 +156,14 @@ const Header = props => {
               />
             )}
 
-            <Icon
+            {!menu && <Icon
               name={'reorder-three'}
               as={Ionicons}
               size={moderateScale(40, 0.6)}
               color={themeColor[1]}
               style={{}}
               onPress={() => token != null && setModalVisible(!modalVisible)}
-            />
+            />}
           </View>
         )}
       </View>

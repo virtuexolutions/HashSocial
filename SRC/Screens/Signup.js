@@ -19,7 +19,7 @@ import {useIsFocused} from '@react-navigation/native';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import {validateEmail} from '../Config';
 import { setSelectedRole, setUserData} from '../Store/slices/common';
-import {setNumOfProfiles, setUserLogin, setUserToken, setWalkThrough} from '../Store/slices/auth';
+import {setBubbleCreated, setNumOfProfiles, setUserLogin, setUserToken, setWalkThrough} from '../Store/slices/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import CustomImage from '../Components/CustomImage';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
@@ -109,6 +109,7 @@ const Signup = () => {
       dispatch(setUserLogin(response?.data?.token));
       dispatch(setUserToken({token: response?.data?.token}));
       dispatch(setNumOfProfiles(response?.data?.user_info?.total_profile))
+      // dispatch(setBubbleCreated(false))
     }
   };
  

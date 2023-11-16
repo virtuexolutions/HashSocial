@@ -22,6 +22,7 @@ import Header from '../Components/Header';
 import navigationService from '../navigationService';
 import {
   setAccountPrivate,
+  setBubbleCreated,
   setBubbleSelected,
   setFeedsSelected,
   setNumOfProfiles,
@@ -61,6 +62,7 @@ const LoginScreen = () => {
       dispatch(setUserToken({token: response?.data?.token}));
       dispatch(setUserData(response?.data?.user_info));
       dispatch(setNumOfProfiles(response?.data?.user_info?.total_profile));
+      dispatch(setBubbleCreated(true))
       // dispatch(setBubbleSelected(response?.data?.user_info?.bubbles ? true : false));
       // dispatch(setFeedsSelected(response?.data?.user_info?.feeds ? true : false));
     }

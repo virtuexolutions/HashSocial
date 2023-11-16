@@ -59,6 +59,11 @@ const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
   const isVerified = useSelector(state => state.authReducer.isVerified);
   const token = useSelector(state => state.authReducer.token);
+  const bubbleCreated = useSelector(state => state.authReducer.bubbleCreated);
+  console.log(
+    '🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ bubbleCreated:',
+    bubbleCreated,
+  );
   console.log('🚀 ~ file: appNavigation.js:59 ~ AppNavigator ~ token:', token);
   const bubbleSelected = useSelector(state => state.authReducer.bubbleSelected);
   console.log(
@@ -78,51 +83,43 @@ const AppNavigator = () => {
   const profileSelected = useSelector(
     state => state.authReducer.profileSelected,
   );
-  console.log("🚀 ~ file: appNavigation.js:81 ~ AppNavigator ~ profileSelected:", profileSelected)
+  console.log(
+    '🚀 ~ file: appNavigation.js:81 ~ AppNavigator ~ profileSelected:',
+    profileSelected,
+  );
   const questionAnswered = useSelector(
     state => state.authReducer.questionAnswered,
   );
-  console.log("🚀 ~ file: appNavigation.js:85 ~ AppNavigator ~ questionAnswered:", questionAnswered)
+  console.log(
+    '🚀 ~ file: appNavigation.js:85 ~ AppNavigator ~ questionAnswered:',
+    questionAnswered,
+  );
 
   const RootNav = createNativeStackNavigator();
   const RootNavLogged = createNativeStackNavigator();
 
   const AppNavigatorContainer = () => {
-    const secondScreen =
+    const thirdScreen =
       token != null
         ? numOfProfile == 0
           ? 'ProfileType'
-          : !questionAnswered
-          ? 'QuestionScreen'
-          : !profileSelected
+          : profileSelected == false
           ? 'ProfilesListing'
-          : !bubbleSelected
+          : questionAnswered == false 
+          ? 'QuestionScreen'
+          : bubbleCreated == false
+          ? 'CreateNewBubble'
+          : bubbleSelected == false
           ? 'BubbleSelection'
           : !feedsSelected
           ? 'FeedSelection'
           : 'TabNavigation'
         : 'LoginScreen';
 
-    console.log(
-      '🚀 ~ file: appNavigation.js:76 ~ AppNavigatorContainer ~ secondScreen:',
-      secondScreen,
-    );
-    // console.log("🚀 ~ file: appNavigation.js:74 ~ AppNavigatorContainer ~ secondScreen:", secondScreen)
-
-    const firstScreen = bubbleSelected
-      ? 'TabNavigation'
-      : token != null
-      ? numOfProfile > 0
-        ? profileSelected
-          ? 'BubbleSelection'
-          : 'ProfilesListing'
-        : 'ProfileType'
-      : 'LoginScreen';
-
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={secondScreen}
+          initialRouteName={thirdScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen name="PostScreen" component={PostScreen} />

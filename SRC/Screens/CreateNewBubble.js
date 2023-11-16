@@ -27,11 +27,13 @@ import CustomImage from '../Components/CustomImage';
 import ImagePickerModal from '../Components/ImagePickerModal';
 import navigationService from '../navigationService';
 import {ScaledSheet} from 'react-native-size-matters';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
+import { setBubbleCreated } from '../Store/slices/auth';
 
 const CreateNewBubble = props => {
   const item = props?.route?.params?.item;
+  const dispatch = useDispatch()
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const [CreateBubble, setCreateBubble] = useState('');
@@ -367,6 +369,7 @@ const CreateNewBubble = props => {
                 isBold={true}
                 marginBottom={moderateScale(50)}
                 onPress={() => {
+                  dispatch(setBubbleCreated(true))
                   // navigationService.navigate('HomeScreen', {data: body});
                 }}
               />

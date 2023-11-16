@@ -32,6 +32,7 @@ import {
   setBubbleSelected,
   setFeedsSelected,
   setProfileSelcted,
+  setQuestionAnswered,
 } from '../Store/slices/auth';
 import {setSelectedProfileData} from '../Store/slices/common';
 import Modal from 'react-native-modal';
@@ -74,7 +75,7 @@ const LoginProfile = props => {
       setPassCode('');
       setModal(false);
       dispatch(setSelectedProfileData({}));
-
+      dispatch(setQuestionAnswered(response?.data?.profile_info?.qa_status));
       dispatch(setSelectedProfileData(response?.data?.profile_info));
       dispatch(setProfileSelcted(true));
       dispatch(
@@ -150,7 +151,7 @@ const LoginProfile = props => {
               // left:150,
               // top:1,
               // transform:[{scaleX:-1}]
-            //   backgroundColor: 'red',
+              //   backgroundColor: 'red',
             }}>
             <Lottie
               source={require('../Assets/Images/loader.json')}

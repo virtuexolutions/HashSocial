@@ -23,12 +23,18 @@ import {Icon, ScrollView} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CardComponent from '../Components/CardComponent';
 import {Get, Post} from '../Axios/AxiosInterceptorFunction';
-import {setAccountPrivate, setBubbleSelected, setFeedsSelected, setProfileSelcted} from '../Store/slices/auth';
+import {
+  setAccountPrivate,
+  setBubbleSelected,
+  setFeedsSelected,
+  setProfileSelcted,
+  setQuestionAnswered,
+} from '../Store/slices/auth';
 import {setSelectedProfileData} from '../Store/slices/common';
 import navigationService from '../navigationService';
 
-const ProfilesListing = (props) => {
-  const back = props?.route?.params?.back
+const ProfilesListing = props => {
+  const back = props?.route?.params?.back;
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
   const [isLoading, setIsLoading] = useState(false);
@@ -52,8 +58,8 @@ const ProfilesListing = (props) => {
 
   useEffect(() => {
     profileListing();
-    dispatch(setBubbleSelected(false))
-    dispatch(setFeedsSelected(false))
+    dispatch(setBubbleSelected(false));
+    dispatch(setFeedsSelected(false));
     dispatch(setProfileSelcted(false));
   }, []);
 
@@ -85,22 +91,34 @@ const ProfilesListing = (props) => {
         <View style={styles.mapview}>
           <View style={styles.View}>
             {bubbleData.map((item, index) => {
+              console.log("🚀 ~ file: ProfilesListing.js:94 ~ {bubbleData.map ~ item:", item)
               return (
                 <TouchableOpacity
                   onPress={() => {
                     if (item?.privacy == 'private') {
-                      dispatch(setAccountPrivate('private'))
+                      dispatch(setAccountPrivate('private'));
                       navigationService.navigate('LoginProfile', {item});
                     } else {
-                      dispatch(setBubbleSelected(false))
-                      dispatch(setFeedsSelected(false))
-                      dispatch(setProfileSelcted(false));
-                      dispatch(setAccountPrivate('public'))
+                      dispatch(setBubbleSelected(false));
+                      dispatch(setFeedsSelected(false));
+                      dispatch(setAccountPrivate('public'));
+                      dispatch(setQuestionAnswered(item?.qa_status));
                       dispatch(setSelectedProfileData(item));
                       dispatch(setProfileSelcted(true));
-                      dispatch(setBubbleSelected([0,"0", undefined, null,[]].includes(item?.bubbles) ? false : true))
-                      dispatch(setFeedsSelected([0, "0", undefined, null,[]].includes(item?.feed) ? false : true))
-                  
+                      dispatch(
+                        setBubbleSelected(
+                          [0, '0', undefined, null, []].includes(item?.bubbles)
+                            ? false
+                            : true,
+                        ),
+                      );
+                      dispatch(
+                        setFeedsSelected(
+                          [0, '0', undefined, null, []].includes(item?.feed)
+                            ? false
+                            : true,
+                        ),
+                      );
                     }
                   }}
                   style={{
@@ -118,17 +136,34 @@ const ProfilesListing = (props) => {
                     <CustomImage
                       onPress={() => {
                         if (item?.privacy == 'private') {
-                          dispatch(setAccountPrivate('private'))
+                          dispatch(setAccountPrivate('private'));
                           navigationService.navigate('LoginProfile', {item});
                         } else {
-                          dispatch(setBubbleSelected(false))
-                          dispatch(setFeedsSelected(false))
+                          dispatch(setBubbleSelected(false));
+                          dispatch(setFeedsSelected(false));
                           dispatch(setProfileSelcted(false));
-                          dispatch(setAccountPrivate('public'))
+                          dispatch(setAccountPrivate('public'));
                           dispatch(setSelectedProfileData(item));
+                          dispatch(setQuestionAnswered(item?.qa_status));
                           dispatch(setProfileSelcted(true));
-                          dispatch(setBubbleSelected(["0",0, undefined, null,[]].includes(item?.bubbles) ? false : true))
-                          dispatch(setFeedsSelected([0, "0",,undefined, null,[]].includes(item?.feed) ? false : true))
+                          dispatch(
+                            setBubbleSelected(
+                              ['0', 0, undefined, null, []].includes(
+                                item?.bubbles,
+                              )
+                                ? false
+                                : true,
+                            ),
+                          );
+                          dispatch(
+                            setFeedsSelected(
+                              [0, '0', , undefined, null, []].includes(
+                                item?.feed,
+                              )
+                                ? false
+                                : true,
+                            ),
+                          );
                         }
                       }}
                       style={{

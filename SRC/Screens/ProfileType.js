@@ -28,6 +28,7 @@ const ProfileType = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const [highlightedBox, setHighlightedBox] = useState(null);
+  const [category, setCategory] = useState('')
 
   const handleBoxPress = text => {
     setHighlightedBox(prevHighlightedBox =>
@@ -38,8 +39,8 @@ const ProfileType = () => {
 
   const renderBox = (imageSource, text) => (
     <BoxCardComponent
-    // setCategory={setCategory}
-      // category={category}
+    setCategory={setCategory}
+      category={category}
       imageSource={imageSource}
       text={text}
       tooltipText={`Tooltip for ${text}`}
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     width: windowWidth,
+    alignItems:'center',
     marginBottom: moderateScale(20, 0.3),
   },
 });

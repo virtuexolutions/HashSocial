@@ -9,7 +9,7 @@ import {Icon, Tooltip} from 'native-base';
 import { useSelector } from 'react-redux';
 
 
-const BoxCardComponent = ({imageSource, text, onPress, highlighted}) => {
+const BoxCardComponent = ({imageSource, text, onPress, highlighted, category, setCategory}) => {
   console.log('Box:', text, 'Highlighted:', highlighted);
   const [tooltipAnchor, setTooltipAnchor] = useState(null);
   const [isTooltipVisible, setTooltipVisible] = useState(false);
@@ -64,7 +64,10 @@ const BoxCardComponent = ({imageSource, text, onPress, highlighted}) => {
   };
 
   return (
-    <TouchableOpacity activeOpacity={0.7} onPress={handlePress}>
+    <TouchableOpacity activeOpacity={0.7} onPress={()=>{
+      handlePress()
+      setCategory(text)
+      }}>
       <View style={[styles.box, highlighted && styles.highlightedBox]}>
         <Image source={imageSource} style={styles.image} />
         <View style={styles.textContainer}>

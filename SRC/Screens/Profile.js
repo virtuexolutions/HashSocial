@@ -31,6 +31,7 @@ import {
   setFeedsSelected,
   setNumOfProfiles,
   setProfileSelcted,
+  setQuestionAnswered,
   setUserToken,
 } from '../Store/slices/auth';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
@@ -102,27 +103,20 @@ const Profile = props => {
       formData.append('passcode', passCode);
     }
     
-  //  return console.log("🚀 ~ file: Profile.js:70 ~ createProfile ~ formData:", formData)
     setIsLoading(true);
     const response = await Post(url, formData, apiHeader(token));
     setIsLoading(false);
     
     if (response?.data?.success) {
-      console.log("🚀 ~ file: Profile.js:104 ~ createProfile ~ response:", response?.data)
+      // return console.log("🚀 ~ file: Profile.js:104 ~ createProfile ~ response:", response?.data , !response?.data?.profile_info?.qa_status)
+       dispatch(setQuestionAnswered(response?.data?.profile_info?.qa_status == 0 ? false : true))
+       dispatch(setProfileSelcted(true));
       dispatch(setSelectedProfileData(response?.data?.profile_info));
-      // dispatch(setUserToken({token: response?.data?.token}));
-      // dispatch(setSelectedProfileData({name:'userrr'}))
-      // dispatch(setUserToken({token:'sdjhfjsfdsjfksdjfsdjhksdjfhfhkj'}))
-      // dispatch(setNumOfProfiles(1))
-      dispatch(
-        setNumOfProfiles(
-          response?.data?.profile_info?.user_info[0]?.total_profile,
-        ),
-      );
-      dispatch(setProfileSelcted(true));
+      dispatch(setNumOfProfiles(response?.data?.profile_info?.user_info[0]?.total_profile));
       dispatch(setBubbleSelected([null, "0", 0, [], undefined].includes(response?.data?.profile_info?.bubbles) ? false : true))
       dispatch(setFeedsSelected([null, "0", 0, [], undefined].includes(response?.data?.profile_info?.feed) ? false : true))
-      navigationService.navigate('QuestionScreen', {type:type})
+      // dispatch(setQuestionAnswered(response?.data?.question))
+      // navigationService.navigate('QuestionScreen', {type:type})
     }
   };
 
@@ -394,9 +388,10 @@ const Profile = props => {
               marginTop={moderateScale(20, 0.3)}
               fontSize={moderateScale(12, 0.3)}
               onPress={() => {
-                // createProfile();
-                dispatch(setNumOfProfiles(1))
-                navigationService.navigate('QuestionScreen',{type:type})
+                createProfile();
+                // dispatch(setNumOfProfiles(1))
+
+                // navigationService.navigate('QuestionScreen',{type:type})
               }}
               bgColor={'#FFFFFF'}
               borderRadius={moderateScale(30, 0.3)}
