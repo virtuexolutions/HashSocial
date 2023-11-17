@@ -52,6 +52,7 @@ import FeedSelection from './Screens/FeedSelection';
 import LoginProfile from './Screens/LoginProfile';
 import QuestionScreen from './Screens/QuestionScreen';
 import ProfileType from './Screens/ProfileType';
+import InterestSelection from './Screens/InterestsSelection';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -59,7 +60,15 @@ const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
   const isVerified = useSelector(state => state.authReducer.isVerified);
   const token = useSelector(state => state.authReducer.token);
+  console.log('🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ token:', token);
   const bubbleCreated = useSelector(state => state.authReducer.bubbleCreated);
+  const interestSelected = useSelector(
+    state => state.authReducer.interestSelected,
+  );
+  console.log(
+    '🚀 ~ file: appNavigation.js:68 ~ AppNavigator ~ interestSelected:',
+    interestSelected,
+  );
   console.log(
     '🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ bubbleCreated:',
     bubbleCreated,
@@ -100,21 +109,23 @@ const AppNavigator = () => {
 
   const AppNavigatorContainer = () => {
     const thirdScreen =
-      token != null
-        ? numOfProfile == 0
-          ? 'ProfileType'
-          : profileSelected == false
-          ? 'ProfilesListing'
-          : questionAnswered == false 
-          ? 'QuestionScreen'
-          : bubbleCreated == false
-          ? 'CreateNewBubble'
-          : bubbleSelected == false
-          ? 'BubbleSelection'
-          : !feedsSelected
-          ? 'FeedSelection'
-          : 'TabNavigation'
-        : 'LoginScreen';
+      token == null
+        ? 'LoginScreen'
+        : interestSelected == false
+        ? 'InterestSelection'
+        : numOfProfile == 0
+        ? 'ProfileType'
+        : profileSelected == false
+        ? 'ProfilesListing'
+        : questionAnswered == false
+        ? 'QuestionScreen'
+        : bubbleCreated == false
+        ? 'CreateNewBubble'
+        : bubbleSelected == false
+        ? 'BubbleSelection'
+        : !feedsSelected
+        ? 'FeedSelection'
+        : 'TabNavigation';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
@@ -122,6 +133,10 @@ const AppNavigator = () => {
           initialRouteName={thirdScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
+          <RootNav.Screen
+            name="InterestSelection"
+            component={InterestSelection}
+          />
           <RootNav.Screen name="PostScreen" component={PostScreen} />
           <RootNav.Screen name="FeedList" component={FeedList} />
           <RootNav.Screen

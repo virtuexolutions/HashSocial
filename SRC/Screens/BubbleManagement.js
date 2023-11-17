@@ -56,6 +56,7 @@ const BubbleManagement = () => {
       Answer: '(N) Only bubble team can accept request',
     },
   ];
+  
   return (
     <>
       <CustomStatusBar

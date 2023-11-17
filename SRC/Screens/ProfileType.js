@@ -7,6 +7,9 @@ import {
   TouchableOpacity,
   FlatList,
   Text,
+  Platform,
+  ToastAndroid,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 const {height, width} = Dimensions.get('window');
@@ -28,7 +31,7 @@ const ProfileType = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const [highlightedBox, setHighlightedBox] = useState(null);
-  const [category, setCategory] = useState('')
+  const [category, setCategory] = useState('');
 
   const handleBoxPress = text => {
     setHighlightedBox(prevHighlightedBox =>
@@ -36,10 +39,9 @@ const ProfileType = () => {
     );
   };
 
-
   const renderBox = (imageSource, text) => (
     <BoxCardComponent
-    setCategory={setCategory}
+      setCategory={setCategory}
       category={category}
       imageSource={imageSource}
       text={text}
@@ -91,13 +93,23 @@ const ProfileType = () => {
           </View>
           <CustomButton
             text={'Proceed'}
-            textColor={Color.black}
+            textColor={themeColor[1]}
             width={windowWidth * 0.5}
             height={windowHeight * 0.06}
             marginTop={moderateScale(20, 0.3)}
             bgColor={Color.white}
             borderRadius={moderateScale(30, 0.3)}
             onPress={() => {
+              if (category == '') {
+                {
+                  return Platform.OS == 'android'
+                    ? ToastAndroid.show(
+                        'Please select any category',
+                        ToastAndroid.SHORT,
+                      )
+                    : Alert.alert('Please select any category');
+                }
+              }
               navigationService.navigate('Profile', {category: category});
             }}
           />
@@ -121,7 +133,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-evenly',
     width: windowWidth,
-    alignItems:'center',
+    alignItems: 'center',
     marginBottom: moderateScale(20, 0.3),
   },
 });

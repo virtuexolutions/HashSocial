@@ -25,6 +25,7 @@ import {
   setBubbleCreated,
   setBubbleSelected,
   setFeedsSelected,
+  setInterestSelected,
   setNumOfProfiles,
   setUserToken,
 } from '../Store/slices/auth';
@@ -54,7 +55,8 @@ const LoginScreen = () => {
     setIsLoading(false);
 
     if (response != undefined) {
-      console.log("🚀 ~ file: LoginScreen.js:56 ~ Login ~ response:", response?.data)
+    console.log("🚀 ~ file: LoginScreen.js:58 ~ Login ~ response:", response?.data)
+    console.log("🚀 ~ file: LoginScreen.js:56 ~ Login ~ response:", JSON.parse(response?.data?.user_info?.interest)?.length)
       Platform.OS == 'android'
         ? ToastAndroid.show('User LoggedIn successfully', ToastAndroid.SHORT)
         : Alert.alert('User LoggedIn successfully');
@@ -63,6 +65,7 @@ const LoginScreen = () => {
       dispatch(setUserData(response?.data?.user_info));
       dispatch(setNumOfProfiles(response?.data?.user_info?.total_profile));
       dispatch(setBubbleCreated(true))
+      dispatch(setInterestSelected([null, undefined, 0 , []].includes(response?.data?.user_info?.interest) ? false: JSON.parse(response?.data?.user_info?.interest).length>0 ? true : false))
       // dispatch(setBubbleSelected(response?.data?.user_info?.bubbles ? true : false));
       // dispatch(setFeedsSelected(response?.data?.user_info?.feeds ? true : false));
     }

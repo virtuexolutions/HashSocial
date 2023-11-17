@@ -96,13 +96,13 @@ const QuestionScreen = props => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedQuestion, setSelectedQuestion] = useState('');
-  const [answer, setAnswer] = useState([]);
+  const [answer, setAnswer] = useState({});
   const [showTicks, setShowTicks] = useState({});
   const [isLoading, setIsLoading] = useState(false);
 
   const postAnswer = async () => {
     const url = `auth/profileqa`;
-    if (answer.length == 0) {
+    if (Object.keys(answer).length==0) {
       return Platform.OS == 'android'
         ? ToastAndroid.show('please select any answer', ToastAndroid.SHORT)
         : Alert.alert('please select any answer');
@@ -111,7 +111,9 @@ const QuestionScreen = props => {
       id: selectedProfile?.id,
       ...answer,
     };
-     console.log("🚀 ~ file: QuestionScreen.js:124 ~ postAnswer ~ body:", body)
+
+    console.log("🚀 ~ file: QuestionScreen.js:124 ~ postAnswer ~ body:", body)
+    
     setIsLoading(true);
     const response = await Post(url, body, apiHeader(token));
     setIsLoading(false);
