@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 import {
   View,
   Text,
@@ -7,33 +7,37 @@ import {
   StatusBar,
   ImageBackground,
   Platform,
-} from "react-native";
-import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
-import { moderateScale, ScaledSheet } from "react-native-size-matters";
-import { Icon } from "native-base";
-import navigationService from "../navigationService";
-import { useDispatch, useSelector } from "react-redux";
-import Color from "../Assets/Utilities/Color";
-import CustomText from "./CustomText";
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
-import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
-import MaterialIcons from "react-native-vector-icons/MaterialIcons";
-import Entypo from "react-native-vector-icons/Entypo";
-import { setNumOfProfiles, setProfileSelcted, setUserLogout } from "../Store/slices/auth";
-import { setUserLogOut } from "../Store/slices/common";
-import { imageUrl } from "../Config";
+} from 'react-native';
+import {DrawerContentScrollView, DrawerItem} from '@react-navigation/drawer';
+import {moderateScale, ScaledSheet} from 'react-native-size-matters';
+import {Icon} from 'native-base';
+import navigationService from '../navigationService';
+import {useDispatch, useSelector} from 'react-redux';
+import Color from '../Assets/Utilities/Color';
+import CustomText from './CustomText';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Entypo from 'react-native-vector-icons/Entypo';
+import {
+  setNumOfProfiles,
+  setProfileSelcted,
+  setUserLogout,
+} from '../Store/slices/auth';
+import {setUserLogOut} from '../Store/slices/common';
+import {imageUrl} from '../Config';
 // import { imageUrl } from "../Config/apiUrl";
 // import { LogoutUser } from "../Store/Actions/authAction";
 
 // const userImage = require("../Assets/Image/user.jpg");
 
-const width = Dimensions.get("window").width;
-const height = Dimensions.get("window").height;
+const width = Dimensions.get('window').width;
+const height = Dimensions.get('window').height;
 
-const CustomSidebarMenu = (props) => {
-  const user = useSelector((state) => state.commonReducer.userData);
-  const token = useSelector((state) => state.authReducer.token);
+const CustomSidebarMenu = props => {
+  const user = useSelector(state => state.commonReducer.userData);
+  const token = useSelector(state => state.authReducer.token);
 
   // const fcmToken = useSelector((state) => state.authReducer.fcmToken);
   // const wallet = useSelector((state) => state.commonReducer.wallet);
@@ -51,9 +55,8 @@ const CustomSidebarMenu = (props) => {
       <View
         style={[
           styles.header,
-          Platform.OS == "android" && { height: height * 0.28 },
-        ]}
-      >
+          Platform.OS == 'android' && {height: height * 0.28},
+        ]}>
         {token != null && (
           <View style={styles.userProfileView}>
             <View
@@ -64,15 +67,14 @@ const CustomSidebarMenu = (props) => {
                 marginTop: moderateScale(60, 0.3),
                 // marginBottom: moderateScale(5, 0.3),
                 backgroundColor: Color.white,
-                justifyContent: "center",
-                alignItem: "center",
-              }}
-            >
+                justifyContent: 'center',
+                alignItem: 'center',
+              }}>
               <Image
                 source={
                   user?.photo
-                    ? { uri: `${imageUrl}${user?.photo}` }
-                    : require("../Assets/Images/profilepic.png")
+                    ? {uri: `${imageUrl}${user?.photo}`}
+                    : require('../Assets/Images/profilepic.png')
                 }
                 style={{
                   width: width * 0.22,
@@ -83,21 +85,20 @@ const CustomSidebarMenu = (props) => {
               />
               <View
                 style={{
-                  position: "absolute",
+                  position: 'absolute',
                   padding: moderateScale(3, 0.3),
                   backgroundColor: Color.white,
                   bottom: moderateScale(2, 0.3),
                   right: moderateScale(5, 0.3),
                   borderRadius: moderateScale(10, 0.3),
-                }}
-              >
+                }}>
                 <Icon
-                  name={"pen"}
+                  name={'pen'}
                   as={FontAwesome5}
                   size={moderateScale(13, 0.3)}
                   color={Color.black}
-                  style={{ marginTop: moderateScale(2, 0.3) }}
-                  onPress={() => navigationService.navigate("Profile")}
+                  style={{marginTop: moderateScale(2, 0.3)}}
+                  onPress={() => navigationService.navigate('Profile')}
                 />
               </View>
             </View>
@@ -111,17 +112,15 @@ const CustomSidebarMenu = (props) => {
             <CustomText
               style={styles.labelText}
               onPress={() => {
-                navigationService.navigate("LoginScreen");
-              }}
-            >
+                navigationService.navigate('LoginScreen');
+              }}>
               Log In /
             </CustomText>
             <CustomText
-              style={[{ marginLeft: moderateScale(5, 0.3) }, styles.labelText]}
+              style={[{marginLeft: moderateScale(5, 0.3)}, styles.labelText]}
               onPress={() => {
-                navigationService.navigate("SignupScreen");
-              }}
-            >
+                navigationService.navigate('SignupScreen');
+              }}>
               Sign Up
             </CustomText>
           </View>
@@ -131,19 +130,18 @@ const CustomSidebarMenu = (props) => {
       <DrawerContentScrollView {...props}>
         <View
           style={[
-            Platform.OS == "ios"
-              ? { height: height * 0.71 }
-              : { height: height * 0.73 },
+            Platform.OS == 'ios'
+              ? {height: height * 0.71}
+              : {height: height * 0.73},
             {
               paddingLeft: moderateScale(10, 0.3),
             },
-          ]}
-        >
+          ]}>
           <DrawerItem
-            label={"Home"}
+            label={'Home'}
             labelStyle={[styles.labelStyle]}
             onPress={() => {
-              navigationService.navigate("HomeScreen");
+              navigationService.navigate('HomeScreen');
             }}
             icon={() => (
               <Icon
@@ -157,10 +155,10 @@ const CustomSidebarMenu = (props) => {
           {token != null && (
             <>
               <DrawerItem
-                label={"Messages"}
+                label={'Messages'}
                 labelStyle={[styles.labelStyle]}
                 onPress={() => {
-                  navigationService.navigate("ChatListings");
+                  navigationService.navigate('ChatListings');
                 }}
                 icon={() => (
                   <Icon
@@ -172,10 +170,10 @@ const CustomSidebarMenu = (props) => {
                 )}
               />
               <DrawerItem
-                label={"Reservations"}
+                label={'Reservations'}
                 labelStyle={[styles.labelStyle]}
                 onPress={() => {
-                  navigationService.navigate("Reservations");
+                  navigationService.navigate('Reservations');
                 }}
                 icon={() => (
                   <Icon
@@ -189,10 +187,10 @@ const CustomSidebarMenu = (props) => {
             </>
           )}
           <DrawerItem
-            label={"Other Services"}
+            label={'Other Services'}
             labelStyle={[styles.labelStyle]}
             onPress={() => {
-              navigationService.navigate("OtherServices");
+              navigationService.navigate('OtherServices');
             }}
             icon={() => (
               <Icon
@@ -206,10 +204,10 @@ const CustomSidebarMenu = (props) => {
           {token != null && (
             <>
               <DrawerItem
-                label={"Password Change"}
+                label={'Password Change'}
                 labelStyle={[styles.labelStyle]}
                 onPress={() => {
-                  navigationService.navigate("PasswordChange");
+                  navigationService.navigate('PasswordChange');
                 }}
                 icon={() => (
                   <Icon
@@ -221,10 +219,10 @@ const CustomSidebarMenu = (props) => {
                 )}
               />
               <DrawerItem
-                label={"Profile"}
+                label={'Profile'}
                 labelStyle={[styles.labelStyle]}
                 onPress={() => {
-                  navigationService.navigate("Profile");
+                  navigationService.navigate('Profile');
                 }}
                 icon={() => (
                   <Icon
@@ -238,10 +236,10 @@ const CustomSidebarMenu = (props) => {
             </>
           )}
           <DrawerItem
-            label={"Support"}
+            label={'Support'}
             labelStyle={[styles.labelStyle]}
             onPress={() => {
-              navigationService.navigate("Support");
+              navigationService.navigate('Support');
             }}
             icon={() => (
               <Icon
@@ -253,10 +251,10 @@ const CustomSidebarMenu = (props) => {
             )}
           />
           <DrawerItem
-            label={"Terms And condition"}
+            label={'Terms And condition'}
             labelStyle={[styles.labelStyle]}
             onPress={() => {
-              navigationService.navigate("TermsAndConditions");
+              navigationService.navigate('TermsAndConditions');
             }}
             icon={() => (
               <Icon
@@ -268,10 +266,10 @@ const CustomSidebarMenu = (props) => {
             )}
           />
           <DrawerItem
-            label={"Privacy Policy"}
+            label={'Privacy Policy'}
             labelStyle={[styles.labelStyle]}
             onPress={() => {
-              navigationService.navigate("PrivacyPolicy");
+              navigationService.navigate('PrivacyPolicy');
             }}
             icon={() => (
               <Icon
@@ -286,12 +284,13 @@ const CustomSidebarMenu = (props) => {
         {token != null && (
           <View style={styles.footer}>
             <DrawerItem
-              label={"Log out"}
+              label={'Log out'}
               labelStyle={[styles.labelStyle]}
               onPress={() => {
-                dispatch(setUserLogOut())
-                dispatch(setProfileSelcted(false))
-                dispatch(setNumOfProfiles(0))
+                dispatch(setUserLogOut());
+                dispatch(setProfileSelcted(false));
+                dispatch(setNumOfProfiles(0));
+                dispatch(setBubbleCreated(false));
               }}
               icon={() => (
                 <Icon
@@ -317,22 +316,22 @@ const styles = ScaledSheet.create({
     backgroundColor: themeColor[1],
   },
   labels: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginLeft: moderateScale(20, 0.3),
     paddingTop: moderateScale(180, 0.3),
   },
   labelText: {
-    color: "white",
-    fontWeight: "bold",
+    color: 'white',
+    fontWeight: 'bold',
     fontSize: moderateScale(15, 0.3),
   },
   labelStyle: {
     color: Color.black,
     fontSize: moderateScale(13, 0.3),
-    position: "absolute",
+    position: 'absolute',
     top: moderateScale(-8, 0.3),
     left: moderateScale(-15, 0.3),
-    fontFamily: "PlusJakartaDisplay-bold",
+    fontFamily: 'PlusJakartaDisplay-bold',
     // fontWeight: "bold",
   },
   iconStyle: {
@@ -343,19 +342,19 @@ const styles = ScaledSheet.create({
     // padding: moderateScale(5, 0.3),
   },
   userText: {
-    color: "#fff",
+    color: '#fff',
     fontSize: moderateScale(16, 0.3),
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginLeft: moderateScale(5, 0.3),
     marginTop: moderateScale(10, 0.3),
     // textTransform: "capitalize",
   },
 
   footer: {
-    position: "absolute",
+    position: 'absolute',
     bottom: moderateScale(40, 0.3),
     borderTopWidth: 1,
-    width: "100%",
+    width: '100%',
     borderColor: Color.themeLightGray,
     paddingLeft: moderateScale(20, 0.3),
     // marginLeft: moderateScale(20, 0.3),
@@ -364,7 +363,7 @@ const styles = ScaledSheet.create({
   closeIconStyle: {
     marginLeft: moderateScale(12, 0.3),
     marginTop:
-      Platform.OS == "android"
+      Platform.OS == 'android'
         ? moderateScale(15, 0.3)
         : moderateScale(50, 0.3),
   },

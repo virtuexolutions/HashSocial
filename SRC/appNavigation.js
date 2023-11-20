@@ -50,6 +50,9 @@ import BubbleManagement from './Screens/BubbleManagement';
 import ProfilesListing from './Screens/ProfilesListing';
 import FeedSelection from './Screens/FeedSelection';
 import LoginProfile from './Screens/LoginProfile';
+import QuestionScreen from './Screens/QuestionScreen';
+import ProfileType from './Screens/ProfileType';
+import InterestSelection from './Screens/InterestsSelection';
 
 const AppNavigator = () => {
   // const isLogin = false;
@@ -57,43 +60,83 @@ const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
   const isVerified = useSelector(state => state.authReducer.isVerified);
   const token = useSelector(state => state.authReducer.token);
-  // console.log("🚀 ~ file: appNavigation.js:59 ~ AppNavigator ~ token:", token)
+  console.log('🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ token:', token);
+  const bubbleCreated = useSelector(state => state.authReducer.bubbleCreated);
+  const interestSelected = useSelector(
+    state => state.authReducer.interestSelected,
+  );
+  console.log(
+    '🚀 ~ file: appNavigation.js:68 ~ AppNavigator ~ interestSelected:',
+    interestSelected,
+  );
+  console.log(
+    '🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ bubbleCreated:',
+    bubbleCreated,
+  );
+  console.log('🚀 ~ file: appNavigation.js:59 ~ AppNavigator ~ token:', token);
   const bubbleSelected = useSelector(state => state.authReducer.bubbleSelected);
-  // console.log("🚀 ~ file: appNavigation.js:60 ~ AppNavigator ~ bubbleSelected:", bubbleSelected)
+  console.log(
+    '🚀 ~ file: appNavigation.js:60 ~ AppNavigator ~ bubbleSelected:',
+    bubbleSelected,
+  );
   const numOfProfile = useSelector(state => state.authReducer.numOfProfiles);
-  // console.log("🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ numOfProfile:", numOfProfile)
+  console.log(
+    '🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ numOfProfile:',
+    numOfProfile,
+  );
   const feedsSelected = useSelector(state => state.authReducer.feedsSelected);
-  // console.log("🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ feedsSelected:", feedsSelected)
+  console.log(
+    '🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ feedsSelected:',
+    feedsSelected,
+  );
   const profileSelected = useSelector(
     state => state.authReducer.profileSelected,
+  );
+  console.log(
+    '🚀 ~ file: appNavigation.js:81 ~ AppNavigator ~ profileSelected:',
+    profileSelected,
+  );
+  const questionAnswered = useSelector(
+    state => state.authReducer.questionAnswered,
+  );
+  console.log(
+    '🚀 ~ file: appNavigation.js:85 ~ AppNavigator ~ questionAnswered:',
+    questionAnswered,
   );
 
   const RootNav = createNativeStackNavigator();
   const RootNavLogged = createNativeStackNavigator();
 
   const AppNavigatorContainer = () => {
-    const secondScreen =
-    token != null
-    ? numOfProfile == 0
-    ? 'Profile'
-    : !profileSelected
-    ? 'ProfilesListing'
-    : !bubbleSelected
-    ? 'BubbleSelection'
-    : !feedsSelected
-    ? 'FeedSelection'
-    : 'TabNavigation'
-    : 'LoginScreen';
-    
-    // console.log("🚀 ~ file: appNavigation.js:74 ~ AppNavigatorContainer ~ secondScreen:", secondScreen)
-  
+    const thirdScreen =
+      token == null
+        ? 'LoginScreen'
+        : interestSelected == false
+        ? 'InterestSelection'
+        : numOfProfile == 0
+        ? 'ProfileType'
+        : profileSelected == false
+        ? 'ProfilesListing'
+        : questionAnswered == false
+        ? 'QuestionScreen'
+        : bubbleCreated == false
+        ? 'CreateNewBubble'
+        : bubbleSelected == false
+        ? 'BubbleSelection'
+        : !feedsSelected
+        ? 'FeedSelection'
+        : 'TabNavigation';
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={secondScreen}
+          initialRouteName={thirdScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
+          <RootNav.Screen
+            name="InterestSelection"
+            component={InterestSelection}
+          />
           <RootNav.Screen name="PostScreen" component={PostScreen} />
           <RootNav.Screen name="FeedList" component={FeedList} />
           <RootNav.Screen
@@ -101,6 +144,8 @@ const AppNavigator = () => {
             component={BubbleManagement}
           />
           <RootNav.Screen name="Feeds" component={Feeds} />
+          <RootNav.Screen name="ProfileType" component={ProfileType} />
+          <RootNav.Screen name="QuestionScreen" component={QuestionScreen} />
           <RootNav.Screen name="EventDetails" component={EventDetails} />
           <RootNav.Screen name="BubbleSearch" component={BubbleSearch} />
           <RootNav.Screen name="AccountDetails" component={AccountDetails} />
@@ -124,16 +169,15 @@ const AppNavigator = () => {
           <RootNav.Screen name="Signup" component={Signup} />
           <RootNav.Screen name="ResetPassword" component={ResetPassword} />
           <RootNav.Screen name="ChangePassword" component={ChangePassword} />
-          <RootNav.Screen name="SubscriptionScreen" component={SubscriptionScreen}/>
+          <RootNav.Screen
+            name="SubscriptionScreen"
+            component={SubscriptionScreen}
+          />
           <RootNav.Screen name="VerifyNumber" component={VerifyNumber} />
           <RootNav.Screen name="AddCard" component={AddCard} />
           <RootNav.Screen name="PaymentMethod" component={PaymentMethod} />
           <RootNav.Screen name="ProfilesListing" component={ProfilesListing} />
           <RootNav.Screen name="LoginProfile" component={LoginProfile} />
-
-
-
-
         </RootNav.Navigator>
       </NavigationContainer>
     );

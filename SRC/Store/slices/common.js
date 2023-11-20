@@ -15,6 +15,7 @@ const initialState = {
   selectedRole: '',
 };
 
+
 const CommonSlice = createSlice({
   name: 'commonReducer',
   initialState: initialState,
@@ -55,6 +56,7 @@ const CommonSlice = createSlice({
 
     setSelectedBubbles(state, action) {
       state.selectedBubble = action.payload;
+      console.log("🚀 ~ file: common.js:58 ~ setSelectedBubbles ~ action.payload00000:", action.payload)
     },
     setSelectedFeeds(state, action) {
       state.selectedFeeds = action.payload;

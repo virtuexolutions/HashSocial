@@ -27,8 +27,11 @@ import navigationService from '../navigationService';
 import {useDispatch, useSelector} from 'react-redux';
 import {
   setAccountPrivate,
+  setBubbleSelected,
+  setFeedsSelected,
   setNumOfProfiles,
   setProfileSelcted,
+  setQuestionAnswered,
   setUserToken,
 } from '../Store/slices/auth';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
@@ -40,9 +43,10 @@ import {setSelectedProfileData} from '../Store/slices/common';
 
 const Profile = props => {
   const item = props?.route?.params?.item;
+  const category = props?.route?.params?.category;
+  console.log("🚀 ~ file: Profile.js:46 ~ Profile ~ category:", category)
   const token = useSelector(state => state.authReducer.token);
   const numOfProfiles = useSelector(state => state.authReducer.numOfProfiles);
-  // console.log("🚀 ~ file: Profile.js:40 ~ Profile ~ numOfProfiles:", numOfProfiles)
   const dispatch = useDispatch();
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -53,7 +57,7 @@ const Profile = props => {
   const [passCode, setPassCode] = useState('');
   const [imagePickerModal, setImagePickerModal] = useState(false);
   const [type, setType] = useState(
-    item?.profileType ? item?.profileType : 'Select Profile Type',
+    item?.profileType ? item?.profileType :category ? category : 'Select Profile Type',
   );
   const [image, setImage] = useState({});
 
@@ -99,24 +103,20 @@ const Profile = props => {
       formData.append('passcode', passCode);
     }
     
-  //  return console.log("🚀 ~ file: Profile.js:70 ~ createProfile ~ formData:", formData)
     setIsLoading(true);
     const response = await Post(url, formData, apiHeader(token));
     setIsLoading(false);
     
     if (response?.data?.success) {
-      console.log("🚀 ~ file: Profile.js:104 ~ createProfile ~ response:", response?.data)
+      // return console.log("🚀 ~ file: Profile.js:104 ~ createProfile ~ response:", response?.data , !response?.data?.profile_info?.qa_status)
+       dispatch(setQuestionAnswered(response?.data?.profile_info?.qa_status == 0 ? false : true))
+       dispatch(setProfileSelcted(true));
       dispatch(setSelectedProfileData(response?.data?.profile_info));
-      // dispatch(setUserToken({token: response?.data?.token}));
-      // dispatch(setSelectedProfileData({name:'userrr'}))
-      // dispatch(setUserToken({token:'sdjhfjsfdsjfksdjfsdjhksdjfhfhkj'}))
-      // dispatch(setNumOfProfiles(1))
-      dispatch(
-        setNumOfProfiles(
-          response?.data?.profile_info?.user_info[0]?.total_profile,
-        ),
-      );
-      dispatch(setProfileSelcted(true));
+      dispatch(setNumOfProfiles(response?.data?.profile_info?.user_info[0]?.total_profile));
+      dispatch(setBubbleSelected([null, "0", 0, [], undefined].includes(response?.data?.profile_info?.bubbles) ? false : true))
+      dispatch(setFeedsSelected([null, "0", 0, [], undefined].includes(response?.data?.profile_info?.feed) ? false : true))
+      // dispatch(setQuestionAnswered(response?.data?.question))
+      // navigationService.navigate('QuestionScreen', {type:type})
     }
   };
 
@@ -150,13 +150,13 @@ const Profile = props => {
                 styles.profileSection,
                 {
                   borderColor:
-                    type == 'Content creator'
+                  type == 'Content Creator'
                       ? 'yellow'
-                      : type == 'Enterpreneur'
+                      : type == 'Business & Entrepreneurship'
                       ? Color.green
-                      : type == 'Connector'
+                      : type == 'Community & Connection'
                       ? 'pink'
-                      : type == 'Explore'
+                      : type == 'Learning & Exploring'
                       ? 'blue'
                       : 'black',
                 },
@@ -201,15 +201,15 @@ const Profile = props => {
               borderRadius: moderateScale(20, 0.6),
               borderLeftWidth: 4,
               borderColor:
-                type == 'Content creator'
-                  ? 'yellow'
-                  : type == 'Enterpreneur'
-                  ? Color.green
-                  : type == 'Connector'
-                  ? 'pink'
-                  : type == 'Explore'
-                  ? 'blue'
-                  : 'black',
+              type == 'Content Creator'
+              ? 'yellow'
+              : type == 'Business & Entrepreneurship'
+              ? Color.green
+              : type == 'Community & Connection'
+              ? 'pink'
+              : type == 'Learning & Exploring'
+              ? 'blue'
+              : 'black',
               borderTopWidth: 4,
               paddingVertical: moderateScale(20, 0.3),
             }}
@@ -248,10 +248,10 @@ const Profile = props => {
               </CustomText>
               <DropDownSingleSelect
                 array={[
-                  'Content creator',
-                  'Enterpreneur',
-                  'Connector',
-                  'Explore',
+                  'Content Creator',
+                  'Business & Entrepreneurship',
+                  'Community & Connection',
+                  'Learning & Exploring',
                 ]}
                 item={type}
                 setItem={setType}
@@ -389,6 +389,9 @@ const Profile = props => {
               fontSize={moderateScale(12, 0.3)}
               onPress={() => {
                 createProfile();
+                // dispatch(setNumOfProfiles(1))
+
+                // navigationService.navigate('QuestionScreen',{type:type})
               }}
               bgColor={'#FFFFFF'}
               borderRadius={moderateScale(30, 0.3)}

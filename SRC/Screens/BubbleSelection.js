@@ -43,6 +43,9 @@ const BubbleSelection = () => {
   );
 
   const dispatch = useDispatch();
+  const selectedBubbles = useSelector(
+    state => state.commonReducer.selectedBubble);
+
   const [BubbleImageArraty, setBubbleImageArraty] = useState([
     {
       id: 1,
@@ -138,6 +141,24 @@ const BubbleSelection = () => {
       dispatch(setSelectedProfileData(response?.data?.profile_info))
       dispatch(setBubbleSelected(true))
       dispatch(setSelectedBubbles(selectedBubble))
+    }}
+  const handleBubbleSelection = (index) => {
+    const updatedBubbleArray = [...BubbleImageArraty];
+    updatedBubbleArray[index].added = !updatedBubbleArray[index].added;
+    setBubbleImageArraty(updatedBubbleArray);
+
+    const selectedBubblesArray = updatedBubbleArray
+      .filter(bubble => bubble.added)
+      .map(bubble => bubble.name);
+    dispatch(setSelectedBubbles(selectedBubblesArray));
+  };
+
+  const saveSelection = () => {
+    if (selectedBubbles.length > 0) {
+      dispatch(setBubbleSelected(true));
+      ToastAndroid.show('Saved', ToastAndroid.SHORT);
+    } else {
+      ToastAndroid.show('Please select any bubble', ToastAndroid.SHORT);
     }
   };
 
@@ -235,9 +256,11 @@ const BubbleSelection = () => {
                   }
                   const data = [...BubbleImageArraty];
                   data[index].added = !data[index].added;
+                  handleBubbleSelection(index)
+                  // const data = [...BubbleImageArraty];
+                  // data[index].added = !data[index].added;
 
-                  setBubbleImageArraty(data);
-                  // setSavedBubbles(prev => [...prev, item])
+                  // setBubbleImageArraty(data);
                 }}
                 style={{
                   width: windowWidth * 0.3,

@@ -9,6 +9,9 @@ const initialState = {
   isGoalCreated: false,
   bubbleSelected: false,
   feedsSelected: false,
+  questionAnswered: false,
+  bubbleCreated: false,
+  interestSelected: false,
   privacy: 'public',
   numOfProfiles: 0,
   profileSelected: false,
@@ -49,6 +52,15 @@ const AuthSlice = createSlice({
     setProfileSelcted(state, action) {
       state.profileSelected = action.payload;
     },
+    setQuestionAnswered(state, action) {
+      state.questionAnswered = action.payload;
+    },
+    setBubbleCreated(state, action) {
+      state.bubbleCreated = action.payload;
+    },
+    setInterestSelected(state, action) {
+      state.interestSelected = action.payload;
+    },
     setAccountPrivate(state, action) {
       // console.log("🚀 ~ file: common.js:68 ~ setAccountPrivate ~ action:", action.payload)
       if (action.payload == 'private') {
@@ -77,6 +89,9 @@ export const {
   setAccountPrivate,
   setNumOfProfiles,
   setProfileSelcted,
+  setBubbleCreated,
+  setInterestSelected,
+  setQuestionAnswered,
 } = AuthSlice.actions;
 
 export default AuthSlice.reducer;
