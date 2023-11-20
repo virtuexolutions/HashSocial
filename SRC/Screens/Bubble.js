@@ -159,11 +159,7 @@ const Bubble = () => {
               height: windowHeight * 0.35,
             }}>
             <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                marginTop: moderateScale(30, 0.3),
-              }}>
+              style={styles.textwithicon}>
               <CustomText
                 numberOfLines={1}
                 children={'naplesrunning'}
@@ -239,11 +235,7 @@ const Bubble = () => {
               </View>
             </View>
             <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'center',
-                marginTop: moderateScale(30, 0.3),
-              }}>
+              style={styles.followbtn}>
               <CustomButton
                 text={
                   isLoading ? (
@@ -281,12 +273,7 @@ const Bubble = () => {
             </View>
           </ImageBackground>
           <View
-            style={{
-              width: windowWidth,
-              marginTop: moderateScale(10, 0.3),
-              // paddingHorizontal: moderateScale(10, 0.6),
-              // marginLeft:moderateScale(10,.3)
-            }}>
+            style={styles.mapview}>
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
@@ -479,12 +466,7 @@ const Bubble = () => {
           />
           {invitedPeople?.length > 0 && (
             <View
-              style={{
-                position: 'absolute',
-                alignSelf: 'center',
-                bottom: 20,
-                backgroundColor: 'transparent',
-              }}>
+              style={styles.invite}>
               <CustomButton
                 text={
                   isLoading ? (
@@ -608,6 +590,29 @@ const styles = ScaledSheet.create({
     marginTop: moderateScale(30, 0.3),
     paddingHorizontal: moderateScale(30, 0.6),
   },
+  textwithicon:{
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: moderateScale(30, 0.3),
+  },
+  followbtn:{
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: moderateScale(30, 0.3),
+  },
+  mapview:{
+    width: windowWidth,
+    marginTop: moderateScale(10, 0.3),
+    // paddingHorizontal: moderateScale(10, 0.6),
+    // marginLeft:moderateScale(10,.3)
+  },
+  invite:{
+    position: 'absolute',
+    alignSelf: 'center',
+    bottom: 20,
+    backgroundColor: 'transparent',
+  }
+  
 });
 
 export default Bubble;

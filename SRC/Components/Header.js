@@ -15,16 +15,14 @@ import Entypo from 'react-native-vector-icons/Entypo'
 import {useDispatch, useSelector} from 'react-redux';
 import navigationService from '../navigationService';
 import Modal from 'react-native-modal';
-import { setBubbleSelected, setUserToken } from '../Store/slices/auth';
+import { setBubbleSelected, setFeedsSelected, setNumOfProfiles, setProfileSelcted, setUserToken } from '../Store/slices/auth';
+import { setSelectedBubbles } from '../Store/slices/common';
 
 const Header = props => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
-  console.log("🚀 ~ file: Header.js:20 ~ Header ~ themeColor:", themeColor)
-  const {showBack, Title, right, search} = props;
+  const {showBack, Title, right, search, signup} = props;
   const token = useSelector(state => state.authReducer.token);
-  console.log('🚀 ~ file: Header.js:20 ~ Header ~ token:', token);
   const [modalVisible, setModalVisible] = useState(false);
-  console.log('🚀 ~ file: Header.js:19 ~ Header ~ modalVisible:', modalVisible);
   const dispatch = useDispatch();
   const navigation = useNavigation()
   const modalData = [
@@ -66,8 +64,11 @@ const Header = props => {
       onPress: () => {
         dispatch(setUserToken(null))
         dispatch(setBubbleSelected(false))
+        dispatch(setProfileSelcted(false))
+        dispatch(setNumOfProfiles(0))
+        dispatch(setFeedsSelected(false))
         setModalVisible(!modalVisible);
-        navigationService.navigate('LoginScreen');
+        // navigationService.navigate('LoginScreen');
       },
     },
   ];

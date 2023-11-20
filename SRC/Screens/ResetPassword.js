@@ -104,13 +104,7 @@ const ResetPassword = props => {
           alignItems: 'center',
         }}>
         <CustomText
-          style={{
-            fontSize: moderateScale(25, 0.6),
-            color: '#353434',
-            width: windowWidth * 0.9,
-            textAlign: 'left',
-            marginTop: moderateScale(10, 0.3),
-          }}
+          style={styles.ResetPassword}
           isBold={true}
           children={'Reset Password'}
         />
@@ -249,6 +243,13 @@ const styles = ScaledSheet.create({
   dropDown: {
     backgroundColor: Color.red,
   },
+ ResetPassword: {
+    fontSize: moderateScale(25, 0.6),
+    color: '#353434',
+    width: windowWidth * 0.9,
+    textAlign: 'left',
+    marginTop: moderateScale(10, 0.3),
+  }
 });
 
 export default ResetPassword;

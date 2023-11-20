@@ -14,10 +14,7 @@ const CustomStatusModal = ({
   setData,
   data,
 }) => {
-  console.log(
-    '🚀 ~ file: CustomStatusModal.js:10 ~ CustomStatusModal ~ statusArray',
-    statusArray,
-  );
+ 
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   return (
     <Modal

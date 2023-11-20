@@ -30,7 +30,7 @@ import {
   import TextInputWithTitle from './TextInputWithTitle';
   
   const BubbleCard = ({item, pending, check, close, edit, MemberList}) => {
-    console.log("🚀 ~ file: CardComponent.js:30 ~ CardComponent ~ item:", item)
+
     const themeColor = useSelector(state => state.authReducer.ThemeColor);
     const [isVisible, setIsVisible] = useState(false);
     const [msg, setMsg] = useState('');

@@ -44,7 +44,6 @@ const height = Dimensions.get('window').height;
 const AddCard = () => {
   const privacy = useSelector(state=> state.authReducer.privacy)
   const userRole = useSelector(state => state.commonReducer.selectedRole);
-  console.log("🚀 ~ file: AddCard.js:48 ~ AddCard ~ userRole:", userRole)
   const token = useSelector(state => state.authReducer.token);
   const dispatch = useDispatch();
   const {userData} = useSelector(state => state.commonReducer);
@@ -89,14 +88,10 @@ const AddCard = () => {
       //   billingDetails,
       // }
     });
-    console.log(
-      '🚀 ~ file: AddCard.js:90 ~ addCard ~ responseData',
-      JSON.stringify(responseData, null, 2),
-    );
+   
 
     if (responseData.error) {
       setIsLoading(false);
-      console.log(responseData.error);
     }
     if (responseData != undefined) {
       dispatch(setUserToken({token: 'dasdawradawdawrtfeasfzs'}));
@@ -158,11 +153,7 @@ const AddCard = () => {
             }}
           />
           <CardContainer
-            style={{
-              height: windowHeight * 0.5,
-              paddingTop: moderateScale(30, 0.3),
-              alignItems: 'center',
-            }}>
+            style={styles.CardContainer}>
             <CardField
               postalCodeEnabled={false}
               placeholders={{
@@ -176,13 +167,7 @@ const AddCard = () => {
                 textColor: '#000000',
                 borderRadius: moderateScale(25, 0.3),
               }}
-              style={{
-                width: windowWidth * 0.75,
-                height: windowHeight * 0.05,
-                marginVertical: moderateScale(12, 0.3),
-
-                borderColor: Color.lightGrey,
-              }}
+              style={styles.card}
               onCardChange={cardDetails => {
                 console.log('cardDetails', cardDetails);
               }}
@@ -426,6 +411,18 @@ const styles = ScaledSheet.create({
     marginRight: moderateScale(10, 0.3),
     backgroundColor: '#EAEAEA',
   },
+  CardContainer:{
+    height: windowHeight * 0.5,
+    paddingTop: moderateScale(30, 0.3),
+    alignItems: 'center',
+  },
+  card:
+  {
+    width: windowWidth * 0.75,
+    height: windowHeight * 0.05,
+    marginVertical: moderateScale(12, 0.3),
+    borderColor: Color.lightGrey,
+  }
 });
 
 export default AddCard;

@@ -36,7 +36,6 @@ const DownloadImageModal = ({isVisible , setIsVisible , imageName , url}) => {
             );
             if (granted === PermissionsAndroid.RESULTS.GRANTED) {
               // Once user grant the permission start downloading
-              console.log('Storage Permission Granted.');
               downloadImage();
             } else {
               // If permission denied then show alert
@@ -44,7 +43,6 @@ const DownloadImageModal = ({isVisible , setIsVisible , imageName , url}) => {
             }
           } catch (err) {
             // To handle permission related exception
-            console.warn(err);
           }
         }
       };
@@ -82,7 +80,6 @@ const DownloadImageModal = ({isVisible , setIsVisible , imageName , url}) => {
           .fetch('GET', image_URL)
           .then(res => {
             // Showing alert after successful downloading
-            console.log('res -> ', JSON.stringify(res));
             alert('Image Downloaded Successfully.');
           });
       };

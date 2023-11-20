@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import * as Animatable from 'react-native-animatable';
 import Color from '../Assets/Utilities/Color';
 import CustomImage from '../Components/CustomImage';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import ScreenBoiler from '../Components/ScreenBoiler';
 import FastImage from 'react-native-fast-image';
@@ -11,6 +11,8 @@ import {
   ScrollView,
   ToastAndroid,
   TouchableOpacity,
+  Platform,
+  Alert,
 } from 'react-native';
 import Header from '../Components/Header';
 import {View} from 'react-native';
@@ -18,74 +20,126 @@ import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
 import {useDispatch, useSelector} from 'react-redux';
 import {setBubbleSelected} from '../Store/slices/auth';
+import {Post} from '../Axios/AxiosInterceptorFunction';
+import { setSelectedBubbles, setSelectedProfileData } from '../Store/slices/common';
 
 const BubbleSelection = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  const token = useSelector(state => state.authReducer.token);
+  const profileData = useSelector(state=> state.commonReducer.selectedProfile)
+  // console.log("🚀 ~ file: BubbleSelection.js:31 ~ profileData:", profileData)
+  const [isLaoding, setIsLaoding] = useState(false);
+  // console.log("🚀 ~ file: BubbleSelection.js:26 ~ BubbleSelection ~ token:", token)
+
+  const [selectedBubble, setSelectedBubble] = useState([]);
+  // console.log(
+  //   '🚀 ~ file: BubbleSelection.js:29 ~ BubbleSelection ~ selectedBubble:',
+  //   selectedBubble,
+  // );
+
+  const selectedProfile = useSelector(
+    state => state.commonReducer.selectedProfile,
+  );
 
   const dispatch = useDispatch();
   const [BubbleImageArraty, setBubbleImageArraty] = useState([
     {
+      id: 1,
       image: require('../Assets/Images/bubble1.png'),
       added: false,
       name: 'Alchol',
     },
     {
+      id: 2,
       image: require('../Assets/Images/bubble2.png'),
       added: false,
       name: 'Alternative Fitness',
     },
     {
+      id: 3,
       image: require('../Assets/Images/bubble3.png'),
       added: false,
       name: 'Archery',
     },
     {
+      id: 4,
       image: require('../Assets/Images/bubble4.png'),
       added: false,
       name: 'Architecture',
     },
-    {image: require('../Assets/Images/bubble5.png'), added: false, name: 'Art'},
     {
+      id: 5,
+      image: require('../Assets/Images/bubble5.png'),
+      added: false,
+      name: 'Art',
+    },
+    {
+      id: 6,
       image: require('../Assets/Images/bubble6.png'),
       added: false,
       name: 'Astrology',
     },
     {
+      id: 7,
       image: require('../Assets/Images/bubble1.png'),
       added: false,
       name: 'Author books',
     },
     {
+      id: 8,
       image: require('../Assets/Images/bubble8.png'),
       added: false,
       name: 'Beer',
     },
     {
+      id: 9,
       image: require('../Assets/Images/bubble9.png'),
       added: false,
       name: 'Bird Watching',
     },
     {
+      id: 10,
       image: require('../Assets/Images/bubble10.png'),
       added: false,
       name: 'Bolging',
     },
     {
+      id: 11,
       image: require('../Assets/Images/bubble11.png'),
       added: false,
       name: 'politics',
     },
     {
+      id: 12,
       image: require('../Assets/Images/bubble3.png'),
       added: false,
       name: 'politics',
     },
   ]);
-  console.log(
-    '🚀 ~ file: BubbleSelection.js:29 ~ BubbleSelection ~ BubbleImageArraty:',
-    BubbleImageArraty,
-  );
+
+  const sendSelectedBubble = async () => {
+    const url = 'auth/subscribe';
+    const body = {
+      id:profileData?.id,
+      bubble: selectedBubble,
+    };
+    // console.log("🚀 ~ file: BubbleSelection.js:127 ~ sendSelectedBubble ~ body:", body)
+    setIsLaoding(true);
+    const response = await Post(url, body, apiHeader(token));
+    setIsLaoding(false);
+    if (response != undefined) {
+      // let data =   JSON.parse(response?.data?.profile_info?.bubbles)
+      // return console.log("🚀 ~ file: BubbleSelection.js:133 ~ sendSelectedBubble ~ data:", data[0])
+      // return console.log(
+      //   '🚀 ~ file: BubbleSelection.js:116 ~ sendSelectedBubble ~ response:',
+      //   JSON.parse(response?.data?.profile_info?.bubbles),
+      //   );
+      dispatch(setSelectedProfileData(response?.data?.profile_info))
+      dispatch(setBubbleSelected(true))
+      dispatch(setSelectedBubbles(selectedBubble))
+    }
+  };
 
   return (
     <ScreenBoiler
@@ -118,16 +172,16 @@ const BubbleSelection = () => {
             width={windowWidth * 0.2}
             height={windowHeight * 0.04}
             onPress={() => {
-              if (BubbleImageArraty.some(item => item.added == true)) {
-                dispatch(setBubbleSelected(true));
-                ToastAndroid.show('Saved', ToastAndroid.SHORT);
-                // navigationService.navigate('TabNavigation')
-              } else {
-                ToastAndroid.show(
-                  'Please select any bubble',
-                  ToastAndroid.SHORT,
-                );
-                // dispatch(setBubbleSelected(true))
+              if (selectedBubble.length > 0) {
+               
+                sendSelectedBubble()
+                Platform.OS == 'android'
+                  ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
+                  : Alert.alert('Saved');
+              }else{
+                Platform.OS == 'android'
+                ? ToastAndroid.show('Select any Bubble', ToastAndroid.SHORT)
+                : Alert.alert('Select any Bubble');
               }
             }}
             fontSize={moderateScale(12, 0.6)}
@@ -136,14 +190,14 @@ const BubbleSelection = () => {
             isGradient
           />
           <CustomButton
-            text={'cancel'}
+            text={'skip'}
             textColor={themeColor[1]}
             width={windowWidth * 0.2}
             height={windowHeight * 0.04}
             fontSize={moderateScale(12, 0.6)}
             onPress={() => {
-              navigationService.navigate('LoginScreen');
-              // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
+              dispatch(setBubbleSelected(true))
+            //  navigationService.navigate('FeedSelection')
             }}
             marginTop={moderateScale(10, 0.3)}
             bgColor={['#ffffff', '#ffffff']}
@@ -166,19 +220,25 @@ const BubbleSelection = () => {
             width: windowWidth,
           }}>
           {BubbleImageArraty.map((item, index) => {
-            console.log(
-              '🚀 ~ file: BubbleSelection.js:155 ~ {BubbleImageArraty.map ~ item:',
-              item,
-            );
+            // console.log("🚀 ~ file: BubbleSelection.js:174 ~ {BubbleImageArraty.map ~ item:", item)
             return (
               <TouchableOpacity
                 onPress={() => {
+                  console.log('Here');
+                  // setBubbleSelected(prev=> [...prev, item])
+                  if (selectedBubble.findIndex(i => i.id == item?.id) != -1) {
+                    setSelectedBubble(
+                      selectedBubble?.filter(i => i?.id != item?.id),
+                    );
+                  } else {
+                    setSelectedBubble(prev => [...prev, item]);
+                  }
                   const data = [...BubbleImageArraty];
                   data[index].added = !data[index].added;
 
                   setBubbleImageArraty(data);
                   // setSavedBubbles(prev => [...prev, item])
-                }}    
+                }}
                 style={{
                   width: windowWidth * 0.3,
                   height:
@@ -193,6 +253,15 @@ const BubbleSelection = () => {
                 }}>
                 <CustomImage
                   onPress={() => {
+                    console.log('Here');
+
+                    if (selectedBubble.findIndex(i => i.id == item?.id) != -1) {
+                      setSelectedBubble(
+                        selectedBubble?.filter(i => i?.id != item?.id),
+                      );
+                    } else {
+                      setSelectedBubble(prev => [...prev, item]);
+                    }
                     const data = [...BubbleImageArraty];
                     data[index].added = !data[index].added;
 
@@ -230,6 +299,17 @@ const BubbleSelection = () => {
                       }}>
                       <CustomImage
                         onPress={() => {
+                          console.log('Here');
+                          if (
+                            selectedBubble.findIndex(i => i.id == item?.id) !=
+                            -1
+                          ) {
+                            setSelectedBubble(
+                              selectedBubble?.filter(i => i?.id != item?.id),
+                            );
+                          } else {
+                            setSelectedBubble(prev => [...prev, item]);
+                          }
                           const data = [...BubbleImageArraty];
                           data[index].added = !data[index].added;
 

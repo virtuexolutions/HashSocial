@@ -20,7 +20,7 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "react-native-vector-icons/MaterialIcons";
 import Entypo from "react-native-vector-icons/Entypo";
-import { setUserLogout } from "../Store/slices/auth";
+import { setNumOfProfiles, setProfileSelcted, setUserLogout } from "../Store/slices/auth";
 import { setUserLogOut } from "../Store/slices/common";
 import { imageUrl } from "../Config";
 // import { imageUrl } from "../Config/apiUrl";
@@ -289,7 +289,9 @@ const CustomSidebarMenu = (props) => {
               label={"Log out"}
               labelStyle={[styles.labelStyle]}
               onPress={() => {
-                dispatch(setUserLogOut(), dispatch(setUserLogout()));
+                dispatch(setUserLogOut())
+                dispatch(setProfileSelcted(false))
+                dispatch(setNumOfProfiles(0))
               }}
               icon={() => (
                 <Icon

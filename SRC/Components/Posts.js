@@ -240,7 +240,6 @@ const Posts = () => {
             justifyContent: 'center',
           }}
           onPress={() => {
-            console.log('here===========>>>>>>>>');
             navigationService.navigate('AddPost');
           }}>
           <CustomText
@@ -250,7 +249,6 @@ const Posts = () => {
               width: windowWidth * 0.6,
             }}
             onPress={() => {
-              console.log('here===========>>>>>>>>');
               navigationService.navigate('AddPost');
             }}>
             What's on your mind?

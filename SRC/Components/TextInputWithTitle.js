@@ -190,7 +190,7 @@ const TextInputWithTitle = props => {
                 props.multiline && {
                   paddingTop: moderateScale(10, 0.5),
                   textAlignVertical: 'top',
-                  marginLeft: moderateScale(15, 0.3),
+                  // marginLeft: moderateScale(5, 0.3),
                 },
                 props.color && {
                   color: Color.black,
@@ -207,7 +207,6 @@ const TextInputWithTitle = props => {
               numberOfLines={props.numberOfLines || 1}
               editable={props.disable ? false : true}
               autoCapitalize="none"
-              // onPressIn={()=>{console.log('fdadsas');}}
               // textAlignVertical={props.textAlignVertical}
             />
           </TouchableOpacity>

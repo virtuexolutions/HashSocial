@@ -179,13 +179,7 @@ const VerifyNumber = props => {
           alignItems: 'center',
         }}>
         <CustomText
-          style={{
-            fontSize: moderateScale(25, 0.6),
-            color: '#353434',
-            width: windowWidth * 0.9,
-            textAlign: 'left',
-            marginTop: moderateScale(10, 0.3),
-          }}
+          style={styles.text}
           isBold={true}
           children={'Enter OTP'}
         />
@@ -317,6 +311,13 @@ const styles = ScaledSheet.create({
     fontSize: moderateScale(20, 0.3),
     textAlign: 'center',
   },
+  text:{
+    fontSize: moderateScale(25, 0.6),
+    color: '#353434',
+    width: windowWidth * 0.9,
+    textAlign: 'left',
+    marginTop: moderateScale(10, 0.3),
+  }
 });
 
 export default VerifyNumber;

@@ -76,12 +76,7 @@ import {
             alignItems: 'center',
           }}>
           <View
-            style={{
-              width: windowWidth ,
-              marginTop: moderateScale(5, 0.3),
-              marginBottom:moderateScale(20,.3)
-              
-            }}>
+            style={styles.FlatListview}>
             <FlatList
               data={MemberListData}
               contentContainerStyle={{
@@ -141,6 +136,12 @@ import {
       alignItems: 'center',
       paddingLeft: moderateScale(20, 0.6),
       marginBottom:moderateScale(5,0.3),
+    },
+    FlatListview:{
+      width: windowWidth ,
+      marginTop: moderateScale(5, 0.3),
+      marginBottom:moderateScale(20,.3)
+      
     }
   });
   
