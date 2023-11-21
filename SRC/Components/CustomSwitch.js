@@ -8,6 +8,8 @@ const CustomSwitch = ({
   roundCorner,
   option1,
   option2,
+  value, 
+  setValue,
   onSelectSwitch,
   selectionColor
 }) => {
@@ -16,6 +18,7 @@ const CustomSwitch = ({
 
   const updatedSwitchData = val => {
     setSelectionMode(val);
+    setValue(val)
     onSelectSwitch(val);
   };
 

@@ -18,8 +18,15 @@ import {Image, ScrollView} from 'native-base';
 import {useIsFocused} from '@react-navigation/native';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import {validateEmail} from '../Config';
-import { setSelectedRole, setUserData} from '../Store/slices/common';
-import {setNumOfProfiles, setUserLogin, setUserToken, setWalkThrough} from '../Store/slices/auth';
+import {setSelectedRole, setUserData} from '../Store/slices/common';
+import {
+  setBubbleCreated,
+  setInterestSelected,
+  setNumOfProfiles,
+  setUserLogin,
+  setUserToken,
+  setWalkThrough,
+} from '../Store/slices/auth';
 import {useDispatch, useSelector} from 'react-redux';
 import CustomImage from '../Components/CustomImage';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
@@ -76,7 +83,7 @@ const Signup = () => {
           : Alert.alert(` ${key} field is empty`);
       }
     }
-    
+
     if (!validateEmail(email)) {
       return Platform.OS == 'android'
         ? ToastAndroid.show('email is not validate', ToastAndroid.SHORT)
@@ -101,18 +108,18 @@ const Signup = () => {
     const response = await Post(url, params, apiHeader());
     setIsLoading(false);
     if (response != undefined) {
-      console.log("response?.data", response?.data?.user_info);
+    console.log('response?.data', response?.data?.user_info);
       Platform.OS === 'android'
         ? ToastAndroid.show('User Registered Succesfully', ToastAndroid.SHORT)
         : Alert.alert('User Registered Succesfully');
+      dispatch(setInterestSelected(false));
       dispatch(setUserData(response?.data?.user_info));
       dispatch(setUserLogin(response?.data?.token));
       dispatch(setUserToken({token: response?.data?.token}));
-      dispatch(setNumOfProfiles(response?.data?.user_info?.total_profile))
+      dispatch(setNumOfProfiles(response?.data?.user_info?.total_profile));
+      // dispatch(setBubbleCreated(false))
     }
   };
- 
-  
 
   return (
     <>
@@ -232,7 +239,7 @@ const Signup = () => {
               placeholderColor={Color.themeLightGray}
               borderRadius={moderateScale(10, 0.3)}
             />
-           
+
             <CustomButton
               text={
                 isLoading ? (
@@ -333,17 +340,17 @@ const styles = ScaledSheet.create({
   dropDown: {
     backgroundColor: Color.red,
   },
-  mainHeading:{
+  mainHeading: {
     fontSize: moderateScale(25, 0.6),
     color: '#353434',
     width: windowWidth * 0.9,
     textAlign: 'center',
     marginTop: moderateScale(10, 0.3),
   },
-  text:{
+  text: {
     fontSize: moderateScale(15, 0.6),
     color: '#353434',
     width: windowWidth * 0.9,
     textAlign: 'center',
-  }
+  },
 });

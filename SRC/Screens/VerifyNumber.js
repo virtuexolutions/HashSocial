@@ -54,6 +54,7 @@ const VerifyNumber = props => {
   const [password, setPassword] = useState('');
   const [selectedRole, setSelectedType] = useState('Qbid Member');
   const phoneNumber = props?.route?.params?.phoneNumber;
+  console.log("🚀 ~ file: VerifyNumber.js:57 ~ VerifyNumber ~ phoneNumber:", phoneNumber)
 
   //states
   const [code, setCode] = useState('');
@@ -82,11 +83,16 @@ const VerifyNumber = props => {
     const response = await Post(url, {email: phoneNumber}, apiHeader());
     setIsLoading(false);
     if (response != undefined) {
+      console.log(response?.data)
+     alert(response?.data?.data[0]?.code)
+      settimerLabel('ReSend in '), settime(120);
       Platform.OS == 'android'
         ? ToastAndroid.show(`OTP sent to ${phoneNumber}`, ToastAndroid.SHORT)
         : alert(`OTP sent to ${phoneNumber}`);
     }
   };
+
+
 
   const VerifyOTP = async () => {
     const url = 'password/code/check';
@@ -95,6 +101,7 @@ const VerifyNumber = props => {
     const response = await Post(url, {code: code}, apiHeader());
     setIsLoading(false);
     if (response != undefined) {
+      console.log(response?.data)
       Platform.OS == 'android'
         ? ToastAndroid.show(`otp verified`, ToastAndroid.SHORT)
         : alert(`otp verified`);
@@ -204,7 +211,8 @@ const VerifyNumber = props => {
             <TouchableOpacity
               disabled={timerLabel == 'Resend Code ' ? false : true}
               onPress={() => {
-                settimerLabel('ReSend in '), settime(120);
+                sendOTP()
+               
               }}>
               <CustomText style={[styles.txt4]}>
                 {timerLabel} {time}
@@ -225,8 +233,9 @@ const VerifyNumber = props => {
             height={windowHeight * 0.06}
             marginTop={moderateScale(20, 0.3)}
             onPress={() => {
+              VerifyOTP()
               // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
-              navigationService.navigate('ResetPassword')
+              // navigationService.navigate('ResetPassword')
             }}
             bgColor={themeColor}
             borderRadius={moderateScale(30, 0.3)}

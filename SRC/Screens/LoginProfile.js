@@ -26,8 +26,14 @@ import Color from '../Assets/Utilities/Color';
 import {Icon, ScrollView} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CardComponent from '../Components/CardComponent';
+import Lottie from 'lottie-react-native';
 import {Get, Post} from '../Axios/AxiosInterceptorFunction';
-import {setBubbleSelected, setFeedsSelected, setProfileSelcted} from '../Store/slices/auth';
+import {
+  setBubbleSelected,
+  setFeedsSelected,
+  setProfileSelcted,
+  setQuestionAnswered,
+} from '../Store/slices/auth';
 import {setSelectedProfileData} from '../Store/slices/common';
 import Modal from 'react-native-modal';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
@@ -38,7 +44,7 @@ const LoginProfile = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
-  console.log("🚀 ~ file: LoginProfile.js:41 ~ LoginProfile ~ token:", token)
+  console.log('🚀 ~ file: LoginProfile.js:41 ~ LoginProfile ~ token:', token);
   const [isLoading, setIsLoading] = useState(false);
   const [bubbleData, setBubbleData] = useState([]);
   const [modal, setModal] = useState(false);
@@ -60,18 +66,28 @@ const LoginProfile = props => {
     setIsLoading(true);
     const response = await Post(url, body, apiHeader(token));
     setIsLoading(false);
-   
+
     if (response?.data?.success) {
-    console.log(
+      console.log(
         '🚀 ~ file: ProfilesListing.js:62 ~ loginProfile ~ response:',
         response?.data,
       );
       setPassCode('');
       setModal(false);
+      dispatch(setSelectedProfileData({}));
+      dispatch(setQuestionAnswered(response?.data?.profile_info?.qa_status));
       dispatch(setSelectedProfileData(response?.data?.profile_info));
       dispatch(setProfileSelcted(true));
-      dispatch(setBubbleSelected(response?.data?.profile_info?.bubbles?.length > 0 ? true : false ))
-      dispatch(setFeedsSelected(response?.data?.profile_info?.feed?.length>0 ? true : false))
+      dispatch(
+        setBubbleSelected(
+          response?.data?.profile_info?.bubbles?.length > 0 ? true : false,
+        ),
+      );
+      dispatch(
+        setFeedsSelected(
+          response?.data?.profile_info?.feed?.length > 0 ? true : false,
+        ),
+      );
     }
   };
 
@@ -114,7 +130,7 @@ const LoginProfile = props => {
               width: windowHeight * 0.2,
               borderRadius: moderateScale(2, 0.6),
               overflow: 'hidden',
-              marginBottom: moderateScale(50, 0.6),
+              // marginBottom: moderateScale(10, 0.6),
             }}>
             <CustomImage
               onPress={() => {
@@ -125,7 +141,24 @@ const LoginProfile = props => {
               style={{width: '100%', height: '100%'}}
             />
           </View>
-          <ActivityIndicator color="red" size={moderateScale(60, 0.6)} />
+          <View
+            style={{
+              width: windowWidth * 0.5,
+              height: windowHeight * 0.3,
+              // backgroundColor:'red',
+              // position:'absolute',
+              // zIndex:1,
+              // left:150,
+              // top:1,
+              // transform:[{scaleX:-1}]
+              //   backgroundColor: 'red',
+            }}>
+            <Lottie
+              source={require('../Assets/Images/loader.json')}
+              autoPlay
+              loop
+            />
+          </View>
         </View>
         <Modal
           style={{
@@ -136,7 +169,7 @@ const LoginProfile = props => {
           isVisible={modal}
           hasBackdrop={true}
           onBackdropPress={() => {
-            setModal(false);
+            // setModal(false);
             // setIsVisible(false)
           }}>
           <View
