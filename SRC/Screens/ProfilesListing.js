@@ -27,6 +27,7 @@ import {
   setAccountPrivate,
   setBubbleSelected,
   setFeedsSelected,
+  setInterestSelected,
   setProfileSelcted,
   setQuestionAnswered,
 } from '../Store/slices/auth';
@@ -59,7 +60,7 @@ const ProfilesListing = props => {
   useEffect(() => {
     profileListing();
     dispatch(setBubbleSelected(false));
-    dispatch(setFeedsSelected(false));
+    dispatch(setInterestSelected(false));
     dispatch(setProfileSelcted(false));
   }, []);
 
@@ -100,7 +101,7 @@ const ProfilesListing = props => {
                       navigationService.navigate('LoginProfile', {item});
                     } else {
                       dispatch(setBubbleSelected(false));
-                      dispatch(setFeedsSelected(false));
+                      dispatch(setInterestSelected(false));
                       dispatch(setAccountPrivate('public'));
                       dispatch(setQuestionAnswered(item?.qa_status));
                       dispatch(setSelectedProfileData(item));
@@ -113,7 +114,7 @@ const ProfilesListing = props => {
                         ),
                       );
                       dispatch(
-                        setFeedsSelected(
+                        setInterestSelected(
                           [0, '0', undefined, null, []].includes(item?.feed)
                             ? false
                             : true,
@@ -140,7 +141,7 @@ const ProfilesListing = props => {
                           navigationService.navigate('LoginProfile', {item});
                         } else {
                           dispatch(setBubbleSelected(false));
-                          dispatch(setFeedsSelected(false));
+                          dispatch(setInterestSelected(false));
                           dispatch(setProfileSelcted(false));
                           dispatch(setAccountPrivate('public'));
                           dispatch(setSelectedProfileData(item));
@@ -156,7 +157,7 @@ const ProfilesListing = props => {
                             ),
                           );
                           dispatch(
-                            setFeedsSelected(
+                            setInterestSelected(
                               [0, '0', , undefined, null, []].includes(
                                 item?.feed,
                               )

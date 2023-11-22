@@ -166,7 +166,7 @@ const BubbleSelection = () => {
     <ScreenBoiler
       statusBarBackgroundColor={'white'}
       statusBarContentStyle={'dark-content'}>
-      <Header right Title={'Select Bubble'} />
+      <Header right Title={'Popular Bubbles'} />
       <ImageBackground
         source={
           privacy == 'private'

@@ -9,6 +9,7 @@ const initialState = {
   isGoalCreated: false,
   bubbleSelected: false,
   feedsSelected: false,
+  newSignUp : false,
   questionAnswered: false,
   bubbleCreated: false,
   interestSelected: false,
@@ -61,6 +62,9 @@ const AuthSlice = createSlice({
     setInterestSelected(state, action) {
       state.interestSelected = action.payload;
     },
+    setNewSignUp(state, action) {
+      state.newSignUp = action.payload;
+    },
     setAccountPrivate(state, action) {
       // console.log("🚀 ~ file: common.js:68 ~ setAccountPrivate ~ action:", action.payload)
       if (action.payload == 'private') {
@@ -89,6 +93,7 @@ export const {
   setAccountPrivate,
   setNumOfProfiles,
   setProfileSelcted,
+  setNewSignUp,
   setBubbleCreated,
   setInterestSelected,
   setQuestionAnswered,
