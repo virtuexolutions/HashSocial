@@ -22,6 +22,7 @@ import {setSelectedRole, setUserData} from '../Store/slices/common';
 import {
   setBubbleCreated,
   setInterestSelected,
+  setNewSignUp,
   setNumOfProfiles,
   setUserLogin,
   setUserToken,
@@ -117,6 +118,7 @@ const Signup = () => {
       dispatch(setUserLogin(response?.data?.token));
       dispatch(setUserToken({token: response?.data?.token}));
       dispatch(setNumOfProfiles(response?.data?.user_info?.total_profile));
+      dispatch(setNewSignUp(true))
       // dispatch(setBubbleCreated(false))
     }
   };

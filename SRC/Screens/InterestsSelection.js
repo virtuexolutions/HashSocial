@@ -25,6 +25,7 @@ import {
   setInterestSelected,
 } from '../Store/slices/auth';
 import {Post} from '../Axios/AxiosInterceptorFunction';
+import { setSelectedFeeds, setSelectedProfileData } from '../Store/slices/common';
 
 const InterestSelection = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -121,19 +122,23 @@ const InterestSelection = () => {
   ]);
 
   const sendSelectedFeeds = async () => {
-    const url = 'auth/interest';
+    const url = 'auth/subscribe';
     const body = {
-        name: selectedBubble,
+      id:profileData?.id,
+      feed: selectedBubble,
     };
     setIsLaoding(true);
     const response = await Post(url, body, apiHeader(token));
     setIsLaoding(false);
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: InterestsSelection.js:129 ~ sendSelectedFeeds ~ response:',
-        response?.data,
-      );
-      dispatch(setInterestSelected(true));
+    // return console.log(
+    //     '🚀 ~ file: BubbleSelection.js:116 ~ sendSelectedBubble ~ response:',
+    //     response?.data,
+    //   );
+      dispatch(setSelectedProfileData(response?.data?.profile_info))
+      dispatch(setInterestSelected(true))
+      // dispatch((selectedBubble))
+
     }
   };
 
@@ -192,7 +197,7 @@ const InterestSelection = () => {
             height={windowHeight * 0.04}
             fontSize={moderateScale(12, 0.6)}
             onPress={() => {
-              dispatch(setFeedsSelected(true));
+              dispatch(setInterestSelected(true));
               // navigationService.navigate('')
             }}
             marginTop={moderateScale(10, 0.3)}

@@ -31,6 +31,7 @@ import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 import {
   setBubbleSelected,
   setFeedsSelected,
+  setInterestSelected,
   setProfileSelcted,
   setQuestionAnswered,
 } from '../Store/slices/auth';
@@ -84,7 +85,7 @@ const LoginProfile = props => {
         ),
       );
       dispatch(
-        setFeedsSelected(
+        setInterestSelected(
           response?.data?.profile_info?.feed?.length > 0 ? true : false,
         ),
       );
