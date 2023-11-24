@@ -29,6 +29,7 @@ import {
   setAccountPrivate,
   setBubbleSelected,
   setFeedsSelected,
+  setInterestSelected,
   setNumOfProfiles,
   setProfileSelcted,
   setQuestionAnswered,
@@ -114,7 +115,7 @@ const Profile = props => {
       dispatch(setSelectedProfileData(response?.data?.profile_info));
       dispatch(setNumOfProfiles(response?.data?.profile_info?.user_info[0]?.total_profile));
       dispatch(setBubbleSelected([null, "0", 0, [], undefined].includes(response?.data?.profile_info?.bubbles) ? false : true))
-      dispatch(setFeedsSelected([null, "0", 0, [], undefined].includes(response?.data?.profile_info?.feed) ? false : true))
+      dispatch(setInterestSelected([null, "0", 0, [], undefined].includes(response?.data?.profile_info?.feed) ? false : true))
       // dispatch(setQuestionAnswered(response?.data?.question))
       // navigationService.navigate('QuestionScreen', {type:type})
     }

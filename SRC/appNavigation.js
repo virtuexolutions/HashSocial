@@ -111,20 +111,14 @@ const AppNavigator = () => {
     const thirdScreen =
       token == null
         ? 'LoginScreen'
-        : interestSelected == false
-        ? 'InterestSelection'
         : numOfProfile == 0
         ? 'ProfileType'
         : profileSelected == false
         ? 'ProfilesListing'
-        : questionAnswered == false
-        ? 'QuestionScreen'
-        : bubbleCreated == false
-        ? 'CreateNewBubble'
+        : interestSelected == false
+        ? 'InterestSelection'
         : bubbleSelected == false
         ? 'BubbleSelection'
-        : !feedsSelected
-        ? 'FeedSelection'
         : 'TabNavigation';
 
     return (

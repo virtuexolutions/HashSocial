@@ -25,7 +25,7 @@ import ImagePickerModal from '../Components/ImagePickerModal';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 import RoundMenu from 'react-native-rotating-menu';
 import navigationService from '../navigationService';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {BlurView} from '@react-native-community/blur';
 import CustomButton from '../Components/CustomButton';
 import {ActivityIndicator} from 'react-native';
@@ -34,12 +34,19 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import RequestModal from '../Components/RequestModal';
+import Propmpt from '../Components/Propmpt';
+import { setNewSignUp } from '../Store/slices/auth';
 
 const HomeScreen = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const profileData = useSelector(state=>state.commonReducer.selectedProfile)
+  const newSignUp = useSelector(state=>state.authReducer.newSignUp)
+  console.log("🚀 ~ file: HomeScreen.js:44 ~ HomeScreen ~ newSignUp:", newSignUp)
   // console.log("🚀 ~ file: HomeScreen.js:42 ~ HomeScreen ~ profileData:", profileData)
+
+  const dispatch = useDispatch()
+  const [prompt, setPrompt] = useState(false)
   const data = props?.route?.params?.data;
   const [clicked, setclicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -308,6 +315,18 @@ const HomeScreen = props => {
     }
   }, []);
 
+  useEffect(() => {
+    // dispatch(setNewSignUp(true))
+    if(newSignUp){
+      setTimeout(()=>{
+        console.log('New Signup')
+        setPrompt(true)
+      },10000)
+    }
+    
+  }, [])
+  
+
   return (
     <>
       <CustomStatusBar
@@ -493,6 +512,7 @@ const HomeScreen = props => {
         isVisible={isVisible}
         text={text}
       />
+      <Propmpt isVisible={prompt} setVisible={setPrompt} />
     </>
   );
 };

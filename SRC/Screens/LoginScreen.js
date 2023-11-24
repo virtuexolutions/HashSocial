@@ -26,6 +26,7 @@ import {
   setBubbleSelected,
   setFeedsSelected,
   setInterestSelected,
+  setNewSignUp,
   setNumOfProfiles,
   setUserToken,
 } from '../Store/slices/auth';
@@ -65,6 +66,7 @@ const LoginScreen = () => {
       dispatch(setUserData(response?.data?.user_info));
       dispatch(setNumOfProfiles(response?.data?.user_info?.total_profile));
       dispatch(setBubbleCreated(true))
+      dispatch(setNewSignUp(false))
       dispatch(setInterestSelected([null, undefined, 0 , []].includes(response?.data?.user_info?.interest) ? false: JSON.parse(response?.data?.user_info?.interest).length>0 ? true : false))
       // dispatch(setBubbleSelected(response?.data?.user_info?.bubbles ? true : false));
       // dispatch(setFeedsSelected(response?.data?.user_info?.feeds ? true : false));

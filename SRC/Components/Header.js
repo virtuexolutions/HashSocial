@@ -10,13 +10,23 @@ import CustomImage from './CustomImage';
 const {height, width} = Dimensions.get('window');
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';
-import Feather from 'react-native-vector-icons/Feather'
-import Entypo from 'react-native-vector-icons/Entypo'
+import Feather from 'react-native-vector-icons/Feather';
+import Entypo from 'react-native-vector-icons/Entypo';
 import {useDispatch, useSelector} from 'react-redux';
 import navigationService from '../navigationService';
 import Modal from 'react-native-modal';
-import { setAccountPrivate, setBubbleCreated, setBubbleSelected, setFeedsSelected, setNumOfProfiles, setProfileSelcted, setQuestionAnswered, setUserToken } from '../Store/slices/auth';
-import { setSelectedBubbles } from '../Store/slices/common';
+import {
+  setAccountPrivate,
+  setBubbleCreated,
+  setBubbleSelected,
+  setFeedsSelected,
+  setNewSignUp,
+  setNumOfProfiles,
+  setProfileSelcted,
+  setQuestionAnswered,
+  setUserToken,
+} from '../Store/slices/auth';
+import {setSelectedBubbles} from '../Store/slices/common';
 
 const Header = props => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
@@ -24,7 +34,7 @@ const Header = props => {
   const token = useSelector(state => state.authReducer.token);
   const [modalVisible, setModalVisible] = useState(false);
   const dispatch = useDispatch();
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const modalData = [
     {
       name: 'Notifications',
@@ -47,10 +57,13 @@ const Header = props => {
         setModalVisible(!modalVisible);
       },
     },
-    {name: 'Membership', onPress: () => {
-      navigationService.navigate('SubscriptionScreen');
-      setModalVisible(!modalVisible);
-     }},
+    {
+      name: 'Membership',
+      onPress: () => {
+        navigationService.navigate('SubscriptionScreen');
+        setModalVisible(!modalVisible);
+      },
+    },
     {name: 'Privacy', onPress: () => {}},
     {
       name: 'settings',
@@ -62,15 +75,17 @@ const Header = props => {
     {
       name: 'Logout',
       onPress: () => {
-        dispatch(setUserToken(null))
-        dispatch(setBubbleSelected(false))
-        dispatch(setProfileSelcted(false))
-        dispatch(setNumOfProfiles(0))
-        dispatch(setFeedsSelected(false))
+        dispatch(setUserToken(null));
+        dispatch(setBubbleSelected(false));
+        dispatch(setProfileSelcted(false));
+        dispatch(setNumOfProfiles(0));
+        dispatch(setFeedsSelected(false));
         setModalVisible(!modalVisible);
-        dispatch(setAccountPrivate('public'))
-        dispatch(setQuestionAnswered(false))
-        dispatch(setBubbleCreated(false))
+        dispatch(setAccountPrivate('public'));
+        dispatch(setQuestionAnswered(false));
+        dispatch(setBubbleCreated(false));
+        dispatch(setNewSignUp(false));
+
         // navigationService.navigate('LoginScreen');
       },
     },
@@ -92,8 +107,8 @@ const Header = props => {
             as={Feather}
             size={moderateScale(28, 0.6)}
             color={themeColor[1]}
-            onPress={()=>{
-              navigation.goBack()
+            onPress={() => {
+              navigation.goBack();
             }}
             style={{
               position: 'absolute',
@@ -156,68 +171,69 @@ const Header = props => {
               />
             )}
 
-            {!menu && <Icon
-              name={'reorder-three'}
-              as={Ionicons}
-              size={moderateScale(40, 0.6)}
-              color={themeColor[1]}
-              style={{}}
-              onPress={() => token != null && setModalVisible(!modalVisible)}
-            />}
+            {!menu && (
+              <Icon
+                name={'reorder-three'}
+                as={Ionicons}
+                size={moderateScale(40, 0.6)}
+                color={themeColor[1]}
+                style={{}}
+                onPress={() => token != null && setModalVisible(!modalVisible)}
+              />
+            )}
           </View>
         )}
       </View>
-      
-        <Modal
-          visible={modalVisible}
-          onBackdropPress={() => {
-            // Alert.alert('Modal has been closed.');
-            setModalVisible(!modalVisible);
+
+      <Modal
+        visible={modalVisible}
+        onBackdropPress={() => {
+          // Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View
+          style={{
+            width: windowWidth * 0.32,
+            top: 40,
+            // right: 0,
+            position: 'absolute',
+            alignSelf: 'flex-end',
+            alignItems: 'center',
+            borderRadius: moderateScale(10, 0.6),
+            // backgroundColor: 'rgba(225,225,225,.5)',
+            backgroundColor: Color.white,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
           }}>
-          <View
-            style={{
-              width: windowWidth * 0.32,
-              top: 40,
-              // right: 0,
-              position: 'absolute',
-              alignSelf: 'flex-end',
-              alignItems: 'center',
-              borderRadius: moderateScale(10, 0.6),
-              // backgroundColor: 'rgba(225,225,225,.5)',
-              backgroundColor: Color.white,
-              shadowColor: '#000',
-              shadowOffset: {
-                width: 0,
-                height: 2,
-              },
-              shadowOpacity: 0.25,
-              shadowRadius: 3.84,
-              elevation: 5,
-            }}>
-            {/* <CustomText style={{fontSize:moderateScale(20,.6)}}>Hello</CustomText> */}
-            {modalData.map(item => {
-              return (
-                <>
-                  <CustomText
-                    style={{
-                      fontSize: moderateScale(15, 0.6),
-                      paddingVertical: moderateScale(5, 0.6),
-                    }}
-                    onPress={item?.onPress}>
-                    {item?.name}
-                  </CustomText>
-                  <View
-                    style={{
-                      width: windowWidth * 0.25,
-                      backgroundColor: 'rgba(0,0,0,0.1)',
-                      height: 2,
-                    }}></View>
-                </>
-              );
-            })}
-          </View>
-        </Modal>
-     
+          {/* <CustomText style={{fontSize:moderateScale(20,.6)}}>Hello</CustomText> */}
+          {modalData.map(item => {
+            return (
+              <>
+                <CustomText
+                  style={{
+                    fontSize: moderateScale(15, 0.6),
+                    paddingVertical: moderateScale(5, 0.6),
+                  }}
+                  onPress={item?.onPress}>
+                  {item?.name}
+                </CustomText>
+                <View
+                  style={{
+                    width: windowWidth * 0.25,
+                    backgroundColor: 'rgba(0,0,0,0.1)',
+                    height: 2,
+                  }}></View>
+              </>
+            );
+          })}
+        </View>
+      </Modal>
     </>
   );
 };
