@@ -26,25 +26,26 @@ const Propmpt = ({setVisible, isVisible}) => {
     
         <ImageBackground  source={require('../Assets/Images/background1.jpg')}  style={styles.container} >
         <CustomText isBold style={styles.name}>
-          "Join the Flock at Hatch Social - Your Social Nest Awaits!"
+        Early bird catches the worm. Start your nest today. Start earning tomorrow.
         </CustomText>
         <View
           style={{
-            width: windowWidth * 0.4,
+            width: windowWidth * 0.2,
             height: windowHeight * 0.2,
             alignSelf: 'center',
+            // backgroundColor:'red'
+            // marginVertical:moderateScale(10,0.3)
+            // paddingVertical:moderateScale(20,0.3)
           }}>
           <CustomImage
-            source={require('../Assets/Images/bubble.png')}
+          resizeMode={'cover'}
+            source={require('../Assets/Images/Hatch.png')}
             style={{width: '100%', height: '100%'}}
           />
         </View>
-        <CustomText style={styles.text}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book.
-        </CustomText>
+        {/* <CustomText style={styles.text}>
+        Early bird catches the worm. Start your nest today. Start earning tomorrow.
+        </CustomText> */}
 
         <View
           style={{

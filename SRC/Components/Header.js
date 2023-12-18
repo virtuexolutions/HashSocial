@@ -46,7 +46,7 @@ const Header = props => {
     {
       name: 'Profile',
       onPress: () => {
-        navigationService.navigate('Profile');
+        navigationService.navigate('ProfileList');
         setModalVisible(!modalVisible);
       },
     },
@@ -232,8 +232,10 @@ const Header = props => {
               </>
             );
           })}
+
         </View>
       </Modal>
+      
     </>
   );
 };

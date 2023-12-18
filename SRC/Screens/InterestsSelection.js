@@ -26,6 +26,7 @@ import {
 } from '../Store/slices/auth';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import { setSelectedFeeds, setSelectedProfileData } from '../Store/slices/common';
+import CustomText from '../Components/CustomText';
 
 const InterestSelection = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -51,73 +52,73 @@ const InterestSelection = () => {
       id: 1,
       image: require('../Assets/Images/amazing.jpg'),
       added: false,
-      name: 'music',
+      name: 'Sunset',
     },
     {
       id: 2,
       image: require('../Assets/Images/autumn.jpg'),
       added: false,
-      name: 'Alternative Fitness',
+      name: 'Autumn season',
     },
     {
       id: 3,
       image: require('../Assets/Images/cake.jpg'),
       added: false,
-      name: 'statue',
+      name: 'Cake',
     },
     {
       id: 4,
       image: require('../Assets/Images/colorful.jpg'),
       added: false,
-      name: 'Architecture',
+      name: 'Colorful heights',
     },
     {
       id: 5,
       image: require('../Assets/Images/dubai.jpg'),
       added: false,
-      name: 'Art',
+      name: 'Dubai',
     },
     {
       id: 6,
       image: require('../Assets/Images/frozen.jpg'),
       added: false,
-      name: 'Astrology',
+      name: 'Drink',
     },
     {
       id: 7,
       image: require('../Assets/Images/Historical.jpg'),
       added: false,
-      name: 'Author books',
+      name: 'Historical place',
     },
     {
       id: 8,
       image: require('../Assets/Images/leave.jpg'),
       added: false,
-      name: 'Beer',
+      name: 'leave',
     },
     {
       id: 9,
       image: require('../Assets/Images/london.jpg'),
       added: false,
-      name: 'beach',
+      name: 'Tower Bridge ',
     },
     {
       id: 10,
       image: require('../Assets/Images/turkey.jpg'),
       added: false,
-      name: 'lights',
+      name: 'Beauty',
     },
     {
       id: 11,
       image: require('../Assets/Images/vege.jpg'),
       added: false,
-      name: 'politics',
+      name: 'Sweet',
     },
     {
       id: 12,
       image: require('../Assets/Images/frozen.jpg'),
       added: false,
-      name: 'politics',
+      name: 'Drink',
     },
   ]);
 
@@ -252,6 +253,22 @@ const InterestSelection = () => {
                   marginVertical: moderateScale(5, 0.3),
                   marginHorizontal: moderateScale(2, 0.3),
                 }}>
+                <CustomText
+              numberOfLines={1}
+              style={{
+                fontSize: moderateScale(11, 0.6),
+                fontWeight: '700',
+                textAlign: 'left',
+                position:'absolute',
+                bottom:10,
+                width:'100%',
+                paddingLeft:moderateScale(10,0.3),
+                zIndex:1,
+                color:'white',
+                backgroundColor:'rgba(0,0,0,0.6)',
+              }}>
+              {item?.name}
+            </CustomText>
                 <CustomImage
                   onPress={() => {
                     console.log('Here');
@@ -320,6 +337,7 @@ const InterestSelection = () => {
                         resizeMode={'stretch'}
                         style={{width: '100%', height: '100%'}}
                       />
+            
                     </Animatable.View>
                   </View>
                 )}
