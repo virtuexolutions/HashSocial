@@ -124,7 +124,7 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={'AddPost'}
+          initialRouteName={thirdScreen}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen
@@ -138,6 +138,7 @@ const AppNavigator = () => {
             component={BubbleManagement}
           />
           <RootNav.Screen name="Feeds" component={Feeds} />
+          
           <RootNav.Screen name="ProfileType" component={ProfileType} />
           <RootNav.Screen name="QuestionScreen" component={QuestionScreen} />
           <RootNav.Screen name="EventDetails" component={EventDetails} />
