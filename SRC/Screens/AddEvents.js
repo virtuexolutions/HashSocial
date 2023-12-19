@@ -7,6 +7,7 @@ import {
   ScrollView,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -28,15 +29,19 @@ import {Calendar} from 'react-native-calendars';
 import moment from 'moment';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import {TimerPickerModal} from 'react-native-timer-picker';
+import {Post} from '../Axios/AxiosInterceptorFunction';
 
 const AddEvents = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
+  const token = useSelector(state => state.authReducer.token);
   const [selectedTab, setSelectedTab] = useState('Tag People');
   const [image, setImage] = useState({});
-  console.log('🚀 ~ file: AddEvents.js:31 ~ AddEvents ~ image:', image);
   const [images, setImages] = useState([]);
-  console.log('🚀 ~ file: AddEvents.js:33 ~ AddEvents ~ images:', images);
+  console.log(
+    '🚀 ~ file: AddEvents.js:41 ~ AddEvents ~ images:',
+    images?.length,
+  );
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState('');
   const [imagePickerVisible, setImagePickerVisible] = useState(false);
@@ -46,10 +51,7 @@ const AddEvents = () => {
   const [hours, setHours] = useState('');
   const [minutes, setMinutes] = useState('');
   const [calendarVisible, setCalendarVisible] = useState(false);
-  console.log(
-    '🚀 ~ file: AddEvents.js:44 ~ AddEvents ~ calendarVisible:',
-    calendarVisible,
-  );
+
   const [timeVisible, setTimeVisible] = useState(false);
 
   const data = [
@@ -72,6 +74,51 @@ const AddEvents = () => {
       },
     },
   ];
+
+  const AddEvent = async () => {
+    const formData = new FormData();
+    const url = 'auth/post';
+    const body = {
+      bubble_id: 1,
+      title: title,
+      description: description,
+      date: date,
+      time: `${hours}:${minutes}`,
+    };
+    for (let key in body) {
+      if (['', null, undefined, ':'].includes(body[key])) {
+        return Platform.OS == 'android'
+          ? ToastAndroid.show(`${key} is required`, ToastAndroid.SHORT)
+          : Alert.alert(`${key} is required`);
+      } else {
+        formData.append(key, body[key]);
+      }
+    }
+
+    if (images.length > 0) {
+      images?.map((item, index) =>
+        formData.append(`image[${index}]`, images[index]),
+      );
+    } else {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show('Add an image', ToastAndroid.SHORT)
+        : Alert.alert('Add an image');
+    }
+    return console.log(
+      '🚀 ~ file: AddEvents.js:76 ~ AddEvent ~ formData:',
+      formData,
+    );
+
+    setLoading(true);
+    const response = await Post(url, formData, apiHeader(token));
+    setLoading(false);
+    if (response != undefined) {
+      console.log(
+        '🚀 ~ file: AddEvents.js:77 ~ AddEvent ~ response:',
+        response?.data,
+      );
+    }
+  };
 
   useEffect(() => {
     if (Object.keys(image).length > 0) {
@@ -119,7 +166,7 @@ const AddEvents = () => {
             viewWidth={0.9}
             inputWidth={0.8}
             border={1}
-            marginTop={moderateScale(5,.3)}
+            marginTop={moderateScale(5, 0.3)}
             borderColor={'#FFFFFF'}
             color={themeColor[1]}
             placeholderColor={Color.themeLightGray}
@@ -146,23 +193,41 @@ const AddEvents = () => {
             borderColor={Color.white}
             placeholderColor={Color.themeLightGray}
             multiline
-          /> 
+          />
 
           <CustomText
             style={styles.title}
             isBold={true}
             children={'Select Images'}
           />
-          <View
-            style={styles.imagesContainer}>
+          <View style={styles.imagesContainer}>
             {images?.map(item => {
               return (
-                <View
-                  style={styles.image}>
+                <View style={styles.image}>
                   <CustomImage
                     style={{width: '100%', height: '100%'}}
                     source={{uri: item?.uri}}
                   />
+                  <TouchableOpacity
+                    style={{
+                      position: 'absolute',
+                      right: 2,
+                      top: 2,
+                      zIndex: 1,
+                      // backgroundColor: 'green',
+                    }}
+                    onPress={() => {
+                      setImages(images.filter(data => data?.uri != item?.uri))
+                    }}>
+                    <Icon
+                      name={'cross'}
+                      color={Color.white}
+                      as={Entypo}
+                      onPress={() => {
+                        setImages(images.filter(data => data?.uri != item?.uri))
+                      }}
+                    />
+                  </TouchableOpacity>
                 </View>
               );
             })}
@@ -203,20 +268,19 @@ const AddEvents = () => {
             )}
           </View>
 
-          <View
-            style={styles.mapcontainer}>
+          <View style={styles.mapcontainer}>
             {data?.map(item => {
               return (
-                <View
-                  style={styles.mapview}>
-                  <CustomText
-                    styel={styles.maptext}
-                    isBold>
+                <View style={styles.mapview}>
+                  <CustomText styel={styles.maptext} isBold>
                     {item?.title}
                   </CustomText>
                   <TouchableOpacity
                     onPress={item?.onPress}
-                    style={[styles.iconContainer,{backgroundColor:themeColor[1]}]}>
+                    style={[
+                      styles.iconContainer,
+                      {backgroundColor: themeColor[1]},
+                    ]}>
                     <Icon
                       name={item?.name}
                       size={4}
@@ -284,7 +348,6 @@ const AddEvents = () => {
               }}
             />
           )}
-         
         </ScrollView>
 
         <View style={{position: 'absolute', bottom: 70}}>
@@ -301,6 +364,7 @@ const AddEvents = () => {
             height={windowHeight * 0.06}
             marginTop={moderateScale(40, 0.3)}
             onPress={() => {
+              AddEvent();
               // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
               // navigationService.navigate('Signup');
             }}
@@ -312,18 +376,17 @@ const AddEvents = () => {
         </View>
       </ImageBackground>
       <TimerPickerModal
-      styles={{
-        theme:'dark',
-        confirmButton:{
-          backgroundColor:themeColor[1],
-          borderColor:themeColor[1],
-        },
-        cancelButton:{
-          backgroundColor:themeColor[1],
-          borderColor:themeColor[1],
-        }
-      }}
-      
+        styles={{
+          theme: 'dark',
+          confirmButton: {
+            backgroundColor: themeColor[1],
+            borderColor: themeColor[1],
+          },
+          cancelButton: {
+            backgroundColor: themeColor[1],
+            borderColor: themeColor[1],
+          },
+        }}
         visible={timeVisible}
         setIsVisible={setTimeVisible}
         onConfirm={pickedDuration => {
@@ -340,12 +403,10 @@ const AddEvents = () => {
         onCancel={() => setTimeVisible(false)}
         closeOnOverlayPress
         // LinearGradient={}
-        
 
-        confirmTextStyle={{backgroundColor:'purple'}}
+        confirmTextStyle={{backgroundColor: 'purple'}}
         modalProps={{
           overlayOpacity: 0.2,
-          
         }}
       />
 
@@ -359,7 +420,7 @@ const AddEvents = () => {
 };
 
 const styles = ScaledSheet.create({
-  iconContainer:{
+  iconContainer: {
     flexDirection: 'row',
     margin: moderateScale(5, 0.6),
     // backgroundColor: themeColor[1],
@@ -368,7 +429,7 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  imagesContainer:{
+  imagesContainer: {
     width: windowWidth,
     paddingHorizontal: moderateScale(10, 0.6),
     flexDirection: 'row',
@@ -385,7 +446,7 @@ const styles = ScaledSheet.create({
     alignSelf: 'center',
     marginTop: moderateScale(20, 0.3),
   },
-  image:{
+  image: {
     width: windowWidth * 0.16,
     height: windowWidth * 0.16,
     borderRadius: moderateScale(10, 0.6),
@@ -450,22 +511,22 @@ const styles = ScaledSheet.create({
     width: windowWidth * 0.2,
     marginTop: moderateScale(10, 0.3),
   },
-  mapview:{
+  mapview: {
     margin: moderateScale(10, 0.6),
     justifyContent: 'center',
     alignItems: 'center',
   },
-  maptext:{
+  maptext: {
     width: windowWidth * 0.25,
     color: 'black',
     fontSize: moderateScale(15, 0.6),
   },
-  mapcontainer:{
+  mapcontainer: {
     justifyContent: 'center',
     flexDirection: 'row',
     width: windowWidth,
     paddingHorizontal: moderateScale(10, 0.6),
-  }
+  },
 });
 
 export default AddEvents;

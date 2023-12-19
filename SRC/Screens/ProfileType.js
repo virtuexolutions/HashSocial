@@ -77,7 +77,7 @@ const ProfileType = () => {
               'Content Creator',
             )}
             {renderBox(
-              require('../Assets/Images/Business.jpg'),
+              require('../Assets/Images/business.jpg'),
               'Business & Entrepreneurship',
             )}
           </View>
