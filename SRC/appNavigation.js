@@ -109,7 +109,7 @@ const AppNavigator = () => {
 
   const AppNavigatorContainer = () => {
     const thirdScreen =
-      token == null
+      token == null     
         ? 'LoginScreen'
         : numOfProfile == 0
         ? 'ProfileType'

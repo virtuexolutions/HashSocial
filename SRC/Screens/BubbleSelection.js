@@ -22,6 +22,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import {setBubbleSelected} from '../Store/slices/auth';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import { setSelectedBubbles, setSelectedProfileData } from '../Store/slices/common';
+import CustomText from '../Components/CustomText';
 
 const BubbleSelection = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -57,25 +58,25 @@ const BubbleSelection = () => {
       id: 2,
       image: require('../Assets/Images/bubble2.png'),
       added: false,
-      name: 'Alternative Fitness',
+      name: 'Statue',
     },
     {
       id: 3,
       image: require('../Assets/Images/bubble3.png'),
       added: false,
-      name: 'Archery',
+      name: 'Bow and Arrow',
     },
     {
       id: 4,
       image: require('../Assets/Images/bubble4.png'),
       added: false,
-      name: 'Architecture',
+      name: 'Travelling',
     },
     {
       id: 5,
       image: require('../Assets/Images/bubble5.png'),
       added: false,
-      name: 'Art',
+      name: 'Mona Lisa',
     },
     {
       id: 6,
@@ -87,7 +88,7 @@ const BubbleSelection = () => {
       id: 7,
       image: require('../Assets/Images/bubble1.png'),
       added: false,
-      name: 'Author books',
+      name: 'Alchol',
     },
     {
       id: 8,
@@ -99,25 +100,25 @@ const BubbleSelection = () => {
       id: 9,
       image: require('../Assets/Images/bubble9.png'),
       added: false,
-      name: 'Bird Watching',
+      name: 'photography',
     },
     {
       id: 10,
       image: require('../Assets/Images/bubble10.png'),
       added: false,
-      name: 'Bolging',
+      name: 'Indoor game',
     },
     {
       id: 11,
       image: require('../Assets/Images/bubble11.png'),
       added: false,
-      name: 'politics',
+      name: 'Bolging',
     },
     {
       id: 12,
       image: require('../Assets/Images/bubble3.png'),
       added: false,
-      name: 'politics',
+      name: 'Bow and Arrow',
     },
   ]);
 
@@ -274,6 +275,23 @@ const BubbleSelection = () => {
                   marginVertical: moderateScale(5, 0.3),
                   marginHorizontal: moderateScale(2, 0.3),
                 }}>
+                  
+                  <CustomText
+              numberOfLines={1}
+              style={{
+                fontSize: moderateScale(11, 0.6),
+                fontWeight: '700',
+                textAlign: 'left',
+                position:'absolute',
+                bottom:10,
+                width:'100%',
+                paddingLeft:moderateScale(10,0.3),
+                zIndex:1,
+                color:'white',
+                backgroundColor:'rgba(0,0,0,0.6)',
+              }}>
+              {item?.name}
+            </CustomText>
                 <CustomImage
                   onPress={() => {
                     console.log('Here');

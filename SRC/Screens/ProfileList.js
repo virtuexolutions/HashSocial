@@ -23,13 +23,14 @@ import {Icon, ScrollView} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CardComponent from '../Components/CardComponent';
 import {Get} from '../Axios/AxiosInterceptorFunction';
+import {useNavigation} from '@react-navigation/native';
+import navigationService from '../navigationService';
 
 const ProfileList = () => {
+  const navigation = useNavigation();
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
-  const [listingData, setListingData] = useState([])
-
-  
+  const [listingData, setListingData] = useState([]);
 
   useEffect(() => {
     // profileListing();
@@ -39,7 +40,7 @@ const ProfileList = () => {
     {
       id: 1,
       image: require('../Assets/Images/dummyman1.png'),
-      desc : 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       name: 'Book Author',
       profileType: 'Content creator',
       title: 'Private Account',
@@ -50,7 +51,7 @@ const ProfileList = () => {
     },
     {
       id: 2,
-      desc : 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       image: require('../Assets/Images/dummyman4.png'),
       name: 'Alternative fitness',
       profileType: 'Enterpreneur',
@@ -63,7 +64,7 @@ const ProfileList = () => {
     {
       id: 3,
       image: require('../Assets/Images/avatar.png'),
-      desc : 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       name: 'Alchol',
       profileType: 'Connector',
       title: 'Public Account',
@@ -76,7 +77,7 @@ const ProfileList = () => {
       id: 4,
       image: require('../Assets/Images/dummyUser.png'),
       name: 'Bords Shooting',
-      desc : 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
+      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
       title: 'Private Account',
       close: true,
       profileType: 'Explore',
@@ -109,7 +110,7 @@ const ProfileList = () => {
         <View
           style={{
             width: windowWidth,
-            marginBottom: moderateScale(10, 0.3),
+            // marginBottom: moderateScale(10, 0.3),
             marginTop: moderateScale(10, 0.3),
           }}>
           <FlatList
@@ -129,6 +130,28 @@ const ProfileList = () => {
               );
             }}
           />
+        </View>
+        <View
+          style={{
+            backgroundColor: 'white',
+            padding:moderateScale(11,0.3),
+            borderRadius:11,
+            borderColor:Color.green,
+            borderWidth:1
+
+          }}>
+          <CustomText
+            onPress={() => navigationService.navigate('Profile')}
+            // numberOfLines={1}
+            style={{
+              fontSize: moderateScale(13, 0.6),
+              color: '#000',
+              // color:'white',
+              textAlign: 'center',
+            }}
+            isBold>
+            create new profile
+          </CustomText>
         </View>
       </ImageBackground>
     </>

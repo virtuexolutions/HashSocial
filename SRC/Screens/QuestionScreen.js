@@ -57,38 +57,44 @@ const QuestionScreen = props => {
 
   const question1 = [
     {
-      question: 'What are you most interested in building on Hatch:',
+      question: 'What are you most interested in building on Hatch?',
       student: [
         {
           num: 'A',
+          image:require('../Assets/Images/content.jpg'),
           option:
             'Gain access to content and creators that help introduce me to new interests',
         },
         {
           num: 'B',
+          image:require('../Assets/Images/content1.jpg'),
           option:
-            'Gain access to content and creators that help me learn more deeply about my existing interests.',
+            'Gain access to content and creators that help me learn more deeply about my existing interests',
         },
         {
           num: 'C',
-          option: 'Connect with people in communities over shared interests',
+          image:require('../Assets/Images/connect.jpg'),
+          option: 'Connect with people in communities over shared inte',
         },
       ],
       other: [
         {
           num: 'A',
+          image:require('../Assets/Images/money.jpg'),
           option:
             'a money-making, highly involved community around your passion that will not demonetize you',
         },
         {
           num: 'B',
+          image:require('../Assets/Images/Business.jpg'),
           option:
-            'a scalable business presence that creates an interactive community around my products and services and reach to digital marketing,partnerships/collaboration, investors and other limitless resources.',
+            'a scalable business presence that creates an interactive community around my products and services and reach to digital marketing,partnerships/collaboration, investors and other limitless resources',
         },
         {
           num: 'C',
+          image:require('../Assets/Images/comunity2.jpg'),
           option:
-            'Building an online presence for my self-moderated community to speak and share freely and connect with other like communities.',
+            'Building an online presence for my self-moderated community to speak and share freely and connect with other like communities',
         },
       ],
     },
@@ -178,7 +184,7 @@ const QuestionScreen = props => {
                   textAlign: 'center',
                   paddingHorizontal: moderateScale(20, 0.6),
                   marginTop: moderateScale(10, 0.3),
-                }}>
+                }} isBold>
                 {item?.question}
               </CustomText>
               {(selectedProfile?.type != 'Learning & Exploring'
@@ -234,12 +240,22 @@ const QuestionScreen = props => {
                             ? themeColor[1]
                             : 'white',
                         borderWidth: 3,
+                        // backgroundColor:'red'
                       },
                     ]}>
+               <View style={styles.qusetionimage}>
+              <CustomImage
+                source={question?.image}
+                style={{width: '100%', height: '100%'}}
+              />
+              </View>
+
                     <CustomText
                       style={{
                         fontSize: moderateScale(12, 0.6),
-                        width: windowWidth * 0.8,
+                        width: windowWidth * 0.59,
+                        paddingHorizontal:moderateScale(10,0.3)
+
                       }}>
                       {question?.option}
                     </CustomText>
@@ -319,7 +335,7 @@ const styles = StyleSheet.create({
   questionContainer: {
     backgroundColor: 'red',
     flexDirection: 'row',
-    alignItems: 'center',
+    // alignItems: 'center',
     width: windowWidth * 0.85,
     padding: moderateScale(10, 0.6),
     backgroundColor: Color.white,
@@ -343,6 +359,16 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
 
     elevation: 5,
+  },
+  qusetionimage: {
+    height: windowWidth * 0.23,
+    width: windowWidth * 0.23,
+    backgroundColor: '#fff',
+    borderRadius:  10,
+    // borderWidth: 3,
+    borderColor: '#33dd50',
+    overflow: 'hidden',
+    // marginBottom : moderateScale(20,0.3)
   },
 });
 

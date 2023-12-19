@@ -127,7 +127,7 @@ const Profile = props => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-      <Header right Title={'Create Profile'} showBack={item ? true : false} />
+      <Header right Title={'Create Profile'} showBack={true} />
 
       <ImageBackground
         source={
