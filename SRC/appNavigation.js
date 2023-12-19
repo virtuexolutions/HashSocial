@@ -114,6 +114,7 @@ const AppNavigator = () => {
             component={BubbleManagement}
           />
           <RootNav.Screen name="Feeds" component={Feeds} />
+          
           <RootNav.Screen name="ProfileType" component={ProfileType} />
           <RootNav.Screen name="QuestionScreen" component={QuestionScreen} />
           <RootNav.Screen name="EventDetails" component={EventDetails} />

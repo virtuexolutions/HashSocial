@@ -8,6 +8,7 @@ import {
   Image,
   ScrollView,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -35,12 +36,13 @@ const AddPost = () => {
   const [description, setDescription] = useState('');
   const [imagePickerVisible, setImagePickerVisible] = useState(false);
   const [videoPicker, setVideoPicker] = useState(false);
-  const [hashtag, setHashtag] = useState('');
+  const [hashtag, setHashtag] = useState({});
   const [video, setVideo] = useState({});
   const [videos, setVideos] = useState([]);
-  console.log('🚀 ~ file: AddPost.js:40 ~ AddPost ~ video:', video);
+  // console.log('🚀 ~ file: AddPost.js:40 ~ AddPost ~ video:', video);
   const [hashtags, setHashtags] = useState([]);
-  console.log('🚀 ~ file: AddPost.js:30 ~ AddPost ~ hashtags:', hashtags);
+  // const [post,setPost] = useState()
+  // console.log('🚀 ~ file: AddPost.js:30 ~ AddPost ~ hashtags:', hashtags);
 
   useEffect(() => {
     if (Object.keys(image).length > 0) {
@@ -55,6 +57,58 @@ const AddPost = () => {
       setVideo({});
     }
   }, [video]);
+
+  const AddPost = async () => {
+    const url = 'auth/post';
+    const formData = new FormData();
+    const body = {
+      caption: description,
+      // bubble_id:
+    };
+    if (images.length == 0 && videos.length == 0 && description == '')
+    {
+      Platform.OS == 'android'
+        ? ToastAndroid.show(
+            ` please fill atleast one feild`,
+            ToastAndroid.SHORT,
+          )
+        : alert(` plaease fill atleast one feild`);
+    } else {
+      for (let key in body) {
+        formData.append(key, body[key]);
+      }
+      if (images.length > 0) {
+        images?.map((item, index) =>
+          formData.append(`image${index}`, images[index]),
+        );
+      }
+      if (videos.length > 0) {
+        videos?.map((item, index) =>
+          formData.append(`video${index}`, videos[index]),
+        );
+      }
+      if (hashtags.length > 0) {
+        hashtags?.map((item, index) =>
+          formData.append(`hashtag${index}`, hashtags[index]),
+        );
+      }
+    }
+
+    return console.log(
+      '🚀 ~ file: AddPost.js:64 ~ AddPost ~ formData:',
+      formData,
+    );
+
+    setLoading(true);
+    const response = await Post(url, body, apiHeader(token));
+    setLoading(false);
+    if (response != undefined) {
+      return console.log(
+        '🚀 ~ file: AddPost.js:74 ~ AddPost ~ response:',
+        response,
+      );
+    }
+  };
 
   return (
     <>
@@ -171,9 +225,7 @@ const AddPost = () => {
           />
           <View style={styles.imagesContainer}>
             {videos?.map(item => {
-              return (
-                <VideoComponent item={item}/>
-              );
+              return <VideoComponent item={item} />;
             })}
             {videos.length < 5 && (
               <TouchableOpacity
@@ -216,21 +268,22 @@ const AddPost = () => {
             isBold={true}
             children={'Add hashtag'}
           />
-          <View
-            style={styles.mapview}>
+          <View style={styles.mapview}>
             {hashtags.map(item => {
               return (
                 <CustomText
-                  style={[styles.mapText ,{
-                    backgroundColor: themeColor[1]
-                  }]}>
+                  style={[
+                    styles.mapText,
+                    {
+                      backgroundColor: themeColor[1],
+                    },
+                  ]}>
                   {item}
                 </CustomText>
               );
             })}
           </View>
-          <View
-            style={styles.hashtagview}>
+          <View style={styles.hashtagview}>
             <TextInputWithTitle
               // title={'Title'}
               secureText={false}
@@ -278,8 +331,7 @@ const AddPost = () => {
 
           {/* <View style={styles.conatiner}></View> */}
 
-          <View
-            style={styles.postView}>
+          <View style={styles.postView}>
             <CustomButton
               text={
                 loading ? (
@@ -293,6 +345,7 @@ const AddPost = () => {
               height={windowHeight * 0.06}
               // marginTop={moderateScale(40, 0.3)}
               onPress={() => {
+                AddPost();
                 // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
                 // navigationService.navigate('Signup');
               }}
@@ -372,7 +425,7 @@ const styles = ScaledSheet.create({
     // alignSelf: 'flex-start',
     // marginTop: moderateScale(10, 0.3),
   },
-  hashtagview:{
+  hashtagview: {
     flexDirection: 'row',
     // backgroundColor: 'red',
     paddingVertical: moderateScale(5, 0.6),
@@ -381,7 +434,7 @@ const styles = ScaledSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  mapview:{
+  mapview: {
     // backgroundColor: 'red',
     width: windowWidth,
     flexDirection: 'row',
@@ -390,7 +443,7 @@ const styles = ScaledSheet.create({
     paddingVertical: moderateScale(5, 0.6),
     // height: windowHeight * 0.1,
   },
-  mapText:{
+  mapText: {
     color: 'white',
     fontSize: moderateScale(13, 0.6),
     marginHorizontal: moderateScale(5, 0.3),
@@ -398,7 +451,7 @@ const styles = ScaledSheet.create({
     padding: moderateScale(5, 0.6),
     borderRadius: moderateScale(10, 0.6),
   },
-  postView:{
+  postView: {
     position: 'absolute',
     bottom: 40,
     // backgroundColor: 'red',
@@ -406,60 +459,62 @@ const styles = ScaledSheet.create({
     // height: windowHeight * 0.1,
     justifyContent: 'center',
     alignItems: 'center',
-  }
+  },
 });
 
 export default AddPost;
 
-const VideoComponent =({item})=>{
-  const [isPlaying, setIsPlaying] = useState(false)
-  return(
-  <View style={styles.image}>
-  <TouchableOpacity
-  onPress={()=>{
-    setIsPlaying(!isPlaying);
-  }}
-    style={{
-      position: 'absolute',
-      zIndex: 1,
-      width: windowWidth * 0.16,
-      height: windowWidth * 0.16,
-      justifyContent: 'center',
-      alignItems: 'center',
-      // backgroundColor: 'green',
-      alignSelf: 'center',
-    }}>{!isPlaying && 
-    <Icon
-     onPress={()=>{
-      setIsPlaying(!isPlaying);
-    }}
-      name={'controller-play'}
-      as={Entypo}
-      size={10}
-      color={'rgba(255,255,255,.9)'}
-    />}
-  </TouchableOpacity>
-  <Video
-    // muted
-    paused={!isPlaying}
-    repeat={true}
-    // controls={true}
-    source={{uri: item?.uri}}
-    // ref={videoRef}
-    // onProgress={x => {
-    //   console.log(
-    //     '🚀 ~ file: VideoController.js:46 ~ VideoController ~ x:',
-    //     x,
-    //   );
-    //   setProgress(x);
-    // }}
-    // onBuffer={() => console.log('buffering video')}
-    style={{
-      width: '100%',
-      height: '100%',
-      backgroundColor: Color.white,
-    }}
-  />
-</View>
-)
-}
+const VideoComponent = ({item}) => {
+  const [isPlaying, setIsPlaying] = useState(false);
+  return (
+    <View style={styles.image}>
+      <TouchableOpacity
+        onPress={() => {
+          setIsPlaying(!isPlaying);
+        }}
+        style={{
+          position: 'absolute',
+          zIndex: 1,
+          width: windowWidth * 0.16,
+          height: windowWidth * 0.16,
+          justifyContent: 'center',
+          alignItems: 'center',
+          // backgroundColor: 'green',
+          alignSelf: 'center',
+        }}>
+        {!isPlaying && (
+          <Icon
+            onPress={() => {
+              setIsPlaying(!isPlaying);
+            }}
+            name={'controller-play'}
+            as={Entypo}
+            size={10}
+            color={'rgba(255,255,255,.9)'}
+          />
+        )}
+      </TouchableOpacity>
+      <Video
+        // muted
+        paused={!isPlaying}
+        repeat={true}
+        // controls={true}
+        source={{uri: item?.uri}}
+        // ref={videoRef}
+        // onProgress={x => {
+        //   console.log(
+        //     '🚀 ~ file: VideoController.js:46 ~ VideoController ~ x:',
+        //     x,
+        //   );
+        //   setProgress(x);
+        // }}
+        // onBuffer={() => console.log('buffering video')}
+        style={{
+          width: '100%',
+          height: '100%',
+          backgroundColor: Color.white,
+        }}
+      />
+    </View>
+  );
+};

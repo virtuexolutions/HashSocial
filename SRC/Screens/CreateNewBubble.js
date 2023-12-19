@@ -68,7 +68,7 @@ const CreateNewBubble = props => {
   );
   const [teamCanRemoveContent, setTeamCanRemoveContent] = useState('Yes');
   const [allCanSendInvite, setAllCanSendInvite] = useState('Yes');
-  const architecture = ['ABC', 'BCD', 'CDE'];
+  const architecture = ['Sports', 'Music', 'Technology', 'Arts and Crafts', 'Travel', 'Food', 'Gaming', 'pets', 'learning', 'Books', 'Fashion', 'Health', 'Photography','Movies and entertainment' , 'Science and nature', 'Parenting' ];
   const [architectureValue, setArchitectureValue] = useState('#Architecture');
   const [switchValue, setSwitchValue] = useState('Private');
   const ApprovalForAdmittance = ['yes', 'No'];
@@ -211,7 +211,7 @@ const CreateNewBubble = props => {
                 item={architectureValue}
                 setItem={setArchitectureValue}
                 width={windowWidth * 0.34}
-                placeholder={'#Architecture'}
+                placeholder={'select category'}
                 fontSize={moderateScale(10, 0.5)}
                 dropdownStyle={{
                   borderBottomWidth: 0,
