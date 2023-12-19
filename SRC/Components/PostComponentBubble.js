@@ -8,7 +8,7 @@ import {
   Pressable,
 } from 'react-native';
 import React, {useState, useRef} from 'react';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
 import CustomText from '../Components/CustomText';
@@ -26,6 +26,7 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import {FlatList} from 'react-native';
 import Lottie from 'lottie-react-native';
 import {Image} from 'react-native-svg';
+import { Delete } from '../Axios/AxiosInterceptorFunction';
 
 const PostComponentBubble = ({data}) => {
   const [like, setLike] = useState(false);
@@ -33,15 +34,26 @@ const PostComponentBubble = ({data}) => {
   const MoreIcon = require('../Assets/Images/threedots.png');
   const [liked, setLiked] = useState(false);
   const [animationStarted, setAnimationStarted] = useState(false);
+  const  [loading,setloading]=useState(false)
   //   const [lottieAnimation, setLottieAnimation] = useState(null);
   const lottieAnimation = useRef();
 
   const editPost = () => {
-    Alert.alert('Edit Your Post');
+
+    // Alert.alert('Edit Your Post');
   };
 
-  const deletePost = () => {
-    Alert.alert('Delete Your Post');
+  const deletePost =  async () => {
+    const url= `auth/post/`
+    setloading(ture) 
+    const response = await Delete(url ,apiHeader(token)) 
+    console.log("🚀 ~ file: PostComponentBubble.js:50 ~ deletePost ~ response:", response)
+    setloading(false)
+    if(reponse != undefined){
+      
+    } 
+
+    // Alert.alert('Delete Your Post');
   };
 
   return (

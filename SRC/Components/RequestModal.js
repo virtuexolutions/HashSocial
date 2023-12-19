@@ -13,6 +13,30 @@ import { useSelector } from 'react-redux';
 
 const RequestModal = ({isVisible, setIsVisible, text}) => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  const [loading ,setLoading]=useState(false)
+
+
+// const addRequest = async () => {
+
+// const url ='auth/community_member'
+// const body={
+//   status = request or invite
+// profile_id
+// bubble_id
+// }
+// setLoading(true)
+// const response =await (url ,body ,apiHeader(token))
+// setLoading(false)
+// if(response != undefined ){
+
+// }
+
+
+// }
+
+
+
+
   return (
     <Modal
       isVisible={isVisible}
