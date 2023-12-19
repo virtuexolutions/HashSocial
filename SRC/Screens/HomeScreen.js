@@ -36,18 +36,20 @@ import LinearGradient from 'react-native-linear-gradient';
 import RequestModal from '../Components/RequestModal';
 import Propmpt from '../Components/Propmpt';
 import { setNewSignUp } from '../Store/slices/auth';
+import { Get } from '../Axios/AxiosInterceptorFunction';
 
 const HomeScreen = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const profileData = useSelector(state=>state.commonReducer.selectedProfile)
   const newSignUp = useSelector(state=>state.authReducer.newSignUp)
-  console.log("🚀 ~ file: HomeScreen.js:44 ~ HomeScreen ~ newSignUp:", newSignUp)
+  // console.log("🚀 ~ file: HomeScreen.js:44 ~ HomeScreen ~ newSignUp:", newSignUp)
   // console.log("🚀 ~ file: HomeScreen.js:42 ~ HomeScreen ~ profileData:", profileData)
 
   const dispatch = useDispatch()
   const [prompt, setPrompt] = useState(false)
   const data = props?.route?.params?.data;
+  const token = useSelector(state=> state.authReducer.token)
   const [clicked, setclicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alignment, setAlignment] = useState('left');
@@ -282,6 +284,21 @@ const HomeScreen = props => {
     },
   ]);
 
+  const [bubbles, setBubbles] = useState([])
+  
+  const getBubbles = async () =>{
+    const url = 'auth/bubble'
+    setIsLoading(true)
+    const response = await Get(url, token)
+    setIsLoading(false)
+    if(response != undefined){
+      console.log("🚀 ~ file: HomeScreen.js:295 ~ getBubbles ~ response:", response?.data)
+      
+    }
+
+  }
+
+
   const animateSideContainer = () => {
     backRef.current?.animate(
       alignment == 'left' ? 'fadeInLeft' : 'fadeInRight',
@@ -323,6 +340,7 @@ const HomeScreen = props => {
         setPrompt(true)
       },10000)
     }
+    getBubbles()
     
   }, [])
   

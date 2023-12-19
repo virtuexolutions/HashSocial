@@ -30,6 +30,7 @@ const CustomDropDownMultiSelect = ({min, max, item, setItem, array, title , maxH
         tagBorderColor={ userRole == 'Qbid Member' ?  Color.blue : Color.white}
         tagTextColor={ userRole == 'Qbid Member' ?  Color.white : Color.white}
         
+        
         displayKey="name"
         uniqueKey="id"
         // hideSubmitButton
@@ -37,7 +38,7 @@ const CustomDropDownMultiSelect = ({min, max, item, setItem, array, title , maxH
         submitButtonText={'Done'}
         styleMainWrapper={{
           // align
-          width: Dimensions.get('window').width * 0.7,
+          width: Dimensions.get('window').width * 0.55,
           // backgroundColor :'red',
           flexWrap: 'wrap',
           flexDirection: 'row',
@@ -52,12 +53,12 @@ const CustomDropDownMultiSelect = ({min, max, item, setItem, array, title , maxH
           borderTopEndRadius: 10,
           borderTopStartRadius: 10,
           height: moderateScale(50, 0.3),
-          fontSize: moderateScale(20, 0.3),
+          fontSize: moderateScale(50, 0.3),
         }}
         selectedItemIconColor={themeColor[1]}
         selectedItemTextColor={themeColor[1]}
         styleDropdownMenu={[{
-          width: Dimensions.get('window').width * 0.9,
+          width: Dimensions.get('window').width * 0.3,
           paddingHorizontal: 10,
           height: Dimensions.get('window').height * 0.07,
           borderRadius: moderateScale(30,0.3),
@@ -73,7 +74,8 @@ const CustomDropDownMultiSelect = ({min, max, item, setItem, array, title , maxH
           maxHeight: maxHeight,
         }}
         styleTextDropdownSelected={{
-          fontSize: moderateScale(16,0.3),
+          fontSize: moderateScale(12,0.3),
+          // backgroundColor:'yellow',
           color: Color.gray,
           fontFamily: 'Inter-Medium',
         }}
@@ -117,7 +119,7 @@ const styles = StyleSheet.create({
 
   dropDownBtn: {
     width: Dimensions.get('window').width * 0.9,
-    backgroundColor: Color.red,
+    // backgroundColor: Color.red,
     borderWidth: 1,
     borderRadius: 10,
     borderColor: Color.lightGrey,

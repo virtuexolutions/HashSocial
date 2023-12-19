@@ -2,6 +2,24 @@ import {createSlice} from '@reduxjs/toolkit';
 import Color from '../../Assets/Utilities/Color';
 
 const initialState = {
+  architecture: [
+    {name: 'Sports', id: 1},
+    {name: 'Music',id: 2,},
+    {name: 'Technology',id: 3,},
+    {name: 'Arts and Crafts',id: 4,},
+    {name: 'Travel',id: 5,},
+    {name: 'Food',id: 6,},
+    {name: 'Gaming',id: 7,},
+    {name: 'pets',id: 8,},
+    {name: 'learning',id: 9,},
+    {name: 'Books',id: 10,},
+    {name: 'Fashion',id: 11,},
+    {name: 'Health',id: 12,},
+    {name: 'Photography',id: 13,},
+    {name: 'Movies and entertainment',id: 14,},
+    {name: 'Science and nature',id: 15,},
+    {name: 'Parenting',id: 16,},
+  ],
   userData: {},
   categories: [],
   categoryProperties: [],
@@ -14,7 +32,6 @@ const initialState = {
 
   selectedRole: '',
 };
-
 
 const CommonSlice = createSlice({
   name: 'commonReducer',
@@ -56,7 +73,10 @@ const CommonSlice = createSlice({
 
     setSelectedBubbles(state, action) {
       state.selectedBubble = action.payload;
-      console.log("🚀 ~ file: common.js:58 ~ setSelectedBubbles ~ action.payload00000:", action.payload)
+      console.log(
+        '🚀 ~ file: common.js:58 ~ setSelectedBubbles ~ action.payload00000:',
+        action.payload,
+      );
     },
     setSelectedFeeds(state, action) {
       state.selectedFeeds = action.payload;
