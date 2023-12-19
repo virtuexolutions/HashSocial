@@ -86,7 +86,7 @@ const QuestionScreen = props => {
         },
         {
           num: 'B',
-          image:require('../Assets/Images/Business.jpg'),
+          image:require('../Assets/Images/business.jpg'),
           option:
             'a scalable business presence that creates an interactive community around my products and services and reach to digital marketing,partnerships/collaboration, investors and other limitless resources',
         },

@@ -35,21 +35,21 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {setBubbleCreated} from '../Store/slices/auth';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import CustomDropDownMultiSelect from '../Components/CustomDropDownMultiSelect';
+import { useNavigation } from '@react-navigation/native';
 
 const CreateNewBubble = props => {
   const item = props?.route?.params?.item;
   const token = useSelector(state => state.authReducer.token);
-  console.log(
-    '🚀 ~ file: CreateNewBubble.js:38 ~ CreateNewBubble ~ token:',
-    token,
-  );
+  const userData = useSelector(state => state.commonReducer.userData);
+  // console.log("🚀 ~ file: CreateNewBubble.js:44 ~ CreateNewBubble ~ userData:", userData)
+  const navigation = useNavigation()
 
   const dispatch = useDispatch();
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const architecture = useSelector(state => state.commonReducer.architecture)
   const [CreateBubble, setCreateBubble] = useState('');
-  const [Admin, setAdmin] = useState(item?.author ? item?.author : '');
+  const [Admin, setAdmin] = useState(userData?.first_name ?  userData?.first_name :'');
   const [bubbleTitle, setBubbleTitle] = useState(item?.name ? item?.name : '');
   const [moderator, setModerator] = useState(
     item?.moderator ? item?.moderator : '',
@@ -172,8 +172,8 @@ const CreateNewBubble = props => {
     const url = 'auth/community';
     const body = {
       title: bubbleTitle,
-      moderator: moderator,
-      admin: Admin,
+      // moderator: moderator,
+      // admin: Admin,
       approval_admittance: ApprovalForAdmittanceValue,
       approval_post: ApprovalToPostValue,
       membership_cost: MembershipCostValue,
@@ -198,10 +198,11 @@ const CreateNewBubble = props => {
       formData.append('image', profilePicture);
     } else {
       return Platform.OS == 'android'
-        ? ToastAndroid.show(`image is empty`, ToastAndroid.SHORT)
-        : Alert.alert(`image is empty`);
+      ? ToastAndroid.show(`image is empty`, ToastAndroid.SHORT)
+      : Alert.alert(`image is empty`);
     }
     architectureValue.map((item, index)=>formData.append(`category[${index}]`, architecture[item]?.name))
+    console.log("🚀 ~ file: CreateNewBubble.js:199 ~ createBubble ~ formData:", JSON.stringify(formData, null, 2))
 
     setIsLoading(true);
     const response = await Post(url, formData, apiHeader(token));
@@ -216,6 +217,8 @@ const CreateNewBubble = props => {
       Platform.OS == 'android'
         ? ToastAndroid.show('Bubble created Successfully', ToastAndroid.SHORT)
         : Alert.alert('Bubble created Successfully');
+
+        navigation.goBack()
     }
   };
 
@@ -341,7 +344,7 @@ const CreateNewBubble = props => {
             <View style={styles.line}></View>
 
             <View style={styles.view}>
-              <View style={styles.Row}>
+              {/* <View style={styles.Row}>
                 <CustomText
                   style={{
                     width: windowWidth * 0.25,
@@ -364,7 +367,7 @@ const CreateNewBubble = props => {
                   borderRadius={moderateScale(20, 0.3)}
                   isBold
                 />
-              </View>
+              </View> */}
               <TextInputWithTitle
                 placeholder={'Admin'}
                 setText={setAdmin}
@@ -519,6 +522,7 @@ const CreateNewBubble = props => {
                 isBold={true}
                 marginBottom={moderateScale(50)}
                 onPress={() => {
+                  navigation.goBack()
                   dispatch(setBubbleCreated(true));
                 }}
               />

@@ -37,25 +37,25 @@ import RequestModal from '../Components/RequestModal';
 import Propmpt from '../Components/Propmpt';
 import { setNewSignUp } from '../Store/slices/auth';
 import { Get } from '../Axios/AxiosInterceptorFunction';
+import { useIsFocused } from '@react-navigation/native';
 
 const HomeScreen = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const profileData = useSelector(state=>state.commonReducer.selectedProfile)
   const newSignUp = useSelector(state=>state.authReducer.newSignUp)
-  // console.log("🚀 ~ file: HomeScreen.js:44 ~ HomeScreen ~ newSignUp:", newSignUp)
-  // console.log("🚀 ~ file: HomeScreen.js:42 ~ HomeScreen ~ profileData:", profileData)
+  const token = useSelector(state => state.authReducer.token)
+  console.log("🚀 ~ file: HomeScreen.js:44 ~ HomeScreen ~ newSignUp:", newSignUp)
 
   const dispatch = useDispatch()
   const [prompt, setPrompt] = useState(false)
-  const data = props?.route?.params?.data;
-  const token = useSelector(state=> state.authReducer.token)
   const [clicked, setclicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alignment, setAlignment] = useState('left');
   const [highlightedIcon, setHighlightedIcon] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [text, setText] = useState('');
+  const isFocused = useIsFocused()
 
   const [animationStopped, setAnimationStopped] = useState(false);
 
@@ -248,6 +248,7 @@ const HomeScreen = props => {
       },
     },
   ]);
+  console.log("🚀 ~ file: HomeScreen.js:251 ~ HomeScreen ~ content:", content)
 
   const [profiles, setProfiles] = useState([
     {
@@ -287,17 +288,25 @@ const HomeScreen = props => {
   const [bubbles, setBubbles] = useState([])
   
   const getBubbles = async () =>{
-    const url = 'auth/bubble'
+    const url = 'auth/community'
     setIsLoading(true)
     const response = await Get(url, token)
     setIsLoading(false)
     if(response != undefined){
       console.log("🚀 ~ file: HomeScreen.js:295 ~ getBubbles ~ response:", response?.data)
-      
+      setBubbles(response?.data?.community_info)
+      setContent(response?.data?.community_info?.map(item=>{return({image: (
+        <Image
+          source={{uri:item?.image}}
+          resizeMode="cover"
+          style={style.icon}
+        />
+      ), bubble:true,
+      source: {uri:item?.image},
+    private: item?.privacy == 'yes' ? false : true})}))
     }
 
   }
-
 
   const animateSideContainer = () => {
     backRef.current?.animate(
@@ -312,25 +321,7 @@ const HomeScreen = props => {
     }
   }, [animationStopped]);
 
-  useEffect(() => {
-    if (data && Object.keys(data?.image).length > 0) {
-      setContent(prev => [
-        ...prev,
-        {
-          image: (
-            <Image
-              source={{uri: data?.image?.uri}}
-              resizeMode="cover"
-              style={style.icon}
-            />
-          ),
-          onPress: () => {
-            navigationService.navigate('Bubble');
-          },
-        },
-      ]);
-    }
-  }, []);
+  
 
   useEffect(() => {
     // dispatch(setNewSignUp(true))
@@ -340,9 +331,13 @@ const HomeScreen = props => {
         setPrompt(true)
       },10000)
     }
-    getBubbles()
+ 
     
   }, [])
+  useEffect(() => {
+    getBubbles()
+  }, [isFocused])
+  
   
 
   return (
