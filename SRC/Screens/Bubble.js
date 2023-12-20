@@ -31,10 +31,14 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Modal from 'react-native-modal';
 import Feather from 'react-native-vector-icons/Feather';
 import OptionsMenu from 'react-native-options-menu';
+import { Get } from '../Axios/AxiosInterceptorFunction';
 
 
-const Bubble = () => {
+const Bubble = (props) => {
+  const bubbleId = props?.route?.params?.id
+  return console.log("🚀 ~ file: Bubble.js:39 ~ Bubble ~ bubbleId:", bubbleId)
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  const token = useSelector(state => state.authReducer.token);
   const privacy = useSelector(state => state.authReducer.privacy);
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -114,6 +118,16 @@ const Bubble = () => {
   console.log('🚀 ~ file: Bubble.js:112 ~ Bubble ~ newData:', newData);
 
   const MoreIcon = require('../Assets/Images/threedots.png');
+  const getBubbleDetails = async()=>{
+    const url = `auth/community/${bubbleId}`
+    setIsLoading(true)
+    const response = await Get(url, token)
+    setIsLoading(false)
+    if(response != undefined){
+
+      console.log("🚀 ~ file: Bubble.js:124 ~ getBubbleDetails ~ response:", response)
+    }
+  }
 
   const InviteMember = () => {
    setIsVisible(true);

@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {ActivityIndicator} from 'react-native'
 import * as Animatable from 'react-native-animatable';
 import Color from '../Assets/Utilities/Color';
 import CustomImage from '../Components/CustomImage';
@@ -206,7 +207,7 @@ const InterestSelection = () => {
             zIndex: 1,
           }}>
           <CustomButton
-            text={'Save'}
+            text={isLaoding ? <ActivityIndicator color={'white'} size={'small'} />:'Save'}
             textColor={Color.white}
             width={windowWidth * 0.2}
             height={windowHeight * 0.04}
