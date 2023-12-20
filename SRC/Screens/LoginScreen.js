@@ -57,7 +57,7 @@ const LoginScreen = () => {
 
     if (response != undefined) {
     console.log("🚀 ~ file: LoginScreen.js:58 ~ Login ~ response:", response?.data)
-    console.log("🚀 ~ file: LoginScreen.js:56 ~ Login ~ response:", JSON.parse(response?.data?.user_info?.interest)?.length)
+    // console.log("🚀 ~ file: LoginScreen.js:56 ~ Login ~ response:", JSON.parse(response?.data?.user_info?.interest)?.length)
       Platform.OS == 'android'
         ? ToastAndroid.show('User LoggedIn successfully', ToastAndroid.SHORT)
         : Alert.alert('User LoggedIn successfully');
