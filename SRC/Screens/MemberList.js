@@ -9,12 +9,12 @@ import {
   } from 'react-native';
   import React from 'react';
   import {moderateScale} from 'react-native-size-matters';
-  import {windowHeight, windowWidth} from '../Utillity/utils';
+  import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
   import CustomStatusBar from '../Components/CustomStatusBar';
   import Header from '../Components/Header';
   import CustomImage from '../Components/CustomImage';
   import CustomText from '../Components/CustomText';
-  import { useSelector } from 'react-redux';
+  import { useSelector } from 'react-redux'; 
   import CardComponent from '../Components/CardComponent';
   // const {height, width} = Dimensions.get('window');
   
@@ -54,7 +54,22 @@ import {
        
       },
     ];
+    const [loading ,setLoading] =useState(false)
   
+
+//     const memberList = async () => {
+//       const url= 'auth/bubble_member/pending_list'
+//       const body  ={
+// status = accept or reject
+//       }
+//       setLoading(true)
+//       const response = await(url,body ,apiHeader(token))
+//       setLoading(false)
+//       if(response != undefined){
+
+//       }
+//     }
+
     return (
       <>
         <CustomStatusBar
