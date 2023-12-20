@@ -47,7 +47,8 @@ const CreateNewBubble = props => {
   const dispatch = useDispatch();
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
-  const architecture = useSelector(state => state.commonReducer.architecture)
+  // const architecture = useSelector(state => state.commonReducer.architecture)
+  console.log("🚀 ~ file: CreateNewBubble.js:51 ~ CreateNewBubble ~ architecture:", architecture)
   const [CreateBubble, setCreateBubble] = useState('');
   const [Admin, setAdmin] = useState(userData?.first_name ?  userData?.first_name :'');
   const [bubbleTitle, setBubbleTitle] = useState(item?.name ? item?.name : '');
@@ -62,72 +63,72 @@ const CreateNewBubble = props => {
   const [teamRemoveCmmnts, setTeamRemoveCmnts] = useState('Yes');
   const [teamCanRemoveContent, setTeamCanRemoveContent] = useState('Yes');
   const [allCanSendInvite, setAllCanSendInvite] = useState('Yes');
-  // const architecture = [
-  //   {
-  //     name: 'Sports',
-  //     id: 1,
-  //   },
-  //   {
-  //     name: 'Music',
-  //     id: 2,
-  //   },
-  //   {
-  //     name: 'Technology',
-  //     id: 3,
-  //   },
-  //   {
-  //     name: 'Arts and Crafts',
-  //     id: 4,
-  //   },
-  //   {
-  //     name: 'Travel',
-  //     id: 5,
-  //   },
-  //   {
-  //     name: 'Food',
-  //     id: 6,
-  //   },
-  //   {
-  //     name: 'Gaming',
-  //     id: 7,
-  //   },
-  //   {
-  //     name: 'pets',
-  //     id: 8,
-  //   },
-  //   {
-  //     name: 'learning',
-  //     id: 9,
-  //   },
-  //   {
-  //     name: 'Books',
-  //     id: 10,
-  //   },
-  //   {
-  //     name: 'Fashion',
-  //     id: 11,
-  //   },
-  //   {
-  //     name: 'Health',
-  //     id: 12,
-  //   },
-  //   {
-  //     name: 'Photography',
-  //     id: 13,
-  //   },
-  //   {
-  //     name: 'Movies and entertainment',
-  //     id: 14,
-  //   },
-  //   {
-  //     name: 'Science and nature',
-  //     id: 15,
-  //   },
-  //   {
-  //     name: 'Parenting',
-  //     id: 16,
-  //   },
-  // ];
+  const architecture = [
+    {
+      name: 'Sports',
+      id: 1,
+    },
+    {
+      name: 'Music',
+      id: 2,
+    },
+    {
+      name: 'Technology',
+      id: 3,
+    },
+    {
+      name: 'Arts and Crafts',
+      id: 4,
+    },
+    {
+      name: 'Travel',
+      id: 5,
+    },
+    {
+      name: 'Food',
+      id: 6,
+    },
+    {
+      name: 'Gaming',
+      id: 7,
+    },
+    {
+      name: 'pets',
+      id: 8,
+    },
+    {
+      name: 'learning',
+      id: 9,
+    },
+    {
+      name: 'Books',
+      id: 10,
+    },
+    {
+      name: 'Fashion',
+      id: 11,
+    },
+    {
+      name: 'Health',
+      id: 12,
+    },
+    {
+      name: 'Photography',
+      id: 13,
+    },
+    {
+      name: 'Movies and entertainment',
+      id: 14,
+    },
+    {
+      name: 'Science and nature',
+      id: 15,
+    },
+    {
+      name: 'Parenting',
+      id: 16,
+    },
+  ];
   const [architectureValue, setArchitectureValue] = useState([]);
   console.log("🚀 ~ file: CreateNewBubble.js:131 ~ CreateNewBubble ~ architectureValue:", architectureValue)
   const [switchValue, setSwitchValue] = useState('Private');

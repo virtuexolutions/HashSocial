@@ -16,7 +16,6 @@ const RequestModal = ({isVisible, setIsVisible, text,selectedBubbleId}) => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const [loading, setLoading] = useState(false);
   const profileData = useSelector(state => state.commonReducer.selectedProfile)
-  console.log("🚀 ~ file: RequestModal.js:18 ~ RequestModal ~ profileData:", profileData)
   const token = useSelector(state => state.authReducer.token)
 
   const addRequest = async () => {

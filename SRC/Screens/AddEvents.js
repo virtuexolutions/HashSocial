@@ -30,18 +30,17 @@ import moment from 'moment';
 import RNDateTimePicker from '@react-native-community/datetimepicker';
 import {TimerPickerModal} from 'react-native-timer-picker';
 import {Post} from '../Axios/AxiosInterceptorFunction';
+import { useNavigation } from '@react-navigation/native';
 
-const AddEvents = () => {
+const AddEvents = (props) => {
+  const bubbleId = props?.route?.params?.bubbleId
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const token = useSelector(state => state.authReducer.token);
   const [selectedTab, setSelectedTab] = useState('Tag People');
   const [image, setImage] = useState({});
   const [images, setImages] = useState([]);
-  console.log(
-    '🚀 ~ file: AddEvents.js:41 ~ AddEvents ~ images:',
-    images?.length,
-  );
   const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState('');
   const [imagePickerVisible, setImagePickerVisible] = useState(false);
@@ -51,8 +50,9 @@ const AddEvents = () => {
   const [hours, setHours] = useState('');
   const [minutes, setMinutes] = useState('');
   const [calendarVisible, setCalendarVisible] = useState(false);
-
   const [timeVisible, setTimeVisible] = useState(false);
+
+  const navigation = useNavigation()
 
   const data = [
     {
@@ -76,10 +76,12 @@ const AddEvents = () => {
   ];
 
   const AddEvent = async () => {
+
     const formData = new FormData();
-    const url = 'auth/post';
+    const url = 'auth/event';
     const body = {
-      bubble_id: 1,
+      profile_id:profileData?.id,
+      community_id: bubbleId,
       title: title,
       description: description,
       date: date,
@@ -104,7 +106,7 @@ const AddEvents = () => {
         ? ToastAndroid.show('Add an image', ToastAndroid.SHORT)
         : Alert.alert('Add an image');
     }
-    return console.log(
+     console.log(
       '🚀 ~ file: AddEvents.js:76 ~ AddEvent ~ formData:',
       formData,
     );
@@ -117,6 +119,7 @@ const AddEvents = () => {
         '🚀 ~ file: AddEvents.js:77 ~ AddEvent ~ response:',
         response?.data,
       );
+      navigation.goBack();
     }
   };
 

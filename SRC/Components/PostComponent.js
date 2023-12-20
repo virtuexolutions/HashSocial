@@ -101,24 +101,14 @@ const PostComponent = ({data}) => {
             width: windowWidth,
             marginTop: moderateScale(8, 0.3),
           }}>
-          {/* <ShowMoreAndShowLessText
-            minTextLength={12}
+          {/* <CustomText
             style={{
               textAlign: 'left',
               marginLeft: moderateScale(15, 0.3),
               fontSize: moderateScale(13, 0.6),
             }}>
             {data?.desc}
-          </ShowMoreAndShowLessText>
-           */}
-          <CustomText
-            style={{
-              textAlign: 'left',
-              marginLeft: moderateScale(15, 0.3),
-              fontSize: moderateScale(13, 0.6),
-            }}>
-            {data?.desc}
-          </CustomText>
+          </CustomText> */}
         </View>
         {(data?.image || data?.video) && (
           <View style={{width: windowWidth, height: windowHeight * 0.3}}>

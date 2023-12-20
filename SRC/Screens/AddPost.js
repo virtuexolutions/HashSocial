@@ -25,24 +25,40 @@ import {useSelector} from 'react-redux';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import ImagePickerModal from '../Components/ImagePickerModal';
 import CustomImage from '../Components/CustomImage';
+import {Post} from '../Axios/AxiosInterceptorFunction';
+import {useNavigation} from '@react-navigation/native';
+import OptionsMenu from 'react-native-options-menu';
 
-const AddPost = () => {
+
+const AddPost = props => {
+  const bubbleId = props?.route?.params?.bubbleId;
+  const data = props?.route?.params?.data;
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
+  const token = useSelector(state => state.authReducer.token);
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const [selectedTab, setSelectedTab] = useState('Tag People');
   const [image, setImage] = useState({});
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState(
+    data?.post_images ? data?.post_images : [],
+  );
   const [loading, setLoading] = useState(false);
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState(
+    data?.caption ? data?.caption : '',
+  );
   const [imagePickerVisible, setImagePickerVisible] = useState(false);
   const [videoPicker, setVideoPicker] = useState(false);
   const [hashtag, setHashtag] = useState({});
   const [video, setVideo] = useState({});
-  const [videos, setVideos] = useState([]);
-  // console.log('🚀 ~ file: AddPost.js:40 ~ AddPost ~ video:', video);
-  const [hashtags, setHashtags] = useState([]);
-  // const [post,setPost] = useState()
-  // console.log('🚀 ~ file: AddPost.js:30 ~ AddPost ~ hashtags:', hashtags);
+  const [videos, setVideos] = useState(
+    data?.post_videos ? data?.post_videos : [],
+  );
+  const [hashtags, setHashtags] = useState(
+    data?.hashtags ? JSON.parse(data?.hashtags) : [],
+  );
+  const MoreIcon = require('../Assets/Images/threedots.png');
+
+  const navigation = useNavigation();
 
   useEffect(() => {
     if (Object.keys(image).length > 0) {
@@ -63,52 +79,126 @@ const AddPost = () => {
     const formData = new FormData();
     const body = {
       caption: description,
-      // bubble_id:
+      profile_id: profileData?.id,
+      // hashtags: hashtags,
+      community_id: bubbleId,
     };
-    if (images.length == 0 && videos.length == 0 && description == '')
-    {
+    if (images.length == 0 && videos.length == 0 && description == '') {
       Platform.OS == 'android'
         ? ToastAndroid.show(
             ` please fill atleast one feild`,
             ToastAndroid.SHORT,
           )
-        : alert(` plaease fill atleast one feild`);
+        : Alert.alert(` plaease fill atleast one feild`);
     } else {
       for (let key in body) {
         formData.append(key, body[key]);
       }
       if (images.length > 0) {
         images?.map((item, index) =>
-          formData.append(`image${index}`, images[index]),
+          formData.append(`image[${index}]`, images[index]),
         );
       }
       if (videos.length > 0) {
         videos?.map((item, index) =>
-          formData.append(`video${index}`, videos[index]),
+          formData.append(`video[${index}]`, videos[index]),
         );
       }
       if (hashtags.length > 0) {
         hashtags?.map((item, index) =>
-          formData.append(`hashtag${index}`, hashtags[index]),
+          formData.append(`hashtags[${index}]`, hashtags[index]),
         );
       }
     }
 
-    return console.log(
-      '🚀 ~ file: AddPost.js:64 ~ AddPost ~ formData:',
-      formData,
-    );
+    console.log('🚀 ~ file: AddPost.js:64 ~ AddPost ~ formData:', formData);
 
     setLoading(true);
-    const response = await Post(url, body, apiHeader(token));
+    const response = await Post(url, formData, apiHeader(token));
     setLoading(false);
     if (response != undefined) {
       return console.log(
         '🚀 ~ file: AddPost.js:74 ~ AddPost ~ response:',
-        response,
+        response?.data,
       );
+      navigation.goBack();
     }
   };
+
+  const UpdatePost = async () => {
+    const url = 'auth/post';
+    const formData = new FormData();
+    const body = {
+      caption: description,
+      hashtags: hashtags[0],
+      community_id: bubbleId,
+    };
+    if (images.length == 0 && videos.length == 0 && description == '') {
+      Platform.OS == 'android'
+        ? ToastAndroid.show(
+            ` please fill atleast one feild`,
+            ToastAndroid.SHORT,
+          )
+        : Alert.alert(` plaease fill atleast one feild`);
+    } else {
+      for (let key in body) {
+        formData.append(key, body[key]);
+      }
+      if (images.length > 0) {
+        images?.map((item, index) =>
+          formData.append(`image[${index}]`, images[index]),
+        );
+      }
+      if (videos.length > 0) {
+        videos?.map((item, index) =>
+          formData.append(`video[${index}]`, videos[index]),
+        );
+      }
+      if (hashtags.length > 0) {
+        hashtags?.map((item, index) =>
+          formData.append(`hashtags[${index}]`, hashtags[index]),
+        );
+      }
+    }
+
+    console.log('🚀 ~ file: AddPost.js:64 ~ AddPost ~ formData:', formData);
+
+    setLoading(true);
+    const response = await Post(url, formData, apiHeader(token));
+    setLoading(false);
+    if (response != undefined) {
+      return console.log(
+        '🚀 ~ file: AddPost.js:74 ~ AddPost ~ response:',
+        response?.data,
+      );
+      navigation.goBack();
+    }
+  };
+  const Video = ()=>{
+      if (videos.length==0 && images.length == 0) {
+        setVideoPicker(true);
+      } else {
+        Platform.OS == 'android'
+          ? ToastAndroid.show(
+              'you can only add one image',
+              ToastAndroid.SHORT,
+            )
+          : Alert.alert('you can select only five images');
+      }
+  }
+
+  const Image =()=>{
+    if (videos?.length == 0 && images.length < 5) {
+      setImagePickerVisible(true);
+    } else {
+      Platform.OS == 'android'
+        ? ToastAndroid.show(
+            'you can select only five images.',
+            ToastAndroid.SHORT,
+          )
+        : Alert.alert('you can select only five images');
+    }
+  }
 
   return (
     <>
@@ -166,7 +256,7 @@ const AddPost = () => {
           remaining essentially unchanged.
         </CustomText> */}
 
-          <CustomText
+          {/* <CustomText
             style={[styles.title, {marginTop: moderateScale(10, 0.3)}]}
             isBold={true}
             children={'Add Images'}
@@ -175,9 +265,31 @@ const AddPost = () => {
             {images?.map(item => {
               return (
                 <View style={styles.image}>
+                  <TouchableOpacity
+                    style={{
+                      position: 'absolute',
+                      right: 2,
+                      top: 2,
+                      zIndex: 1,
+                      // backgroundColor: 'green',
+                    }}
+                    onPress={() => {
+                      setImages(images.filter(data => data?.id != item?.id));
+                    }}>
+                    <Icon
+                      name={'cross'}
+                      color={Color.white}
+                      as={Entypo}
+                      onPress={() => {
+                        setImages(
+                          images.filter(data => data?.uri != item?.uri),
+                        );
+                      }}
+                    />
+                  </TouchableOpacity>
                   <CustomImage
                     style={{width: '100%', height: '100%'}}
-                    source={{uri: item?.uri}}
+                    source={{uri: item?.uri ? item?.uri : item?.name}}
                   />
                 </View>
               );
@@ -262,7 +374,81 @@ const AddPost = () => {
                 />
               </TouchableOpacity>
             )}
+          </View> */}
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              width: windowWidth * 0.9,
+              paddingVertical: moderateScale(10, 0.6),
+              alignItems:'space-between',
+              // backgroundColor:'red'
+            }}>
+            <CustomText
+              style={[
+                styles.title,
+                {marginTop: moderateScale(10, 0.3), width: windowWidth * 0.5},
+              ]}
+              isBold={true}
+              children={'Add Media'}
+            />
+           <OptionsMenu
+            button={MoreIcon}
+            buttonStyle={{
+              width: 36,
+              height: 30,
+              tintColor: '#000',
+            }}
+            destructiveIndex={1}
+            options={['Video', 'Image']}
+            actions={[Video, Image]}
+          />
           </View>
+          <View style={styles.imagesContainer}>
+            {images?.map(item => {
+              return (
+                <View style={styles.image}>
+                  <TouchableOpacity
+                    style={{
+                      position: 'absolute',
+                      right: 2,
+                      top: 2,
+                      zIndex: 1,
+                      // backgroundColor: 'green',
+                    }}
+                    onPress={() => {
+                      setImages(images.filter(data => data?.id != item?.id));
+                    }}>
+                    <Icon
+                      name={'cross'}
+                      color={Color.white}
+                      as={Entypo}
+                      onPress={() => {
+                        setImages(
+                          images.filter(data => data?.uri != item?.uri),
+                        );
+                      }}
+                    />
+                  </TouchableOpacity>
+                  <CustomImage
+                    style={{width: '100%', height: '100%'}}
+                    source={{uri: item?.uri ? item?.uri : item?.name}}
+                  />
+                </View>
+              );
+            })}
+         
+          </View>
+          <View style={styles.videoContainer}>
+            {videos?.map(item => {
+              return <VideoComponent item={item} />;
+            })}
+          
+          </View>
+
+
+          
+
           <CustomText
             style={[styles.title, {marginTop: moderateScale(10, 0.3)}]}
             isBold={true}
@@ -336,6 +522,8 @@ const AddPost = () => {
               text={
                 loading ? (
                   <ActivityIndicator color={'#01E8E3'} size={'small'} />
+                ) : data ? (
+                  'Update'
                 ) : (
                   'Post'
                 )
@@ -345,9 +533,11 @@ const AddPost = () => {
               height={windowHeight * 0.06}
               // marginTop={moderateScale(40, 0.3)}
               onPress={() => {
-                AddPost();
-                // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
-                // navigationService.navigate('Signup');
+                if (data) {
+                  UpdatePost();
+                } else {
+                  AddPost();
+                }
               }}
               bgColor={['#FFFFFF', '#FFFFFF']}
               borderRadius={moderateScale(30, 0.3)}
@@ -368,6 +558,7 @@ const AddPost = () => {
         setShow={setVideoPicker}
         setFileObject={setVideo}
       />
+       
     </>
   );
 };
@@ -382,6 +573,16 @@ const styles = ScaledSheet.create({
   },
 
   imagesContainer: {
+    width: windowWidth,
+    paddingHorizontal: moderateScale(10, 0.6),
+    flexDirection: 'row',
+    marginVertical: moderateScale(5, 0.3),
+    flexWrap: 'wrap',
+    // justifyContent: 'center',
+    alignItems: 'center',
+    // backgroundColor:'red',
+  },
+  videoContainer: {
     width: windowWidth,
     paddingHorizontal: moderateScale(10, 0.6),
     flexDirection: 'row',
@@ -409,6 +610,7 @@ const styles = ScaledSheet.create({
   title: {
     fontSize: moderateScale(18, 0.6),
     color: '#353434',
+    // backgroundColor:'red',
     width: windowWidth * 0.9,
     textAlign: 'left',
     marginTop: moderateScale(15, 0.3),

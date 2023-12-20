@@ -4,8 +4,9 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import Color from '../Assets/Utilities/Color';
 import {moderateScale} from 'react-native-size-matters';
@@ -18,13 +19,40 @@ import {useSelector} from 'react-redux';
 import navigationService from '../navigationService';
 import {FlatList} from 'react-native';
 import PostComponentBubble from './PostComponentBubble';
+import {Get} from '../Axios/AxiosInterceptorFunction';
+import {useIsFocused} from '@react-navigation/native';
 
 // import { TextInput } from 'react-native-gesture-handler';
 
-const Posts = () => {
+const Posts = ({onPress, bubbleId}) => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
+  const token = useSelector(state => state.authReducer.token);
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
+
+  const isFocused = useIsFocused();
+
   const [search, setSearch] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [posts, setPosts] = useState([]);
+
+  const getPosts = async () => {
+    const url = `auth/post/${bubbleId}?profile_id=${profileData?.id}`;
+    setIsLoading(true);
+    const response = await Get(url, token);
+    setIsLoading(false);
+    if (response != undefined) {
+      console.log(
+        '🚀 ~ file: Posts.js:36 ~ getPosts ~ response:',
+        response?.data,
+      );
+      setPosts(response?.data?.post_info);
+    }
+  };
+
+  useEffect(() => {
+    getPosts();
+  }, [isFocused]);
 
   const PostData = [
     {
@@ -212,7 +240,6 @@ const Posts = () => {
       <View
         style={{
           flexDirection: 'row',
-          //   backgroundColor: 'white',
           marginTop: moderateScale(10, 0.6),
           alignItems: 'center',
           paddingVertical: moderateScale(10, 0.6),
@@ -226,7 +253,6 @@ const Posts = () => {
               height: '100%',
               width: '100%',
             }}
-            //   resizeMode={'stretch'}
           />
         </View>
         <TouchableOpacity
@@ -236,11 +262,10 @@ const Posts = () => {
             width: windowWidth * 0.7,
             height: windowHeight * 0.05,
             paddingHorizontal: moderateScale(10, 0.6),
-            // alignItems:'center',
             justifyContent: 'center',
           }}
           onPress={() => {
-            navigationService.navigate('AddPost');
+            onPress();
           }}>
           <CustomText
             style={{
@@ -249,7 +274,7 @@ const Posts = () => {
               width: windowWidth * 0.6,
             }}
             onPress={() => {
-              navigationService.navigate('AddPost');
+              onPress();
             }}>
             What's on your mind?
           </CustomText>
@@ -259,16 +284,21 @@ const Posts = () => {
           <Icon name={'images'} as={Entypo} color={'white'} size={7} />
         </View>
       </View>
-      <FlatList
-        // scrollEnabled={false}
-        data={PostData}
-        contentContainerStyle={{
-          paddingBottom: moderateScale(80, 0.3),
-        }}
-        renderItem={({item, index}) => {
-          return <PostComponentBubble data={item} />;
-        }}
-      />
+      {isLoading ? (
+        <View style={styles.loaderView}>
+          <ActivityIndicator color={Color.white} size={'large'} />
+        </View>
+      ) : (
+        <FlatList
+          data={posts}
+          contentContainerStyle={{
+            paddingBottom: moderateScale(80, 0.3),
+          }}
+          renderItem={({item, index}) => {
+            return <PostComponentBubble data={item} />;
+          }}
+        />
+      )}
     </View>
   );
 };
@@ -276,6 +306,12 @@ const Posts = () => {
 export default Posts;
 
 const styles = StyleSheet.create({
+  loaderView: {
+    // backgroundColor: 'red',
+    width: windowWidth,
+    height: windowHeight * 0.4,
+    justifyContent: 'center',
+  },
   profileImage: {
     width: windowWidth * 0.1,
     height: windowWidth * 0.1,

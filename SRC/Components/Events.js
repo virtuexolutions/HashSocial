@@ -4,8 +4,9 @@ import {
   TouchableOpacity,
   View,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {windowHeight, windowWidth} from '../Utillity/utils';
 import Color from '../Assets/Utilities/Color';
 import {moderateScale} from 'react-native-size-matters';
@@ -17,27 +18,38 @@ import TextInputWithTitle from './TextInputWithTitle';
 import {useSelector} from 'react-redux';
 import navigationService from '../navigationService';
 import {FlatList} from 'react-native';
-import { Get } from '../Axios/AxiosInterceptorFunction';
+import {Get} from '../Axios/AxiosInterceptorFunction';
+import {useIsFocused} from '@react-navigation/native';
+import moment from 'moment';
 // import { TextInput } from 'react-native-gesture-handler';
 
-const Events = () => {
+const Events = ({onPress, bubbleId}) => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const [search, setSearch] = useState('');
-const [isLoading, setIsLoading] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [events, setEvents] = useState([]);
+  const isFocused = useIsFocused();
+  console.log('🚀 ~ file: Events.js:24 ~ Events ~ bubbleId:', bubbleId);
 
-  const getEvents =async()=>{
-    const url = 'auth/event'
-    setIsLoading(true)
-    const response = await Get(url, token)
-    setIsLoading(false)
-    if(response != undefined){
-      console.log("🚀 ~ file: Events.js:34 ~ getEvents ~ response:", response)
-
+  const getEvents = async () => {
+    const url = `auth/event/${bubbleId}`;
+    setIsLoading(true);
+    const response = await Get(url, token);
+    setIsLoading(false);
+    if (response != undefined) {
+      console.log(
+        '🚀 ~ file: Events.js:34 ~ getEvents ~ response:',
+        response?.data,
+      );
+      setEvents(response?.data?.event_info);
     }
-    
-  }
+  };
+  useEffect(() => {
+    getEvents();
+  }, [isFocused]);
 
   const PostData = [
     {
@@ -104,10 +116,8 @@ const [isLoading, setIsLoading] = useState(false)
   ];
 
   return (
-    <View
-      style={styles.container}>
-      <View
-        style={styles.cover}>
+    <View style={styles.container}>
+      <View style={styles.cover}>
         <View
           style={{
             width: windowWidth * 0.08,
@@ -121,13 +131,12 @@ const [isLoading, setIsLoading] = useState(false)
               height: '100%',
               width: '100%',
             }}
-            //   resizeMode={'stretch'}
           />
         </View>
         <TouchableOpacity
           style={styles.search}
           onPress={() => {
-            navigationService.navigate('AddEvents');
+            onPress();
           }}>
           <CustomText
             style={{
@@ -136,7 +145,7 @@ const [isLoading, setIsLoading] = useState(false)
               width: windowWidth * 0.6,
             }}
             onPress={() => {
-              navigationService.navigate('AddEvents');
+              onPress();
             }}>
             any up Coming event?
           </CustomText>
@@ -146,96 +155,102 @@ const [isLoading, setIsLoading] = useState(false)
           <Icon name={'images'} as={Entypo} color={'white'} size={7} />
         </View>
       </View>
+      {isLoading ? (
+        <View style={styles.loaderView}>
+          <ActivityIndicator color={Color.white} size={'large'} />
+        </View>
+      ) : (
+        <FlatList
 
-      <FlatList
-        // numColumns={2}
-        showsVerticalScrollIndicator={false}
-        data={PostData}
-        ListHeaderComponent={() => {
-          return (
-            <View
-              style={{
-                width: windowWidth,
-                paddingHorizontal:moderateScale(15,.6),
-                padding:moderateScale(5,.6),
-                borderRadius:moderateScale(20,.6)
-              }}>
-              <CustomText
-                style={{fontSize: moderateScale(20, 0.6), color: 'black'}}
-                isBold>
-                Popular Events
-              </CustomText>
-            </View>
-          );
-        }}
-        contentContainerStyle={{
-          paddingBottom: moderateScale(30, 0.6),
-        }}
-        renderItem={({item}) => {
-          return (
-            <>
-              <TouchableOpacity
-              onPress={()=>{
-                navigationService.navigate('EventDetails', {item : item})}}
-                style={styles.eventCard}>
-                <View style={styles.profileImage}>
-                  <CustomImage
-                  onPress={()=>{
-                    navigationService.navigate('EventDetails', {item : item})}}
-                    source={item?.image}
-                    style={{
-                      height: '100%',
-                      width: '100%',
-                    }}
-                    //   resizeMode={'stretch'}
-                  />
-                </View>
-                <View
-                  style={styles.dateContainer}>
-                  <View
-                    style={styles.detailContainer}>
-                    <CustomText
-                      numberOfLines={2}
-                      style={styles.date}>
-                      {item?.date}
-                    </CustomText>
+          showsVerticalScrollIndicator={false}
+          data={events}
+          ListHeaderComponent={() => {
+            return (
+              <View
+                style={{
+                  width: windowWidth,
+                  paddingHorizontal: moderateScale(15, 0.6),
+                  padding: moderateScale(5, 0.6),
+                  borderRadius: moderateScale(20, 0.6),
+                }}>
+                <CustomText
+                  style={{fontSize: moderateScale(20, 0.6), color: 'black'}}
+                  isBold>
+                  Popular Events
+                </CustomText>
+              </View>
+            );
+          }}
+          contentContainerStyle={{
+            paddingBottom: moderateScale(30, 0.6),
+          }}
+          renderItem={({item}) => {
+            return (
+              <>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigationService.navigate('EventDetails', {item: item});
+                  }}
+                  style={styles.eventCard}>
+                  <View style={styles.profileImage}>
+                    <CustomImage
+                      onPress={() => {
+                        navigationService.navigate('EventDetails', {
+                          item: item,
+                        });
+                      }}
+                      source={
+                        item?.images?.length > 0
+                          ? {uri: item?.images[0]?.name}
+                          : require('../Assets/Images/travel3.jpg')
+                      }
+                      style={{
+                        height: '100%',
+                        width: '100%',
+                      }}
+                      //   resizeMode={'stretch'}
+                    />
                   </View>
-                  <View style={{paddingHorizontal: moderateScale(5, 0.6)}}>
-                    <CustomText
-                      numberOfLines={1}
-                      style={[styles.text,{color:themeColor[1]}]}
-                      isBold>
-                      {item?.Name}
-                    </CustomText>
-                    <CustomText
-                      numberOfLines={1}
-                      style={[styles.text,{color:themeColor[1]}]}>
-                      {item?.time} {item?.place}
-                    </CustomText>
-                  </View>
-                  <View
-                    style={styles.imageContainer}>
-                    <View
-                      style={[styles.image, {zIndex:-1, right:0}]}>
-                      <CustomImage
-                        source={require('../Assets/Images/avatar.png')}
-                        style={{width: '100%', height: '100%'}}
-                      />
+                  <View style={styles.dateContainer}>
+                    <View style={styles.detailContainer}>
+                      <CustomText numberOfLines={2} style={styles.date}>
+                        {moment(item?.date).format('DD MMM')}
+                      </CustomText>
                     </View>
-                    <View
-                      style={[styles.image, {zIndex:0,left:0}]}>
-                      <CustomImage
-                        source={require('../Assets/Images/avatar3.png')}
-                        style={{width: '100%', height: '100%'}}
-                      />
+                    <View style={{paddingHorizontal: moderateScale(5, 0.6)}}>
+                      <CustomText
+                        numberOfLines={1}
+                        style={[styles.text, {color: themeColor[1]}]}
+                        isBold>
+                        {item?.title}
+                      </CustomText>
+                      <CustomText
+                        numberOfLines={1}
+                        style={[styles.text, {color: themeColor[1]}]}>
+                        {item?.time} pm {'New york'}
+                      </CustomText>
+                    </View>
+                    <View style={styles.imageContainer}>
+                      <View style={[styles.image, {zIndex: -1, right: 0}]}>
+                        <CustomImage
+                          source={require('../Assets/Images/avatar.png')}
+                          style={{width: '100%', height: '100%'}}
+                        />
+                      </View>
+                      <View style={[styles.image, {zIndex: 0, left: 0}]}>
+                        <CustomImage
+                          source={require('../Assets/Images/avatar3.png')}
+                          style={{width: '100%', height: '100%'}}
+                        />
+                      </View>
                     </View>
                   </View>
-                </View>
-              </TouchableOpacity>
-            </>
-          );
-        }}
-      />
+                </TouchableOpacity>
+              </>
+            );
+          }}
+        />
+      )}
     </View>
   );
 };
@@ -243,7 +258,13 @@ const [isLoading, setIsLoading] = useState(false)
 export default Events;
 
 const styles = StyleSheet.create({
-  search:{
+  loaderView: {
+    // backgroundColor: 'red',
+    width: windowWidth,
+    height: windowHeight * 0.4,
+    justifyContent: 'center',
+  },
+  search: {
     backgroundColor: 'white',
     borderRadius: moderateScale(10, 0.6),
     width: windowWidth * 0.7,
@@ -252,7 +273,7 @@ const styles = StyleSheet.create({
     // alignItems:'center',
     justifyContent: 'center',
   },
-  cover:{
+  cover: {
     flexDirection: 'row',
     width: windowWidth,
     alignItems: 'center',
@@ -260,13 +281,13 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: moderateScale(10, 0.6),
   },
-  container:{
+  container: {
     alignItems: 'center',
     marginTop: moderateScale(10, 0.6),
     justifyContent: 'space-between',
     overflow: 'hidden',
   },
-  eventCard:{
+  eventCard: {
     width: windowWidth * 0.9,
     height: windowWidth * 0.45,
     marginVertical: moderateScale(10, 0.3),
@@ -274,7 +295,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     borderRadius: moderateScale(20, 0.6),
   },
-  text:{
+  text: {
     fontSize: moderateScale(12, 0.6),
     // color: 'black',
     // color: themeColor[1],
@@ -288,7 +309,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     borderRadius: (windowWidth * 0.1) / 2,
   },
-  image :{
+  image: {
     width: windowHeight * 0.03,
     height: windowHeight * 0.03,
     position: 'absolute',
@@ -296,7 +317,7 @@ const styles = StyleSheet.create({
     // zIndex: 0,
     borderRadius: (windowHeight * 0.03) / 2,
   },
-  imageContainer:{
+  imageContainer: {
     flexDirection: 'row',
     width: windowWidth * 0.1,
     height: windowHeight * 0.08,
@@ -305,20 +326,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     position: 'relative',
   },
-  date:{
+  date: {
     fontSize: moderateScale(12, 0.6),
     color: 'white',
     width: windowWidth * 0.1,
     textAlign: 'center',
   },
-  detailContainer:{
+  detailContainer: {
     backgroundColor: Color.themeColor,
     borderRadius: moderateScale(10, 0.6),
     justifyContent: 'center',
     marginVertical: moderateScale(5, 0.3),
     padding: moderateScale(5, 0.6),
   },
-  dateContainer:{
+  dateContainer: {
     flexDirection: 'row',
     position: 'absolute',
     // justifyContent: 'center',
@@ -330,5 +351,4 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     width: windowWidth * 0.9,
   },
-
 });

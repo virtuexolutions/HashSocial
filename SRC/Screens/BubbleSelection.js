@@ -13,6 +13,7 @@ import {
   TouchableOpacity,
   Platform,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import Header from '../Components/Header';
 import {View} from 'react-native';
@@ -133,15 +134,13 @@ const BubbleSelection = () => {
     const response = await Post(url, body, apiHeader(token));
     setIsLaoding(false);
     if (response != undefined) {
-      // let data =   JSON.parse(response?.data?.profile_info?.bubbles)
-      // return console.log("🚀 ~ file: BubbleSelection.js:133 ~ sendSelectedBubble ~ data:", data[0])
-      // return console.log(
-      //   '🚀 ~ file: BubbleSelection.js:116 ~ sendSelectedBubble ~ response:',
-      //   JSON.parse(response?.data?.profile_info?.bubbles),
-      //   );
+      
       dispatch(setSelectedProfileData(response?.data?.profile_info))
       dispatch(setBubbleSelected(true))
       dispatch(setSelectedBubbles(selectedBubble))
+      Platform.OS == 'android'
+                  ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
+                  : Alert.alert('Saved');
     }}
   const handleBubbleSelection = (index) => {
     const updatedBubbleArray = [...BubbleImageArraty];
@@ -189,7 +188,7 @@ const BubbleSelection = () => {
             zIndex: 1,
           }}>
           <CustomButton
-            text={'Save'}
+            text={isLaoding ? <ActivityIndicator color={Color.white} size={'small'}/>:'Save'}
             textColor={Color.white}
             width={windowWidth * 0.2}
             height={windowHeight * 0.04}
@@ -197,9 +196,7 @@ const BubbleSelection = () => {
               if (selectedBubble.length > 0) {
                
                 sendSelectedBubble()
-                Platform.OS == 'android'
-                  ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
-                  : Alert.alert('Saved');
+                
               }else{
                 Platform.OS == 'android'
                 ? ToastAndroid.show('Select any Bubble', ToastAndroid.SHORT)

@@ -31,17 +31,17 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Modal from 'react-native-modal';
 import Feather from 'react-native-vector-icons/Feather';
 import OptionsMenu from 'react-native-options-menu';
-import { Get } from '../Axios/AxiosInterceptorFunction';
+import {Get} from '../Axios/AxiosInterceptorFunction';
 
-
-const Bubble = (props) => {
-  const bubbleId = props?.route?.params?.id
-  return console.log("🚀 ~ file: Bubble.js:39 ~ Bubble ~ bubbleId:", bubbleId)
+const Bubble = props => {
+  const bubbleId = props?.route?.params?.id;
+  console.log('🚀 ~ file: Bubble.js:39 ~ Bubble ~ bubbleId:', bubbleId);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
   const privacy = useSelector(state => state.authReducer.privacy);
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
+  const [bubbleInfo, setBubbleInfo] = useState({});
   const events = ['Posts', 'Home', 'Chats', 'Events', 'Members'];
   const [selectedEvent, setSelectedEvent] = useState('Posts');
   const [search, setSearch] = useState('');
@@ -118,24 +118,27 @@ const Bubble = (props) => {
   console.log('🚀 ~ file: Bubble.js:112 ~ Bubble ~ newData:', newData);
 
   const MoreIcon = require('../Assets/Images/threedots.png');
-  const getBubbleDetails = async()=>{
-    const url = `auth/community/${bubbleId}`
-    setIsLoading(true)
-    const response = await Get(url, token)
-    setIsLoading(false)
-    if(response != undefined){
 
-      console.log("🚀 ~ file: Bubble.js:124 ~ getBubbleDetails ~ response:", response)
+  const getBubbleDetails = async () => {
+    const url = `auth/community_detail/${bubbleId}`;
+    setIsLoading(true);
+    const response = await Get(url, token);
+    setIsLoading(false);
+    if (response != undefined) {
+      setBubbleInfo(response?.data?.community_info);
     }
-  }
+  };
 
   const InviteMember = () => {
-   setIsVisible(true);
+    setIsVisible(true);
   };
 
   const BubbleMangement = () => {
-    navigationService.navigate('BubbleManagement')
+    navigationService.navigate('BubbleManagement');
   };
+  useEffect(() => {
+    getBubbleDetails();
+  }, []);
 
   useEffect(() => {
     setnewData(
@@ -151,7 +154,7 @@ const Bubble = (props) => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-        <Header  Title="Bubble" showBack />
+      <Header Title="Bubble" showBack />
       <ImageBackground
         source={
           privacy == 'private'
@@ -166,17 +169,20 @@ const Bubble = (props) => {
         }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <ImageBackground
-            source={require('../Assets/Images/fitness.png')}
+            source={
+              bubbleInfo?.image
+                ? {uri: bubbleInfo?.image}
+                : require('../Assets/Images/fitness.png')
+            }
             resizeMode={'cover'}
             style={{
               width: windowWidth,
               height: windowHeight * 0.35,
             }}>
-            <View
-              style={styles.textwithicon}>
+            <View style={styles.textwithicon}>
               <CustomText
                 numberOfLines={1}
-                children={'naplesrunning'}
+                children={bubbleInfo?.title}
                 style={{
                   fontSize: moderateScale(17, 0.6),
                   color: 'black',
@@ -248,8 +254,7 @@ const Bubble = (props) => {
                 />
               </View>
             </View>
-            <View
-              style={styles.followbtn}>
+            <View style={styles.followbtn}>
               <CustomButton
                 text={
                   isLoading ? (
@@ -268,11 +273,8 @@ const Bubble = (props) => {
                 isGradient
                 isBold
               />
-              <TouchableOpacity
-                activeOpacity={0.8}
-             
-                style={styles.downIcon}>
-                 <OptionsMenu
+              <TouchableOpacity activeOpacity={0.8} style={styles.downIcon}>
+                <OptionsMenu
                   button={MoreIcon}
                   buttonStyle={{
                     width: 40,
@@ -280,14 +282,13 @@ const Bubble = (props) => {
                     tintColor: '#000',
                   }}
                   destructiveIndex={1}
-                  options={['Invite Member', 'Bubble Management',]}
+                  options={['Invite Member', 'Bubble Management']}
                   actions={[InviteMember, BubbleMangement]}
                 />
               </TouchableOpacity>
             </View>
           </ImageBackground>
-          <View
-            style={styles.mapview}>
+          <View style={styles.mapview}>
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
@@ -325,9 +326,19 @@ const Bubble = (props) => {
             {selectedEvent == 'Home' ? (
               <Home />
             ) : selectedEvent == 'Events' ? (
-              <Events />
+              <Events
+                onPress={() => {
+                  navigationService.navigate('AddEvents', {bubbleId: bubbleId});
+                }}
+                bubbleId={bubbleId}
+              />
             ) : selectedEvent == 'Posts' ? (
-              <Posts />
+              <Posts
+              bubbleId={bubbleId}
+                onPress={() => {
+                  navigationService.navigate('AddPost', {bubbleId: bubbleId});
+                }}
+              />
             ) : selectedEvent == 'Chats' ? (
               <NullData />
             ) : (
@@ -479,8 +490,7 @@ const Bubble = (props) => {
             }}
           />
           {invitedPeople?.length > 0 && (
-            <View
-              style={styles.invite}>
+            <View style={styles.invite}>
               <CustomButton
                 text={
                   isLoading ? (
@@ -604,29 +614,28 @@ const styles = ScaledSheet.create({
     marginTop: moderateScale(30, 0.3),
     paddingHorizontal: moderateScale(30, 0.6),
   },
-  textwithicon:{
+  textwithicon: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: moderateScale(30, 0.3),
   },
-  followbtn:{
+  followbtn: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: moderateScale(30, 0.3),
   },
-  mapview:{
+  mapview: {
     width: windowWidth,
     marginTop: moderateScale(10, 0.3),
     // paddingHorizontal: moderateScale(10, 0.6),
     // marginLeft:moderateScale(10,.3)
   },
-  invite:{
+  invite: {
     position: 'absolute',
     alignSelf: 'center',
     bottom: 20,
     backgroundColor: 'transparent',
-  }
-  
+  },
 });
 
 export default Bubble;

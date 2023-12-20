@@ -7,7 +7,7 @@ import {
     Image,
     FlatList,
   } from 'react-native';
-  import React from 'react';
+  import React, { useState } from 'react';
   import {moderateScale} from 'react-native-size-matters';
   import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
   import CustomStatusBar from '../Components/CustomStatusBar';
