@@ -35,25 +35,32 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 import LinearGradient from 'react-native-linear-gradient';
 import RequestModal from '../Components/RequestModal';
 import Propmpt from '../Components/Propmpt';
-import { setNewSignUp } from '../Store/slices/auth';
+import {setNewSignUp} from '../Store/slices/auth';
+import {Get} from '../Axios/AxiosInterceptorFunction';
+import {useIsFocused} from '@react-navigation/native';
 
 const HomeScreen = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
-  const profileData = useSelector(state=>state.commonReducer.selectedProfile)
-  const newSignUp = useSelector(state=>state.authReducer.newSignUp)
-  console.log("🚀 ~ file: HomeScreen.js:44 ~ HomeScreen ~ newSignUp:", newSignUp)
-  // console.log("🚀 ~ file: HomeScreen.js:42 ~ HomeScreen ~ profileData:", profileData)
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
+  const newSignUp = useSelector(state => state.authReducer.newSignUp);
+  const token = useSelector(state => state.authReducer.token);
+  const [selectedBubbleId, setSelectedBubbleId] = useState(null);
 
-  const dispatch = useDispatch()
-  const [prompt, setPrompt] = useState(false)
-  const data = props?.route?.params?.data;
+    console.log(
+    '🚀 ~ file: HomeScreen.js:44 ~ HomeScreen ~ newSignUp:',
+    newSignUp,
+  );
+
+  const dispatch = useDispatch();
+  const [prompt, setPrompt] = useState(false);
   const [clicked, setclicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [alignment, setAlignment] = useState('left');
   const [highlightedIcon, setHighlightedIcon] = useState(null);
   const [isVisible, setIsVisible] = useState(false);
   const [text, setText] = useState('');
+  const isFocused = useIsFocused();
 
   const [animationStopped, setAnimationStopped] = useState(false);
 
@@ -246,6 +253,7 @@ const HomeScreen = props => {
       },
     },
   ]);
+  console.log('🚀 ~ file: HomeScreen.js:251 ~ HomeScreen ~ content:', content);
 
   const [profiles, setProfiles] = useState([
     {
@@ -282,6 +290,39 @@ const HomeScreen = props => {
     },
   ]);
 
+  const [bubbles, setBubbles] = useState([]);
+
+  const getBubbles = async () => {
+    const url = 'auth/community';
+    setIsLoading(true);
+    const response = await Get(url, token);
+    setIsLoading(false);
+    if (response != undefined) {
+      console.log(
+        '🚀 ~ file: HomeScreen.js:295 ~ getBubbles ~ response:',
+        response?.data,
+      );
+      setBubbles(response?.data?.community_info);
+      setContent(
+        response?.data?.community_info?.map(item => {
+          return {
+            id: item?.id,
+            image: (
+              <Image
+                source={{uri: item?.image}}
+                resizeMode="cover"
+                style={style.icon}
+              />
+            ),
+            bubble: true,
+            source: {uri: item?.image},
+            private: item?.privacy == 'yes' ? false : true,
+          };
+        }),
+      );
+    }
+  };
+
   const animateSideContainer = () => {
     backRef.current?.animate(
       alignment == 'left' ? 'fadeInLeft' : 'fadeInRight',
@@ -296,36 +337,17 @@ const HomeScreen = props => {
   }, [animationStopped]);
 
   useEffect(() => {
-    if (data && Object.keys(data?.image).length > 0) {
-      setContent(prev => [
-        ...prev,
-        {
-          image: (
-            <Image
-              source={{uri: data?.image?.uri}}
-              resizeMode="cover"
-              style={style.icon}
-            />
-          ),
-          onPress: () => {
-            navigationService.navigate('Bubble');
-          },
-        },
-      ]);
+    // dispatch(setNewSignUp(true))
+    if (newSignUp) {
+      setTimeout(() => {
+        console.log('New Signup');
+        setPrompt(true);
+      }, 10000);
     }
   }, []);
-
   useEffect(() => {
-    // dispatch(setNewSignUp(true))
-    if(newSignUp){
-      setTimeout(()=>{
-        console.log('New Signup')
-        setPrompt(true)
-      },10000)
-    }
-    
-  }, [])
-  
+    getBubbles();
+  }, [isFocused]);
 
   return (
     <>
@@ -366,7 +388,8 @@ const HomeScreen = props => {
                 alignment == 'right' && {right: windowWidth * 0.08},
               ]}
               colors={themeColor}>
-              <View style={[style.profileContainer,{backgroundColor: themeColor,}]}>
+              <View
+                style={[style.profileContainer, {backgroundColor: themeColor}]}>
                 {profiles.map(item => {
                   return (
                     <View style={style.profile}>
@@ -421,6 +444,7 @@ const HomeScreen = props => {
                 alignment={alignment}
                 elevation={5}
                 setIsVisible={setIsVisible}
+                setSelectedBubbleId={setSelectedBubbleId}
                 setclicked={setclicked}
                 setText={setText}
               />
@@ -478,7 +502,7 @@ const HomeScreen = props => {
               onPress={() => {
                 // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
                 setclicked(false);
-                navigationService.navigate('Bubble');
+                navigationService.navigate('Bubble',{id:selectedBubbleId});
               }}
               bgColor={['#FFFFFF', '#FFFFFF']}
               borderRadius={moderateScale(30, 0.3)}
@@ -508,6 +532,7 @@ const HomeScreen = props => {
         </BlurView>
       )}
       <RequestModal
+      selectedBubbleId={selectedBubbleId}
         setIsVisible={setIsVisible}
         isVisible={isVisible}
         text={text}
@@ -538,7 +563,7 @@ const style = StyleSheet.create({
   profileContainer: {
     width: windowWidth * 0.1,
     height: windowHeight * 0.9,
-    
+
     alignItems: 'center',
     zIndex: 1,
     position: 'absolute',

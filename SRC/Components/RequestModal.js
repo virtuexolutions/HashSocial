@@ -1,18 +1,43 @@
-import {StyleSheet, Text, View, Platform, ToastAndroid} from 'react-native';
-import React from 'react';
+import {StyleSheet, Text, View, Platform, ToastAndroid, ActivityIndicator} from 'react-native';
+import React, {useState} from 'react';
 import Modal from 'react-native-modal';
 import {Alert, Icon} from 'native-base';
 import CustomText from './CustomText';
 import CustomButton from './CustomButton';
 import {ScaledSheet, moderateScale} from 'react-native-size-matters';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import Color from '../Assets/Utilities/Color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomImage from './CustomImage';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
-const RequestModal = ({isVisible, setIsVisible, text}) => {
+const RequestModal = ({isVisible, setIsVisible, text,selectedBubbleId}) => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  const [loading, setLoading] = useState(false);
+  const profileData = useSelector(state => state.commonReducer.selectedProfile)
+  console.log("🚀 ~ file: RequestModal.js:18 ~ RequestModal ~ profileData:", profileData)
+  const token = useSelector(state => state.authReducer.token)
+
+  const addRequest = async () => {
+    const url = 'auth/community_member/add';
+    const body = {
+      status: 'request',
+      profile_id: profileData?.id,
+      community_id: selectedBubbleId,
+    };
+    setLoading(true);
+    const response = await Post(url, body, apiHeader(token));
+    setLoading(false);
+    if (response != undefined) {
+       console.log("🚀 ~ file: RequestModal.js:32 ~ addRequest ~ response:", response?.data)
+      setIsVisible(false);
+      Platform.OS == 'android'
+        ? ToastAndroid.show('Request has been sent', ToastAndroid.SHORT)
+        : Alert.alert('Request has been sent');
+    }
+  };
+
   return (
     <Modal
       isVisible={isVisible}
@@ -24,18 +49,18 @@ const RequestModal = ({isVisible, setIsVisible, text}) => {
         alignItems: 'center',
       }}>
       <View style={styles.container}>
-        <View style={{backgroundColor:themeColor[1]}}>
+        <View style={{backgroundColor: themeColor[1]}}>
           <CustomText
             style={{
               color: Color.white,
               fontSize: moderateScale(15, 0.6),
               // marginTop: moderateScale(20, 0.3),
-              paddingVertical:moderateScale(10,.6),
+              paddingVertical: moderateScale(10, 0.6),
               paddingHorizontal: moderateScale(30, 0.6),
               textAlign: 'center',
             }}
             isBold>
-             Permission
+            Permission
           </CustomText>
         </View>
 
@@ -91,12 +116,10 @@ const RequestModal = ({isVisible, setIsVisible, text}) => {
         </CustomText>
       </View> */}
         <CustomButton
-          text={'Request to join'}
+          text={loading ? <ActivityIndicator color={Color.white} size={'small'}/>: 'Request to join'}
           onPress={() => {
-            setIsVisible(false);
-            Platform.OS == 'android'
-              ? ToastAndroid.show('Request has been sent', ToastAndroid.SHORT)
-              : Alert.alert('Request has been sent');
+            addRequest()
+           
           }}
           textColor={Color.white}
           width={windowWidth * 0.65}

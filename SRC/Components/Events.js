@@ -17,12 +17,27 @@ import TextInputWithTitle from './TextInputWithTitle';
 import {useSelector} from 'react-redux';
 import navigationService from '../navigationService';
 import {FlatList} from 'react-native';
+import { Get } from '../Axios/AxiosInterceptorFunction';
 // import { TextInput } from 'react-native-gesture-handler';
 
 const Events = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
+  const token = useSelector(state => state.authReducer.token);
   const [search, setSearch] = useState('');
+const [isLoading, setIsLoading] = useState(false)
+
+  const getEvents =async()=>{
+    const url = 'auth/event'
+    setIsLoading(true)
+    const response = await Get(url, token)
+    setIsLoading(false)
+    if(response != undefined){
+      console.log("🚀 ~ file: Events.js:34 ~ getEvents ~ response:", response)
+
+    }
+    
+  }
 
   const PostData = [
     {

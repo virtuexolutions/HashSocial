@@ -65,43 +65,19 @@ const AppNavigator = () => {
   const interestSelected = useSelector(
     state => state.authReducer.interestSelected,
   );
-  console.log(
-    '🚀 ~ file: appNavigation.js:68 ~ AppNavigator ~ interestSelected:',
-    interestSelected,
-  );
-  console.log(
-    '🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ bubbleCreated:',
-    bubbleCreated,
-  );
+
   console.log('🚀 ~ file: appNavigation.js:59 ~ AppNavigator ~ token:', token);
   const bubbleSelected = useSelector(state => state.authReducer.bubbleSelected);
-  console.log(
-    '🚀 ~ file: appNavigation.js:60 ~ AppNavigator ~ bubbleSelected:',
-    bubbleSelected,
-  );
+
   const numOfProfile = useSelector(state => state.authReducer.numOfProfiles);
-  console.log(
-    '🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ numOfProfile:',
-    numOfProfile,
-  );
   const feedsSelected = useSelector(state => state.authReducer.feedsSelected);
-  console.log(
-    '🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ feedsSelected:',
-    feedsSelected,
-  );
+
   const profileSelected = useSelector(
     state => state.authReducer.profileSelected,
   );
-  console.log(
-    '🚀 ~ file: appNavigation.js:81 ~ AppNavigator ~ profileSelected:',
-    profileSelected,
-  );
+
   const questionAnswered = useSelector(
     state => state.authReducer.questionAnswered,
-  );
-  console.log(
-    '🚀 ~ file: appNavigation.js:85 ~ AppNavigator ~ questionAnswered:',
-    questionAnswered,
   );
 
   const RootNav = createNativeStackNavigator();
@@ -109,7 +85,7 @@ const AppNavigator = () => {
 
   const AppNavigatorContainer = () => {
     const thirdScreen =
-      token == null     
+      token == null
         ? 'LoginScreen'
         : numOfProfile == 0
         ? 'ProfileType'
@@ -138,6 +114,7 @@ const AppNavigator = () => {
             component={BubbleManagement}
           />
           <RootNav.Screen name="Feeds" component={Feeds} />
+          
           <RootNav.Screen name="ProfileType" component={ProfileType} />
           <RootNav.Screen name="QuestionScreen" component={QuestionScreen} />
           <RootNav.Screen name="EventDetails" component={EventDetails} />

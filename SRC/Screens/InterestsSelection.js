@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import {ActivityIndicator} from 'react-native'
 import * as Animatable from 'react-native-animatable';
 import Color from '../Assets/Utilities/Color';
 import CustomImage from '../Components/CustomImage';
@@ -47,79 +48,116 @@ const InterestSelection = () => {
   );
 
   const dispatch = useDispatch();
+  const architecture = [ '', '', '', '', '', '', '', 'Health', 'Photography','Movies and entertainment' , 'Science and nature', '' ];
   const [BubbleImageArraty, setBubbleImageArraty] = useState([
     {
       id: 1,
       image: require('../Assets/Images/amazing.jpg'),
       added: false,
-      name: 'Sunset',
+      name: 'Sports',
     },
     {
       id: 2,
       image: require('../Assets/Images/autumn.jpg'),
       added: false,
-      name: 'Autumn season',
+      name: 'Music',
     },
     {
       id: 3,
       image: require('../Assets/Images/cake.jpg'),
       added: false,
-      name: 'Cake',
+      name: 'Technology',
     },
     {
       id: 4,
       image: require('../Assets/Images/colorful.jpg'),
       added: false,
-      name: 'Colorful heights',
+      name: 'Arts and Crafts',
     },
     {
       id: 5,
       image: require('../Assets/Images/dubai.jpg'),
       added: false,
-      name: 'Dubai',
+      name: 'Travel',
     },
     {
       id: 6,
       image: require('../Assets/Images/frozen.jpg'),
       added: false,
-      name: 'Drink',
+      name: 'Food',
     },
     {
       id: 7,
       image: require('../Assets/Images/Historical.jpg'),
       added: false,
-      name: 'Historical place',
+      name: 'Gaming',
     },
     {
       id: 8,
       image: require('../Assets/Images/leave.jpg'),
       added: false,
-      name: 'leave',
+      name: 'pets',
     },
     {
       id: 9,
       image: require('../Assets/Images/london.jpg'),
       added: false,
-      name: 'Tower Bridge ',
+      name: 'learning',
     },
     {
       id: 10,
       image: require('../Assets/Images/turkey.jpg'),
       added: false,
-      name: 'Beauty',
+      name: 'Books',
     },
     {
       id: 11,
       image: require('../Assets/Images/vege.jpg'),
       added: false,
-      name: 'Sweet',
+      name: 'Fashion',
     },
     {
       id: 12,
       image: require('../Assets/Images/frozen.jpg'),
       added: false,
-      name: 'Drink',
+      name: 'Science and nature',
     },
+    // {
+    //   id: 13,
+    //   image: require('../Assets/Images/Historical.jpg'),
+    //   added: false,
+    //   name: 'Movies and entertainment',
+    // },
+    // {
+    //   id: 14,
+    //   image: require('../Assets/Images/dubai.jpg'),
+    //   added: false,
+    //   name: 'Photography',
+    // },
+    // {
+    //   id: 15,
+    //   image: require('../Assets/Images/leave.jpg'),
+    //   added: false,
+    //   name: 'Health',
+    // },
+    // {
+    //   id: 16,
+    //   image: require('../Assets/Images/london.jpg'),
+    //   added: false,
+    //   name: 'Parenting',
+    // },
+    // {
+    //   id: 17,
+    //   image: require('../Assets/Images/london.jpg'),
+    //   added: false,
+    //   name: 'Parenting',
+    // },
+    // {
+    //   id: 18,
+    //   image: require('../Assets/Images/london.jpg'),
+    //   added: false,
+    //   name: 'Parenting',
+    // },
   ]);
 
   const sendSelectedFeeds = async () => {
@@ -169,7 +207,7 @@ const InterestSelection = () => {
             zIndex: 1,
           }}>
           <CustomButton
-            text={'Save'}
+            text={isLaoding ? <ActivityIndicator color={'white'} size={'small'} />:'Save'}
             textColor={Color.white}
             width={windowWidth * 0.2}
             height={windowHeight * 0.04}
@@ -260,7 +298,8 @@ const InterestSelection = () => {
                 fontWeight: '700',
                 textAlign: 'left',
                 position:'absolute',
-                bottom:10,
+                bottom:0,
+                padding:moderateScale(5,.6),
                 width:'100%',
                 paddingLeft:moderateScale(10,0.3),
                 zIndex:1,
