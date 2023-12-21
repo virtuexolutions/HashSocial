@@ -45,7 +45,7 @@ const HomeScreen = props => {
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const newSignUp = useSelector(state => state.authReducer.newSignUp);
   const token = useSelector(state => state.authReducer.token);
-  const [selectedBubbleId, setSelectedBubbleId] = useState(null)
+  const [selectedBubbleId, setSelectedBubbleId] = useState(null);
   const dispatch = useDispatch();
   const [prompt, setPrompt] = useState(false);
   const [clicked, setclicked] = useState(false);
@@ -291,7 +291,6 @@ const HomeScreen = props => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-     
       setBubbles(response?.data?.community_info);
       setContent(
         response?.data?.community_info?.map(item => {
@@ -478,13 +477,7 @@ const HomeScreen = props => {
           blurType={'light'}>
           <View style={style.container3}>
             <CustomButton
-              text={
-                isLoading ? (
-                  <ActivityIndicator color={'#01E8E3'} size={'small'} />
-                ) : (
-                  'Home'
-                )
-              }
+              text={'Home'}
               textColor={themeColor[1]}
               width={windowWidth * 0.7}
               height={windowHeight * 0.06}
@@ -492,7 +485,7 @@ const HomeScreen = props => {
               onPress={() => {
                 // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
                 setclicked(false);
-                navigationService.navigate('Bubble',{id:selectedBubbleId});
+                navigationService.navigate('Bubble', {id: selectedBubbleId});
               }}
               bgColor={['#FFFFFF', '#FFFFFF']}
               borderRadius={moderateScale(30, 0.3)}
@@ -500,13 +493,7 @@ const HomeScreen = props => {
             />
 
             <CustomButton
-              text={
-                isLoading ? (
-                  <ActivityIndicator color={'#01E8E3'} size={'small'} />
-                ) : (
-                  'Close'
-                )
-              }
+              text={'Close'}
               textColor={themeColor[1]}
               width={windowWidth * 0.7}
               height={windowHeight * 0.06}
@@ -522,7 +509,7 @@ const HomeScreen = props => {
         </BlurView>
       )}
       <RequestModal
-      selectedBubbleId={selectedBubbleId}
+        selectedBubbleId={selectedBubbleId}
         setIsVisible={setIsVisible}
         isVisible={isVisible}
         text={text}

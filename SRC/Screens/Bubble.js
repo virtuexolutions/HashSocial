@@ -31,17 +31,20 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Modal from 'react-native-modal';
 import Feather from 'react-native-vector-icons/Feather';
 import OptionsMenu from 'react-native-options-menu';
-import {Get} from '../Axios/AxiosInterceptorFunction';
+import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 
 const Bubble = props => {
   const bubbleId = props?.route?.params?.id;
-  console.log('🚀 ~ file: Bubble.js:39 ~ Bubble ~ bubbleId:', bubbleId);
+  console.log("🚀 ~ file: Bubble.js:38 ~ Bubble ~ bubbleId:", bubbleId)
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
   const privacy = useSelector(state => state.authReducer.privacy);
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const [isLoading, setIsLoading] = useState(false);
+  const [startFollowing, setStartFollowing] = useState(bubbleInfo?.follow ? true : false );
   const [isVisible, setIsVisible] = useState(false);
   const [bubbleInfo, setBubbleInfo] = useState({});
+  console.log("🚀 ~ file: Bubble.js:46 ~ Bubble ~ bubbleInfo:", bubbleInfo)
   const events = ['Posts', 'Home', 'Chats', 'Events', 'Members'];
   const [selectedEvent, setSelectedEvent] = useState('Posts');
   const [search, setSearch] = useState('');
@@ -115,16 +118,37 @@ const Bubble = props => {
   ];
   const [newData, setnewData] = useState(SearchData);
   const [invitedPeople, setInvitedPeople] = useState([]);
-  console.log('🚀 ~ file: Bubble.js:112 ~ Bubble ~ newData:', newData);
+  // console.log('🚀 ~ file: Bubble.js:112 ~ Bubble ~ newData:', newData);
 
   const MoreIcon = require('../Assets/Images/threedots.png');
 
+  const follow = async () => {
+    const url = 'auth/community_member/add';
+    const body = {
+      status: 'request',
+      profile_id: profileData?.id,
+      community_id: bubbleId,
+    };
+    setIsLoading(true);
+    const response = await Post(url, body, apiHeader(token));
+    setIsLoading(false);
+    if (response != undefined) {
+      console.log(
+        '🚀 ~ file: Bubble.js:131 ~ follow ~ response:',
+        response?.data,
+      );
+      getBubbleDetails()
+      setStartFollowing(!startFollowing);
+    }
+  };
+
   const getBubbleDetails = async () => {
-    const url = `auth/community_detail/${bubbleId}`;
+    const url = `auth/community_detail/${bubbleId}?profile_id=${profileData?.id}`;
     setIsLoading(true);
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
+      console.log("🚀 ~ file: Bubble.js:150 ~ getBubbleDetails ~ response:", response?.data)
       setBubbleInfo(response?.data?.community_info);
     }
   };
@@ -224,7 +248,7 @@ const Bubble = props => {
               <View style={{justifyContent: 'center'}}>
                 <CustomText
                   numberOfLines={1}
-                  children={'6.2M'}
+                  children={bubbleInfo?.total_posts_count}
                   style={styles.followCount}
                   isBold
                 />
@@ -243,13 +267,13 @@ const Bubble = props => {
               <View style={{justifyContent: 'center'}}>
                 <CustomText
                   numberOfLines={1}
-                  children={'192.1M'}
+                  children={bubbleInfo?.total_posts_count}
                   style={styles.followCount}
                   isBold
                 />
                 <CustomText
                   numberOfLines={1}
-                  children={'Likes'}
+                  children={'posts'}
                   style={styles.followText}
                 />
               </View>
@@ -258,7 +282,9 @@ const Bubble = props => {
               <CustomButton
                 text={
                   isLoading ? (
-                    <ActivityIndicator color={'#FFFFFF'} size={'small'} />
+                    <ActivityIndicator color={themeColor[1]} size={'small'} />
+                  ) : startFollowing ? (
+                    'Following'
                   ) : (
                     'Follow'
                   )
@@ -266,7 +292,9 @@ const Bubble = props => {
                 textColor={themeColor[1]}
                 width={windowWidth * 0.5}
                 height={windowHeight * 0.06}
-                onPress={() => {}}
+                onPress={() => {
+                  follow();
+                }}
                 fontSize={moderateScale(15, 0.6)}
                 bgColor={['#FFFFFF', '#FFFFFF']}
                 borderRadius={moderateScale(30, 0.3)}
@@ -334,7 +362,7 @@ const Bubble = props => {
               />
             ) : selectedEvent == 'Posts' ? (
               <Posts
-              bubbleId={bubbleId}
+                bubbleId={bubbleId}
                 onPress={() => {
                   navigationService.navigate('AddPost', {bubbleId: bubbleId});
                 }}

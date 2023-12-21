@@ -20,18 +20,16 @@ import CustomButton from './CustomButton';
 import moment from 'moment';
 import CustomImage from './CustomImage';
 import CustomText from './CustomText';
+import {Icon} from 'native-base';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
 const ComentsSection = ({refRBSheet, data}) => {
-  //   console.log('🚀 ~ file: ComentsSection.js:20 ~ ComentsSection ~ data:', data);
   const [yourComment, setYourComment] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [commentsData, setCommentsData] = useState(
     data?.comments ? data?.comments : [],
   );
-  console.log(
-    '🚀 ~ file: ComentsSection.js:27 ~ ComentsSection ~ commentsData:',
-    commentsData,
-  );
+
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
@@ -54,28 +52,25 @@ const ComentsSection = ({refRBSheet, data}) => {
     const response = await Post(url, body, apiHeader(token));
     setIsLoading(false);
     if (response != undefined) {
-      //    console.log(
-      //     '🚀 ~ file: ComentsSection.js:18 ~ addComment ~ response:',
-      //     response?.data,
-      //   );
-      //    Platform.OS == 'android'
-      //   ? ToastAndroid.show('Comment added', ToastAndroid.SHORT)
-      //   : Alert.alert('Comment added');
       setCommentsData(prev => [
         ...prev,
         {
           id: 12,
-          user: profileData?.user,
+          user: profileData?.name,
           description: yourComment,
           time: moment(),
+          image: profileData?.photo,
         },
       ]);
+      Platform.OS == 'android'
+        ? ToastAndroid.show('Comment added', ToastAndroid.SHORT)
+        : Alert.alert('Comment added');
     }
   };
   return (
     <RBSheet
       ref={refRBSheet}
-      closeOnDragDown={true}
+      // closeOnDragDown={true}
       closeOnPressMask={false}
       customStyles={{
         draggableIcon: {
@@ -83,9 +78,13 @@ const ComentsSection = ({refRBSheet, data}) => {
         },
       }}
       height={700}>
-      <View>
+      <View
+        style={{
+          marginTop: moderateScale(20, 0.3),
+        }}>
         <FlatList
-          contentContainerStyle={{}}
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{paddingBottom: moderateScale(60, 0.6)}}
           ListEmptyComponent={() => {
             return (
               <View
@@ -120,6 +119,8 @@ const ComentsSection = ({refRBSheet, data}) => {
                         source={
                           item?.profile_info?.photo
                             ? {uri: item?.profile_info?.photo}
+                            : item?.image
+                            ? {uri: item?.image}
                             : require('../Assets/Images/permissions.png')
                         }
                         style={{
@@ -132,7 +133,6 @@ const ComentsSection = ({refRBSheet, data}) => {
 
                     <View
                       style={{
-                        // width: windowWidth * 0.42,
                         paddingVertical: moderateScale(5, 0.6),
                         paddingHorizontal: moderateScale(15, 0.6),
                         backgroundColor: Color.lightGrey,
@@ -144,20 +144,19 @@ const ComentsSection = ({refRBSheet, data}) => {
                         style={{
                           color: 'black',
                           fontSize: moderateScale(14, 0.6),
-                          // backgroundColor: 'red',
                         }}
                         isBold>
-                        {item?.name}djksfkh
+                        {item?.profile_info?.name
+                          ? item?.profile_info?.name
+                          : item?.user}
                       </CustomText>
                       <CustomText
                         style={{
-                          // width:windowWidth*0.7,
                           color: 'black',
                           fontSize: moderateScale(12, 0.6),
-                          // backgroundColor: 'red',
                         }}
                         numberOfLines={2}>
-                        {item?.description}dsfsdf
+                        {item?.description}
                       </CustomText>
                     </View>
                   </View>
@@ -170,9 +169,7 @@ const ComentsSection = ({refRBSheet, data}) => {
                       justifyContent: 'space-between',
                       marginBottom: moderateScale(10, 0.3),
                     }}>
-                    <CustomText
-                      style={[styles.text]}
-                      isBold>
+                    <CustomText style={[styles.text]} isBold>
                       {moment(item?.created_at).fromNow()}
                     </CustomText>
                     <CustomText style={styles.text} isBold>
@@ -187,54 +184,41 @@ const ComentsSection = ({refRBSheet, data}) => {
             );
           }}
         />
-        <View
-          style={{
-            flexDirection: 'row',
-            // backgroundColor: 'green',
-            width: windowWidth,
-            justifyContent: 'space-between',
-            paddingHorizontal: moderateScale(10, 0.6),
-            paddingVertical: moderateScale(10, 0.6),
-            alignItems: 'center',
-          }}>
-          <TextInputWithTitle
-            titleText={'your comment'}
-            // secureText={false}
-            placeholder={'your comment'}
-            setText={setYourComment}
-            value={yourComment}
-            viewHeight={0.06}
-            viewWidth={0.74}
-            inputWidth={0.74}
-            borderColor={Color.veryLightGray}
-            border={2}
-            backgroundColor={'#FFFFFF'}
-            // marginTop={moderateScale(10, 0.3)}
-            // color={Color.themeBlue}
-            marginRight={moderateScale(10, 0.3)}
-            placeholderColor={Color.themeLightGray}
-            borderRadius={moderateScale(25, 0.3)}
-            // marginBottom={moderateScale(10, 0.3)}
-            // elevation
-          />
-          <CustomButton
-            isBold
-            onPress={addComment}
-            text={
-              isLoading ? (
-                <ActivityIndicator size={'small'} color={'white'} />
-              ) : (
-                'Add'
-              )
-            }
-            textColor={Color.white}
-            width={windowWidth * 0.17}
-            height={windowHeight * 0.06}
-            fontSize={moderateScale(12, 0.6)}
-            bgColor={themeColor[1]}
-            borderRadius={moderateScale(30, 0.3)}
-          />
-        </View>
+      </View>
+      <View
+        style={{
+          flexDirection: 'row',
+          backgroundColor: 'white',
+          position: 'absolute',
+          bottom: 0,
+          width: windowWidth,
+          justifyContent: 'space-between',
+          paddingHorizontal: moderateScale(10, 0.6),
+          paddingVertical: moderateScale(10, 0.6),
+          alignItems: 'center',
+        }}>
+        <TextInputWithTitle
+          titleText={'your comment'}
+          placeholder={'your comment'}
+          setText={setYourComment}
+          value={yourComment}
+          viewHeight={0.06}
+          viewWidth={0.84}
+          inputWidth={0.84}
+          // borderColor={Color.veryLightGray}
+          // border={2}
+          backgroundColor={'#F5F5F5'}
+          marginRight={moderateScale(10, 0.3)}
+          placeholderColor={Color.veryLightGray}
+          borderRadius={moderateScale(25, 0.3)}
+        />
+        <Icon
+          name={'send-outline'}
+          size={6}
+          color={Color.themeDarkGray}
+          as={Ionicons}
+          onPress={addComment}
+        />
       </View>
     </RBSheet>
   );

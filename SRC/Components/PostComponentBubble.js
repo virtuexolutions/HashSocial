@@ -32,71 +32,68 @@ import moment from 'moment';
 import navigationService from '../navigationService';
 import TextInputWithTitle from './TextInputWithTitle';
 import ComentsSection from './ComentsSection';
+import numeral from 'numeral'
 
 const PostComponentBubble = ({data}) => {
-  console.log('🚀 ~ file: PostComponentBubble.js:33 ~ data:', data);
-  const [like, setLike] = useState(false);
-  const userData = useSelector(state => state.commonReducer.userData)
-  const profileData = useSelector(state => state.commonReducer.selectedProfile)
-  console.log("🚀 ~ file: PostComponentBubble.js:38 ~ PostComponentBubble ~ userData:", userData)
+  const [like, setLike] = useState(data?.my_like ? data?.my_like : false);
+  const userData = useSelector(state => state.commonReducer.userData);
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const refRBSheet = useRef();
   const MoreIcon = require('../Assets/Images/threedots.png');
   const token = useSelector(state => state.authReducer.token);
-  const [liked, setLiked] = useState(false);
+
   const [animationStarted, setAnimationStarted] = useState(false);
   const [loading, setloading] = useState(false);
   const lottieAnimation = useRef();
 
   const editPost = () => {
-    navigationService.navigate('AddPost', {data})
+    navigationService.navigate('AddPost', {data});
   };
 
   const deletePost = async () => {
     const url = `auth/post/${data?.id}`;
     setloading(true);
-    console.log("🚀 ~ file: PostComponentBubble.js:52 ~ deletePost ~ url:", url)
     const response = await Delete(url, apiHeader(token));
-    console.log(
-      '🚀 ~ file: PostComponentBubble.js:50 ~ deletePost ~ response:',
-      response?.data,
-    );
     setloading(false);
     if (response != undefined) {
     }
-
-    // Alert.alert('Delete Your Post');
   };
-  const likePost= async()=>{
+  const likePost = async () => {
     const url = `auth/post_like`;
-    const body = {post_id:data?.id}
+    const body = {
+      post_id: data?.id,
+      profile_id: profileData?.id,
+    };
     setloading(true);
-    const response = await Post(url, body ,apiHeader(token));
+    const response = await Post(url, body, apiHeader(token));
     setloading(false);
     if (response != undefined) {
-    console.log("🚀 ~ file: PostComponentBubble.js:70 ~ likePost ~ response:", response?.data)
+      setLike(!like);
     }
-  }
+  };
 
   return (
     <>
       <View
         style={{
-          width: windowWidth,
-          paddingVertical: moderateScale(15, 0.6),
-          backgroundColor: 'transparent',
-          marginTop: moderateScale(10, 0.3),
-          // elevation: 2,
+          width: windowWidth * 0.95,
+          marginVertical: moderateScale(10, 0.6),
+          paddingVertical: moderateScale(10, 0.3),
+          backgroundColor: '#F5F5F5',
+          borderRadius: moderateScale(10, 0.6),
+          alignSelf: 'center',
+          // marginTop: moderateScale(10, 0.3),
         }}>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
             paddingHorizontal: moderateScale(10, 0.6),
-            marginTop: moderateScale(10, 0.3),
+            // marginTop: moderateScale(10, 0.3),
           }}>
           <View style={styles.profileSection2}>
             <CustomImage
-              source={{uri:data?.profile_info?.photo}}
+              source={{uri: data?.profile_info?.photo}}
               style={{
                 height: '100%',
                 width: '100%',
@@ -119,25 +116,17 @@ const PostComponentBubble = ({data}) => {
                 style={{
                   fontSize: moderateScale(15, 0.6),
                 }}>
-                {data?.profile_info?.name} 
+                {data?.profile_info?.name}
               </CustomText>
-              <CustomImage
-                source={require('../Assets/Images/tick.png')}
-                style={{
-                  width: moderateScale(15, 0.6),
-                  height: moderateScale(15, 0.6),
-                  marginLeft: moderateScale(10, 0.6),
-                }}
-              />
             </View>
             <View
               style={{
                 flexDirection: 'row',
-                // width: windowWidth * 0.17,
-                // justifyContent: 'space-around',
                 alignItems: 'center',
               }}>
-              <CustomText style={{textAlign: 'left'}}>{moment(data?.created_at).fromNow()}</CustomText>
+              <CustomText style={{textAlign: 'left'}}>
+                {moment(data?.created_at).fromNow()}
+              </CustomText>
             </View>
           </View>
 
@@ -156,10 +145,10 @@ const PostComponentBubble = ({data}) => {
 
         <View
           style={{
-            width: windowWidth,
+            width: windowWidth * 0.9,
+            // backgroundColor:'red',
             marginTop: moderateScale(8, 0.3),
           }}>
-          
           <CustomText
             style={{
               textAlign: 'left',
@@ -170,11 +159,11 @@ const PostComponentBubble = ({data}) => {
             {data?.caption}
           </CustomText>
         </View>
-        {(data?.post_images?.length > 0) && (
+        {data?.post_images?.length > 0 && (
           <View
             style={{
               alignSelf: 'center',
-              width: windowWidth * 0.95,
+              width: windowWidth * 0.9,
               height: windowHeight * 0.3,
               marginTop: moderateScale(10, 0.3),
               borderRadius: moderateScale(20, 0.6),
@@ -183,7 +172,7 @@ const PostComponentBubble = ({data}) => {
             {data?.post_images?.length > 0 ? (
               <View
                 style={{
-                  width: windowWidth * 0.95,
+                  width: windowWidth * 0.9,
                   height: windowHeight * 0.3,
                 }}>
                 <CustomImage
@@ -198,9 +187,9 @@ const PostComponentBubble = ({data}) => {
                   style={{
                     flexDirection: 'row',
                     width: windowWidth,
-                    height: windowHeight * 0.08,
+                    height: windowHeight * 0.06,
                     alignItems: 'center',
-                    justifyContent: 'space-between',
+                    // justifyContent: 'space-between',
                     paddingHorizontal: moderateScale(10, 0.3),
 
                     position: 'absolute',
@@ -210,22 +199,31 @@ const PostComponentBubble = ({data}) => {
                   <View
                     style={{
                       flexDirection: 'row',
-                      width: windowWidth * 0.25,
-                      // backgroundColor:'green',
+                      // width: windowWidth * 0.25,
+                      justifyContent:'space-between',
+                      // backgroundColor: 'green',
                       alignItems: 'center',
                     }}>
                     <View
                       style={{
-                        width: moderateScale(35, 0.6),
-                        height: moderateScale(35, 0.6),
+                        width:like ?  moderateScale(30, 0.6) : moderateScale(25, 0.6),
+                        height: like ?  moderateScale(30, 0.6) : moderateScale(25, 0.6),
+                        // backgroundColor:'purple',
+                        
                       }}>
                       <CustomImage
-                        source={require('../Assets/Images/heart.png')}
+                        source={
+                          like
+                            ? require('../Assets/Images/heart.png')
+                            : require('../Assets/Images/heart3.png')
+                        }
                         style={{
                           height: '100%',
                           width: '100%',
                         }}
-                        onPress={()=>{likePost()}}
+                        onPress={() => {
+                          likePost();
+                        }}
                         resizeMode="cover"
                       />
                     </View>
@@ -234,19 +232,21 @@ const PostComponentBubble = ({data}) => {
                       isBold
                       style={{
                         color: Color.black,
-                        marginLeft: moderateScale(5, 0.3),
+                        marginLeft: moderateScale(2, 0.3),
+                        marginRight: moderateScale(10, 0.3),
                         fontSize: moderateScale(13, 0.6),
-                        width: windowWidth * 0.16,
+                        // width: windowWidth * 0.16,
                       }}>
-                      {data?.Like}K
+                      {like ? numeral(data?.total_likes_count+1).format('0a'): numeral(data?.total_likes_count).format('0a')}
                     </CustomText>
                     <TouchableOpacity
                       onPress={() => {
                         refRBSheet.current.open();
                       }}
                       style={{
-                        width: moderateScale(30, 0.6),
-                        height: moderateScale(30, 0.6),
+                        width: moderateScale(25, 0.6),
+                        height: moderateScale(25, 0.6),
+                        marginLeft:moderateScale(5,.3),
                       }}>
                       <CustomImage
                         onPress={() => {
@@ -269,11 +269,10 @@ const PostComponentBubble = ({data}) => {
                       style={{
                         color: Color.black,
                         marginLeft: moderateScale(5, 0.3),
-                        fontSize: moderateScale(15, 0.6),
+                        fontSize: moderateScale(13, 0.6),
                         width: windowWidth * 0.13,
-                        // backgroundColor : 'red'
                       }}>
-                      {data?.Like}K
+                      {data?.comments?.length}
                     </CustomText>
                   </View>
                 </View>
@@ -283,10 +282,8 @@ const PostComponentBubble = ({data}) => {
             )}
           </View>
         )}
-
-     
       </View>
-      <ComentsSection refRBSheet={refRBSheet} data={data}/>
+      <ComentsSection refRBSheet={refRBSheet} data={data} />
     </>
   );
 };

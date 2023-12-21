@@ -117,10 +117,7 @@ const AddPost = props => {
     const response = await Post(url, formData, apiHeader(token));
     setLoading(false);
     if (response != undefined) {
-      return console.log(
-        '🚀 ~ file: AddPost.js:74 ~ AddPost ~ response:',
-        response?.data,
-      );
+     
       navigation.goBack();
     }
   };

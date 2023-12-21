@@ -38,6 +38,7 @@ const Posts = ({onPress, bubbleId}) => {
 
   const getPosts = async () => {
     const url = `auth/post/${bubbleId}?profile_id=${profileData?.id}`;
+     console.log("🚀 ~ file: Posts.js:42 ~ getPosts ~ url:", url)
     setIsLoading(true);
     const response = await Get(url, token);
     setIsLoading(false);
