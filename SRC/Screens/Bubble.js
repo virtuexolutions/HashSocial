@@ -41,6 +41,7 @@ const Bubble = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const [isLoading, setIsLoading] = useState(false);
+  const [followLoading, setFollowLoading] = useState(false)
   const [startFollowing, setStartFollowing] = useState(bubbleInfo?.follow ? true : false );
   const [isVisible, setIsVisible] = useState(false);
   const [bubbleInfo, setBubbleInfo] = useState({});
@@ -129,9 +130,9 @@ const Bubble = props => {
       profile_id: profileData?.id,
       community_id: bubbleId,
     };
-    setIsLoading(true);
+    setFollowLoading(true);
     const response = await Post(url, body, apiHeader(token));
-    setIsLoading(false);
+    setFollowLoading(false);
     if (response != undefined) {
       console.log(
         '🚀 ~ file: Bubble.js:131 ~ follow ~ response:',
@@ -150,6 +151,7 @@ const Bubble = props => {
     if (response != undefined) {
       console.log("🚀 ~ file: Bubble.js:150 ~ getBubbleDetails ~ response:", response?.data)
       setBubbleInfo(response?.data?.community_info);
+      setStartFollowing(response?.data?.community_info?.follow ? true : false )
     }
   };
 
@@ -248,7 +250,7 @@ const Bubble = props => {
               <View style={{justifyContent: 'center'}}>
                 <CustomText
                   numberOfLines={1}
-                  children={bubbleInfo?.total_posts_count}
+                  children={bubbleInfo?.total_members}
                   style={styles.followCount}
                   isBold
                 />
@@ -280,8 +282,9 @@ const Bubble = props => {
             </View>
             <View style={styles.followbtn}>
               <CustomButton
+              disable={bubbleInfo?.id == profileData?.id ? true : false }
                 text={
-                  isLoading ? (
+                  followLoading ? (
                     <ActivityIndicator color={themeColor[1]} size={'small'} />
                   ) : startFollowing ? (
                     'Following'
@@ -331,7 +334,7 @@ const Bubble = props => {
                         backgroundColor:
                           selectedEvent == data
                             ? Color.white
-                            : 'rgba(0,0,0,.4)',
+                            : 'rgba(0,0,0,.2)',
                       },
                       ...{
                         color:
