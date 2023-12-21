@@ -45,13 +45,8 @@ const HomeScreen = props => {
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const newSignUp = useSelector(state => state.authReducer.newSignUp);
   const token = useSelector(state => state.authReducer.token);
+  //  console.log("🚀 ~ file: HomeScreen.js:48 ~ HomeScreen ~ token:", token, profileData?.id)
   const [selectedBubbleId, setSelectedBubbleId] = useState(null);
-
-    console.log(
-    '🚀 ~ file: HomeScreen.js:44 ~ HomeScreen ~ newSignUp:',
-    newSignUp,
-  );
-
   const dispatch = useDispatch();
   const [prompt, setPrompt] = useState(false);
   const [clicked, setclicked] = useState(false);
@@ -253,7 +248,6 @@ const HomeScreen = props => {
       },
     },
   ]);
-  console.log('🚀 ~ file: HomeScreen.js:251 ~ HomeScreen ~ content:', content);
 
   const [profiles, setProfiles] = useState([
     {
@@ -293,15 +287,12 @@ const HomeScreen = props => {
   const [bubbles, setBubbles] = useState([]);
 
   const getBubbles = async () => {
-    const url = 'auth/community';
+    const url = `auth/community/${profileData?.id}`;
     setIsLoading(true);
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: HomeScreen.js:295 ~ getBubbles ~ response:',
-        response?.data,
-      );
+      console.log("🚀 ~ file: HomeScreen.js:294 ~ getBubbles ~ response:", response?.data?.community_info[0])
       setBubbles(response?.data?.community_info);
       setContent(
         response?.data?.community_info?.map(item => {
@@ -315,8 +306,9 @@ const HomeScreen = props => {
               />
             ),
             bubble: true,
+            item:item,
             source: {uri: item?.image},
-            private: item?.privacy == 'yes' ? false : true,
+            private: item?.privacy?.toLowerCase() == 'yes' ? true : false,
           };
         }),
       );
@@ -488,13 +480,7 @@ const HomeScreen = props => {
           blurType={'light'}>
           <View style={style.container3}>
             <CustomButton
-              text={
-                isLoading ? (
-                  <ActivityIndicator color={'#01E8E3'} size={'small'} />
-                ) : (
-                  'Home'
-                )
-              }
+              text={'Home'}
               textColor={themeColor[1]}
               width={windowWidth * 0.7}
               height={windowHeight * 0.06}
@@ -502,7 +488,7 @@ const HomeScreen = props => {
               onPress={() => {
                 // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
                 setclicked(false);
-                navigationService.navigate('Bubble',{id:selectedBubbleId});
+                navigationService.navigate('Bubble', {id: selectedBubbleId});
               }}
               bgColor={['#FFFFFF', '#FFFFFF']}
               borderRadius={moderateScale(30, 0.3)}
@@ -510,13 +496,7 @@ const HomeScreen = props => {
             />
 
             <CustomButton
-              text={
-                isLoading ? (
-                  <ActivityIndicator color={'#01E8E3'} size={'small'} />
-                ) : (
-                  'Close'
-                )
-              }
+              text={'Close'}
               textColor={themeColor[1]}
               width={windowWidth * 0.7}
               height={windowHeight * 0.06}
@@ -532,7 +512,7 @@ const HomeScreen = props => {
         </BlurView>
       )}
       <RequestModal
-      selectedBubbleId={selectedBubbleId}
+        selectedBubbleId={selectedBubbleId}
         setIsVisible={setIsVisible}
         isVisible={isVisible}
         text={text}

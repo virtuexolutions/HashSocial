@@ -26,56 +26,74 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 import {FlatList} from 'react-native';
 import Lottie from 'lottie-react-native';
 import {Image} from 'react-native-svg';
-import { Delete } from '../Axios/AxiosInterceptorFunction';
+import {Delete, Post} from '../Axios/AxiosInterceptorFunction';
+import {useSelector} from 'react-redux';
+import moment from 'moment';
+import navigationService from '../navigationService';
+import TextInputWithTitle from './TextInputWithTitle';
+import ComentsSection from './ComentsSection';
+import numeral from 'numeral'
 
 const PostComponentBubble = ({data}) => {
-  const [like, setLike] = useState(false);
+  const [like, setLike] = useState(data?.my_like ? data?.my_like : false);
+  const userData = useSelector(state => state.commonReducer.userData);
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const refRBSheet = useRef();
   const MoreIcon = require('../Assets/Images/threedots.png');
-  const [liked, setLiked] = useState(false);
+  const token = useSelector(state => state.authReducer.token);
+
   const [animationStarted, setAnimationStarted] = useState(false);
-  const  [loading,setloading]=useState(false)
-  //   const [lottieAnimation, setLottieAnimation] = useState(null);
+  const [loading, setloading] = useState(false);
   const lottieAnimation = useRef();
 
   const editPost = () => {
-
-    // Alert.alert('Edit Your Post');
+    navigationService.navigate('AddPost', {data});
   };
 
-  const deletePost =  async () => {
-    const url= `auth/post/`
-    setloading(ture) 
-    const response = await Delete(url ,apiHeader(token)) 
-    console.log("🚀 ~ file: PostComponentBubble.js:50 ~ deletePost ~ response:", response)
-    setloading(false)
-    if(reponse != undefined){
-      
-    } 
-
-    // Alert.alert('Delete Your Post');
+  const deletePost = async () => {
+    const url = `auth/post/${data?.id}`;
+    setloading(true);
+    const response = await Delete(url, apiHeader(token));
+    setloading(false);
+    if (response != undefined) {
+    }
+  };
+  const likePost = async () => {
+    const url = `auth/post_like`;
+    const body = {
+      post_id: data?.id,
+      profile_id: profileData?.id,
+    };
+    setloading(true);
+    const response = await Post(url, body, apiHeader(token));
+    setloading(false);
+    if (response != undefined) {
+      setLike(!like);
+    }
   };
 
   return (
     <>
       <View
         style={{
-          width: windowWidth,
-          paddingVertical: moderateScale(15, 0.6),
-          backgroundColor: 'transparent',
-          marginTop: moderateScale(10, 0.3),
-          // elevation: 2,
+          width: windowWidth * 0.95,
+          marginVertical: moderateScale(10, 0.6),
+          paddingVertical: moderateScale(10, 0.3),
+          backgroundColor: '#F5F5F5',
+          borderRadius: moderateScale(10, 0.6),
+          alignSelf: 'center',
+          // marginTop: moderateScale(10, 0.3),
         }}>
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'space-between',
             paddingHorizontal: moderateScale(10, 0.6),
-            marginTop: moderateScale(10, 0.3),
+            // marginTop: moderateScale(10, 0.3),
           }}>
           <View style={styles.profileSection2}>
             <CustomImage
-              source={data?.profileImage}
+              source={{uri: data?.profile_info?.photo}}
               style={{
                 height: '100%',
                 width: '100%',
@@ -98,25 +116,17 @@ const PostComponentBubble = ({data}) => {
                 style={{
                   fontSize: moderateScale(15, 0.6),
                 }}>
-                {data?.Name}
+                {data?.profile_info?.name}
               </CustomText>
-              <CustomImage
-                source={require('../Assets/Images/tick.png')}
-                style={{
-                  width: moderateScale(15, 0.6),
-                  height: moderateScale(15, 0.6),
-                  marginLeft: moderateScale(10, 0.6),
-                }}
-              />
             </View>
             <View
               style={{
                 flexDirection: 'row',
-                width: windowWidth * 0.17,
-                justifyContent: 'space-around',
                 alignItems: 'center',
               }}>
-              <CustomText style={{textAlign: 'left'}}>{data?.date}</CustomText>
+              <CustomText style={{textAlign: 'left'}}>
+                {moment(data?.created_at).fromNow()}
+              </CustomText>
             </View>
           </View>
 
@@ -135,19 +145,10 @@ const PostComponentBubble = ({data}) => {
 
         <View
           style={{
-            width: windowWidth,
+            width: windowWidth * 0.9,
+            // backgroundColor:'red',
             marginTop: moderateScale(8, 0.3),
           }}>
-          {/* <ShowMoreAndShowLessText
-              minTextLength={12}
-              style={{
-                textAlign: 'left',
-                marginLeft: moderateScale(15, 0.3),
-                fontSize: moderateScale(13, 0.6),
-              }}>
-              {data?.desc}
-            </ShowMoreAndShowLessText>
-             */}
           <CustomText
             style={{
               textAlign: 'left',
@@ -155,56 +156,30 @@ const PostComponentBubble = ({data}) => {
               fontSize: moderateScale(13, 0.6),
               lineHeight: moderateScale(20, 0.6),
             }}>
-            {data?.desc}
+            {data?.caption}
           </CustomText>
         </View>
-        {/* <Lottie
-          ref={lottieAnimation}
-          style={{zIndex: 1}}
-          source={require('../Assets/Images/heart.json')}
-          onAnimationFailure={(data)=>{console.log( 'thisssssssssssssssssss',data)}}
-          speed={1}
-          duration={1000}
-          loop
-      
-          onAnimationFinish={() => {
-      
-            //   lottieAnimation.current?.pause(),
-              setAnimationStarted(false)
-            //   setLike(!liked);
-          }}
-          onAnimationLoop={() => {
-            // setSpeed(0)
-          }}
-        /> */}
-        {(data?.image || data?.video) && (
-          //   <Pressable
-          //     onLongPress={() => {
-          //       console.log('started');
-          //       lottieAnimation.current?.play();
-          //     }}>
-          //     {({pressed}) => (
+        {data?.post_images?.length > 0 && (
           <View
             style={{
               alignSelf: 'center',
-              width: windowWidth * 0.95,
+              width: windowWidth * 0.9,
               height: windowHeight * 0.3,
               marginTop: moderateScale(10, 0.3),
               borderRadius: moderateScale(20, 0.6),
               overflow: 'hidden',
             }}>
-            {data?.image ? (
+            {data?.post_images?.length > 0 ? (
               <View
                 style={{
-                  width: windowWidth * 0.95,
+                  width: windowWidth * 0.9,
                   height: windowHeight * 0.3,
                 }}>
                 <CustomImage
-                  source={data?.image}
+                  source={{uri: data?.post_images[0]?.name}}
                   style={{
                     height: '100%',
                     width: '100%',
-                    //   marginTop: moderateScale(5, 0.3),
                   }}
                   resizeMode="cover"
                 />
@@ -212,9 +187,9 @@ const PostComponentBubble = ({data}) => {
                   style={{
                     flexDirection: 'row',
                     width: windowWidth,
-                    height: windowHeight * 0.08,
+                    height: windowHeight * 0.06,
                     alignItems: 'center',
-                    justifyContent: 'space-between',
+                    // justifyContent: 'space-between',
                     paddingHorizontal: moderateScale(10, 0.3),
 
                     position: 'absolute',
@@ -224,61 +199,54 @@ const PostComponentBubble = ({data}) => {
                   <View
                     style={{
                       flexDirection: 'row',
-                      width: windowWidth * 0.25,
-                      // backgroundColor:'green',
+                      // width: windowWidth * 0.25,
+                      justifyContent:'space-between',
+                      // backgroundColor: 'green',
                       alignItems: 'center',
                     }}>
-                    {/* {animationStarted == true ? ( */}
-
-                    {/* {liked ? ( */}
                     <View
                       style={{
-                        width: moderateScale(35, 0.6),
-                        height: moderateScale(35, 0.6),
+                        width:like ?  moderateScale(30, 0.6) : moderateScale(25, 0.6),
+                        height: like ?  moderateScale(30, 0.6) : moderateScale(25, 0.6),
+                        // backgroundColor:'purple',
+                        
                       }}>
                       <CustomImage
-                        source={require('../Assets/Images/heart.png')}
+                        source={
+                          like
+                            ? require('../Assets/Images/heart.png')
+                            : require('../Assets/Images/heart3.png')
+                        }
                         style={{
                           height: '100%',
                           width: '100%',
                         }}
+                        onPress={() => {
+                          likePost();
+                        }}
                         resizeMode="cover"
                       />
                     </View>
-                    {/* ) : (
-                          <Icon
-                            name="heart"
-                            as={AntDesign}
-                            color={Color.white}
-                            size={moderateScale(25, 0.3)}
-                            onPress={() => {
-                              lottieAnimation.current?.play();
-                            }}
-                            style={
-                              {
-                                // backgroundColor : 'red'
-                              }
-                            }
-                          /> */}
-                    {/* )} */}
 
                     <CustomText
                       isBold
                       style={{
                         color: Color.black,
-                        marginLeft: moderateScale(5, 0.3),
+                        marginLeft: moderateScale(2, 0.3),
+                        marginRight: moderateScale(10, 0.3),
                         fontSize: moderateScale(13, 0.6),
-                        width: windowWidth * 0.16,
+                        // width: windowWidth * 0.16,
                       }}>
-                      {data?.Like}K
+                      {like ? numeral(data?.total_likes_count+1).format('0a'): numeral(data?.total_likes_count).format('0a')}
                     </CustomText>
                     <TouchableOpacity
                       onPress={() => {
                         refRBSheet.current.open();
                       }}
                       style={{
-                        width: moderateScale(30, 0.6),
-                        height: moderateScale(30, 0.6),
+                        width: moderateScale(25, 0.6),
+                        height: moderateScale(25, 0.6),
+                        marginLeft:moderateScale(5,.3),
                       }}>
                       <CustomImage
                         onPress={() => {
@@ -301,11 +269,10 @@ const PostComponentBubble = ({data}) => {
                       style={{
                         color: Color.black,
                         marginLeft: moderateScale(5, 0.3),
-                        fontSize: moderateScale(15, 0.6),
+                        fontSize: moderateScale(13, 0.6),
                         width: windowWidth * 0.13,
-                        // backgroundColor : 'red'
                       }}>
-                      {data?.Like}K
+                      {data?.comments?.length}
                     </CustomText>
                   </View>
                 </View>
@@ -314,150 +281,9 @@ const PostComponentBubble = ({data}) => {
               <VideoController item={data} />
             )}
           </View>
-          //     )}
-          //   </Pressable>
         )}
-
-        {/* <View
-            style={{
-  
-              flexDirection: 'row',
-              // backgroundColor : 'red'
-              // justifyContent: 'space-around',
-              // paddingHorizontal: moderateScale(5, 0.6),
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                setLike(!like);
-              }}
-              style={{
-                flexDirection: 'row',
-                width: '50%',
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRightWidth : 1,
-                borderColor : Color.veryLightGray
-              }}>
-              <Icon
-                as={AntDesign}
-                name={like ? 'like2' : 'like1'}
-                size={23}
-                color={like ? Color.themeBlack : '#2a95fd'}
-                onPress={() => {
-                  setLike(!like);
-                }}
-              />
-  
-              <CustomText>Like</CustomText>
-            </TouchableOpacity>
-  
-            <TouchableOpacity
-             onPress={() => refRBSheet.current.open()}
-              style={{
-                flexDirection: 'row',
-                width: '50%',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Octicons
-                name="comment"
-                size={23}
-                color={Color.themeBlack}
-                onPress={() => refRBSheet.current.open()}
-              />
-              <CustomText>comments</CustomText>
-            </TouchableOpacity>
-  
-        </View> */}
-        <RBSheet
-          ref={refRBSheet}
-          closeOnDragDown={true}
-          closeOnPressMask={false}
-          customStyles={{
-            draggableIcon: {
-              backgroundColor: Color.veryLightGray,
-            },
-          }}
-          height={700}>
-          <FlatList
-            data={data?.commentData}
-            renderItem={({item, index}) => {
-              return (
-                <View style={{width: windowWidth}}>
-                  <View
-                    style={{
-                      width: windowWidth,
-                      marginTop: moderateScale(10, 0.3),
-                    }}>
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        paddingHorizontal: moderateScale(10, 0.6),
-                        width: windowWidth,
-                      }}>
-                      <View style={styles.profileSection2}>
-                        <CustomImage
-                          source={item?.pic}
-                          style={{
-                            height: '100%',
-                            width: '100%',
-                          }}
-                          resizeMode="contain"
-                        />
-                      </View>
-
-                      <View
-                        style={{
-                          // width: windowWidth * 0.42,
-                          paddingVertical: moderateScale(5, 0.6),
-                          paddingHorizontal: moderateScale(15, 0.6),
-                          backgroundColor: Color.lightGrey,
-                          borderRadius: moderateScale(10, 0.6),
-                          marginLeft: moderateScale(10, 0.3),
-                        }}>
-                        <CustomText
-                          numberOfLines={1}
-                          style={{
-                            color: 'black',
-                            fontSize: moderateScale(14, 0.6),
-                            // backgroundColor: 'red',
-                          }}
-                          isBold>
-                          {item?.name}
-                        </CustomText>
-                        <CustomText
-                          style={{
-                            // width:windowWidth*0.7,
-                            color: 'black',
-                            fontSize: moderateScale(12, 0.6),
-                            // backgroundColor: 'red',
-                          }}
-                          numberOfLines={2}>
-                          {item?.comment}
-                        </CustomText>
-                      </View>
-                    </View>
-
-                    <View
-                      style={{
-                        flexDirection: 'row',
-                        width: windowWidth * 0.4,
-                        marginLeft: moderateScale(60, 0.3),
-                        justifyContent: 'space-evenly',
-                        marginTop: moderateScale(5, 0.3),
-                      }}>
-                      <CustomText style={styles.text}>{item?.Time}h</CustomText>
-                      <CustomText style={styles.text}>Like</CustomText>
-                      <CustomText style={styles.text}>Reply</CustomText>
-                    </View>
-                  </View>
-                </View>
-              );
-            }}
-          />
-        </RBSheet>
       </View>
+      <ComentsSection refRBSheet={refRBSheet} data={data} />
     </>
   );
 };

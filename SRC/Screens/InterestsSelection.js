@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ActivityIndicator} from 'react-native'
+import {ActivityIndicator} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Color from '../Assets/Utilities/Color';
 import CustomImage from '../Components/CustomImage';
@@ -26,7 +26,7 @@ import {
   setInterestSelected,
 } from '../Store/slices/auth';
 import {Post} from '../Axios/AxiosInterceptorFunction';
-import { setSelectedFeeds, setSelectedProfileData } from '../Store/slices/common';
+import {setSelectedFeeds, setSelectedProfileData} from '../Store/slices/common';
 import CustomText from '../Components/CustomText';
 
 const InterestSelection = () => {
@@ -48,7 +48,7 @@ const InterestSelection = () => {
   );
 
   const dispatch = useDispatch();
-  const architecture = [ '', '', '', '', '', '', '', 'Health', 'Photography','Movies and entertainment' , 'Science and nature', '' ];
+
   const [BubbleImageArraty, setBubbleImageArraty] = useState([
     {
       id: 1,
@@ -163,21 +163,18 @@ const InterestSelection = () => {
   const sendSelectedFeeds = async () => {
     const url = 'auth/subscribe';
     const body = {
-      id:profileData?.id,
+      id: profileData?.id,
       feed: selectedBubble,
     };
     setIsLaoding(true);
     const response = await Post(url, body, apiHeader(token));
     setIsLaoding(false);
     if (response != undefined) {
-    // return console.log(
-    //     '🚀 ~ file: BubbleSelection.js:116 ~ sendSelectedBubble ~ response:',
-    //     response?.data,
-    //   );
-      dispatch(setSelectedProfileData(response?.data?.profile_info))
-      dispatch(setInterestSelected(true))
-      // dispatch((selectedBubble))
-
+      dispatch(setSelectedProfileData(response?.data?.profile_info));
+      dispatch(setInterestSelected(true));
+      Platform.OS == 'android'
+        ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
+        : Alert.alert('Saved');
     }
   };
 
@@ -207,17 +204,19 @@ const InterestSelection = () => {
             zIndex: 1,
           }}>
           <CustomButton
-            text={isLaoding ? <ActivityIndicator color={'white'} size={'small'} />:'Save'}
+            text={
+              isLaoding ? (
+                <ActivityIndicator color={'white'} size={'small'} />
+              ) : (
+                'Save'
+              )
+            }
             textColor={Color.white}
             width={windowWidth * 0.2}
             height={windowHeight * 0.04}
             onPress={() => {
               if (selectedBubble.length > 0) {
                 sendSelectedFeeds();
-
-                Platform.OS == 'android'
-                  ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
-                  : Alert.alert('Saved');
               } else {
                 Platform.OS == 'android'
                   ? ToastAndroid.show('Select any Bubble', ToastAndroid.SHORT)
@@ -260,12 +259,10 @@ const InterestSelection = () => {
             width: windowWidth,
           }}>
           {BubbleImageArraty.map((item, index) => {
-            // console.log("🚀 ~ file: BubbleSelection.js:174 ~ {BubbleImageArraty.map ~ item:", item)
             return (
               <TouchableOpacity
                 onPress={() => {
                   console.log('Here');
-                  // setBubbleSelected(prev=> [...prev, item])
                   if (selectedBubble.findIndex(i => i.id == item?.id) != -1) {
                     setSelectedBubble(
                       selectedBubble?.filter(i => i?.id != item?.id),
@@ -277,7 +274,6 @@ const InterestSelection = () => {
                   data[index].added = !data[index].added;
 
                   setBubbleImageArraty(data);
-                  // setSavedBubbles(prev => [...prev, item])
                 }}
                 style={{
                   width: windowWidth * 0.3,
@@ -292,22 +288,22 @@ const InterestSelection = () => {
                   marginHorizontal: moderateScale(2, 0.3),
                 }}>
                 <CustomText
-              numberOfLines={1}
-              style={{
-                fontSize: moderateScale(11, 0.6),
-                fontWeight: '700',
-                textAlign: 'left',
-                position:'absolute',
-                bottom:0,
-                padding:moderateScale(5,.6),
-                width:'100%',
-                paddingLeft:moderateScale(10,0.3),
-                zIndex:1,
-                color:'white',
-                backgroundColor:'rgba(0,0,0,0.6)',
-              }}>
-              {item?.name}
-            </CustomText>
+                  numberOfLines={1}
+                  style={{
+                    fontSize: moderateScale(11, 0.6),
+                    fontWeight: '700',
+                    textAlign: 'left',
+                    position: 'absolute',
+                    bottom: 0,
+                    padding: moderateScale(5, 0.6),
+                    width: '100%',
+                    paddingLeft: moderateScale(10, 0.3),
+                    zIndex: 1,
+                    color: 'white',
+                    backgroundColor: 'rgba(0,0,0,0.6)',
+                  }}>
+                  {item?.name}
+                </CustomText>
                 <CustomImage
                   onPress={() => {
                     console.log('Here');
@@ -349,8 +345,7 @@ const InterestSelection = () => {
                       style={{
                         width: moderateScale(60, 0.6),
                         height: moderateScale(60, 0.6),
-                        // position: 'absolute',
-                        // zIndex: 1,
+
                         alignSelf: 'center',
                         top: '35%',
                       }}>
@@ -376,7 +371,6 @@ const InterestSelection = () => {
                         resizeMode={'stretch'}
                         style={{width: '100%', height: '100%'}}
                       />
-            
                     </Animatable.View>
                   </View>
                 )}

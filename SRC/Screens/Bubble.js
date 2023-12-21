@@ -31,17 +31,21 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import Modal from 'react-native-modal';
 import Feather from 'react-native-vector-icons/Feather';
 import OptionsMenu from 'react-native-options-menu';
-import { Get } from '../Axios/AxiosInterceptorFunction';
+import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 
-
-const Bubble = (props) => {
-  const bubbleId = props?.route?.params?.id
-  return console.log("🚀 ~ file: Bubble.js:39 ~ Bubble ~ bubbleId:", bubbleId)
+const Bubble = props => {
+  const bubbleId = props?.route?.params?.id;
+  console.log("🚀 ~ file: Bubble.js:38 ~ Bubble ~ bubbleId:", bubbleId)
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
   const privacy = useSelector(state => state.authReducer.privacy);
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const [isLoading, setIsLoading] = useState(false);
+  const [followLoading, setFollowLoading] = useState(false)
+  const [startFollowing, setStartFollowing] = useState(bubbleInfo?.follow ? true : false );
   const [isVisible, setIsVisible] = useState(false);
+  const [bubbleInfo, setBubbleInfo] = useState({});
+  console.log("🚀 ~ file: Bubble.js:46 ~ Bubble ~ bubbleInfo:", bubbleInfo)
   const events = ['Posts', 'Home', 'Chats', 'Events', 'Members'];
   const [selectedEvent, setSelectedEvent] = useState('Posts');
   const [search, setSearch] = useState('');
@@ -115,27 +119,52 @@ const Bubble = (props) => {
   ];
   const [newData, setnewData] = useState(SearchData);
   const [invitedPeople, setInvitedPeople] = useState([]);
-  console.log('🚀 ~ file: Bubble.js:112 ~ Bubble ~ newData:', newData);
+  // console.log('🚀 ~ file: Bubble.js:112 ~ Bubble ~ newData:', newData);
 
   const MoreIcon = require('../Assets/Images/threedots.png');
-  const getBubbleDetails = async()=>{
-    const url = `auth/community/${bubbleId}`
-    setIsLoading(true)
-    const response = await Get(url, token)
-    setIsLoading(false)
-    if(response != undefined){
 
-      console.log("🚀 ~ file: Bubble.js:124 ~ getBubbleDetails ~ response:", response)
+  const follow = async () => {
+    const url = 'auth/community_member/add';
+    const body = {
+      status: 'request',
+      profile_id: profileData?.id,
+      community_id: bubbleId,
+    };
+    setFollowLoading(true);
+    const response = await Post(url, body, apiHeader(token));
+    setFollowLoading(false);
+    if (response != undefined) {
+      console.log(
+        '🚀 ~ file: Bubble.js:131 ~ follow ~ response:',
+        response?.data,
+      );
+      getBubbleDetails()
+      setStartFollowing(!startFollowing);
     }
-  }
+  };
+
+  const getBubbleDetails = async () => {
+    const url = `auth/community_detail/${bubbleId}?profile_id=${profileData?.id}`;
+    setIsLoading(true);
+    const response = await Get(url, token);
+    setIsLoading(false);
+    if (response != undefined) {
+      console.log("🚀 ~ file: Bubble.js:150 ~ getBubbleDetails ~ response:", response?.data)
+      setBubbleInfo(response?.data?.community_info);
+      setStartFollowing(response?.data?.community_info?.follow ? true : false )
+    }
+  };
 
   const InviteMember = () => {
-   setIsVisible(true);
+    setIsVisible(true);
   };
 
   const BubbleMangement = () => {
-    navigationService.navigate('BubbleManagement')
+    navigationService.navigate('BubbleManagement');
   };
+  useEffect(() => {
+    getBubbleDetails();
+  }, []);
 
   useEffect(() => {
     setnewData(
@@ -151,7 +180,7 @@ const Bubble = (props) => {
         backgroundColor={Color.white}
         barStyle={'dark-content'}
       />
-        <Header  Title="Bubble" showBack />
+      <Header Title="Bubble" showBack />
       <ImageBackground
         source={
           privacy == 'private'
@@ -166,17 +195,20 @@ const Bubble = (props) => {
         }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <ImageBackground
-            source={require('../Assets/Images/fitness.png')}
+            source={
+              bubbleInfo?.image
+                ? {uri: bubbleInfo?.image}
+                : require('../Assets/Images/fitness.png')
+            }
             resizeMode={'cover'}
             style={{
               width: windowWidth,
               height: windowHeight * 0.35,
             }}>
-            <View
-              style={styles.textwithicon}>
+            <View style={styles.textwithicon}>
               <CustomText
                 numberOfLines={1}
-                children={'naplesrunning'}
+                children={bubbleInfo?.title}
                 style={{
                   fontSize: moderateScale(17, 0.6),
                   color: 'black',
@@ -218,7 +250,7 @@ const Bubble = (props) => {
               <View style={{justifyContent: 'center'}}>
                 <CustomText
                   numberOfLines={1}
-                  children={'6.2M'}
+                  children={bubbleInfo?.total_members}
                   style={styles.followCount}
                   isBold
                 />
@@ -237,23 +269,25 @@ const Bubble = (props) => {
               <View style={{justifyContent: 'center'}}>
                 <CustomText
                   numberOfLines={1}
-                  children={'192.1M'}
+                  children={bubbleInfo?.total_posts_count}
                   style={styles.followCount}
                   isBold
                 />
                 <CustomText
                   numberOfLines={1}
-                  children={'Likes'}
+                  children={'posts'}
                   style={styles.followText}
                 />
               </View>
             </View>
-            <View
-              style={styles.followbtn}>
+            <View style={styles.followbtn}>
               <CustomButton
+              disable={bubbleInfo?.id == profileData?.id ? true : false }
                 text={
-                  isLoading ? (
-                    <ActivityIndicator color={'#FFFFFF'} size={'small'} />
+                  followLoading ? (
+                    <ActivityIndicator color={themeColor[1]} size={'small'} />
+                  ) : startFollowing ? (
+                    'Following'
                   ) : (
                     'Follow'
                   )
@@ -261,18 +295,17 @@ const Bubble = (props) => {
                 textColor={themeColor[1]}
                 width={windowWidth * 0.5}
                 height={windowHeight * 0.06}
-                onPress={() => {}}
+                onPress={() => {
+                  follow();
+                }}
                 fontSize={moderateScale(15, 0.6)}
                 bgColor={['#FFFFFF', '#FFFFFF']}
                 borderRadius={moderateScale(30, 0.3)}
                 isGradient
                 isBold
               />
-              <TouchableOpacity
-                activeOpacity={0.8}
-             
-                style={styles.downIcon}>
-                 <OptionsMenu
+              <TouchableOpacity activeOpacity={0.8} style={styles.downIcon}>
+                <OptionsMenu
                   button={MoreIcon}
                   buttonStyle={{
                     width: 40,
@@ -280,14 +313,13 @@ const Bubble = (props) => {
                     tintColor: '#000',
                   }}
                   destructiveIndex={1}
-                  options={['Invite Member', 'Bubble Management',]}
+                  options={['Invite Member', 'Bubble Management']}
                   actions={[InviteMember, BubbleMangement]}
                 />
               </TouchableOpacity>
             </View>
           </ImageBackground>
-          <View
-            style={styles.mapview}>
+          <View style={styles.mapview}>
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}>
@@ -302,7 +334,7 @@ const Bubble = (props) => {
                         backgroundColor:
                           selectedEvent == data
                             ? Color.white
-                            : 'rgba(0,0,0,.4)',
+                            : 'rgba(0,0,0,.2)',
                       },
                       ...{
                         color:
@@ -325,9 +357,19 @@ const Bubble = (props) => {
             {selectedEvent == 'Home' ? (
               <Home />
             ) : selectedEvent == 'Events' ? (
-              <Events />
+              <Events
+                onPress={() => {
+                  navigationService.navigate('AddEvents', {bubbleId: bubbleId});
+                }}
+                bubbleId={bubbleId}
+              />
             ) : selectedEvent == 'Posts' ? (
-              <Posts />
+              <Posts
+                bubbleId={bubbleId}
+                onPress={() => {
+                  navigationService.navigate('AddPost', {bubbleId: bubbleId});
+                }}
+              />
             ) : selectedEvent == 'Chats' ? (
               <NullData />
             ) : (
@@ -479,8 +521,7 @@ const Bubble = (props) => {
             }}
           />
           {invitedPeople?.length > 0 && (
-            <View
-              style={styles.invite}>
+            <View style={styles.invite}>
               <CustomButton
                 text={
                   isLoading ? (
@@ -604,29 +645,28 @@ const styles = ScaledSheet.create({
     marginTop: moderateScale(30, 0.3),
     paddingHorizontal: moderateScale(30, 0.6),
   },
-  textwithicon:{
+  textwithicon: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: moderateScale(30, 0.3),
   },
-  followbtn:{
+  followbtn: {
     flexDirection: 'row',
     justifyContent: 'center',
     marginTop: moderateScale(30, 0.3),
   },
-  mapview:{
+  mapview: {
     width: windowWidth,
     marginTop: moderateScale(10, 0.3),
     // paddingHorizontal: moderateScale(10, 0.6),
     // marginLeft:moderateScale(10,.3)
   },
-  invite:{
+  invite: {
     position: 'absolute',
     alignSelf: 'center',
     bottom: 20,
     backgroundColor: 'transparent',
-  }
-  
+  },
 });
 
 export default Bubble;
