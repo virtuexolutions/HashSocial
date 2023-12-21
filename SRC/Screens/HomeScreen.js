@@ -45,6 +45,7 @@ const HomeScreen = props => {
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const newSignUp = useSelector(state => state.authReducer.newSignUp);
   const token = useSelector(state => state.authReducer.token);
+  //  console.log("🚀 ~ file: HomeScreen.js:48 ~ HomeScreen ~ token:", token, profileData?.id)
   const [selectedBubbleId, setSelectedBubbleId] = useState(null);
   const dispatch = useDispatch();
   const [prompt, setPrompt] = useState(false);
@@ -291,6 +292,7 @@ const HomeScreen = props => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
+      console.log("🚀 ~ file: HomeScreen.js:294 ~ getBubbles ~ response:", response?.data?.community_info[0])
       setBubbles(response?.data?.community_info);
       setContent(
         response?.data?.community_info?.map(item => {
@@ -304,8 +306,9 @@ const HomeScreen = props => {
               />
             ),
             bubble: true,
+            item:item,
             source: {uri: item?.image},
-            private: item?.privacy == 'yes' ? false : true,
+            private: item?.privacy?.toLowerCase() == 'yes' ? true : false,
           };
         }),
       );

@@ -172,6 +172,9 @@ const InterestSelection = () => {
     if (response != undefined) {
       dispatch(setSelectedProfileData(response?.data?.profile_info));
       dispatch(setInterestSelected(true));
+      Platform.OS == 'android'
+        ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
+        : Alert.alert('Saved');
     }
   };
 
@@ -214,10 +217,6 @@ const InterestSelection = () => {
             onPress={() => {
               if (selectedBubble.length > 0) {
                 sendSelectedFeeds();
-
-                Platform.OS == 'android'
-                  ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
-                  : Alert.alert('Saved');
               } else {
                 Platform.OS == 'android'
                   ? ToastAndroid.show('Select any Bubble', ToastAndroid.SHORT)
