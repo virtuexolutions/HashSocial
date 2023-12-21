@@ -128,7 +128,7 @@ const BubbleSelection = () => {
       id:profileData?.id,
       bubble: selectedBubble,
     };
-    // console.log("🚀 ~ file: BubbleSelection.js:127 ~ sendSelectedBubble ~ body:", body)
+    console.log("🚀 ~ file: BubbleSelection.js:127 ~ sendSelectedBubble ~ body:", body)
     setIsLaoding(true);
     const response = await Post(url, body, apiHeader(token));
     setIsLaoding(false);
@@ -142,7 +142,13 @@ const BubbleSelection = () => {
       dispatch(setSelectedProfileData(response?.data?.profile_info))
       dispatch(setBubbleSelected(true))
       dispatch(setSelectedBubbles(selectedBubble))
+      Platform.OS == 'android'
+      ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
+      : Alert.alert('Saved');
     }}
+
+
+
   const handleBubbleSelection = (index) => {
     const updatedBubbleArray = [...BubbleImageArraty];
     updatedBubbleArray[index].added = !updatedBubbleArray[index].added;
@@ -197,9 +203,7 @@ const BubbleSelection = () => {
               if (selectedBubble.length > 0) {
                
                 sendSelectedBubble()
-                Platform.OS == 'android'
-                  ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
-                  : Alert.alert('Saved');
+               
               }else{
                 Platform.OS == 'android'
                 ? ToastAndroid.show('Select any Bubble', ToastAndroid.SHORT)
