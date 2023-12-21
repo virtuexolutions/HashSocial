@@ -47,6 +47,7 @@ const CreateNewBubble = props => {
   const dispatch = useDispatch();
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
   // const architecture = useSelector(state => state.commonReducer.architecture)
   console.log("🚀 ~ file: CreateNewBubble.js:51 ~ CreateNewBubble ~ architecture:", architecture)
   const [CreateBubble, setCreateBubble] = useState('');
@@ -173,8 +174,7 @@ const CreateNewBubble = props => {
     const url = 'auth/community';
     const body = {
       title: bubbleTitle,
-      // moderator: moderator,
-      // admin: Admin,
+      profile_id: profileData?.id, 
       approval_admittance: ApprovalForAdmittanceValue,
       approval_post: ApprovalToPostValue,
       membership_cost: MembershipCostValue,
