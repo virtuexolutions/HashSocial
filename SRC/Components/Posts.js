@@ -24,11 +24,12 @@ import {useIsFocused} from '@react-navigation/native';
 
 // import { TextInput } from 'react-native-gesture-handler';
 
-const Posts = ({onPress, bubbleId}) => {
+const Posts = ({onPress, bubbleId, bubbleInfo}) => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
+  console.log("🚀 ~ file: Posts.js:28 ~ Posts ~ bubbleInfo:", bubbleInfo?.profile_id, profileData?.id)
 
   const isFocused = useIsFocused();
 
@@ -38,7 +39,7 @@ const Posts = ({onPress, bubbleId}) => {
 
   const getPosts = async () => {
     const url = `auth/post/${bubbleId}?profile_id=${profileData?.id}`;
-     console.log("🚀 ~ file: Posts.js:42 ~ getPosts ~ url:", url)
+    console.log('🚀 ~ file: Posts.js:42 ~ getPosts ~ url:', url);
     setIsLoading(true);
     const response = await Get(url, token);
     setIsLoading(false);
@@ -238,7 +239,7 @@ const Posts = ({onPress, bubbleId}) => {
 
   return (
     <View>
-      <View
+     {(bubbleInfo?.post_privacy == 'Yes' || bubbleInfo?.profile_id == profileData?.id) && <View
         style={{
           flexDirection: 'row',
           marginTop: moderateScale(10, 0.6),
@@ -284,7 +285,7 @@ const Posts = ({onPress, bubbleId}) => {
         <View>
           <Icon name={'images'} as={Entypo} color={'white'} size={7} />
         </View>
-      </View>
+      </View>}
       {isLoading ? (
         <View style={styles.loaderView}>
           <ActivityIndicator color={Color.white} size={'large'} />
@@ -294,6 +295,20 @@ const Posts = ({onPress, bubbleId}) => {
           data={posts}
           contentContainerStyle={{
             paddingBottom: moderateScale(80, 0.3),
+          }}
+          ListEmptyComponent={() => {
+            return (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  height: windowHeight * 0.4,
+                  alignItems: 'center',
+                }}>
+                <CustomText style={{color: Color.black}} isBold>
+                  No Posts Added yet!
+                </CustomText>
+              </View>
+            );
           }}
           renderItem={({item, index}) => {
             return <PostComponentBubble data={item} />;

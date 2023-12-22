@@ -15,39 +15,33 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
+import Video from 'react-native-video';
 
 import CustomText from '../Components/CustomText';
 import {Icon} from 'native-base';
 import {useSelector} from 'react-redux';
 
-const FeedContainer = ({item}) => {
+const FeedContainer = ({source}) => {
+  console.log("🚀 ~ file: FeedContainer.js:25 ~ FeedContainer ~ source:", source)
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
 
   return (
     <TouchableOpacity
-      // onPress={() => {
-      //   navigationService.navigate('UserDetail', {
-      //     item: card,
-      //     fromSearch: true,
-      //   });
-      // }}
       activeOpacity={1}
       style={[
         styles.card,
         {height: windowHeight, paddingBottom: moderateScale(0, 0.3)},
       ]}>
-      <CustomImage
-        style={styles.image}
-        // onPress={() => {
-        //   navigationService.navigate('UserDetail', {
-        //     item: card,
-        //     fromSearch: true,
-        //   });
-        // }}
-        source={
-          item?.image ? item?.image : require('../Assets/Images/Feed.png')
-        }
-        resizeMethod={'stretch'}
+      <Video
+      // posterResizeMode={'repeat'}
+        // muted
+        // fullscreen
+        resizeMode={"stretch"}
+        paused={false}
+        repeat={true}
+        // controls={true}
+        source={{uri: source}}
+        style={styles.backgroundVideo}
       />
       {/* </SharedElement>  */}
       <LinearGradient
@@ -62,9 +56,7 @@ const FeedContainer = ({item}) => {
           shadowOpacity: 1,
           shadowRadius: 4,
           width: '100%',
-          // backgroundColor: 'red',
           paddingBottom: moderateScale(30, 0.3),
-          // paddingTop: moderateScale(120, 0.3),
         }}>
         <View
           style={{
@@ -243,6 +235,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   card: {
+    backgroundColor:'red',
     // height: windowHeight * 0.72,
     // borderRadius: moderateScale(20, 0.6),
     shadowColor: Color.black,
@@ -255,6 +248,14 @@ const styles = StyleSheet.create({
     elevation: 2,
     overflow: 'hidden',
     backgroundColor: 'white',
+  },
+  backgroundVideo: {
+    backgroundColor:'red',
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    bottom: 0,
+    right: 0,
   },
   image: {
     height: '100%',

@@ -138,8 +138,8 @@ const PostComponentBubble = ({data}) => {
               tintColor: '#000',
             }}
             destructiveIndex={1}
-            options={['Edit', 'Delete']}
-            actions={[editPost, deletePost]}
+            options={[ 'Delete']}
+            actions={[ deletePost]}
           />
         </View>
 

@@ -32,21 +32,25 @@ import Modal from 'react-native-modal';
 import Feather from 'react-native-vector-icons/Feather';
 import OptionsMenu from 'react-native-options-menu';
 import {Get, Post} from '../Axios/AxiosInterceptorFunction';
+import {useIsFocused} from '@react-navigation/native';
 
 const Bubble = props => {
   const bubbleId = props?.route?.params?.id;
-  console.log("🚀 ~ file: Bubble.js:38 ~ Bubble ~ bubbleId:", bubbleId)
+  console.log('🚀 ~ file: Bubble.js:38 ~ Bubble ~ bubbleId:', bubbleId);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
   const privacy = useSelector(state => state.authReducer.privacy);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const [isLoading, setIsLoading] = useState(false);
-  const [followLoading, setFollowLoading] = useState(false)
-  const [startFollowing, setStartFollowing] = useState(bubbleInfo?.follow ? true : false );
+  const isFocused = useIsFocused();
+  const [followLoading, setFollowLoading] = useState(false);
+  const [startFollowing, setStartFollowing] = useState(
+    bubbleInfo?.follow ? true : false,
+  );
   const [isVisible, setIsVisible] = useState(false);
   const [bubbleInfo, setBubbleInfo] = useState({});
-  console.log("🚀 ~ file: Bubble.js:46 ~ Bubble ~ bubbleInfo:", bubbleInfo)
-  const events = ['Posts', 'Home', 'Chats', 'Events', 'Members'];
+  console.log('🚀 ~ file: Bubble.js:46 ~ Bubble ~ bubbleInfo:', bubbleInfo);
+  const events = ['Posts', 'Reels', 'Chats', 'Events', 'Members'];
   const [selectedEvent, setSelectedEvent] = useState('Posts');
   const [search, setSearch] = useState('');
   const SearchData = [
@@ -138,7 +142,7 @@ const Bubble = props => {
         '🚀 ~ file: Bubble.js:131 ~ follow ~ response:',
         response?.data,
       );
-      getBubbleDetails()
+      getBubbleDetails();
       setStartFollowing(!startFollowing);
     }
   };
@@ -149,9 +153,12 @@ const Bubble = props => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-      console.log("🚀 ~ file: Bubble.js:150 ~ getBubbleDetails ~ response:", response?.data)
+      console.log(
+        '🚀 ~ file: Bubble.js:150 ~ getBubbleDetails ~ response:',
+        response?.data,
+      );
       setBubbleInfo(response?.data?.community_info);
-      setStartFollowing(response?.data?.community_info?.follow ? true : false )
+      setStartFollowing(response?.data?.community_info?.follow ? true : false);
     }
   };
 
@@ -164,7 +171,7 @@ const Bubble = props => {
   };
   useEffect(() => {
     getBubbleDetails();
-  }, []);
+  }, [isFocused]);
 
   useEffect(() => {
     setnewData(
@@ -282,7 +289,9 @@ const Bubble = props => {
             </View>
             <View style={styles.followbtn}>
               <CustomButton
-              disable={bubbleInfo?.id == profileData?.id ? true : false }
+                disabled={
+                  bubbleInfo?.profile_id == profileData?.id ? true : false
+                }
                 text={
                   followLoading ? (
                     <ActivityIndicator color={themeColor[1]} size={'small'} />
@@ -346,18 +355,16 @@ const Bubble = props => {
                       if (data == 'Members') {
                         navigationService.navigate('MemberList');
                       }
-                      // else if(data == 'Chats'){
-                      //   navigationService.navigate("ChatScreen")
-                      // }
                     }}
                   />
                 );
               })}
             </ScrollView>
-            {selectedEvent == 'Home' ? (
-              <Home />
+            {selectedEvent == 'Reels' ? (
+              <Home bubbleId={bubbleId} />
             ) : selectedEvent == 'Events' ? (
               <Events
+              bubbleInfo={bubbleInfo}
                 onPress={() => {
                   navigationService.navigate('AddEvents', {bubbleId: bubbleId});
                 }}
@@ -365,6 +372,7 @@ const Bubble = props => {
               />
             ) : selectedEvent == 'Posts' ? (
               <Posts
+                bubbleInfo={bubbleInfo}
                 bubbleId={bubbleId}
                 onPress={() => {
                   navigationService.navigate('AddPost', {bubbleId: bubbleId});

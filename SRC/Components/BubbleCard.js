@@ -28,6 +28,7 @@ import {
   import Modal from 'react-native-modal';
   import navigationService from '../navigationService';
   import TextInputWithTitle from './TextInputWithTitle';
+import { baseUrl } from '../Config';
   
   const BubbleCard = ({item, pending, check, close, edit, MemberList}) => {
 
@@ -40,7 +41,7 @@ import {
           <View>
             <View style={styles.profileSection}>
               <CustomImage
-                source={item.image}
+                source={item?.image ? {uri : `${baseUrl}/${item.image}`}: require('../Assets/Images/travel.jpg')}
                 style={{width: '100%', height: '100%'}}
               />
             </View>
@@ -88,17 +89,9 @@ import {
                 fontWeight: '500',
                 textAlign: 'left',
               }}>
-              {item?.name}
+              {item?.title}
             </CustomText>
-            <CustomText
-              numberOfLines={1}
-              style={{
-                fontSize: moderateScale(11, 0.6),
-                color: '#000',
-                textAlign: 'left',
-              }}>
-              {item?.Time}
-            </CustomText>
+           
             <CustomText
               style={{
                 fontSize: moderateScale(11, 0.6),

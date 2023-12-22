@@ -23,7 +23,7 @@ import {useIsFocused} from '@react-navigation/native';
 import moment from 'moment';
 // import { TextInput } from 'react-native-gesture-handler';
 
-const Events = ({onPress, bubbleId}) => {
+const Events = ({onPress, bubbleId, bubbleInfo}) => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
@@ -117,7 +117,7 @@ const Events = ({onPress, bubbleId}) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.cover}>
+     {bubbleInfo?.profile_id ==profileData?.id && <View style={styles.cover}>
         <View
           style={{
             width: windowWidth * 0.08,
@@ -154,14 +154,13 @@ const Events = ({onPress, bubbleId}) => {
         <View>
           <Icon name={'images'} as={Entypo} color={'white'} size={7} />
         </View>
-      </View>
+      </View>}
       {isLoading ? (
         <View style={styles.loaderView}>
           <ActivityIndicator color={Color.white} size={'large'} />
         </View>
       ) : (
         <FlatList
-
           showsVerticalScrollIndicator={false}
           data={events}
           ListHeaderComponent={() => {
@@ -183,6 +182,20 @@ const Events = ({onPress, bubbleId}) => {
           }}
           contentContainerStyle={{
             paddingBottom: moderateScale(30, 0.6),
+          }}
+          ListEmptyComponent={() => {
+            return (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  height: windowHeight * 0.4,
+                  alignItems: 'center',
+                }}>
+                <CustomText style={{color: Color.black}} isBold>
+                  No Upcoming Event Found!
+                </CustomText>
+              </View>
+            );
           }}
           renderItem={({item}) => {
             return (

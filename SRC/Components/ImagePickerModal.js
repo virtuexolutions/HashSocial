@@ -54,7 +54,9 @@ const ImagePickerModal = props => {
       maxHeight: 500,
       quailty: 0.9,
       saveToPhotos: true,
+      durationLimit: 10,
     };
+  
     // {
     //   crop
     //     ? ImagePicker.openPicker({
@@ -66,6 +68,7 @@ const ImagePickerModal = props => {
     //       })
     //     :
     launchImageLibrary(options, response => {
+      console.log('Here is the response =====', response)
       if (Platform.OS === 'ios') {
         setShow(false);
       }
@@ -73,7 +76,12 @@ const ImagePickerModal = props => {
       } else if (response.error) {
       } else if (response.customButton) {
         alert(response.customButton);
-      } else {
+      }else if(response?.assets[0]?.duration > 10){
+        alert('Video is too long');
+
+      } 
+      
+      else {
         setFileObject &&
           setFileObject({
             uri: response?.assets[0]?.uri,
@@ -92,12 +100,17 @@ const ImagePickerModal = props => {
           ]);
       }
     });
-    // }
+    // // }
+    // console.log("🚀 ~ file: ImagePickerModal.js:103 ~ openGallery ~ response:", response)
+    // console.log("🚀 ~ file: ImagePickerModal.js:103 ~ openGallery ~ response:", response)
+    // console.log("🚀 ~ file: ImagePickerModal.js:103 ~ openGallery ~ response:", response)
+    // console.log("🚀 ~ file: ImagePickerModal.js:103 ~ openGallery ~ response:", response)
+    // console.log("🚀 ~ file: ImagePickerModal.js:103 ~ openGallery ~ response:", response)
   };
 
   const openCamera = async () => {
     let options = {
-      mediaType: 'photo',
+      mediaType: type ? type : 'photo',
       maxWidth: 500,
       maxHeight: 500,
       quailty: 0.9,
@@ -110,8 +123,12 @@ const ImagePickerModal = props => {
       }
     }
     launchCamera(options, response => {
+      console.log('Response from camera    =====', response)
       if (Platform.OS == 'ios') {
         setShow(false);
+      }
+      else if(response?.assets[0]?.duration > 10){
+        alert('Video is too long')
       }
       // if (response.didCancel) {
       // } else if (response.error) {
@@ -160,7 +177,7 @@ const ImagePickerModal = props => {
           paddingVertical: moderateScale(10, 0.3),
           borderRadius: Dimensions.get('window').width * 0.02,
         }}>
-        <CustomText style={styles.modalHead}>Upload picture</CustomText>
+        <CustomText style={styles.modalHead}>Upload {type}</CustomText>
         <View
           style={[
             styles.modalContentContianer,

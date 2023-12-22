@@ -19,12 +19,13 @@ const Feeds = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const image = props?.route?.params?.image;
+  const uri = props?.route?.params?.id
 
   const [selectedTab, SetSelectedTab] = useState('Fitness');
 
   feedsArray = [
     {
-      Image: require('../Assets/Images/Feed.png'),
+      Image: require('../Assets/Images/video1.mp4'),
       likes: 2,
       dislikes: 4,
       downloads: 4,
@@ -49,7 +50,7 @@ const Feeds = props => {
     },
 
     {
-      Image: require('../Assets/Images/Feed.png'),
+      Image:  require('../Assets/Images/video1.mp4'),
       likes: 2,
       dislikes: 4,
       downloads: 4,
@@ -96,7 +97,7 @@ const Feeds = props => {
 
   return (
     <View style={{width: windowWidth}}>
-      <ScrollView
+      {/* <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         style={{
@@ -159,9 +160,9 @@ const Feeds = props => {
             </LinearGradient>
           );
         })}
-      </ScrollView>
+      </ScrollView> */}
     
-      <FeedContainer item={{image: image}} />
+      <FeedContainer source = {uri} />
     </View>
   );
 };

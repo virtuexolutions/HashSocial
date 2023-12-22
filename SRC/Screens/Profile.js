@@ -45,7 +45,7 @@ import {setSelectedProfileData} from '../Store/slices/common';
 const Profile = props => {
   const item = props?.route?.params?.item;
   const category = props?.route?.params?.category;
-  console.log("🚀 ~ file: Profile.js:46 ~ Profile ~ category:", category)
+  console.log('🚀 ~ file: Profile.js:46 ~ Profile ~ category:', category);
   const token = useSelector(state => state.authReducer.token);
   const numOfProfiles = useSelector(state => state.authReducer.numOfProfiles);
   const dispatch = useDispatch();
@@ -58,7 +58,11 @@ const Profile = props => {
   const [passCode, setPassCode] = useState('');
   const [imagePickerModal, setImagePickerModal] = useState(false);
   const [type, setType] = useState(
-    item?.profileType ? item?.profileType :category ? category : 'Select Profile Type',
+    item?.profileType
+      ? item?.profileType
+      : category
+      ? category
+      : 'Select Profile Type',
   );
   const [image, setImage] = useState({});
 
@@ -72,50 +76,77 @@ const Profile = props => {
     };
 
     const formData = new FormData();
-    
+
     if (Object.keys(image).length > 0) {
       formData.append('photo', image);
     } else {
       return Platform.OS == 'android'
-      ? ToastAndroid.show(`Uplaod profile photo`, ToastAndroid.SHORT)
-      : Alert.alert(`Uplaod profile photo`);
+        ? ToastAndroid.show(`Uplaod profile photo`, ToastAndroid.SHORT)
+        : Alert.alert(`Uplaod profile photo`);
     }
-    
+
     for (let key in body) {
       if (body[key] == '') {
         return Platform.OS == 'android'
-        ? ToastAndroid.show(`${key} cannot be empty`, ToastAndroid.SHORT)
-        : Alert.alert(`${key} cannot be empty`);
+          ? ToastAndroid.show(`${key} cannot be empty`, ToastAndroid.SHORT)
+          : Alert.alert(`${key} cannot be empty`);
       }
       formData.append(key, body[key]);
     }
-    
+
     if (desc.length < 30) {
       return Platform.OS == 'android'
-      ? ToastAndroid.show(`Description is too short`, ToastAndroid.SHORT)
-      : Alert.alert(`Description is too short`);
+        ? ToastAndroid.show(`Description is too short`, ToastAndroid.SHORT)
+        : Alert.alert(`Description is too short`);
     }
-    
+
     if (privacy == 'private' && passCode == '') {
       return Platform.OS == 'android'
-      ? ToastAndroid.show(`passcode is required`, ToastAndroid.SHORT)
-      : Alert.alert(`passcode is required`);
+        ? ToastAndroid.show(`passcode is required`, ToastAndroid.SHORT)
+        : Alert.alert(`passcode is required`);
     } else if (privacy == 'private' && passCode != '') {
       formData.append('passcode', passCode);
     }
-    
+
     setIsLoading(true);
     const response = await Post(url, formData, apiHeader(token));
     setIsLoading(false);
-    
+
     if (response?.data?.success) {
-      // return console.log("🚀 ~ file: Profile.js:104 ~ createProfile ~ response:", response?.data , !response?.data?.profile_info?.qa_status)
-       dispatch(setQuestionAnswered(response?.data?.profile_info?.qa_status == 0 ? false : true))
-       dispatch(setProfileSelcted(true));
+       console.log(
+        '🚀 ~ file: Profile.js:104 ~ createProfile ~ response:',
+        JSON.stringify(response?.data, null, 2),
+      );
+      dispatch(
+        setQuestionAnswered(
+          response?.data?.profile_info?.qa_status == 0 ? false : true,
+        ),
+      );
+      dispatch(setProfileSelcted(true));
       dispatch(setSelectedProfileData(response?.data?.profile_info));
-      dispatch(setNumOfProfiles(response?.data?.profile_info?.user_info[0]?.total_profile));
-      dispatch(setBubbleSelected([null, "0", 0, [], undefined].includes(response?.data?.profile_info?.bubbles) ? false : true))
-      dispatch(setInterestSelected([null, "0", 0, [], undefined].includes(response?.data?.profile_info?.feed) ? false : true))
+      dispatch(
+        setNumOfProfiles(
+          response?.data?.profile_info?.user_info[0]?.total_profile,
+        ),
+      );
+      dispatch(
+        setBubbleSelected(
+          [null, '0', 0, [], undefined].includes(
+            response?.data?.profile_info?.bubbles,
+          )
+            ? false
+            : true,
+        ),
+      );
+      dispatch(
+        setInterestSelected(
+          [null, '0', 0, [], 'null', undefined].includes(
+            response?.data?.profile_info?.interests,
+          )
+            ? false
+            : true,
+        ),
+      );
       // dispatch(setQuestionAnswered(response?.data?.question))
       // navigationService.navigate('QuestionScreen', {type:type})
     }
@@ -151,7 +182,7 @@ const Profile = props => {
                 styles.profileSection,
                 {
                   borderColor:
-                  type == 'Content Creator'
+                    type == 'Content Creator'
                       ? 'yellow'
                       : type == 'Business & Entrepreneurship'
                       ? Color.green
@@ -202,15 +233,15 @@ const Profile = props => {
               borderRadius: moderateScale(20, 0.6),
               borderLeftWidth: 4,
               borderColor:
-              type == 'Content Creator'
-              ? 'yellow'
-              : type == 'Business & Entrepreneurship'
-              ? Color.green
-              : type == 'Community & Connection'
-              ? 'pink'
-              : type == 'Learning & Exploring'
-              ? 'blue'
-              : 'black',
+                type == 'Content Creator'
+                  ? 'yellow'
+                  : type == 'Business & Entrepreneurship'
+                  ? Color.green
+                  : type == 'Community & Connection'
+                  ? 'pink'
+                  : type == 'Learning & Exploring'
+                  ? 'blue'
+                  : 'black',
               borderTopWidth: 4,
               paddingVertical: moderateScale(20, 0.3),
             }}
@@ -357,7 +388,7 @@ const Profile = props => {
                   alignItems: 'center',
                 }}>
                 <TextInputWithTitle
-                secureText
+                  secureText
                   title={'Passcode'}
                   placeholder={'Passcode'}
                   setText={setPassCode}

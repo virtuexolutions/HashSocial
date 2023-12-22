@@ -29,7 +29,6 @@ import {Post} from '../Axios/AxiosInterceptorFunction';
 import {useNavigation} from '@react-navigation/native';
 import OptionsMenu from 'react-native-options-menu';
 
-
 const AddPost = props => {
   const bubbleId = props?.route?.params?.bubbleId;
   const data = props?.route?.params?.data;
@@ -50,6 +49,7 @@ const AddPost = props => {
   const [videoPicker, setVideoPicker] = useState(false);
   const [hashtag, setHashtag] = useState({});
   const [video, setVideo] = useState({});
+  // console.log("🚀 ~ file: AddPost.js:53 ~ AddPost ~ video:", video)
   const [videos, setVideos] = useState(
     data?.post_videos ? data?.post_videos : [],
   );
@@ -117,7 +117,6 @@ const AddPost = props => {
     const response = await Post(url, formData, apiHeader(token));
     setLoading(false);
     if (response != undefined) {
-     
       navigation.goBack();
     }
   };
@@ -171,20 +170,18 @@ const AddPost = props => {
       navigation.goBack();
     }
   };
-  const Video = ()=>{
-      if (videos.length==0 && images.length == 0) {
-        setVideoPicker(true);
-      } else {
-        Platform.OS == 'android'
-          ? ToastAndroid.show(
-              'you can only add one image',
-              ToastAndroid.SHORT,
-            )
-          : Alert.alert('you can select only five images');
-      }
-  }
 
-  const Image =()=>{
+  const Video = () => {
+    if (videos.length == 0 && images.length == 0) {
+      setVideoPicker(true);
+    } else {
+      Platform.OS == 'android'
+        ? ToastAndroid.show('you can only add one image', ToastAndroid.SHORT)
+        : Alert.alert('you can select only five images');
+    }
+  };
+
+  const Image = () => {
     if (videos?.length == 0 && images.length < 5) {
       setImagePickerVisible(true);
     } else {
@@ -195,7 +192,7 @@ const AddPost = props => {
           )
         : Alert.alert('you can select only five images');
     }
-  }
+  };
 
   return (
     <>
@@ -244,14 +241,6 @@ const AddPost = props => {
             placeholderColor={Color.themeLightGray}
             multiline
           />
-          {/* <CustomText style={styles.text}>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged.
-        </CustomText> */}
 
           {/* <CustomText
             style={[styles.title, {marginTop: moderateScale(10, 0.3)}]}
@@ -378,7 +367,7 @@ const AddPost = props => {
               justifyContent: 'space-between',
               width: windowWidth * 0.9,
               paddingVertical: moderateScale(10, 0.6),
-              alignItems:'space-between',
+              alignItems: 'space-between',
               // backgroundColor:'red'
             }}>
             <CustomText
@@ -389,17 +378,17 @@ const AddPost = props => {
               isBold={true}
               children={'Add Media'}
             />
-           <OptionsMenu
-            button={MoreIcon}
-            buttonStyle={{
-              width: 36,
-              height: 30,
-              tintColor: '#000',
-            }}
-            destructiveIndex={1}
-            options={['Video', 'Image']}
-            actions={[Video, Image]}
-          />
+            <OptionsMenu
+              button={MoreIcon}
+              buttonStyle={{
+                width: 36,
+                height: 30,
+                tintColor: '#000',
+              }}
+              destructiveIndex={1}
+              options={['Video', 'Image']}
+              actions={[Video, Image]}
+            />
           </View>
           <View style={styles.imagesContainer}>
             {images?.map(item => {
@@ -414,7 +403,7 @@ const AddPost = props => {
                       // backgroundColor: 'green',
                     }}
                     onPress={() => {
-                      setImages(images.filter(data => data?.id != item?.id));
+                      images.filter(data => data?.uri != item?.uri)
                     }}>
                     <Icon
                       name={'cross'}
@@ -422,7 +411,7 @@ const AddPost = props => {
                       as={Entypo}
                       onPress={() => {
                         setImages(
-                          images.filter(data => data?.uri != item?.uri),
+                          images.filter(data => data?.uri != item?.uri)
                         );
                       }}
                     />
@@ -434,17 +423,16 @@ const AddPost = props => {
                 </View>
               );
             })}
-         
           </View>
           <View style={styles.videoContainer}>
             {videos?.map(item => {
-              return <VideoComponent item={item} />;
+              return (
+                <>
+                  <VideoComponent item={item} videos={videos} setVideos={setVideos}/>
+                </>
+              );
             })}
-          
           </View>
-
-
-          
 
           <CustomText
             style={[styles.title, {marginTop: moderateScale(10, 0.3)}]}
@@ -555,7 +543,6 @@ const AddPost = props => {
         setShow={setVideoPicker}
         setFileObject={setVideo}
       />
-       
     </>
   );
 };
@@ -602,6 +589,8 @@ const styles = ScaledSheet.create({
     borderRadius: moderateScale(10, 0.6),
     overflow: 'hidden',
     margin: moderateScale(5, 0.6),
+    justifyContent:'center', 
+    alignItems:'center'
   },
 
   title: {
@@ -626,7 +615,6 @@ const styles = ScaledSheet.create({
   },
   hashtagview: {
     flexDirection: 'row',
-    // backgroundColor: 'red',
     paddingVertical: moderateScale(5, 0.6),
     width: windowWidth,
     paddingHorizontal: moderateScale(15, 0.6),
@@ -634,13 +622,11 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
   },
   mapview: {
-    // backgroundColor: 'red',
     width: windowWidth,
     flexDirection: 'row',
     flexWrap: 'wrap',
     paddingHorizontal: moderateScale(10, 0.6),
     paddingVertical: moderateScale(5, 0.6),
-    // height: windowHeight * 0.1,
   },
   mapText: {
     color: 'white',
@@ -653,9 +639,7 @@ const styles = ScaledSheet.create({
   postView: {
     position: 'absolute',
     bottom: 40,
-    // backgroundColor: 'red',
     width: windowWidth,
-    // height: windowHeight * 0.1,
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -663,10 +647,30 @@ const styles = ScaledSheet.create({
 
 export default AddPost;
 
-const VideoComponent = ({item}) => {
+const VideoComponent = ({item, videos, setVideos}) => {
   const [isPlaying, setIsPlaying] = useState(false);
   return (
     <View style={styles.image}>
+      <TouchableOpacity
+        style={{
+          position: 'absolute',
+          right: 2,
+          top: 2,
+          zIndex: 2,
+          // backgroundColor: 'green',
+        }}
+        onPress={() => {
+          setVideos(videos.filter(data => data?.uri != item?.uri));
+        }}>
+        <Icon
+          name={'cross'}
+          color={Color.black}
+          as={Entypo}
+          onPress={() => {
+            setVideos(videos.filter(data => data?.uri != item?.uri));
+          }}
+        />
+      </TouchableOpacity>
       <TouchableOpacity
         onPress={() => {
           setIsPlaying(!isPlaying);
@@ -674,8 +678,9 @@ const VideoComponent = ({item}) => {
         style={{
           position: 'absolute',
           zIndex: 1,
-          width: windowWidth * 0.16,
-          height: windowWidth * 0.16,
+          // backgroundColor:'red',
+          width: windowWidth * 0.12,
+          height: windowWidth * 0.12,
           justifyContent: 'center',
           alignItems: 'center',
           // backgroundColor: 'green',

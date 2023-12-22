@@ -183,10 +183,7 @@ const BubbleSearch = () => {
               marginTop: moderateScale(10, 0.3),
             }}
             renderItem={({item, index}) => {
-              console.log(
-                '🚀 ~ file: BubbleSearch.js:185 ~ BubbleSearch ~ item:',
-                item,
-              );
+            
               return (
                 <View style={styles.row}>
                   <View

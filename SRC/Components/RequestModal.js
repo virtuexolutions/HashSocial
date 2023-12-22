@@ -1,4 +1,11 @@
-import {StyleSheet, Text, View, Platform, ToastAndroid, ActivityIndicator} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Platform,
+  ToastAndroid,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useState} from 'react';
 import Modal from 'react-native-modal';
 import {Alert, Icon} from 'native-base';
@@ -10,13 +17,15 @@ import Color from '../Assets/Utilities/Color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomImage from './CustomImage';
 import {useSelector} from 'react-redux';
-import { Post } from '../Axios/AxiosInterceptorFunction';
+import {Post} from '../Axios/AxiosInterceptorFunction';
 
-const RequestModal = ({isVisible, setIsVisible, text,selectedBubbleId}) => {
+const RequestModal = ({isVisible, setIsVisible, text, selectedBubbleId}) => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const [loading, setLoading] = useState(false);
-  const profileData = useSelector(state => state.commonReducer.selectedProfile)
-  const token = useSelector(state => state.authReducer.token)
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
+  const token = useSelector(state => state.authReducer.token);
+
+  const [requested, setRequested] = useState(false);
 
   const addRequest = async () => {
     const url = 'auth/community_member/add';
@@ -29,12 +38,16 @@ const RequestModal = ({isVisible, setIsVisible, text,selectedBubbleId}) => {
     const response = await Post(url, body, apiHeader(token));
     setLoading(false);
     if (response != undefined) {
-       console.log("🚀 ~ file: RequestModal.js:32 ~ addRequest ~ response:", response?.data)
+      console.log(
+        '🚀 ~ file: RequestModal.js:32 ~ addRequest ~ response:',
+        response?.data,
+      );
       setIsVisible(false);
       Platform.OS == 'android'
         ? ToastAndroid.show('Request has been sent', ToastAndroid.SHORT)
         : Alert.alert('Request has been sent');
     }
+    setRequested(!requested);
   };
 
   return (
@@ -90,35 +103,19 @@ const RequestModal = ({isVisible, setIsVisible, text,selectedBubbleId}) => {
             you need admins permission to get into the {text}
           </CustomText>
         </View>
-        {/* <View style={styles.container2}>
-        <CustomText
-          style={{
-            fontSize: moderateScale(20, 0.6),
-            color: Color.black,
-          }} isBold>
-           Discrete Mode
-        </CustomText>
-        <CustomText
-          style={{
-            fontSize: moderateScale(11, 0.6),
-            color: Color.veryLightGray,
-            marginTop:moderateScale(10,0.3),
-          }} >
-          Monthly
-        </CustomText>
-        <CustomText
-          style={{
-            fontSize: moderateScale(24, 0.6),
-            color: Color.black,
-          }} isBold>
-          $10.00
-        </CustomText>
-      </View> */}
+
         <CustomButton
-          text={loading ? <ActivityIndicator color={Color.white} size={'small'}/>: 'Request to join'}
+          text={
+            loading ? (
+              <ActivityIndicator color={Color.white} size={'small'} />
+            ) : !requested ? (
+              'Request to join'
+            ) : (
+              'already requested'
+            )
+          }
           onPress={() => {
-            addRequest()
-           
+            addRequest();
           }}
           textColor={Color.white}
           width={windowWidth * 0.65}

@@ -164,7 +164,7 @@ const InterestSelection = () => {
     const url = 'auth/subscribe';
     const body = {
       id: profileData?.id,
-      feed: selectedBubble,
+      interests: selectedBubble,
     };
     setIsLaoding(true);
     const response = await Post(url, body, apiHeader(token));

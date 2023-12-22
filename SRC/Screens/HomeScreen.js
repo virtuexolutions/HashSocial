@@ -21,9 +21,7 @@ import DropDownSingleSelect from '../Components/DropDownSingleSelect';
 import {Icon, ScrollView} from 'native-base';
 import Color from '../Assets/Utilities/Color';
 import CustomImage from '../Components/CustomImage';
-import ImagePickerModal from '../Components/ImagePickerModal';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
-import RoundMenu from 'react-native-rotating-menu';
 import navigationService from '../navigationService';
 import {useDispatch, useSelector} from 'react-redux';
 import {BlurView} from '@react-native-community/blur';
@@ -38,6 +36,8 @@ import Propmpt from '../Components/Propmpt';
 import {setNewSignUp} from '../Store/slices/auth';
 import {Get} from '../Axios/AxiosInterceptorFunction';
 import {useIsFocused} from '@react-navigation/native';
+import RoundMenu from '../react-native-rotating-menu/src';
+import { baseUrl } from '../Config';
 
 const HomeScreen = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -45,7 +45,6 @@ const HomeScreen = props => {
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const newSignUp = useSelector(state => state.authReducer.newSignUp);
   const token = useSelector(state => state.authReducer.token);
-  //  console.log("🚀 ~ file: HomeScreen.js:48 ~ HomeScreen ~ token:", token, profileData?.id)
   const [selectedBubbleId, setSelectedBubbleId] = useState(null);
   const dispatch = useDispatch();
   const [prompt, setPrompt] = useState(false);
@@ -291,8 +290,8 @@ const HomeScreen = props => {
     setIsLoading(true);
     const response = await Get(url, token);
     setIsLoading(false);
+    console.log("🚀 ~ file: HomeScreen.js:294 ~ getBubbles ~ response:", response?.data)
     if (response != undefined) {
-      console.log("🚀 ~ file: HomeScreen.js:294 ~ getBubbles ~ response:", response?.data?.community_info[0])
       setBubbles(response?.data?.community_info);
       setContent(
         response?.data?.community_info?.map(item => {
@@ -307,8 +306,8 @@ const HomeScreen = props => {
             ),
             bubble: true,
             item:item,
-            source: {uri: item?.image},
-            private: item?.privacy?.toLowerCase() == 'yes' ? true : false,
+            source: {uri: `${baseUrl}/${item?.image}`},
+            private: item?.privacy?.toLowerCase() == 'yes' ? false : true,
           };
         }),
       );
@@ -430,6 +429,7 @@ const HomeScreen = props => {
                 contentContainerStyle={{
                   borderWidth: 3,
                 }}
+                profileData={profileData}
                 setHighlightedIcon={setHighlightedIcon}
                 setAnimationStopped={setAnimationStopped}
                 rotationAngle={rotationAngle}

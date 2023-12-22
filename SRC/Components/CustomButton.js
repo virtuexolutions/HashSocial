@@ -91,14 +91,14 @@ elevation: 9,},
           borderWidth: borderWidth,
         },
         disabled && {
-          backgroundColor: Color.themeLightGray,
-          borderColor: Color.themeLightGray,
-          color: Color.white,
+          // backgroundColor: Color.themeLightGray,
+          // borderColor: Color.themeLightGray,
+          // color: Color.white,
         },
       ]}
       disabled={disabled}
     >
-      {disabled == false && isGradient ? (
+      {isGradient ? (
         <LinearGradient
           style={{
             flexDirection: "row",
