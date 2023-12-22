@@ -132,7 +132,7 @@ const Bubble = props => {
     const url = 'auth/community_member/add';
     const body = {
       status: 'request',
-      profile_id: profileData?.id,
+      profile_id: [profileData?.id],
       community_id: bubbleId,
     };
     setFollowLoading(true);
@@ -362,7 +362,9 @@ const Bubble = props => {
                 );
               })}
             </ScrollView>
-            {selectedEvent == 'Reels' ? (
+           
+            {
+            selectedEvent == 'Reels' ? (
               <Home bubbleId={bubbleId} />
             ) : selectedEvent == 'Events' ? (
               <Events
@@ -385,6 +387,7 @@ const Bubble = props => {
             ) : (
               <></>
             )}
+            
           </View>
         </ScrollView>
       </ImageBackground>

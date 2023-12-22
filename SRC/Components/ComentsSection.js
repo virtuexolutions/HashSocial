@@ -22,6 +22,7 @@ import CustomImage from './CustomImage';
 import CustomText from './CustomText';
 import {Icon} from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { baseUrl } from '../Config';
 
 const ComentsSection = ({refRBSheet, data}) => {
   const [yourComment, setYourComment] = useState('');
@@ -29,6 +30,7 @@ const ComentsSection = ({refRBSheet, data}) => {
   const [commentsData, setCommentsData] = useState(
     data?.comments ? data?.comments : [],
   );
+  console.log("🚀 ~ file: ComentsSection.js:33 ~ ComentsSection ~ commentsData:", commentsData ,)
 
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
@@ -70,8 +72,8 @@ const ComentsSection = ({refRBSheet, data}) => {
   return (
     <RBSheet
       ref={refRBSheet}
-      // closeOnDragDown={true}
-      closeOnPressMask={false}
+      closeOnDragDown={true}
+      closeOnPressMask={true}
       customStyles={{
         draggableIcon: {
           backgroundColor: Color.veryLightGray,
@@ -80,121 +82,138 @@ const ComentsSection = ({refRBSheet, data}) => {
       height={700}>
       <View
         style={{
-          marginTop: moderateScale(20, 0.3),
+          // marginTop: moderateScale(20, 0.3),
+          // backgroundColor : 'green',
+          height : windowHeight * 0.8,
         }}>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={{paddingBottom: moderateScale(60, 0.6)}}
-          ListEmptyComponent={() => {
-            return (
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingBottom: moderateScale(60, 0.6),
+          // backgroundColor: 'red',
+        }}
+        // style={{
+        //   height : windowHeight * 0.6,
+
+        // }}
+        data={commentsData}
+        // data={[
+        //   1, 2, 3, 4, 5, 6, 7
+        // ]}
+        renderItem={({item, index}) => {
+          // console.log("🚀 ~ file: ComentsSection.js:104 ~ ComentsSection ~ item:", item,`${baseUrl}/${item?.profile_info?.photo}`)
+          
+          return (
+            <View
+              style={{width: windowWidth, marginTop: moderateScale(5, 0.3)}}>
               <View
                 style={{
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  height: windowHeight * 0.8,
+                  width: windowWidth,
+                  // marginTop: moderateScale(10, 0.3),
                 }}>
-                <Text>No Comments</Text>
-              </View>
-            );
-          }}
-          data={commentsData}
-          renderItem={({item, index}) => {
-            return (
-              <View
-                style={{width: windowWidth, marginTop: moderateScale(5, 0.3)}}>
                 <View
                   style={{
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    paddingHorizontal: moderateScale(10, 0.6),
                     width: windowWidth,
-                    // marginTop: moderateScale(10, 0.3),
                   }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      paddingHorizontal: moderateScale(10, 0.6),
-                      width: windowWidth,
-                    }}>
-                    <View style={styles.profileSection2}>
-                      <CustomImage
-                        source={
-                          item?.profile_info?.photo
-                            ? {uri: item?.profile_info?.photo}
-                            : item?.image
-                            ? {uri: item?.image}
-                            : require('../Assets/Images/permissions.png')
-                        }
-                        style={{
-                          height: '100%',
-                          width: '100%',
-                        }}
-                        resizeMode="contain"
-                      />
-                    </View>
-
-                    <View
+                  <View style={styles.profileSection2}>
+                    <CustomImage
+                      source={
+                        item?.profile_info?.photo
+                          ? {uri: `${baseUrl}/${item?.profile_info?.photo}`}
+                          : item?.image
+                          ? {uri: item?.image}
+                          : require('../Assets/Images/permissions.png')
+                      }
                       style={{
-                        paddingVertical: moderateScale(5, 0.6),
-                        paddingHorizontal: moderateScale(15, 0.6),
-                        backgroundColor: Color.lightGrey,
-                        borderRadius: moderateScale(10, 0.6),
-                        marginLeft: moderateScale(10, 0.3),
-                      }}>
-                      <CustomText
-                        numberOfLines={1}
-                        style={{
-                          color: 'black',
-                          fontSize: moderateScale(14, 0.6),
-                        }}
-                        isBold>
-                        {item?.profile_info?.name
-                          ? item?.profile_info?.name
-                          : item?.user}
-                      </CustomText>
-                      <CustomText
-                        style={{
-                          color: 'black',
-                          fontSize: moderateScale(12, 0.6),
-                        }}
-                        numberOfLines={2}>
-                        {item?.description}
-                      </CustomText>
-                    </View>
+                        height: '100%',
+                        width: '100%',
+                      }}
+                      // resizeMode="contain"
+                    />
                   </View>
 
                   <View
                     style={{
-                      flexDirection: 'row',
-                      width: windowWidth * 0.6,
-                      marginLeft: moderateScale(60, 0.3),
-                      justifyContent: 'space-between',
-                      marginBottom: moderateScale(10, 0.3),
+                      paddingVertical: moderateScale(5, 0.6),
+                      paddingHorizontal: moderateScale(15, 0.6),
+                      backgroundColor: Color.lightGrey,
+                      borderRadius: moderateScale(10, 0.6),
+                      marginLeft: moderateScale(10, 0.3),
                     }}>
-                    <CustomText style={[styles.text]} isBold>
-                      {moment(item?.created_at).fromNow()}
+                    <CustomText
+                      numberOfLines={1}
+                      style={{
+                        color: 'black',
+                        fontSize: moderateScale(14, 0.6),
+                      }}
+                      isBold>
+                      {item?.profile_info?.name
+                        ? item?.profile_info?.name
+                        : item?.user}
                     </CustomText>
-                    <CustomText style={styles.text} isBold>
-                      Like
-                    </CustomText>
-                    <CustomText style={styles.text} isBold>
-                      Reply
+                    <CustomText
+                      style={{
+                        color: 'black',
+                        fontSize: moderateScale(12, 0.6),
+                      }}
+                      numberOfLines={2}>
+                      {item?.description}
                     </CustomText>
                   </View>
                 </View>
+
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    width: windowWidth * 0.6,
+                    marginLeft: moderateScale(60, 0.3),
+                    justifyContent: 'space-between',
+                    marginBottom: moderateScale(10, 0.3),
+
+                  }}>
+                  <CustomText style={styles.text} isBold>
+                    Like
+                  </CustomText>
+                  <CustomText style={[styles.text ,{fontSize:11}]} isBold>
+                    {moment(item?.created_at).startOf('hour').fromNow()}
+                    {/* {moment(item?.created_at).fromNow()} */}
+                  </CustomText>
+                  {/* <CustomText style={styles.text} isBold>
+                    Reply
+                  </CustomText> */}
+                </View>
               </View>
-            );
-          }}
-        />
+            </View>
+            // <CustomText>hello</CustomText>
+          );
+        }}
+        ListEmptyComponent={() => {
+          return (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: windowHeight * 0.8,
+              }}>
+              <Text>No Comments</Text>
+            </View>
+          );
+        }}
+      />
       </View>
       <View
         style={{
           flexDirection: 'row',
-          backgroundColor: 'white',
+          // backgroundColor: 'green',
           position: 'absolute',
           bottom: 0,
           width: windowWidth,
           justifyContent: 'space-between',
           paddingHorizontal: moderateScale(10, 0.6),
-          paddingVertical: moderateScale(10, 0.6),
+          paddingBottom: moderateScale(10, 0.6),
           alignItems: 'center',
         }}>
         <TextInputWithTitle
@@ -217,7 +236,10 @@ const ComentsSection = ({refRBSheet, data}) => {
           size={6}
           color={Color.themeDarkGray}
           as={Ionicons}
-          onPress={addComment}
+
+          onPress={() => {addComment()
+            setYourComment('')
+          }}
         />
       </View>
     </RBSheet>

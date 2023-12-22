@@ -31,7 +31,7 @@ const RequestModal = ({isVisible, setIsVisible, text, selectedBubbleId}) => {
     const url = 'auth/community_member/add';
     const body = {
       status: 'request',
-      profile_id: profileData?.id,
+      profile_id:[ profileData?.id],
       community_id: selectedBubbleId,
     };
     setLoading(true);
