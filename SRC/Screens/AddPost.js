@@ -108,7 +108,7 @@ const AddPost = props => {
       }
     }
 
-   return console.log('🚀 ~ file: AddPost.js:64 ~ AddPost ~ formData:',JSON.stringify(formData, null, 2));
+    console.log('🚀 ~ file: AddPost.js:64 ~ AddPost ~ formData:',JSON.stringify(formData, null, 2));
 
     setLoading(true);
     const response = await Post(url, formData, apiHeader(token));
@@ -390,6 +390,7 @@ const AddPost = props => {
           </View>
           <View style={styles.imagesContainer}>
             {images?.map(item => {
+                console.log("🚀 ~ file: AddPost.js:548 ~ AddPost ~ item:", item)
               return (
                 <View style={styles.image}>
                   <TouchableOpacity
@@ -416,7 +417,7 @@ const AddPost = props => {
                   </TouchableOpacity>
                   <CustomImage
                     style={{width: '100%', height: '100%'}}
-                    source={{uri: item?.uri ? item?.uri : item?.name}}
+                    source={{uri: item?.uri }}
                   />
                 </View>
               );
@@ -534,6 +535,7 @@ const AddPost = props => {
         show={imagePickerVisible}
         setShow={setImagePickerVisible}
         setFileObject={setImage}
+        type={'photo'}
       />
       <ImagePickerModal
         show={videoPicker}
@@ -544,6 +546,7 @@ const AddPost = props => {
     </>
   );
 };
+          
 
 const styles = ScaledSheet.create({
   text: {

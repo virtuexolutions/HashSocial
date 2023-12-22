@@ -42,6 +42,7 @@ const BubbleCard = ({
   getRequests,
   getList,
 }) => {
+  console.log("🚀 ~ file: BubbleCard.js:45 ~ item:", item?.status == 'invite'&& item)
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const token = useSelector(state => state.authReducer.token);
   const [loading, setLoading] = useState(false);
@@ -142,6 +143,15 @@ const BubbleCard = ({
             }}>
             {item?.role}
           </CustomText>
+         {item?.status == 'invite'  && <CustomText
+            style={{
+              fontSize: moderateScale(11, 0.6),
+              color: '#000',
+              textAlign: 'left',
+              width:windowWidth*0.35
+            }}>
+            {item?.profile_info?.name} invited you to join this bubble
+          </CustomText>}
         </View>
 
         <View
@@ -185,7 +195,8 @@ const BubbleCard = ({
           {item?.role.toLowerCase() == 'admin' && (
             <CustomButton
               onPress={() => {
-                navigationService.navigate('CreateNewBubble', {item: item});
+                alert('Edit bubble')
+                // navigationService.navigate('CreateNewBubble', {item: item});
               }}
               text={'Edit'}
               textColor={Color.black}

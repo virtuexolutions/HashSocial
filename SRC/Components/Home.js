@@ -212,7 +212,7 @@ const Home = ({bubbleId}) => {
               <TouchableOpacity
                 style={styles.activityImage}
                 onPress={() => {
-                  navigationService.navigate('Feeds',{id:item?.post_videos[0]?.name});
+                  navigationService.navigate('Feeds',{id:item?.post_videos[0]?.name, item:item});
                 }}>
               
                 <Video

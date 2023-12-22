@@ -25,45 +25,12 @@ import { useIsFocused } from '@react-navigation/native';
     const privacy = useSelector(state=> state.authReducer.privacy)
     const token = useSelector(state => state.authReducer.token);
     const BubbleId = props?.route?.params?.BubbleId
-    console.log("🚀 ~ file: MemberList.js:26 ~ MemberList ~ BubbleId:", BubbleId)
+    const profileData = useSelector(state => state.commonReducer.selectedProfile)
     
-    const MemberListData = [
-      {
-        id: 1,
-        image: require('../Assets/Images/dummyman1.png'),
-        name: 'Book Author',
-        Time:'Today 9:00 Am',
-        title: 'Requestor',
-       
-      },
-      {
-        id: 2,
-        image: require('../Assets/Images/dummyman4.png'),
-        name: 'Alternative fitness',
-        Time:'Today 9:00 Am',
-        title: 'Member',
-        
-      },
-      {
-        id: 3,
-        image: require('../Assets/Images/avatar.png'),
-        name: 'Alchol',
-        Time:'Today 9:00 Am',
-        title: 'Owner/Mod/Admin',
-        
-      },
-      {
-        id: 4,
-        image: require('../Assets/Images/dummyUser.png'),
-        name: 'Bords Shooting',
-        Time:'Today 9:00 Am',
-        title: 'Invited',
-       
-      },
-    ];
+   
     const [loading ,setLoading] =useState(false)
     const [members, setMembers] = useState([])
-    // console.log("🚀 ~ file: MemberList.js:66 ~ MemberList ~ members:", members)
+    console.log("🚀 ~ file: MemberList.js:32 ~ MemberList ~ members:", members)
   
 
     const GetBubblemembers = async () => {
@@ -74,7 +41,7 @@ import { useIsFocused } from '@react-navigation/native';
       setLoading(false)
       if(response != undefined){
       console.log("🚀 ~ file: MemberList.js:71 ~ GetBubblemembers ~ response:", response?.data)
-      setMembers(response?.data?.member_info)
+      setMembers(response?.data?.member_info?.filter(data=> data?.profile_id != profileData?.id))
 
       }
     }
@@ -114,14 +81,15 @@ import { useIsFocused } from '@react-navigation/native';
                 marginBottom:moderateScale(10,.3)
               }}
               renderItem={({item, index}) => {
+              console.log("🚀 ~ file: MemberList.js:83 ~ MemberList ~ item:", item)
   
                 return (
                   <CardComponent
                   item={item}
                   MemberList={true}
                   pending={item?.pending}
-                  invited={item?.status == 'invite' ? true : false}
-                  Requested={item?.status == 'request' ? true : false}
+                  invited={item?.role == 'admin' && item?.status == 'invite' ? true : false}
+                  Requested={item?.role == 'admin' && item?.status == 'request' ? true : false}
                   bubbleId={BubbleId}
                   blocked={item?.status == 'blocked' ? true : false}
                 />

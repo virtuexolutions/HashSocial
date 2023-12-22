@@ -20,6 +20,8 @@ const Feeds = props => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const image = props?.route?.params?.image;
   const uri = props?.route?.params?.id
+  const item = props?.route?.params?.item
+  console.log("🚀 ~ file: Feeds.js:24 ~ Feeds ~ item:", item)
 
   const [selectedTab, SetSelectedTab] = useState('Fitness');
 
@@ -76,24 +78,7 @@ const Feeds = props => {
     },
   ];
 
-  const Fitness = [
-    {
-      id: 1,
-      name: 'Fitness',
-    },
-    {
-      id: 2,
-      name: 'Alchole',
-    },
-    {
-      id: 3,
-      name: 'Art',
-    },
-    {
-      id: 4,
-      name: 'Sport',
-    },
-  ];
+  
 
   return (
     <View style={{width: windowWidth}}>
@@ -162,7 +147,7 @@ const Feeds = props => {
         })}
       </ScrollView> */}
     
-      <FeedContainer source = {uri} />
+      <FeedContainer source = {uri} item={item} />
     </View>
   );
 };

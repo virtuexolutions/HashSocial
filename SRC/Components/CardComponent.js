@@ -56,10 +56,11 @@ const CardComponent = ({
   const [isVisible, setIsVisible] = useState(false);
   const [msg, setMsg] = useState('');
   const [isLoading, setisLoading] = useState(false);
-  const [requested , setRequested] = useState(item?.status == 'request' ? true : false)
-  const [invite , setinvited] = useState(item?.status == 'invite' ? true : false)
-  const [block , setblocked] = useState(item?.status == 'blocked' ? true : false)
-  const [member , setmember] = useState(item?.status == 'follow' ? true : false)
+  const [requested , setRequested] = useState(item?.role == 'admin' && item?.status == 'request' ? true : false)
+  const [invite , setinvited] = useState(item?.role == 'admin' && item?.status == 'invite' ? true : false)
+  const [block , setblocked] = useState(item?.role == 'admin' && item?.status == 'blocked' ? true : false)
+  const [member , setmember] = useState(item?.role == 'admin' && item?.status == 'follow' ? true : false)
+  console.log("🚀 ~ file: CardComponent.js:63 ~ member:", member)
 
 
 
@@ -68,7 +69,6 @@ const CardComponent = ({
     const body = {
       status: actionType,
     };
-    console.log("🚀 ~ file: CardComponent.js:69 ~ handleMemberAction ~ body:", body)
     setisLoading(true);
     // return console.log("🚀 ~ file: CardComponent.js:51 ~ handleMemberAction ~ body:", body)
     const response = await Post(url, body, apiHeader(token));

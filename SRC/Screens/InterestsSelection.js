@@ -218,7 +218,7 @@ const InterestSelection = () => {
             height={windowHeight * 0.04}
             onPress={() => {
               if (selectedBubble.length > 0) {
-                setIsVisible(true)
+                // setIsVisible(true)
                 sendSelectedFeeds();
               } else {
                 Platform.OS == 'android'

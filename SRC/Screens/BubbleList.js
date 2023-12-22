@@ -33,6 +33,7 @@ const BubbleList = () => {
 
   const profileData = useSelector(state=> state.commonReducer.selectedProfile)
   const token = useSelector(state=> state.authReducer.token)
+  console.log("🚀 ~ file: BubbleList.js:36 ~ BubbleList ~ token:", token)
 
 
   const getYourBubbles = async () => {
@@ -224,9 +225,11 @@ const BubbleList = () => {
             marginBottom: moderateScale(20, 0.3),
           }}>
           <FlatList
+          showsVerticalScrollIndicator={false}
             data={selectedTab == 1 ?yourBubbles : invitedBubbles}
             contentContainerStyle={{
               marginBottom: moderateScale(10, 0.3),
+              paddingBottom:moderateScale(50,.6),
             }}
             renderItem={({item, index}) => {
               return (

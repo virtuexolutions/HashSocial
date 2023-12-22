@@ -46,6 +46,7 @@ const requestCameraPermission = async () => {
 const ImagePickerModal = props => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   let {show, setShow, setFileObject, setMultiImages, crop, type} = props;
+  console.log("🚀 ~ file: ImagePickerModal.js:49 ~ ImagePickerModal ~ type:", type)
 
   const openGallery = () => {
     let options = {
@@ -76,7 +77,7 @@ const ImagePickerModal = props => {
       } else if (response.customButton) {
         alert(response.customButton);
       }
-      else if(response?.assets[0]?.duration > 10){
+      else if( response ?.assets && response?.assets[0]?.duration > 5){
         alert('Video is too long');
 
       } 
@@ -84,7 +85,7 @@ const ImagePickerModal = props => {
       else {
         setFileObject &&
           setFileObject({
-            uri: type == 'video' ?  `${response?.assets[0]?.uri}.mp4`: response?.assets[0]?.uri ,
+            uri: type == 'video' ?  `${response?.assets[0]?.uri}`: response?.assets[0]?.uri ,
             type: response?.assets[0]?.type,
             name: response?.assets[0]?.fileName,
           });
@@ -127,7 +128,7 @@ const ImagePickerModal = props => {
       if (Platform.OS == 'ios') {
         setShow(false);
       }
-      else if(response?.assets[0]?.duration > 10){
+      else if( response ?.assets && response?.assets[0]?.duration > 5){
         alert('Video is too long')
       }
       // if (response.didCancel) {
@@ -183,7 +184,7 @@ const ImagePickerModal = props => {
             styles.modalContentContianer,
             {borderBottomColor: themeColor[1], borderTopColor: themeColor[1]},
           ]}>
-          <TouchableOpacity
+          {type != 'video' && <TouchableOpacity
             onPress={() => {
               if (Platform.OS === 'android') {
                 setShow(false);
@@ -200,7 +201,7 @@ const ImagePickerModal = props => {
               }}
             />
             <CustomText style={styles.modalBtnText}>Gallery</CustomText>
-          </TouchableOpacity>
+          </TouchableOpacity>}
           <TouchableOpacity
             onPress={() => {
               if (Platform.OS === 'android') {

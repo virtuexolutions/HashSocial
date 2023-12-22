@@ -20,9 +20,10 @@ import Video from 'react-native-video';
 import CustomText from '../Components/CustomText';
 import {Icon} from 'native-base';
 import {useSelector} from 'react-redux';
+import { baseUrl } from '../Config';
 
-const FeedContainer = ({source}) => {
-  console.log("🚀 ~ file: FeedContainer.js:25 ~ FeedContainer ~ source:", source)
+const FeedContainer = ({item, source}) => {
+  console.log('🚀 ~ file: FeedContainer.js:25 ~ FeedContainer ~ source:', item);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
 
   return (
@@ -33,10 +34,10 @@ const FeedContainer = ({source}) => {
         {height: windowHeight, paddingBottom: moderateScale(0, 0.3)},
       ]}>
       <Video
-      // posterResizeMode={'repeat'}
+        // posterResizeMode={'repeat'}
         // muted
         // fullscreen
-        resizeMode={"stretch"}
+        resizeMode={'stretch'}
         paused={false}
         repeat={true}
         // controls={true}
@@ -84,7 +85,7 @@ const FeedContainer = ({source}) => {
                 marginRight: moderateScale(8, 0.3),
               }}>
               <CustomImage
-                source={require('../Assets/Images/avatar3.png')}
+                source={item?.profile_info?.photo ? {uri:`${baseUrl}/${item?.profile_info?.photo}`}: require('../Assets/Images/avatar3.png')}
                 style={{
                   height: '100%',
                   width: '100%',
@@ -102,7 +103,7 @@ const FeedContainer = ({source}) => {
                   textAlign: 'left',
                 }}
                 isBold>
-                steven
+               {item?.profile_info?.name}
               </CustomText>
 
               <CustomText
@@ -138,7 +139,7 @@ const FeedContainer = ({source}) => {
               }}></View>
             <CustomText
               style={{fontSize: moderateScale(14, 0.6), color: Color.white}}>
-              20 comments
+              {item?.comments?.length} comments
             </CustomText>
           </View>
 
@@ -150,7 +151,7 @@ const FeedContainer = ({source}) => {
               paddingLeft: moderateScale(15, 0.6),
               marginTop: moderateScale(10, 0.3),
             }}>
-            lorem ipsum
+          {item?.caption}
           </CustomText>
         </View>
         <View
@@ -162,7 +163,12 @@ const FeedContainer = ({source}) => {
             // backgroundColor: 'black',
             // height: windowHeight * 0.4,
           }}>
-          <View style={{marginTop: moderateScale(20, 0.3)}}>
+          <View
+            style={{
+              marginTop: moderateScale(20, 0.3),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             <TouchableOpacity
               style={{
                 height: moderateScale(30, 0.6),
@@ -177,11 +183,16 @@ const FeedContainer = ({source}) => {
             <CustomText
               numberOfLines={1}
               style={{fontSize: moderateScale(12, 0.6), color: Color.white}}>
-              2k
+              {item?.total_likes_count}
             </CustomText>
           </View>
 
-          <View style={{marginTop: moderateScale(20, 0.3)}}>
+          <View
+            style={{
+              marginTop: moderateScale(20, 0.3),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             <TouchableOpacity
               style={{
                 height: moderateScale(30, 0.6),
@@ -199,7 +210,12 @@ const FeedContainer = ({source}) => {
               3k
             </CustomText>
           </View>
-          <View style={{marginTop: moderateScale(20, 0.3)}}>
+          <View
+            style={{
+              marginTop: moderateScale(20, 0.3),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
             <TouchableOpacity
               style={{
                 height: moderateScale(30, 0.6),
@@ -235,7 +251,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   card: {
-    backgroundColor:'red',
+    backgroundColor: 'red',
     // height: windowHeight * 0.72,
     // borderRadius: moderateScale(20, 0.6),
     shadowColor: Color.black,
@@ -250,7 +266,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   backgroundVideo: {
-    backgroundColor:'red',
+    backgroundColor: 'red',
     position: 'absolute',
     top: 0,
     left: 0,

@@ -126,26 +126,21 @@ const Bubble = props => {
   ];
   const [newData, setnewData] = useState([]);
   const [invitedPeople, setInvitedPeople] = useState([]);
-  // console.log('🚀 ~ file: Bubble.js:112 ~ Bubble ~ newData:', newData);
 
   const MoreIcon = require('../Assets/Images/threedots.png');
 
   const handleInputChange = text => {
-    // Update the TextInput value
     setSearch(text);
 
-    // Clear the existing timer
     if (timerId) {
       clearTimeout(timerId);
     }
 
-    // Set a new timer
+   
     const newTimerId = setTimeout(() => {
-      // Call your API function here
       SearchMembers(text);
     }, 300);
 
-    // Save the timer ID in the state
     setTimerId(newTimerId);
   };
 
@@ -156,18 +151,15 @@ const Bubble = props => {
       search: text,
       profile_id: profileData?.id,
     };
-    // return  console.log("🚀 ~ file: Bubble.js:156 ~ SearchMembers ~ body:", body)
-    // setIsLoading(true);
+  
     const response = await Post(url, body, apiHeader(token));
-    // setIsLoading(false);
     if (response != undefined) {
       console.log(
         '🚀 ~ file: Bubble.js:150 ~ getBubbleDetails ~ response:',
         response?.data,
       );
       setnewData(response?.data?.profile_info);
-      // setBubbleInfo(response?.data?.community_info);
-      // setStartFollowing(response?.data?.community_info?.follow ? true : false )
+    
     }
   };
   const SendInvite = async () => {
