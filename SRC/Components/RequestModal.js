@@ -121,7 +121,7 @@ const RequestModal = ({isVisible, setIsVisible, text, selectedBubbleId}) => {
           width={windowWidth * 0.65}
           height={windowHeight * 0.06}
           marginTop={moderateScale(20, 0.3)}
-          bgColor={Color.themeBgColor}
+          bgColor={themeColor}
           borderRadius={moderateScale(25, 0.3)}
           elevation
           isGradient

@@ -108,7 +108,7 @@ const AddPost = props => {
       }
     }
 
-   return console.log('🚀 ~ file: AddPost.js:64 ~ AddPost ~ formData:',JSON.stringify(formData, null, 2));
+   console.log('🚀 ~ file: AddPost.js:64 ~ AddPost ~ formData:',JSON.stringify(formData, null, 2));
 
     setLoading(true);
     const response = await Post(url, formData, apiHeader(token));
