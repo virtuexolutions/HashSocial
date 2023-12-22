@@ -26,6 +26,7 @@ const BubbleList = () => {
   const [selectedTab, setSelectedTab] = useState(1);
   const [yourBubbles, setYourBubbles] = useState([])
   const [requests, setRequests] = useState([])
+  const [invitedBubbles, setInvitedBubbles] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
   const isFocused = useIsFocused()
@@ -40,18 +41,29 @@ const BubbleList = () => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-       console.log(
-        '🚀 ~ file: Events.js:34 ~ getEvents ~ response:',
-        response?.data,
-      );
-      setYourBubbles(response?.data?.community_info);
+      setYourBubbles(response?.data?.community);
     }
   };
+
+  const getInvitedBubbles = async () => {
+    const url = `auth/community_member/my_pending_list/${profileData?.id}`;
+    setIsLoading(true);
+    const response = await Get(url, token);
+    setIsLoading(false);
+    if (response != undefined) {
+        console.log(
+        '🚀 ~ file: Events.js:34 ~ getEvents ~ response: =========>>>>>',
+        response?.data,
+      );
+      setInvitedBubbles(response?.data?.member_info);
+    }
+  };
+
+
   useEffect(() => {
     getYourBubbles();
+    getInvitedBubbles()
   }, [isFocused]);
-
-
 
   const BubbleListData = [
     {
@@ -208,11 +220,11 @@ const BubbleList = () => {
           style={{
             // backgroundColor: 'red',
             width: windowWidth,
-            marginTop: moderateScale(5, 0.3),
+            marginTop: moderateScale(15, 0.3),
             marginBottom: moderateScale(20, 0.3),
           }}>
           <FlatList
-            data={yourBubbles}
+            data={selectedTab == 1 ?yourBubbles : invitedBubbles}
             contentContainerStyle={{
               marginBottom: moderateScale(10, 0.3),
             }}
@@ -220,6 +232,9 @@ const BubbleList = () => {
               return (
                 <BubbleCard
                   item={item}
+                  getList={getYourBubbles}
+                  getRequests={getInvitedBubbles}
+                  request={selectedTab == 1 ? false : true}
                   check={item?.check}
                   close={item?.close}
                   edit={item?.edit}

@@ -132,7 +132,7 @@ const Bubble = props => {
     const url = 'auth/community_member/add';
     const body = {
       status: 'request',
-      profile_id: profileData?.id,
+      profile_id: [profileData?.id],
       community_id: bubbleId,
     };
     setFollowLoading(true);
@@ -291,9 +291,9 @@ const Bubble = props => {
             </View>
             <View style={styles.followbtn}>
               <CustomButton
-                disabled={
-                  bubbleInfo?.profile_id == profileData?.id ? true : false
-                }
+                // disabled={
+                //   bubbleInfo?.profile_id == profileData?.id ? true : false
+                // }
                 text={
                   followLoading ? (
                     <ActivityIndicator color={themeColor[1]} size={'small'} />

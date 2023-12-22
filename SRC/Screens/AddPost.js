@@ -49,14 +49,12 @@ const AddPost = props => {
   const [videoPicker, setVideoPicker] = useState(false);
   const [hashtag, setHashtag] = useState({});
   const [video, setVideo] = useState({});
-  // console.log("🚀 ~ file: AddPost.js:53 ~ AddPost ~ video:", video)
   const [videos, setVideos] = useState(
     data?.post_videos ? data?.post_videos : [],
   );
   const [hashtags, setHashtags] = useState(
     data?.hashtags ? JSON.parse(data?.hashtags) : [],
   );
-  // const MoreIcon = require('../Assets/Images/.png');
 
   const navigation = useNavigation();
 
@@ -80,7 +78,6 @@ const AddPost = props => {
     const body = {
       caption: description,
       profile_id: profileData?.id,
-      // hashtags: hashtags,
       community_id: bubbleId,
     };
     if (images.length == 0 && videos.length == 0 && description == '') {
@@ -111,7 +108,7 @@ const AddPost = props => {
       }
     }
 
-    console.log('🚀 ~ file: AddPost.js:64 ~ AddPost ~ formData:', formData);
+   return console.log('🚀 ~ file: AddPost.js:64 ~ AddPost ~ formData:',JSON.stringify(formData, null, 2));
 
     setLoading(true);
     const response = await Post(url, formData, apiHeader(token));

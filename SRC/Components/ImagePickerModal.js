@@ -54,7 +54,6 @@ const ImagePickerModal = props => {
       maxHeight: 500,
       quailty: 0.9,
       saveToPhotos: true,
-      durationLimit: 10,
     };
   
     // {
@@ -76,7 +75,8 @@ const ImagePickerModal = props => {
       } else if (response.error) {
       } else if (response.customButton) {
         alert(response.customButton);
-      }else if(response?.assets[0]?.duration > 10){
+      }
+      else if(response?.assets[0]?.duration > 10){
         alert('Video is too long');
 
       } 
@@ -84,7 +84,7 @@ const ImagePickerModal = props => {
       else {
         setFileObject &&
           setFileObject({
-            uri: response?.assets[0]?.uri,
+            uri: type == 'video' ?  `${response?.assets[0]?.uri}.mp4`: response?.assets[0]?.uri ,
             type: response?.assets[0]?.type,
             name: response?.assets[0]?.fileName,
           });

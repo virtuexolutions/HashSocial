@@ -493,7 +493,24 @@ const CreateNewBubble = props => {
                 justifyContent: 'space-between',
                 paddingHorizontal: moderateScale(30, 0.6),
               }}>
+             
               <CustomButton
+                text={'cancel'}
+                textColor={themeColor[1]}
+                width={windowWidth * 0.4}
+                height={windowHeight * 0.06}
+                bgColor={['#FFFFFF', '#FFFFFF']}
+                borderRadius={moderateScale(30, 0.3)}
+                isGradient
+                isBold={true}
+                marginBottom={moderateScale(50)}
+                onPress={() => {
+                  navigation.goBack()
+                  dispatch(setBubbleCreated(true));
+                }}
+              />
+
+<CustomButton
                 text={
                   isLoading ? (
                     <ActivityIndicator color={themeColor[1]} size={'small'} />
@@ -514,21 +531,6 @@ const CreateNewBubble = props => {
                   createBubble();
                 }}
               />
-              <CustomButton
-                text={'cancel'}
-                textColor={themeColor[1]}
-                width={windowWidth * 0.4}
-                height={windowHeight * 0.06}
-                bgColor={['#FFFFFF', '#FFFFFF']}
-                borderRadius={moderateScale(30, 0.3)}
-                isGradient
-                isBold={true}
-                marginBottom={moderateScale(50)}
-                onPress={() => {
-                  navigation.goBack()
-                  dispatch(setBubbleCreated(true));
-                }}
-              />
             </View>
           </ScrollView>
         </ImageBackground>
@@ -546,7 +548,7 @@ export default CreateNewBubble;
 const styles = ScaledSheet.create({
   topContainer: {
     paddingHorizontal:moderateScale(10,.6),
-    height: windowHeight * 0.3,
+    // height: windowHeight * 0.3,
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: moderateScale(15, 0.3),
