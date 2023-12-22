@@ -32,6 +32,7 @@ import Modal from 'react-native-modal';
 import Feather from 'react-native-vector-icons/Feather';
 import OptionsMenu from 'react-native-options-menu';
 import {Get, Post} from '../Axios/AxiosInterceptorFunction';
+import { baseUrl } from '../Config';
 
 const Bubble = props => {
   const bubbleId = props?.route?.params?.id;
@@ -195,9 +196,10 @@ const Bubble = props => {
         }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           <ImageBackground
-            source={
+          //  source={require('../Assets/Images/fitness.png')}
+           source={
               bubbleInfo?.image
-                ? {uri: bubbleInfo?.image}
+                ? {uri: `${baseUrl}/${bubbleInfo?.image}`}
                 : require('../Assets/Images/fitness.png')
             }
             resizeMode={'cover'}

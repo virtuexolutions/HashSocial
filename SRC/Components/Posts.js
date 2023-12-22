@@ -21,6 +21,7 @@ import {FlatList} from 'react-native';
 import PostComponentBubble from './PostComponentBubble';
 import {Get} from '../Axios/AxiosInterceptorFunction';
 import {useIsFocused} from '@react-navigation/native';
+import { baseUrl } from '../Config';
 
 // import { TextInput } from 'react-native-gesture-handler';
 
@@ -29,6 +30,7 @@ const Posts = ({onPress, bubbleId}) => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
+//  console.log("🚀 ~ file: Posts.js:32 ~ Posts ~ profileData:", profileData)
 
   const isFocused = useIsFocused();
 
@@ -249,7 +251,8 @@ const Posts = ({onPress, bubbleId}) => {
         }}>
         <View style={styles.profileImage}>
           <CustomImage
-            source={require('../Assets/Images/fitness2.png')}
+            // source={require('../Assets/Images/fitness2.png')}
+            source={{uri: `${baseUrl}/${profileData?.photo}`}}
             style={{
               height: '100%',
               width: '100%',

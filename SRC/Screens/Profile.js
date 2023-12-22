@@ -109,7 +109,7 @@ const Profile = props => {
     setIsLoading(false);
     
     if (response?.data?.success) {
-      // return console.log("🚀 ~ file: Profile.js:104 ~ createProfile ~ response:", response?.data , !response?.data?.profile_info?.qa_status)
+      // console.log("🚀 ~ file: Profile.js:104 ~ createProfile ~ response:", response?.data , !response?.data?.profile_info?.qa_status)
        dispatch(setQuestionAnswered(response?.data?.profile_info?.qa_status == 0 ? false : true))
        dispatch(setProfileSelcted(true));
       dispatch(setSelectedProfileData(response?.data?.profile_info));
