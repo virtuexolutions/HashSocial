@@ -33,6 +33,7 @@ import navigationService from '../navigationService';
 import TextInputWithTitle from './TextInputWithTitle';
 import ComentsSection from './ComentsSection';
 import numeral from 'numeral'
+import { baseUrl } from '../Config';
 
 const PostComponentBubble = ({data}) => {
   const [like, setLike] = useState(data?.my_like ? data?.my_like : false);
@@ -93,12 +94,13 @@ const PostComponentBubble = ({data}) => {
           }}>
           <View style={styles.profileSection2}>
             <CustomImage
-              source={{uri: data?.profile_info?.photo}}
+              source={{uri:`${baseUrl}/${data?.profile_info?.photo}`}}
+              // source={{uri: data?.profile_info?.photo}}
               style={{
                 height: '100%',
                 width: '100%',
               }}
-              resizeMode="contain"
+              // resizeMode="contain"
             />
           </View>
 

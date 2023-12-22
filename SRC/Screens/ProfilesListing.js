@@ -59,9 +59,7 @@ const ProfilesListing = props => {
 
   useEffect(() => {
     profileListing();
-    dispatch(setBubbleSelected(false));
-    dispatch(setInterestSelected(false));
-    dispatch(setProfileSelcted(false));
+   
   }, []);
 
   return (
@@ -92,7 +90,10 @@ const ProfilesListing = props => {
         <View style={styles.mapview}>
           <View style={styles.View}>
             {bubbleData.map((item, index) => {
-              console.log("🚀 ~ file: ProfilesListing.js:94 ~ {bubbleData.map ~ item:", item)
+              console.log(
+                '🚀 ~ file: ProfilesListing.js:94 ~ {bubbleData.map ~ item:',
+                item,
+              );
               return (
                 <TouchableOpacity
                   onPress={() => {
@@ -100,8 +101,9 @@ const ProfilesListing = props => {
                       dispatch(setAccountPrivate('private'));
                       navigationService.navigate('LoginProfile', {item});
                     } else {
-                      dispatch(setBubbleSelected(false));
-                      dispatch(setInterestSelected(false));
+                      ![null, [], '', 'null', undefined].includes(
+                        item?.interests,
+                      ) && dispatch(setInterestSelected(true));
                       dispatch(setAccountPrivate('public'));
                       dispatch(setQuestionAnswered(item?.qa_status));
                       dispatch(setSelectedProfileData(item));

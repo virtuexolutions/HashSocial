@@ -129,7 +129,7 @@ const BubbleSelection = () => {
     },
   ]);
 
-  // const sendSelectedBubble = async () => {
+  // const sendSelectedBubble = async () => {   
   //   const url = 'auth/subscribe';
   //   const body = {
   //     id: profileData?.id,
@@ -193,21 +193,21 @@ const BubbleSelection = () => {
       community_id: communityid,
       profile_id: profileData?.id,
     };
-     console.log(
-      '🚀 ~ file: BubbleSelection.js:189 ~ MultiAddCommunity ~ body:',
-      body,
-    );
+    // return console.log(
+    //   '🚀 ~ file: BubbleSelection.js:189 ~ MultiAddCommunity ~ body:',
+    //   body,
+    // );
     setIsLaoding(true);
     const response = await Post(url, body, apiHeader(token));
     setIsLaoding(false);
     if (response != undefined) {
+    //  return console.log("🚀 ~ file: BubbleSelection.js:204 ~ MultiAddCommunity ~ response:", response?.data)
       // dispatch(setSelectedProfileData(response?.data?.profile_info));
           dispatch(setBubbleSelected(true));
       //     dispatch(setSelectedBubbles(selectedBubble));
           Platform.OS == 'android'
             ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
             : Alert.alert('Saved');
-    console.log("🚀 ~ file: BubbleSelection.js:204 ~ MultiAddCommunity ~ response:", response?.data)
     }
   };
 
@@ -292,7 +292,12 @@ const BubbleSelection = () => {
           style={{
             width: windowWidth,
           }}>
-          {bubble?.map((item, index) => {
+            
+          {
+          // isLaoding ? (<ActivityIndicator
+          //  size={'large'} color={Color.white}/> ):
+
+          bubble?.map((item, index) => {
             return (
               <TouchableOpacity
                 onPress={() => {
@@ -422,7 +427,7 @@ const BubbleSelection = () => {
         </ScrollView>
       </ImageBackground>
     </ScreenBoiler>
-  );
+  );  
 };
 
 const styles = ScaledSheet.create({

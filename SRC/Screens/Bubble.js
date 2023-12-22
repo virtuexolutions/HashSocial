@@ -362,7 +362,9 @@ const Bubble = props => {
                 );
               })}
             </ScrollView>
-            {selectedEvent == 'Reels' ? (
+           
+            {
+            selectedEvent == 'Reels' ? (
               <Home bubbleId={bubbleId} />
             ) : selectedEvent == 'Events' ? (
               <Events
@@ -385,6 +387,7 @@ const Bubble = props => {
             ) : (
               <></>
             )}
+            
           </View>
         </ScrollView>
       </ImageBackground>

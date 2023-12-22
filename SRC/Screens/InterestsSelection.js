@@ -166,11 +166,13 @@ const InterestSelection = () => {
       id: profileData?.id,
       interests: selectedBubble,
     };
+    // return console.log("🚀 ~ file: InterestsSelection.js:169 ~ sendSelectedFeeds ~ body:", body)
     setIsLaoding(true);
     const response = await Post(url, body, apiHeader(token));
     setIsLaoding(false);
   console.log("🚀 ~ file: InterestsSelection.js:171 ~ sendSelectedFeeds ~ response:", response)
     if (response != undefined) {
+    // return console.log('data ======= > ' , response?.data)
       dispatch(setSelectedProfileData(response?.data?.profile_info));
       dispatch(setInterestSelected(true));
       Platform.OS == 'android'
