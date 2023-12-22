@@ -139,13 +139,8 @@ const BubbleSelection = () => {
       dispatch(setBubbleSelected(true))
       dispatch(setSelectedBubbles(selectedBubble))
       Platform.OS == 'android'
-<<<<<<< HEAD
-      ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
-      : Alert.alert('Saved');
-=======
                   ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
                   : Alert.alert('Saved');
->>>>>>> origin/meerab
     }}
 
 

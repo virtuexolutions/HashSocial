@@ -10,13 +10,14 @@ import {
   Platform,
   ToastAndroid,
   Alert,
+  ActivityIndicator,
 } from 'react-native';
 import React, {useState} from 'react';
 const {height, width} = Dimensions.get('window');
 import {moderateScale} from 'react-native-size-matters';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
 import {useSelector} from 'react-redux';
@@ -25,21 +26,83 @@ import Color from '../Assets/Utilities/Color';
 import {Icon, ScrollView} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import Feather from 'react-native-vector-icons/Feather';
+
 import Modal from 'react-native-modal';
 import navigationService from '../navigationService';
 import TextInputWithTitle from './TextInputWithTitle';
+import {baseUrl} from '../Config';
+import moment from 'moment';
+import {Post} from '../Axios/AxiosInterceptorFunction';
 
-const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
+const CardComponent = ({
+  item,
+  pending,
+  check,
+  close,
+  edit,
+  MemberList,
+  invited,
+  Requested,
+  blocked,
+}) => {
+  console.log(
+    '🚀 ~ file: CardComponent.js:39 ~ CardComponent ~ item:',
+    item?.status,
+  );
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  const token = useSelector(state => state.authReducer.token);
+
   const [isVisible, setIsVisible] = useState(false);
   const [msg, setMsg] = useState('');
+  const [isLoading, setisLoading] = useState(false);
+  const [requested , setRequested] = useState(item?.status == 'request' ? true : false)
+  const [invite , setinvited] = useState(item?.status == 'invite' ? true : false)
+  const [block , setblocked] = useState(item?.status == 'blocked' ? true : false)
+  const [member , setmember] = useState(item?.status == 'follow' ? true : false)
+
+
+
+  const handleMemberAction = async actionType => {
+    const url = `auth/community_member/pending_list/${item?.id}`;
+    const body = {
+      status: actionType,
+    };
+    console.log("🚀 ~ file: CardComponent.js:69 ~ handleMemberAction ~ body:", body)
+    setisLoading(true);
+    // return console.log("🚀 ~ file: CardComponent.js:51 ~ handleMemberAction ~ body:", body)
+    const response = await Post(url, body, apiHeader(token));
+    setisLoading(false);
+    if (response != undefined) {
+      console.log(response?.data);
+      if(actionType == 'accept'){
+        setRequested(false)
+        setmember(true)
+        setblocked(false)
+      }
+      else if (actionType == 'reject'){
+        setRequested(false)
+        setmember(false)
+        setinvited(false)
+      }
+      else if (actionType == 'blocked'){
+        setmember(false)
+        setblocked(true)
+      }
+      else if (actionType == 'blocked'){
+        setmember(false)
+        setblocked(true)
+      }
+    }
+  };
+
   return (
     <>
       <View style={styles.row}>
         <View>
           <View style={styles.profileSection}>
             <CustomImage
-              source={item.image}
+              source={{uri: `${baseUrl}${item?.photo}`}}
               style={{width: '100%', height: '100%'}}
             />
           </View>
@@ -87,7 +150,7 @@ const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
               fontWeight: '500',
               textAlign: 'left',
             }}>
-            {item?.name}
+            {item?.profile_info?.name}
           </CustomText>
           <CustomText
             numberOfLines={1}
@@ -96,7 +159,7 @@ const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
               color: '#000',
               textAlign: 'left',
             }}>
-            {item?.Time}
+            {moment(item?.created_at).format('ll')}
           </CustomText>
           <CustomText
             style={{
@@ -104,7 +167,7 @@ const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
               color: '#000',
               textAlign: 'left',
             }}>
-            {item?.title}
+            {item?.role}
           </CustomText>
         </View>
 
@@ -133,11 +196,7 @@ const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
               iconName={'check'}
               iconType={Entypo}
               iconStyle={{
-                // width: 20,
-                // height: 20,
                 color: Color.black,
-                // padding: 55,
-                // marginLeft: 92,
               }}
               textColor={Color.black}
               // width={windowWidth * 0.15}
@@ -147,8 +206,6 @@ const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
               bgColor={'#FFFFFF'}
               paddingHorizontal={moderateScale(15, 0.3)}
               marginRight={moderateScale(5, 0.3)}
-
-              // onPress={}
             />
           )}
           {edit && (
@@ -172,6 +229,123 @@ const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
               iconName={'cross'}
               iconType={Entypo}
               iconStyle={{
+                color: Color.black,
+              }}
+              textColor={Color.black}
+              // width={windowWidth * 0.15}
+              height={windowHeight * 0.05}
+              fontSize={moderateScale(12, 0.6)}
+              borderRadius={moderateScale(10, 0.3)}
+              paddingHorizontal={moderateScale(15, 0.3)}
+              marginRight={moderateScale(5, 0.3)}
+              bgColor={'#FFFFFF'}
+            />
+          )}
+
+          {requested && (
+            <>
+              <CustomButton
+                iconName={isLoading ? 'loader' : 'check'}
+                iconType={isLoading ? Feather : Entypo}
+                onPress={() => {
+                  handleMemberAction('accept');
+                }}
+                iconStyle={{
+                  // width: 120,
+                  // height: 120,
+                  color: Color.black,
+                  // padding: 55,
+                  // marginLeft: 92,
+                }}
+                textColor={Color.black}
+                // width={windowWidth * 0.15}
+                height={windowHeight * 0.05}
+                fontSize={moderateScale(12, 0.6)}
+                borderRadius={moderateScale(10, 0.3)}
+                paddingHorizontal={moderateScale(15, 0.3)}
+                marginRight={moderateScale(5, 0.3)}
+                bgColor={'#FFFFFF'}
+              />
+              <CustomButton
+                iconName={isLoading ? 'loader' : 'cross'}
+                iconType={isLoading ? Feather : Entypo}
+                onPress={() => {
+                  handleMemberAction('reject');
+                }}
+                iconStyle={{
+                  // width: 120,
+                  // height: 120,
+                  color: Color.black,
+                  // padding: 55,
+                  // marginLeft: 92,
+                }}
+                textColor={Color.black}
+                // width={windowWidth * 0.15}
+                height={windowHeight * 0.05}
+                fontSize={moderateScale(12, 0.6)}
+                borderRadius={moderateScale(10, 0.3)}
+                paddingHorizontal={moderateScale(15, 0.3)}
+                marginRight={moderateScale(5, 0.3)}
+                bgColor={'#FFFFFF'}
+              />
+            </>
+          )}
+          {member &&  (
+            <>
+              <CustomButton
+                iconName={isLoading ? 'loader' : 'pause'}
+                iconType={isLoading ? Feather : AntDesign}
+                onPress={() => {
+                  handleMemberAction('blocked');
+                }}
+                iconStyle={{
+                  // width: 120,
+                  // height: 120,
+                  color: Color.black,
+                  // padding: 55,
+                  // marginLeft: 92,
+                }}
+                textColor={Color.black}
+                // width={windowWidth * 0.15}
+                height={windowHeight * 0.05}
+                fontSize={moderateScale(12, 0.6)}
+                borderRadius={moderateScale(10, 0.3)}
+                paddingHorizontal={moderateScale(15, 0.3)}
+                marginRight={moderateScale(5, 0.3)}
+                bgColor={'#FFFFFF'}
+              />
+              <CustomButton
+                iconName={isLoading ? 'loader' : 'cross'}
+                iconType={isLoading ? Feather : Entypo}
+                onPress={() => {
+                  handleMemberAction('reject');
+                }}
+                iconStyle={{
+                  // width: 120,
+                  // height: 120,
+                  color: Color.black,
+                  // padding: 55,
+                  // marginLeft: 92,
+                }}
+                textColor={Color.black}
+                // width={windowWidth * 0.15}
+                height={windowHeight * 0.05}
+                fontSize={moderateScale(12, 0.6)}
+                borderRadius={moderateScale(10, 0.3)}
+                paddingHorizontal={moderateScale(15, 0.3)}
+                marginRight={moderateScale(5, 0.3)}
+                bgColor={'#FFFFFF'}
+              />
+            </>
+          )}
+          {block && (
+            <CustomButton
+              iconName={isLoading ? 'loader' : 'caretright'}
+              iconType={isLoading ? Feather : AntDesign}
+              onPress={() => {
+                handleMemberAction('accept');
+              }}
+              iconStyle={{
                 // width: 120,
                 // height: 120,
                 color: Color.black,
@@ -188,104 +362,28 @@ const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
               bgColor={'#FFFFFF'}
             />
           )}
-          {!item?.bubble &&
-            (item?.title == 'Requestor' ? (
-              <>
-                <CustomButton
-                  iconName={'check'}
-                  iconType={Entypo}
-                  iconStyle={{
-                    // width: 120,
-                    // height: 120,
-                    color: Color.black,
-                    // padding: 55,
-                    // marginLeft: 92,
-                  }}
-                  textColor={Color.black}
-                  // width={windowWidth * 0.15}
-                  height={windowHeight * 0.05}
-                  fontSize={moderateScale(12, 0.6)}
-                  borderRadius={moderateScale(10, 0.3)}
-                  paddingHorizontal={moderateScale(15, 0.3)}
-                  marginRight={moderateScale(5, 0.3)}
-                  bgColor={'#FFFFFF'}
-                />
-                <CustomButton
-                  iconName={'cross'}
-                  iconType={Entypo}
-                  iconStyle={{
-                    // width: 120,
-                    // height: 120,
-                    color: Color.black,
-                    // padding: 55,
-                    // marginLeft: 92,
-                  }}
-                  textColor={Color.black}
-                  // width={windowWidth * 0.15}
-                  height={windowHeight * 0.05}
-                  fontSize={moderateScale(12, 0.6)}
-                  borderRadius={moderateScale(10, 0.3)}
-                  paddingHorizontal={moderateScale(15, 0.3)}
-                  marginRight={moderateScale(5, 0.3)}
-                  bgColor={'#FFFFFF'}
-                />
-              </>
-            ) : item?.title == 'Member' ? (
-              <>
-                <CustomButton
-                  iconName={'pause'}
-                  iconType={AntDesign}
-                  iconStyle={{
-                    // width: 120,
-                    // height: 120,
-                    color: Color.black,
-                    // padding: 55,
-                    // marginLeft: 92,
-                  }}
-                  textColor={Color.black}
-                  // width={windowWidth * 0.15}
-                  height={windowHeight * 0.05}
-                  fontSize={moderateScale(12, 0.6)}
-                  borderRadius={moderateScale(10, 0.3)}
-                  paddingHorizontal={moderateScale(15, 0.3)}
-                  marginRight={moderateScale(5, 0.3)}
-                  bgColor={'#FFFFFF'}
-                />
-                <CustomButton
-                  iconName={'cross'}
-                  iconType={Entypo}
-                  iconStyle={{
-                    // width: 120,
-                    // height: 120,
-                    color: Color.black,
-                    // padding: 55,
-                    // marginLeft: 92,
-                  }}
-                  textColor={Color.black}
-                  // width={windowWidth * 0.15}
-                  height={windowHeight * 0.05}
-                  fontSize={moderateScale(12, 0.6)}
-                  borderRadius={moderateScale(10, 0.3)}
-                  paddingHorizontal={moderateScale(15, 0.3)}
-                  marginRight={moderateScale(5, 0.3)}
-                  bgColor={'#FFFFFF'}
-                />
-              </>
-            ) : item?.title == 'Invited' ? (
-              <CustomButton
-                text={'invited'}
-                textColor={Color.black}
-                // width={windowWidth * 0.13}
-                height={windowHeight * 0.05}
-                fontSize={moderateScale(10, 0.6)}
-                bgColor={'#FFFFFF'}
-                borderRadius={moderateScale(10, 0.3)}
-                paddingHorizontal={moderateScale(5, 0.3)}
-                marginRight={moderateScale(5, 0.3)}
-              />
-            ) : (
-              <></>
-            ))}
+          {invite && (
+            <CustomButton
+              text={
+                isLoading ? (
+                  <ActivityIndicator color={'#000000'} size={'small'} />
+                ) : (
+                  'Withdraw Request'
+                )
+              }
+              onPress={() => {
+                handleMemberAction('reject');
+              }}
+              textColor={Color.black}
+              // width={windowWidth * 0.13}
+              height={windowHeight * 0.05}
+              fontSize={moderateScale(10, 0.6)}
+              bgColor={'#FFFFFF'}
+              borderRadius={moderateScale(10, 0.3)}
+              paddingHorizontal={moderateScale(10, 0.3)}
+              marginRight={moderateScale(5, 0.3)}
+            />
+          )}
         </View>
       </View>
 
@@ -299,19 +397,24 @@ const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
           alignItems: 'center',
         }}>
         <View style={styles.container}>
-          <View style={{backgroundColor:themeColor[1], alignItems:'center', justifyContent:'center'}}>
-          <CustomText
+          <View
             style={{
-              color: Color.white,
-              fontSize: moderateScale(15, 0.6),
-              // marginTop: moderateScale(20, 0.3),
-              paddingVertical:moderateScale(10,.6),
-              paddingHorizontal: moderateScale(30, 0.6),
-              textAlign: 'center',
-            }}
-            isBold>
-            send Message Request
-          </CustomText>
+              backgroundColor: themeColor[1],
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <CustomText
+              style={{
+                color: Color.white,
+                fontSize: moderateScale(15, 0.6),
+                // marginTop: moderateScale(20, 0.3),
+                paddingVertical: moderateScale(10, 0.6),
+                paddingHorizontal: moderateScale(30, 0.6),
+                textAlign: 'center',
+              }}
+              isBold>
+              send Message Request
+            </CustomText>
           </View>
           <View
             // colors={['#286086', '#dfecf5']}
@@ -366,8 +469,9 @@ const CardComponent = ({item, pending, check, close, edit, MemberList}) => {
             text={'Send'}
             onPress={() => {
               setIsVisible(false);
-              Platform.OS == 'android' ? ToastAndroid.show('Message request sent', ToastAndroid.SHORT) : Alert.alert('Message request sent')
-
+              Platform.OS == 'android'
+                ? ToastAndroid.show('Message request sent', ToastAndroid.SHORT)
+                : Alert.alert('Message request sent');
             }}
             textColor={Color.white}
             width={windowWidth * 0.7}

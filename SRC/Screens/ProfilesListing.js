@@ -33,9 +33,12 @@ import {
 } from '../Store/slices/auth';
 import {setSelectedProfileData} from '../Store/slices/common';
 import navigationService from '../navigationService';
+import { baseUrl } from '../Config';
 
 const ProfilesListing = props => {
   const back = props?.route?.params?.back;
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
+
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
   const [isLoading, setIsLoading] = useState(false);
@@ -92,7 +95,7 @@ const ProfilesListing = props => {
         <View style={styles.mapview}>
           <View style={styles.View}>
             {bubbleData.map((item, index) => {
-              console.log("🚀 ~ file: ProfilesListing.js:94 ~ {bubbleData.map ~ item:", item)
+              console.log("🚀 ~ file: ProfilesListing.js:94 ~ {bubbleData.map ~ item:", `${baseUrl}/${item?.photo}`)
               return (
                 <TouchableOpacity
                   onPress={() => {
@@ -171,7 +174,7 @@ const ProfilesListing = props => {
                         height: '100%',
                         width: '100%',
                       }}
-                      source={{uri: item?.photo}}
+                      source={item?.photo ? {uri : `${baseUrl}/${item?.photo}`} : require('../Assets/Images/dummyman1.png')}
                     />
                   </View>
                   <CustomText style={styles.text2}>{item?.name}</CustomText>

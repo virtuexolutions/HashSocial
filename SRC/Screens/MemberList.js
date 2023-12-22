@@ -7,7 +7,7 @@ import {
     Image,
     FlatList,
   } from 'react-native';
-  import React, { useState } from 'react';
+  import React, { useEffect, useState } from 'react';
   import {moderateScale} from 'react-native-size-matters';
   import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
   import CustomStatusBar from '../Components/CustomStatusBar';
@@ -16,10 +16,17 @@ import {
   import CustomText from '../Components/CustomText';
   import { useSelector } from 'react-redux'; 
   import CardComponent from '../Components/CardComponent';
+import { Get } from '../Axios/AxiosInterceptorFunction';
+import { useIsFocused } from '@react-navigation/native';
   // const {height, width} = Dimensions.get('window');
   
-  const MemberList = () => {
+  const MemberList = (props) => {
+    const focused = useIsFocused()
     const privacy = useSelector(state=> state.authReducer.privacy)
+    const token = useSelector(state => state.authReducer.token);
+    const BubbleId = props?.route?.params?.BubbleId
+    console.log("🚀 ~ file: MemberList.js:26 ~ MemberList ~ BubbleId:", BubbleId)
+    
     const MemberListData = [
       {
         id: 1,
@@ -55,20 +62,29 @@ import {
       },
     ];
     const [loading ,setLoading] =useState(false)
+    const [members, setMembers] = useState([])
+    // console.log("🚀 ~ file: MemberList.js:66 ~ MemberList ~ members:", members)
   
 
-//     const memberList = async () => {
-//       const url= 'auth/bubble_member/pending_list'
-//       const body  ={
-// status = accept or reject
-//       }
-//       setLoading(true)
-//       const response = await(url,body ,apiHeader(token))
-//       setLoading(false)
-//       if(response != undefined){
+    const GetBubblemembers = async () => {
+      const url= `auth/community_member/list/${BubbleId}`
+      
+      setLoading(true)
+      const response = await Get(url , token)
+      setLoading(false)
+      if(response != undefined){
+      console.log("🚀 ~ file: MemberList.js:71 ~ GetBubblemembers ~ response:", response?.data)
+      setMembers(response?.data?.member_info)
 
-//       }
-//     }
+      }
+    }
+
+  
+
+    useEffect(() => {
+      GetBubblemembers()
+    }, [focused])
+    
 
     return (
       <>
@@ -93,7 +109,7 @@ import {
           <View
             style={styles.FlatListview}>
             <FlatList
-              data={MemberListData}
+              data={members}
               contentContainerStyle={{
                 marginBottom:moderateScale(10,.3)
               }}
@@ -102,11 +118,12 @@ import {
                 return (
                   <CardComponent
                   item={item}
-                  check={item?.check}
-                  close={item?.close}
-                  edit={item?.edit}
                   MemberList={true}
                   pending={item?.pending}
+                  invited={item?.status == 'invite' ? true : false}
+                  Requested={item?.status == 'request' ? true : false}
+                  bubbleId={BubbleId}
+                  blocked={item?.status == 'blocked' ? true : false}
                 />
                   
                 );

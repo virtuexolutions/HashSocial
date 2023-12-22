@@ -32,23 +32,28 @@ import Modal from 'react-native-modal';
 import Feather from 'react-native-vector-icons/Feather';
 import OptionsMenu from 'react-native-options-menu';
 import {Get, Post} from '../Axios/AxiosInterceptorFunction';
+import {baseUrl} from '../Config';
 
 const Bubble = props => {
   const bubbleId = props?.route?.params?.id;
-  console.log("🚀 ~ file: Bubble.js:38 ~ Bubble ~ bubbleId:", bubbleId)
+  console.log('🚀 ~ file: Bubble.js:38 ~ Bubble ~ bubbleId:', bubbleId);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
   const privacy = useSelector(state => state.authReducer.privacy);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const [isLoading, setIsLoading] = useState(false);
-  const [followLoading, setFollowLoading] = useState(false)
-  const [startFollowing, setStartFollowing] = useState(bubbleInfo?.follow ? true : false );
+  const [loadingInvite, setLoadingInvite] = useState(false);
+  const [followLoading, setFollowLoading] = useState(false);
+  const [startFollowing, setStartFollowing] = useState(
+    bubbleInfo?.follow ? true : false,
+  );
   const [isVisible, setIsVisible] = useState(false);
   const [bubbleInfo, setBubbleInfo] = useState({});
-  console.log("🚀 ~ file: Bubble.js:46 ~ Bubble ~ bubbleInfo:", bubbleInfo)
+  console.log('🚀 ~ file: Bubble.js:46 ~ Bubble ~ bubbleInfo:', bubbleInfo);
   const events = ['Posts', 'Home', 'Chats', 'Events', 'Members'];
   const [selectedEvent, setSelectedEvent] = useState('Posts');
   const [search, setSearch] = useState('');
+  const [timerId, setTimerId] = useState(null);
   const SearchData = [
     {
       id: 1,
@@ -117,11 +122,78 @@ const Bubble = props => {
       Tags: '#Architecture',
     },
   ];
-  const [newData, setnewData] = useState(SearchData);
+  const [newData, setnewData] = useState([]);
   const [invitedPeople, setInvitedPeople] = useState([]);
   // console.log('🚀 ~ file: Bubble.js:112 ~ Bubble ~ newData:', newData);
 
   const MoreIcon = require('../Assets/Images/threedots.png');
+
+  const handleInputChange = text => {
+    // Update the TextInput value
+    setSearch(text);
+
+    // Clear the existing timer
+    if (timerId) {
+      clearTimeout(timerId);
+    }
+
+    // Set a new timer
+    const newTimerId = setTimeout(() => {
+      // Call your API function here
+      SearchMembers(text);
+    }, 300);
+
+    // Save the timer ID in the state
+    setTimerId(newTimerId);
+  };
+
+  const SearchMembers = async text => {
+    console.log('🚀 ~ file: Bubble.js:151 ~ SearchMembers ~ text:', text);
+    const url = `auth/member_search`;
+    const body = {
+      search: text,
+      profile_id: profileData?.id,
+    };
+    // return  console.log("🚀 ~ file: Bubble.js:156 ~ SearchMembers ~ body:", body)
+    // setIsLoading(true);
+    const response = await Post(url, body, apiHeader(token));
+    // setIsLoading(false);
+    if (response != undefined) {
+      console.log(
+        '🚀 ~ file: Bubble.js:150 ~ getBubbleDetails ~ response:',
+        response?.data,
+      );
+      setnewData(response?.data?.profile_info);
+      // setBubbleInfo(response?.data?.community_info);
+      // setStartFollowing(response?.data?.community_info?.follow ? true : false )
+    }
+  };
+  const SendInvite = async () => {
+    const url = 'auth/community_member/add';
+    const invitedIds = invitedPeople.map((item, index) => {
+      return item?.id;
+    });
+    const body = {
+      status: 'invite',
+      profile_id: invitedIds,
+      community_id: bubbleId,
+      invite_profile_id: profileData?.id,
+    };
+      console.log("🚀 ~ file: Bubble.js:177 ~ SendInvite ~ body:", body)
+    setLoadingInvite(true);
+    const response = await Post(url, body, apiHeader(token));
+    setLoadingInvite(false);
+    if (response != undefined) {
+      console.log(
+        '🚀 ~ file: RequestModal.js:32 ~ addRequest ~ response:',
+        response?.data,
+      );
+      setIsVisible(false);
+      Platform.OS == 'android'
+        ? ToastAndroid.show('Request has been sent', ToastAndroid.SHORT)
+        : Alert.alert('Request has been sent');
+    }
+  };
 
   const follow = async () => {
     const url = 'auth/community_member/add';
@@ -138,7 +210,7 @@ const Bubble = props => {
         '🚀 ~ file: Bubble.js:131 ~ follow ~ response:',
         response?.data,
       );
-      getBubbleDetails()
+      getBubbleDetails();
       setStartFollowing(!startFollowing);
     }
   };
@@ -149,9 +221,12 @@ const Bubble = props => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-      console.log("🚀 ~ file: Bubble.js:150 ~ getBubbleDetails ~ response:", response?.data)
+      console.log(
+        '🚀 ~ file: Bubble.js:150 ~ getBubbleDetails ~ response:',
+        response?.data,
+      );
       setBubbleInfo(response?.data?.community_info);
-      setStartFollowing(response?.data?.community_info?.follow ? true : false )
+      setStartFollowing(response?.data?.community_info?.follow ? true : false);
     }
   };
 
@@ -166,13 +241,13 @@ const Bubble = props => {
     getBubbleDetails();
   }, []);
 
-  useEffect(() => {
-    setnewData(
-      SearchData.filter(
-        item => item?.name.toLowerCase().indexOf(search.toLowerCase()) > -1,
-      ),
-    );
-  }, [search]);
+  // useEffect(() => {
+  //   setnewData(
+  //     SearchData.filter(
+  //       item => item?.name.toLowerCase().indexOf(search.toLowerCase()) > -1,
+  //     ),
+  //   );
+  // }, [search]);
 
   return (
     <>
@@ -282,7 +357,7 @@ const Bubble = props => {
             </View>
             <View style={styles.followbtn}>
               <CustomButton
-              disable={bubbleInfo?.id == profileData?.id ? true : false }
+                disable={bubbleInfo?.id == profileData?.id ? true : false}
                 text={
                   followLoading ? (
                     <ActivityIndicator color={themeColor[1]} size={'small'} />
@@ -344,7 +419,7 @@ const Bubble = props => {
                     onPress={() => {
                       setSelectedEvent(data);
                       if (data == 'Members') {
-                        navigationService.navigate('MemberList');
+                        navigationService.navigate('MemberList' , {BubbleId : bubbleId } );
                       }
                       // else if(data == 'Chats'){
                       //   navigationService.navigate("ChatScreen")
@@ -401,7 +476,7 @@ const Bubble = props => {
             iconType={Feather}
             secureText={false}
             placeholder={'Alchole'}
-            setText={setSearch}
+            setText={handleInputChange}
             value={search}
             viewHeight={0.05}
             viewWidth={0.8}
@@ -449,7 +524,7 @@ const Bubble = props => {
                   }}>
                   <View style={styles.profileSection2}>
                     <CustomImage
-                      source={item.image}
+                      source={{uri: `${baseUrl}/${item.photo}`}}
                       style={{
                         height: '100%',
                         width: '100%',
@@ -524,7 +599,7 @@ const Bubble = props => {
             <View style={styles.invite}>
               <CustomButton
                 text={
-                  isLoading ? (
+                  loadingInvite ? (
                     <ActivityIndicator color={'#01E8E3'} size={'small'} />
                   ) : (
                     'invite'
@@ -535,14 +610,7 @@ const Bubble = props => {
                 height={windowHeight * 0.05}
                 // marginTop={moderateScale(20, 0.3)}
                 onPress={() => {
-                  Platform.OS == 'android'
-                    ? ToastAndroid.show(
-                        'invited successfully',
-                        ToastAndroid.SHORT,
-                      )
-                    : alert('invited successfully');
-                  // disptach(setUserToken({token : 'fasdasd awd   awdawdada'}))
-                  setIsVisible(false);
+                  invitedPeople.length > 0 && SendInvite();
                 }}
                 bgColor={themeColor}
                 borderRadius={moderateScale(30, 0.3)}

@@ -251,17 +251,18 @@ const CreateNewBubble = props => {
             <View style={styles.topContainer}>
               <View style={{}}>
                 <TextInputWithTitle
-                  placeholder={'Bubble Title'}
+                  placeholder={'Enter Bubble Title'}
                   setText={setBubbleTitle}
                   value={bubbleTitle}
                   marginTop={moderateScale(5, 0.3)}
                   viewHeight={0.04}
-                  viewWidth={0.23}
+                  viewWidth={0.5}
                   inputHeight={0.05}
-                  inputWidth={0.23}
+                  inputWidth={0.5}
                   color={Color.black}
                   placeholderColor={Color.black}
                   isBold
+                  // backgroundColor={'red'}
                 />
 
                 <CustomDropDownMultiSelect
@@ -273,7 +274,7 @@ const CreateNewBubble = props => {
                   marginTop={moderateScale(8, 0.3)}
                   containerStyle={{
                     width: windowWidth * 0.55,
-                    height: windowHeight * 0.06,
+                    height: windowHeight * 0.05,
                   }}
                 />
 
