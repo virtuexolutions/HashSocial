@@ -56,7 +56,7 @@ const AddPost = props => {
   const [hashtags, setHashtags] = useState(
     data?.hashtags ? JSON.parse(data?.hashtags) : [],
   );
-  const MoreIcon = require('../Assets/Images/threedots.png');
+  // const MoreIcon = require('../Assets/Images/.png');
 
   const navigation = useNavigation();
 
@@ -378,17 +378,18 @@ const AddPost = props => {
               isBold={true}
               children={'Add Media'}
             />
-            <OptionsMenu
-              button={MoreIcon}
-              buttonStyle={{
-                width: 36,
-                height: 30,
-                tintColor: '#000',
-              }}
-              destructiveIndex={1}
-              options={['Video', 'Image']}
-              actions={[Video, Image]}
-            />
+     
+           <OptionsMenu
+            button={require('../Assets/Images/plus2.png')}
+            buttonStyle={{
+              width: 15,
+              height: 15,
+              tintColor: '#000',
+            }}
+            destructiveIndex={1}
+            options={['Video', 'Image']}
+            actions={[Video, Image]}
+          />
           </View>
           <View style={styles.imagesContainer}>
             {images?.map(item => {

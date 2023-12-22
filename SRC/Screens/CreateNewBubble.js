@@ -247,7 +247,9 @@ const CreateNewBubble = props => {
             width: windowWidth,
             height: windowHeight * 0.9,
           }}>
-          <ScrollView nestedScrollEnabled>
+          <ScrollView 
+          nestedScrollEnabled
+          >
             <View style={styles.topContainer}>
               <View style={{}}>
                 <TextInputWithTitle
@@ -548,6 +550,7 @@ const styles = ScaledSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: moderateScale(15, 0.3),
+    // backgroundColor:'red'
   },
   switchContainer: {
     height: windowHeight * 0.08,
@@ -589,6 +592,7 @@ const styles = ScaledSheet.create({
     alignSelf: 'center',
     marginTop: moderateScale(18, 0.3),
     alignItems: 'center',
+    // backgroundColor:'green'
   },
   Row: {
     flexDirection: 'row',

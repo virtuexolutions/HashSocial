@@ -169,6 +169,7 @@ const InterestSelection = () => {
     setIsLaoding(true);
     const response = await Post(url, body, apiHeader(token));
     setIsLaoding(false);
+  console.log("🚀 ~ file: InterestsSelection.js:171 ~ sendSelectedFeeds ~ response:", response)
     if (response != undefined) {
       dispatch(setSelectedProfileData(response?.data?.profile_info));
       dispatch(setInterestSelected(true));

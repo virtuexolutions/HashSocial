@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import * as Animatable from 'react-native-animatable';
 import Color from '../Assets/Utilities/Color';
 import CustomImage from '../Components/CustomImage';
@@ -21,24 +21,29 @@ import CustomButton from '../Components/CustomButton';
 import navigationService from '../navigationService';
 import {useDispatch, useSelector} from 'react-redux';
 import {setBubbleSelected} from '../Store/slices/auth';
-import {Post} from '../Axios/AxiosInterceptorFunction';
-import { setSelectedBubbles, setSelectedProfileData } from '../Store/slices/common';
+import {Get, Post} from '../Axios/AxiosInterceptorFunction';
+import {
+  setSelectedBubbles,
+  setSelectedProfileData,
+} from '../Store/slices/common';
 import CustomText from '../Components/CustomText';
+import {baseUrl} from '../Config';
 
 const BubbleSelection = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
-  const profileData = useSelector(state=> state.commonReducer.selectedProfile)
-  // console.log("🚀 ~ file: BubbleSelection.js:31 ~ profileData:", profileData)
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
+  //  console.log("🚀 ~ file: BubbleSelection.js:31 ~ profileData:", profileData)
   const [isLaoding, setIsLaoding] = useState(false);
   // console.log("🚀 ~ file: BubbleSelection.js:26 ~ BubbleSelection ~ token:", token)
 
   const [selectedBubble, setSelectedBubble] = useState([]);
-  // console.log(
-  //   '🚀 ~ file: BubbleSelection.js:29 ~ BubbleSelection ~ selectedBubble:',
-  //   selectedBubble,
-  // );
+  console.log(
+    '🚀 ~ file: BubbleSelection.js:29 ~ BubbleSelection ~ selectedBubble:',
+    selectedBubble?.length,
+  );
+  const [bubble, setBubble] = useState([]);
 
   const selectedProfile = useSelector(
     state => state.commonReducer.selectedProfile,
@@ -46,7 +51,8 @@ const BubbleSelection = () => {
 
   const dispatch = useDispatch();
   const selectedBubbles = useSelector(
-    state => state.commonReducer.selectedBubble);
+    state => state.commonReducer.selectedBubble,
+  );
 
   const [BubbleImageArraty, setBubbleImageArraty] = useState([
     {
@@ -123,26 +129,26 @@ const BubbleSelection = () => {
     },
   ]);
 
-  const sendSelectedBubble = async () => {
-    const url = 'auth/subscribe';
-    const body = {
-      id:profileData?.id,
-      bubble: selectedBubble,
-    };
-    // console.log("🚀 ~ file: BubbleSelection.js:127 ~ sendSelectedBubble ~ body:", body)
-    setIsLaoding(true);
-    const response = await Post(url, body, apiHeader(token));
-    setIsLaoding(false);
-    if (response != undefined) {
-      
-      dispatch(setSelectedProfileData(response?.data?.profile_info))
-      dispatch(setBubbleSelected(true))
-      dispatch(setSelectedBubbles(selectedBubble))
-      Platform.OS == 'android'
-                  ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
-                  : Alert.alert('Saved');
-    }}
-  const handleBubbleSelection = (index) => {
+  // const sendSelectedBubble = async () => {
+  //   const url = 'auth/subscribe';
+  //   const body = {
+  //     id: profileData?.id,
+  //     bubble: selectedBubble,
+  //   };
+  //   // console.log("🚀 ~ file: BubbleSelection.js:127 ~ sendSelectedBubble ~ body:", body)
+  //   setIsLaoding(true);
+  //   const response = await Post(url, body, apiHeader(token));
+  //   setIsLaoding(false);
+  //   if (response != undefined) {
+  //     dispatch(setSelectedProfileData(response?.data?.profile_info));
+  //     dispatch(setBubbleSelected(true));
+  //     dispatch(setSelectedBubbles(selectedBubble));
+  //     Platform.OS == 'android'
+  //       ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
+  //       : Alert.alert('Saved');
+  //   }
+  // };
+  const handleBubbleSelection = index => {
     const updatedBubbleArray = [...BubbleImageArraty];
     updatedBubbleArray[index].added = !updatedBubbleArray[index].added;
     setBubbleImageArraty(updatedBubbleArray);
@@ -159,6 +165,49 @@ const BubbleSelection = () => {
       ToastAndroid.show('Saved', ToastAndroid.SHORT);
     } else {
       ToastAndroid.show('Please select any bubble', ToastAndroid.SHORT);
+    }
+  };
+
+  const getBubble = async () => {
+    const url = `auth/community/${profileData?.id}`;
+    setIsLaoding(true);
+    const response = await Get(url, token);
+    // return  console.log("🚀 ~ file: BubbleSelection.js:169 ~ getbubble ~ response:", response?.data?.community_info)
+    setIsLaoding(false);
+    if (response != undefined) {
+      setBubble(response?.data?.community_info);
+    }
+  };
+  useEffect(() => {
+    getBubble();
+  }, []);
+
+  const MultiAddCommunity = async () => {
+    const url = `auth/community_multi_request`;
+    const communityid = selectedBubble?.map((item, index) => {
+      return item?.id;
+    });
+    //  console.log("🚀 ~ file: BubbleSelection.js:190 ~ communityid ~ communityid:", communityid)
+    const body = {
+      status: 'request',
+      community_id: communityid,
+      profile_id: profileData?.id,
+    };
+     console.log(
+      '🚀 ~ file: BubbleSelection.js:189 ~ MultiAddCommunity ~ body:',
+      body,
+    );
+    setIsLaoding(true);
+    const response = await Post(url, body, apiHeader(token));
+    setIsLaoding(false);
+    if (response != undefined) {
+      // dispatch(setSelectedProfileData(response?.data?.profile_info));
+          dispatch(setBubbleSelected(true));
+      //     dispatch(setSelectedBubbles(selectedBubble));
+          Platform.OS == 'android'
+            ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
+            : Alert.alert('Saved');
+    console.log("🚀 ~ file: BubbleSelection.js:204 ~ MultiAddCommunity ~ response:", response?.data)
     }
   };
 
@@ -188,19 +237,24 @@ const BubbleSelection = () => {
             zIndex: 1,
           }}>
           <CustomButton
-            text={isLaoding ? <ActivityIndicator color={Color.white} size={'small'}/>:'Save'}
+            text={
+              isLaoding ? (
+                <ActivityIndicator color={Color.white} size={'small'} />
+              ) : (
+                'Save'
+              )
+            }
             textColor={Color.white}
             width={windowWidth * 0.2}
             height={windowHeight * 0.04}
             onPress={() => {
               if (selectedBubble.length > 0) {
-               
-                sendSelectedBubble()
-                
-              }else{
+                MultiAddCommunity();
+                // sendSelectedBubble();
+              } else {
                 Platform.OS == 'android'
-                ? ToastAndroid.show('Select any Bubble', ToastAndroid.SHORT)
-                : Alert.alert('Select any Bubble');
+                  ? ToastAndroid.show('Select any Bubble', ToastAndroid.SHORT)
+                  : Alert.alert('Select any Bubble');
               }
             }}
             fontSize={moderateScale(12, 0.6)}
@@ -215,8 +269,8 @@ const BubbleSelection = () => {
             height={windowHeight * 0.04}
             fontSize={moderateScale(12, 0.6)}
             onPress={() => {
-              dispatch(setBubbleSelected(true))
-            //  navigationService.navigate('FeedSelection')
+              dispatch(setBubbleSelected(true));
+              //  navigationService.navigate('FeedSelection')
             }}
             marginTop={moderateScale(10, 0.3)}
             bgColor={['#ffffff', '#ffffff']}
@@ -238,13 +292,11 @@ const BubbleSelection = () => {
           style={{
             width: windowWidth,
           }}>
-          {BubbleImageArraty.map((item, index) => {
-            // console.log("🚀 ~ file: BubbleSelection.js:174 ~ {BubbleImageArraty.map ~ item:", item)
+          {bubble?.map((item, index) => {
             return (
               <TouchableOpacity
                 onPress={() => {
-                  console.log('Here');
-                  // setBubbleSelected(prev=> [...prev, item])
+                 
                   if (selectedBubble.findIndex(i => i.id == item?.id) != -1) {
                     setSelectedBubble(
                       selectedBubble?.filter(i => i?.id != item?.id),
@@ -254,11 +306,8 @@ const BubbleSelection = () => {
                   }
                   const data = [...BubbleImageArraty];
                   data[index].added = !data[index].added;
-                  handleBubbleSelection(index)
-                  // const data = [...BubbleImageArraty];
-                  // data[index].added = !data[index].added;
-
-                  // setBubbleImageArraty(data);
+                  handleBubbleSelection(index);
+                
                 }}
                 style={{
                   width: windowWidth * 0.3,
@@ -272,26 +321,25 @@ const BubbleSelection = () => {
                   marginVertical: moderateScale(5, 0.3),
                   marginHorizontal: moderateScale(2, 0.3),
                 }}>
-                  
-                  <CustomText
-              numberOfLines={1}
-              style={{
-                fontSize: moderateScale(11, 0.6),
-                fontWeight: '700',
-                textAlign: 'left',
-                position:'absolute',
-                bottom:10,
-                width:'100%',
-                paddingLeft:moderateScale(10,0.3),
-                zIndex:1,
-                color:'white',
-                backgroundColor:'rgba(0,0,0,0.6)',
-              }}>
-              {item?.name}
-            </CustomText>
+                <CustomText
+                  numberOfLines={1}
+                  style={{
+                    fontSize: moderateScale(11, 0.6),
+                    fontWeight: '700',
+                    textAlign: 'left',
+                    position: 'absolute',
+                    bottom: 10,
+                    width: '100%',
+                    paddingLeft: moderateScale(10, 0.3),
+                    zIndex: 1,
+                    color: 'white',
+                    backgroundColor: 'rgba(0,0,0,0.6)',
+                  }}>
+                  {item?.title}
+                </CustomText>
                 <CustomImage
                   onPress={() => {
-                    console.log('Here');
+                    console.log('hello==================>');
 
                     if (selectedBubble.findIndex(i => i.id == item?.id) != -1) {
                       setSelectedBubble(
@@ -305,13 +353,17 @@ const BubbleSelection = () => {
 
                     setBubbleImageArraty(data);
                   }}
-                  source={item.image}
+                  source={
+                    item?.image
+                      ? {uri: `${baseUrl}/${item?.image}`}
+                      : require('../Assets/Images/travel.jpg')
+                  }
                   style={{
                     width: '100%',
                     height: '100%',
                   }}
                 />
-                {item.added && (
+                {selectedBubble?.some(data=> data?.id == item?.id) && (
                   <View
                     style={{
                       width: windowWidth * 0.3,
@@ -322,6 +374,9 @@ const BubbleSelection = () => {
                       backgroundColor: 'rgba(0,0,0,0.5)',
                       position: 'absolute',
                       zIndex: 1,
+                      // borderRightWidth:1,
+                      // borderColor:'red',
+                      // backgroundColor:'green'
                     }}>
                     <Animatable.View
                       animation="pulse"
@@ -331,13 +386,14 @@ const BubbleSelection = () => {
                         width: moderateScale(60, 0.6),
                         height: moderateScale(60, 0.6),
                         // position: 'absolute',
-                        // zIndex: 1,
+                        // zInd
+                        ex: 1,
                         alignSelf: 'center',
                         top: '35%',
                       }}>
                       <CustomImage
                         onPress={() => {
-                          console.log('Here');
+                          console.log('Here==================>');
                           if (
                             selectedBubble.findIndex(i => i.id == item?.id) !=
                             -1
@@ -355,7 +411,7 @@ const BubbleSelection = () => {
                         }}
                         source={require('../Assets/Images/heart.png')}
                         resizeMode={'stretch'}
-                        style={{width: '100%', height: '100%'}}
+                        style={{width: '100%', height: '100%' ,}}
                       />
                     </Animatable.View>
                   </View>
