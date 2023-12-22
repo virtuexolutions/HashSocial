@@ -100,7 +100,7 @@ const AppNavigator = () => {
     return (
       <NavigationContainer ref={navigationService.navigationRef}>
         <RootNav.Navigator
-          initialRouteName={thirdScreen}
+          initialRouteName={'ProfilesListing'}
           screenOptions={{headerShown: false}}>
           <RootNav.Screen name="LoginScreen" component={LoginScreen} />
           <RootNav.Screen

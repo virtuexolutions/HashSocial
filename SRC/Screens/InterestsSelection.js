@@ -36,7 +36,6 @@ const InterestSelection = () => {
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
 
   const [isLaoding, setIsLaoding] = useState(false);
-
   const [selectedBubble, setSelectedBubble] = useState([]);
   console.log(
     '🚀 ~ file: BubbleSelection.js:29 ~ BubbleSelection ~ selectedBubble:',
@@ -219,6 +218,7 @@ const InterestSelection = () => {
             height={windowHeight * 0.04}
             onPress={() => {
               if (selectedBubble.length > 0) {
+                setIsVisible(true)
                 sendSelectedFeeds();
               } else {
                 Platform.OS == 'android'
