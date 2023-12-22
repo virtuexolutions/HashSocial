@@ -56,8 +56,7 @@ const LoginScreen = () => {
     setIsLoading(false);
 
     if (response != undefined) {
-    console.log("🚀 ~ file: LoginScreen.js:58 ~ Login ~ response:", response?.data)
-    // console.log("🚀 ~ file: LoginScreen.js:56 ~ Login ~ response:", JSON.parse(response?.data?.user_info?.interest)?.length)
+    //  console.log("🚀 ~ file: LoginScreen.js:58 ~ Login ~ response:", response?.data)
       Platform.OS == 'android'
         ? ToastAndroid.show('User LoggedIn successfully', ToastAndroid.SHORT)
         : Alert.alert('User LoggedIn successfully');
@@ -67,7 +66,7 @@ const LoginScreen = () => {
       dispatch(setNumOfProfiles(response?.data?.user_info?.total_profile));
       dispatch(setBubbleCreated(true))
       dispatch(setNewSignUp(false))
-      dispatch(setInterestSelected([null, undefined, 0 , []].includes(response?.data?.user_info?.interest) ? false: JSON.parse(response?.data?.user_info?.interest).length>0 ? true : false))
+      // dispatch(setInterestSelected([null, undefined, 0 , [], 'null'].includes(response?.data?.user_info?.interest) ? false: JSON.parse(response?.data?.user_info?.interest).length>0 ? true : false))
       // dispatch(setBubbleSelected(response?.data?.user_info?.bubbles ? true : false));
       // dispatch(setFeedsSelected(response?.data?.user_info?.feeds ? true : false));
     }
@@ -177,8 +176,6 @@ const LoginScreen = () => {
               marginTop={moderateScale(20, 0.3)}
               onPress={() => {
                 Login();
-                // navigationService.navigate('BubbleSelection');
-                // disptach(setUserToken({token: 'fasdasd awdawdawdada'}));
               }}
               bgColor={themeColor}
               borderRadius={moderateScale(30, 0.3)}
@@ -216,7 +213,6 @@ const LoginScreen = () => {
                         : Color.veryLightGray,
                   },
                 ]}>
-                {/* <View style={styles.radioButtonIcon} /> */}
               </TouchableOpacity>
               <CustomText
                 onPress={() => {
@@ -280,7 +276,6 @@ const LoginScreen = () => {
               <CustomImage
                 source={require('../Assets/Images/google.png')}
                 style={{width: 20, height: 20}}
-                // onPress={GoogleLogin}
               />
             </View>
             <View
@@ -309,7 +304,6 @@ const LoginScreen = () => {
               <CustomImage
                 source={require('../Assets/Images/twitter.png')}
                 style={{width: 20, height: 20}}
-                // onPress={isSignedIn}
               />
             </View>
           </View>
@@ -321,7 +315,6 @@ const LoginScreen = () => {
             height={windowHeight * 0.06}
             marginTop={moderateScale(40, 0.3)}
             onPress={() => {
-              // disptach(setUserToken({token : 'fasdasd awdawdawdada'}))
               navigationService.navigate('Signup');
             }}
             bgColor={['#FFFFFF', '#FFFFFF']}
@@ -372,7 +365,6 @@ const styles = ScaledSheet.create({
 
   Heading: {
     fontSize: moderateScale(20, 0.3),
-    // fontWeight: 'bold',
     color: '#ffffff',
 
     alignSelf: 'flex-start',
@@ -388,7 +380,6 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     width: windowWidth * 0.9,
-    // marginTop: moderateScale(10,0.3),
   },
   txt4: {
     color: Color.purple,

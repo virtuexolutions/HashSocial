@@ -51,6 +51,13 @@ const Header = props => {
       },
     },
     {
+      name: 'Profile listing',
+      onPress: () => {
+        navigationService.navigate('ProfilesListing');
+        setModalVisible(!modalVisible);
+      },
+    },
+    {
       name: 'Bubble List',
       onPress: () => {
         navigationService.navigate('BubbleList');
@@ -85,6 +92,7 @@ const Header = props => {
         dispatch(setQuestionAnswered(false));
         dispatch(setBubbleCreated(false));
         dispatch(setNewSignUp(false));
+        dispatch(setSelectedBubbles(false));
 
         // navigationService.navigate('LoginScreen');
       },
@@ -232,10 +240,8 @@ const Header = props => {
               </>
             );
           })}
-
         </View>
       </Modal>
-      
     </>
   );
 };

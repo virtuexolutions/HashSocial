@@ -129,26 +129,8 @@ const Profile = props => {
           response?.data?.profile_info?.user_info[0]?.total_profile,
         ),
       );
-      dispatch(
-        setBubbleSelected(
-          [null, '0', 0, [], undefined].includes(
-            response?.data?.profile_info?.bubbles,
-          )
-            ? false
-            : true,
-        ),
-      );
-      dispatch(
-        setInterestSelected(
-          [null, '0', 0, [], 'null', undefined].includes(
-            response?.data?.profile_info?.interests,
-          )
-            ? false
-            : true,
-        ),
-      );
-      // dispatch(setQuestionAnswered(response?.data?.question))
-      // navigationService.navigate('QuestionScreen', {type:type})
+      dispatch(setBubbleSelected(false));
+      dispatch(setInterestSelected(false));
     }
   };
 

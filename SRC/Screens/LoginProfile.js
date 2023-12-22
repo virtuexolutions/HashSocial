@@ -38,6 +38,7 @@ import {
 import {setSelectedProfileData} from '../Store/slices/common';
 import Modal from 'react-native-modal';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
+import { baseUrl } from '../Config';
 
 const LoginProfile = props => {
   const item = props?.route?.params?.item;
@@ -69,10 +70,8 @@ const LoginProfile = props => {
     setIsLoading(false);
 
     if (response?.data?.success) {
-      console.log(
-        '🚀 ~ file: ProfilesListing.js:62 ~ loginProfile ~ response:',
-        response?.data,
-      );
+          console.log("🚀 ~ file: LoginProfile.js:73 ~ loginProfile ~ response:", response?.data, response?.data?.profile_info?.community_list?.length)
+      
       setPassCode('');
       setModal(false);
       dispatch(setSelectedProfileData({}));
@@ -81,12 +80,12 @@ const LoginProfile = props => {
       dispatch(setProfileSelcted(true));
       dispatch(
         setBubbleSelected(
-          response?.data?.profile_info?.bubbles?.length > 0 ? true : false,
+          response?.data?.profile_info?.community_list?.length > 0 ? true : false,
         ),
       );
       dispatch(
         setInterestSelected(
-          response?.data?.profile_info?.feed?.length > 0 ? true : false,
+          [null, undefined, 0, 'null', []].includes(response?.data?.profile_info?.interests) ? false : true,
         ),
       );
     }
@@ -138,7 +137,7 @@ const LoginProfile = props => {
                 console.log('first');
                 setModal(true);
               }}
-              source={{uri: item?.photo}}
+              source={item?.photo ? {uri: `${baseUrl}/${item?.photo}`} : require('../Assets/Images/travel.jpg')}
               style={{width: '100%', height: '100%'}}
             />
           </View>

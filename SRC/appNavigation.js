@@ -65,6 +65,7 @@ const AppNavigator = () => {
   const interestSelected = useSelector(
     state => state.authReducer.interestSelected,
   );
+  console.log("🚀 ~ file: appNavigation.js:68 ~ AppNavigator ~ interestSelected:", interestSelected)
 
   console.log('🚀 ~ file: appNavigation.js:59 ~ AppNavigator ~ token:', token);
   const bubbleSelected = useSelector(state => state.authReducer.bubbleSelected);

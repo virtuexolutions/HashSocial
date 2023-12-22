@@ -7,6 +7,9 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  Platform,
+  ToastAndroid,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
 const {height, width} = Dimensions.get('window');
@@ -33,6 +36,7 @@ import {
 } from '../Store/slices/auth';
 import {setSelectedProfileData} from '../Store/slices/common';
 import navigationService from '../navigationService';
+import {baseUrl} from '../Config';
 
 const ProfilesListing = props => {
   const back = props?.route?.params?.back;
@@ -41,6 +45,39 @@ const ProfilesListing = props => {
   const [isLoading, setIsLoading] = useState(false);
   const [bubbleData, setBubbleData] = useState([]);
   const dispatch = useDispatch();
+  const selectedProfile = useSelector(
+    state => state.commonReducer.selectedProfile,
+  );
+  console.log(
+    '🚀 ~ file: ProfilesListing.js:46 ~ ProfilesListing ~ selectedProfile:',
+    selectedProfile,
+  );
+
+  // const onConfirm = async ()=>{
+  //   if (item?.privacy == 'private') {
+  //     dispatch(setAccountPrivate('private'));
+  //     navigationService.navigate('LoginProfile', {item});
+  //   } else {
+  //     dispatch(setAccountPrivate('public'));
+  //     dispatch(setQuestionAnswered(item?.qa_status));
+  //     dispatch(setSelectedProfileData(item));
+  //     dispatch(setProfileSelcted(true));
+  //     dispatch(
+  //       setBubbleSelected(
+  //         [0, '0', undefined, null, [], 'null'].includes(item?.community_info)
+  //           ? false
+  //           : true,
+  //       ),
+  //     );
+  //     dispatch(
+  //       setInterestSelected(
+  //         [0, '0', undefined, null, [], 'null'].includes(item?.interests)
+  //           ? false
+  //           : true,
+  //       ),
+  //     );
+  //   }
+  // }
 
   const profileListing = async () => {
     const url = 'auth/profile';
@@ -59,7 +96,6 @@ const ProfilesListing = props => {
 
   useEffect(() => {
     profileListing();
-   
   }, []);
 
   return (
@@ -90,94 +126,108 @@ const ProfilesListing = props => {
         <View style={styles.mapview}>
           <View style={styles.View}>
             {bubbleData.map((item, index) => {
-              console.log(
-                '🚀 ~ file: ProfilesListing.js:94 ~ {bubbleData.map ~ item:',
-                item,
-              );
               return (
-                <TouchableOpacity
-                  onPress={() => {
-                    if (item?.privacy == 'private') {
-                      dispatch(setAccountPrivate('private'));
-                      navigationService.navigate('LoginProfile', {item});
-                    } else {
-                      ![null, [], '', 'null', undefined].includes(
-                        item?.interests,
-                      ) && dispatch(setInterestSelected(true));
-                      dispatch(setAccountPrivate('public'));
-                      dispatch(setQuestionAnswered(item?.qa_status));
-                      dispatch(setSelectedProfileData(item));
-                      dispatch(setProfileSelcted(true));
-                      dispatch(
-                        setBubbleSelected(
-                          [0, '0', undefined, null, []].includes(item?.bubbles)
-                            ? false
-                            : true,
-                        ),
-                      );
-                      dispatch(
-                        setInterestSelected(
-                          [0, '0', undefined, null, []].includes(item?.feed)
-                            ? false
-                            : true,
-                        ),
-                      );
-                    }
-                  }}
-                  style={{
-                    width: windowWidth * 0.4,
-                    paddingVertical: moderateScale(10, 0.3),
-                    paddingHorizontal: moderateScale(30, 0.3),
-                  }}>
-                  <View
+                <>
+                  <TouchableOpacity
+                    disabled={item?.id == selectedProfile?.id}
+                    onPress={() => {
+                      if (item?.privacy == 'private') {
+                        dispatch(setAccountPrivate('private'));
+                        navigationService.navigate('LoginProfile', {item});
+                      } else {
+                        dispatch(setAccountPrivate('public'));
+                        dispatch(setQuestionAnswered(item?.qa_status));
+                        dispatch(setSelectedProfileData(item));
+                        dispatch(setProfileSelcted(true));
+                        dispatch(
+                          setBubbleSelected(
+                            [0, '0', undefined, null, [], 'null'].includes(
+                              item?.community_info,
+                            )
+                              ? false
+                              : true,
+                          ),
+                        );
+                        dispatch(
+                          setInterestSelected(
+                            [0, '0', undefined, null, [], 'null'].includes(
+                              item?.interests,
+                            )
+                              ? false
+                              : true,
+                          ),
+                        );
+                      }
+                    }}
                     style={{
-                      height: windowHeight * 0.12,
-                      width: windowHeight * 0.12,
-                      borderRadius: (windowHeight * 0.12) / 2,
-                      overflow: 'hidden',
+                      width:windowWidth * 0.4,
+                      paddingVertical: moderateScale(10, 0.3),
+                      paddingHorizontal: moderateScale(30, 0.3),
                     }}>
-                    <CustomImage
-                      onPress={() => {
-                        if (item?.privacy == 'private') {
-                          dispatch(setAccountPrivate('private'));
-                          navigationService.navigate('LoginProfile', {item});
-                        } else {
-                          dispatch(setBubbleSelected(false));
-                          dispatch(setInterestSelected(false));
-                          dispatch(setProfileSelcted(false));
-                          dispatch(setAccountPrivate('public'));
-                          dispatch(setSelectedProfileData(item));
-                          dispatch(setQuestionAnswered(item?.qa_status));
-                          dispatch(setProfileSelcted(true));
-                          dispatch(
-                            setBubbleSelected(
-                              ['0', 0, undefined, null, []].includes(
-                                item?.bubbles,
-                              )
-                                ? false
-                                : true,
-                            ),
-                          );
-                          dispatch(
-                            setInterestSelected(
-                              [0, '0', , undefined, null, []].includes(
-                                item?.feed,
-                              )
-                                ? false
-                                : true,
-                            ),
-                          );
-                        }
-                      }}
+                    <View
                       style={{
-                        height: '100%',
-                        width: '100%',
-                      }}
-                      source={{uri: item?.photo}}
-                    />
-                  </View>
-                  <CustomText style={styles.text2}>{item?.name}</CustomText>
-                </TouchableOpacity>
+                        height: windowHeight * 0.12,
+                        width: windowHeight * 0.12,
+                        borderRadius: (windowHeight * 0.12) / 2,
+                        overflow: 'hidden',
+                      }}>
+                      <CustomImage
+                        onPress={() => {
+                          if (item?.id != selectedProfile?.id) {
+                            if (item?.privacy == 'private') {
+                              dispatch(setAccountPrivate('private'));
+                              navigationService.navigate('LoginProfile', {
+                                item,
+                              });
+                            } else {
+                              dispatch(setAccountPrivate('public'));
+                              dispatch(setSelectedProfileData(item));
+                              dispatch(setQuestionAnswered(item?.qa_status));
+                              dispatch(setProfileSelcted(true));
+                              dispatch(
+                                setBubbleSelected(
+                                  [
+                                    '0',
+                                    0,
+                                    undefined,
+                                    null,
+                                    [],
+                                    'null',
+                                  ].includes(item?.community_info)
+                                    ? false
+                                    : true,
+                                ),
+                              );
+                              dispatch(
+                                setInterestSelected(
+                                  [
+                                    0,
+                                    '0',
+                                    ,
+                                    undefined,
+                                    null,
+                                    [],
+                                    'null',
+                                  ].includes(item?.interests)
+                                    ? false
+                                    : true,
+                                ),
+                              );
+                            }
+                          }else{
+                            Alert.alert('already selected')
+                          }
+                        }}
+                        style={{
+                          height: '100%',
+                          width: '100%',
+                        }}
+                        source={{uri: `${baseUrl}/${item?.photo}`}}
+                      />
+                    </View>
+                    <CustomText style={styles.text2}>{item?.name}</CustomText>
+                  </TouchableOpacity>
+                </>
               );
             })}
           </View>
