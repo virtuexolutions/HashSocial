@@ -143,6 +143,7 @@ const TextInputWithTitle = props => {
               keyboardType={props.keyboardType}
               autoCapitalize="none"
               onPressIn={props.onPressIn}
+              maxLength={props.maxLength}
             />
             <TouchableOpacity
               onPress={() => {
@@ -207,6 +208,7 @@ const TextInputWithTitle = props => {
               numberOfLines={props.numberOfLines || 1}
               editable={props.disable ? false : true}
               autoCapitalize="none"
+              maxLength={props.maxLength}
               // textAlignVertical={props.textAlignVertical}
             />
           </TouchableOpacity>

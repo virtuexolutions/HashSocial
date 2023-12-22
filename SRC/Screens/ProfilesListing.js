@@ -40,6 +40,8 @@ import {baseUrl} from '../Config';
 
 const ProfilesListing = props => {
   const back = props?.route?.params?.back;
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
+
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
   const [isLoading, setIsLoading] = useState(false);

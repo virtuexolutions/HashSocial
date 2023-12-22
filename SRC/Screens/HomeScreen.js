@@ -47,7 +47,6 @@ const HomeScreen = props => {
   const newSignUp = useSelector(state => state.authReducer.newSignUp);
   const token = useSelector(state => state.authReducer.token);
   const [selectedBubbleId, setSelectedBubbleId] = useState(null);
-  const dispatch = useDispatch();
   const [prompt, setPrompt] = useState(false);
   const [clicked, setclicked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -62,192 +61,7 @@ const HomeScreen = props => {
   const backRef = useRef(null);
   const [rotationAngle, setRotationAngle] = useState(0);
 
-  const [content, setContent] = useState([
-    {
-      private: false,
-      bubble: true,
-      source: require('../Assets/Images/gallery3.png'),
-      image: (
-        <Image
-          source={require('../Assets/Images/gallery3.png')}
-          resizeMode="cover"
-          style={[
-            style.icon,
-            {
-              borderColor: 'red',
-            },
-          ]}
-        />
-      ),
-      onPress: () => {
-        navigationService.navigate('PostScreen');
-      },
-    },
-    {
-      private: true,
-      bubble: false,
-      source: require('../Assets/Images/bubble11.png'),
-      image: (
-        <Image
-          source={require('../Assets/Images/bubble11.png')}
-          resizeMode="cover"
-          style={style.icon}
-        />
-      ),
-      onPress: () => {
-        // setclicked(true);
-
-        navigationService.navigate('PostScreen');
-      },
-    },
-    {
-      private: false,
-      bubble: false,
-      source: require('../Assets/Images/dummyman1.png'),
-      image: (
-        <Image
-          source={require('../Assets/Images/dummyman1.png')}
-          resizeMode="cover"
-          style={style.icon}
-        />
-      ),
-      onPress: () => {
-        // setclicked(true);
-
-        navigationService.navigate('PostScreen');
-      },
-    },
-    {
-      private: true,
-      bubble: false,
-      source: require('../Assets/Images/bubble1.png'),
-      image: (
-        <Image
-          source={require('../Assets/Images/bubble1.png')}
-          resizeMode="cover"
-          style={style.icon}
-        />
-      ),
-      onPress: () => {
-        // setclicked(true);
-
-        navigationService.navigate('PostScreen');
-      },
-    },
-    {
-      private: true,
-      bubble: true,
-      source: require('../Assets/Images/fitness2.png'),
-      image: (
-        <Image
-          source={require('../Assets/Images/fitness2.png')}
-          resizeMode="cover"
-          style={style.icon}
-        />
-      ),
-      onPress: () => {
-        // setclicked(true);
-
-        navigationService.navigate('PostScreen');
-      },
-    },
-    {
-      private: false,
-      bubble: true,
-      source: require('../Assets/Images/gallery7.png'),
-      image: (
-        <Image
-          source={require('../Assets/Images/gallery7.png')}
-          resizeMode="cover"
-          style={style.icon}
-        />
-      ),
-      onPress: () => {
-        // setclicked(true);
-        navigationService.navigate('PostScreen');
-      },
-    },
-    {
-      private: true,
-      bubble: false,
-      source: require('../Assets/Images/gallery3.png'),
-      image: (
-        <Image
-          source={require('../Assets/Images/gallery3.png')}
-          resizeMode="cover"
-          style={style.icon}
-        />
-      ),
-      onPress: () => {
-        // setclicked(true);
-        navigationService.navigate('PostScreen');
-      },
-    },
-    {
-      private: true,
-      bubble: false,
-      source: require('../Assets/Images/gallery2.png'),
-      image: (
-        <Image
-          source={require('../Assets/Images/gallery2.png')}
-          resizeMode="cover"
-          style={style.icon}
-        />
-      ),
-      onPress: () => {
-        // setclicked(true);
-        navigationService.navigate('PostScreen');
-      },
-    },
-    {
-      private: false,
-      bubble: false,
-      source: require('../Assets/Images/gallery1.png'),
-      image: (
-        <Image
-          source={require('../Assets/Images/gallery1.png')}
-          resizeMode="cover"
-          style={style.icon}
-        />
-      ),
-      onPress: () => {
-        // setclicked(true);
-        navigationService.navigate('PostScreen');
-      },
-    },
-    {
-      private: false,
-      bubble: false,
-      source: require('../Assets/Images/gallery4.png'),
-      image: (
-        <Image
-          source={require('../Assets/Images/gallery4.png')}
-          resizeMode="cover"
-          style={style.icon}
-        />
-      ),
-      onPress: () => {
-        // setclicked(true);
-        navigationService.navigate('PostScreen');
-      },
-    },
-    {
-      private: true,
-      bubble: true,
-      source: require('../Assets/Images/gallery5.png'),
-      image: (
-        <Image
-          source={require('../Assets/Images/gallery5.png')}
-          resizeMode="cover"
-          style={style.icon}
-        />
-      ),
-      onPress: () => {
-        // setclicked(true);
-        navigationService.navigate('PostScreen');
-      },
-    },
-  ]);
+  const [content, setContent] = useState([]);
 
   const [profiles, setProfiles] = useState([
     {
@@ -296,11 +110,12 @@ const HomeScreen = props => {
       setBubbles(response?.data?.community_info);
       setContent(
         response?.data?.community_info?.map(item => {
+          console.log(`${baseUrl}/${item?.image}`)
           return {
             id: item?.id,
             image: (
               <Image
-                source={{uri: item?.image}}
+                source={{uri: `${baseUrl}/${item?.image}`}}
                 resizeMode="cover"
                 style={style.icon}
               />
@@ -420,7 +235,7 @@ const HomeScreen = props => {
               <RoundMenu
                 centerContent={
                   <ImageBackground
-                    source={require('../Assets/Images/dummyman1.png')}
+                    source={profileData?.photo ? {uri : `${baseUrl}/${profileData?.photo}`} : require('../Assets/Images/dummyman1.png')}
                     resizeMode="cover"
                     style={style.centerImage}
                   />

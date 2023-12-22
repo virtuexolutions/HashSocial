@@ -30,7 +30,6 @@ const CustomDropDownMultiSelect = ({min, max, item, setItem, array, title , maxH
         tagBorderColor={ userRole == 'Qbid Member' ?  Color.blue : Color.white}
         tagTextColor={ userRole == 'Qbid Member' ?  Color.white : Color.white}
         
-        
         displayKey="name"
         uniqueKey="id"
         // hideSubmitButton
@@ -60,7 +59,7 @@ const CustomDropDownMultiSelect = ({min, max, item, setItem, array, title , maxH
         styleDropdownMenu={[{
           width: Dimensions.get('window').width * 0.3,
           paddingHorizontal: 10,
-          height: Dimensions.get('window').height * 0.07,
+          height: Dimensions.get('window').height * 0.06,
           borderRadius: moderateScale(30,0.3),
           backgroundColor : Color.white,
           overflow : 'hidden',
@@ -74,20 +73,20 @@ const CustomDropDownMultiSelect = ({min, max, item, setItem, array, title , maxH
           maxHeight: maxHeight,
         }}
         styleTextDropdownSelected={{
-          fontSize: moderateScale(12,0.3),
+          fontSize: moderateScale(10,0.3),
           // backgroundColor:'yellow',
           color: Color.gray,
           fontFamily: 'Inter-Medium',
         }}
         styleTextDropdown={{
-          fontSize: 16,
+          fontSize: 12,
           color: Color.gray,
           // paddingLeft: Dimensions.get('window').width * 0.0325,
           fontFamily: 'Inter-Medium',
         }}
         styleRowList={{
           height: moderateScale(40, 0.3),
-          fontSize: moderateScale(20, 0.3),
+          // fontSize: moderateScale(20, 0.3),
           justifyContent: 'center',
           borderBottomColor: Color.lightGrey,
           borderBottomWidth: 1,

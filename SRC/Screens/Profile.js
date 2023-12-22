@@ -384,6 +384,8 @@ const Profile = props => {
                   placeholderColor={Color.themeLightGray}
                   borderRadius={moderateScale(10, 0.3)}
                   titleColor={'#353535'}
+                  maxLength={4}
+                
                   // textAlign={'center'}
                 />
               </View>
