@@ -22,6 +22,7 @@ import CustomText from '../Components/CustomText';
 import {useDispatch, useSelector} from 'react-redux';
 import CustomButton from '../Components/CustomButton';
 import Color from '../Assets/Utilities/Color';
+import AlertModal from '../Components/AlertModal';
 import {Icon, ScrollView} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import CardComponent from '../Components/CardComponent';
@@ -38,13 +39,14 @@ import {setSelectedProfileData} from '../Store/slices/common';
 import navigationService from '../navigationService';
 import {baseUrl} from '../Config';
 
-const ProfilesListing = props => {
+const ProfilesListing = (props) => {
   const back = props?.route?.params?.back;
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
 
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
   const [isLoading, setIsLoading] = useState(false);
+  const [isVisible ,setIsVisible] =useState(false)
   const [bubbleData, setBubbleData] = useState([]);
   const dispatch = useDispatch();
   const selectedProfile = useSelector(
@@ -233,6 +235,7 @@ const ProfilesListing = props => {
               );
             })}
           </View>
+            {/* <AlertModal isVisible={isVisible} setIsVisible={setIsVisible}//>  */}
         </View>
       </ImageBackground>
     </>
