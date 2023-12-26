@@ -24,13 +24,12 @@ import {Icon} from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { baseUrl } from '../Config';
 
-const ComentsSection = ({refRBSheet, data}) => {
+const ComentsSection = ({refRBSheet, data, setCommentsCount}) => {
   const [yourComment, setYourComment] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [commentsData, setCommentsData] = useState(
     data?.comments ? data?.comments : [],
   );
-  console.log("🚀 ~ file: ComentsSection.js:33 ~ ComentsSection ~ commentsData:", commentsData ,)
 
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
@@ -64,6 +63,7 @@ const ComentsSection = ({refRBSheet, data}) => {
           image: profileData?.photo,
         },
       ]);
+      setCommentsCount(prev=>prev+1)
       Platform.OS == 'android'
         ? ToastAndroid.show('Comment added', ToastAndroid.SHORT)
         : Alert.alert('Comment added');
@@ -82,8 +82,6 @@ const ComentsSection = ({refRBSheet, data}) => {
       height={700}>
       <View
         style={{
-          // marginTop: moderateScale(20, 0.3),
-          // backgroundColor : 'green',
           height : windowHeight * 0.8,
         }}>
       <FlatList
@@ -92,16 +90,10 @@ const ComentsSection = ({refRBSheet, data}) => {
           paddingBottom: moderateScale(60, 0.6),
           // backgroundColor: 'red',
         }}
-        // style={{
-        //   height : windowHeight * 0.6,
-
-        // }}
+       
         data={commentsData}
-        // data={[
-        //   1, 2, 3, 4, 5, 6, 7
-        // ]}
+       
         renderItem={({item, index}) => {
-          // console.log("🚀 ~ file: ComentsSection.js:104 ~ ComentsSection ~ item:", item,`${baseUrl}/${item?.profile_info?.photo}`)
           
           return (
             <View
@@ -124,7 +116,7 @@ const ComentsSection = ({refRBSheet, data}) => {
                         item?.profile_info?.photo
                           ? {uri: `${baseUrl}/${item?.profile_info?.photo}`}
                           : item?.image
-                          ? {uri: item?.image}
+                          ? {uri: `${baseUrl}/${item?.image}`}
                           : require('../Assets/Images/permissions.png')
                       }
                       style={{

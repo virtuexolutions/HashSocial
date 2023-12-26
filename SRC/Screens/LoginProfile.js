@@ -38,7 +38,7 @@ import {
 import {setSelectedProfileData} from '../Store/slices/common';
 import Modal from 'react-native-modal';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
-import { baseUrl } from '../Config';
+import {baseUrl} from '../Config';
 
 const LoginProfile = props => {
   const item = props?.route?.params?.item;
@@ -70,22 +70,33 @@ const LoginProfile = props => {
     setIsLoading(false);
 
     if (response?.data?.success) {
-          console.log("🚀 ~ file: LoginProfile.js:73 ~ loginProfile ~ response:", response?.data, response?.data?.profile_info?.community_list?.length)
-      
+      console.log(
+        '🚀 ~ file: LoginProfile.js:73 ~ loginProfile ~ response:',
+        response?.data,
+        response?.data?.profile_info?.community_list?.length,
+      );
+
       setPassCode('');
       setModal(false);
       dispatch(setSelectedProfileData({}));
       dispatch(setQuestionAnswered(response?.data?.profile_info?.qa_status));
       dispatch(setSelectedProfileData(response?.data?.profile_info));
       dispatch(setProfileSelcted(true));
+
       dispatch(
         setBubbleSelected(
-          response?.data?.profile_info?.community_list?.length > 0 ? true : false,
+          response?.data?.profile_info?.community_list?.length > 0
+            ? true
+            : false,
         ),
       );
       dispatch(
         setInterestSelected(
-          [null, undefined, 0, 'null', []].includes(response?.data?.profile_info?.interests) ? false : true,
+          [null, undefined, 0, 'null', []].includes(
+            response?.data?.profile_info?.interests,
+          )
+            ? false
+            : true,
         ),
       );
     }
@@ -137,7 +148,11 @@ const LoginProfile = props => {
                 console.log('first');
                 setModal(true);
               }}
-              source={item?.photo ? {uri: `${baseUrl}/${item?.photo}`} : require('../Assets/Images/travel.jpg')}
+              source={
+                item?.photo
+                  ? {uri: `${baseUrl}/${item?.photo}`}
+                  : require('../Assets/Images/travel.jpg')
+              }
               style={{width: '100%', height: '100%'}}
             />
           </View>

@@ -26,7 +26,7 @@ import {
   setQuestionAnswered,
   setUserToken,
 } from '../Store/slices/auth';
-import {setSelectedBubbles} from '../Store/slices/common';
+import {setSelectedBubbles, setSelectedProfileData} from '../Store/slices/common';
 
 const Header = props => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
@@ -93,6 +93,7 @@ const Header = props => {
         dispatch(setBubbleCreated(false));
         dispatch(setNewSignUp(false));
         dispatch(setSelectedBubbles(false));
+        dispatch(setSelectedProfileData({}))
 
         // navigationService.navigate('LoginScreen');
       },

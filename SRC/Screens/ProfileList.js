@@ -25,67 +25,31 @@ import CardComponent from '../Components/CardComponent';
 import {Get} from '../Axios/AxiosInterceptorFunction';
 import {useNavigation} from '@react-navigation/native';
 import navigationService from '../navigationService';
+import ProfileComponent from '../Components/profileComponent';
 
 const ProfileList = () => {
   const navigation = useNavigation();
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
-  const [listingData, setListingData] = useState([]);
+  const [profileData, setProfileData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const profileListing = async () => {
+    const url = 'auth/profile';
+    setIsLoading(true);
+    const response = await Get(url, token);
+    setIsLoading(false);
+    if (response != undefined) {
+      console.log("🚀 ~ file: ProfileList.js:43 ~ profileListing ~ response:", response?.data)
+      setProfileData(response?.data?.profile_info);
+    }
+  };
 
   useEffect(() => {
-    // profileListing();
+    profileListing();
   }, []);
 
-  const ProfileListData = [
-    {
-      id: 1,
-      image: require('../Assets/Images/dummyman1.png'),
-      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      name: 'Book Author',
-      profileType: 'Content creator',
-      title: 'Private Account',
-      close: true,
-      check: false,
-      edit: true,
-      pending: false,
-    },
-    {
-      id: 2,
-      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      image: require('../Assets/Images/dummyman4.png'),
-      name: 'Alternative fitness',
-      profileType: 'Enterpreneur',
-      title: 'Public Account',
-      close: true,
-      check: false,
-      edit: true,
-      pending: false,
-    },
-    {
-      id: 3,
-      image: require('../Assets/Images/avatar.png'),
-      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      name: 'Alchol',
-      profileType: 'Connector',
-      title: 'Public Account',
-      close: true,
-      check: false,
-      edit: true,
-      pending: false,
-    },
-    {
-      id: 4,
-      image: require('../Assets/Images/dummyUser.png'),
-      name: 'Bords Shooting',
-      desc: 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.',
-      title: 'Private Account',
-      close: true,
-      profileType: 'Explore',
-      check: false,
-      edit: true,
-      pending: false,
-    },
-  ];
+
 
   return (
     <>
@@ -110,17 +74,16 @@ const ProfileList = () => {
         <View
           style={{
             width: windowWidth,
-            // marginBottom: moderateScale(10, 0.3),
             marginTop: moderateScale(10, 0.3),
           }}>
           <FlatList
-            data={ProfileListData}
+            data={profileData}
             contentContainerStyle={{
               marginBottom: moderateScale(30, 0.3),
             }}
             renderItem={({item, index}) => {
               return (
-                <CardComponent
+                <ProfileComponent
                   item={item}
                   check={item?.check}
                   close={item?.close}
@@ -134,19 +97,16 @@ const ProfileList = () => {
         <View
           style={{
             backgroundColor: 'white',
-            padding:moderateScale(11,0.3),
-            borderRadius:11,
-            borderColor:Color.green,
-            borderWidth:1
-
+            padding: moderateScale(11, 0.3),
+            borderRadius: 11,
+            borderColor: Color.green,
+            borderWidth: 1,
           }}>
           <CustomText
             onPress={() => navigationService.navigate('Profile')}
-            // numberOfLines={1}
             style={{
               fontSize: moderateScale(13, 0.6),
               color: '#000',
-              // color:'white',
               textAlign: 'center',
             }}
             isBold>

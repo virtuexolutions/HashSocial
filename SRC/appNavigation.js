@@ -92,17 +92,18 @@ const AppNavigator = () => {
 
   const AppNavigatorContainer = () => {
     const thirdScreen =
-      token == null
-        ? 'LoginScreen'
-        : numOfProfile == 0
-        ? 'ProfileType'
-        : profileSelected == false
-        ? 'ProfilesListing'
-        : interestSelected == false
-        ? 'InterestSelection'
-        : bubbleSelected == false
-        ? 'BubbleSelection'
-        : 'TabNavigation';
+    token == null
+    ? 'LoginScreen'
+    : numOfProfile == 0
+    ? 'ProfileType'
+    : profileSelected == false
+    ? 'ProfilesListing'
+    : interestSelected == false
+    ? 'InterestSelection'
+    : bubbleSelected == false
+    ? 'BubbleSelection'
+    : 'TabNavigation';
+    console.log("🚀 ~ file: appNavigation.js:95 ~ AppNavigatorContainer ~ thirdScreen:", thirdScreen)
 
     return (
       <NavigationContainer ref={navigationService.navigationRef}>

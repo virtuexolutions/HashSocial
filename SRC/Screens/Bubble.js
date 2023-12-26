@@ -56,74 +56,6 @@ const Bubble = props => {
   const [selectedEvent, setSelectedEvent] = useState('Posts');
   const [search, setSearch] = useState('');
   const [timerId, setTimerId] = useState(null);
-  const SearchData = [
-    {
-      id: 1,
-      image: require('../Assets/Images/Ellipse2.png'),
-      name: 'Alchole',
-      Tags: '#Architecture',
-    },
-    {
-      id: 2,
-      image: require('../Assets/Images/Ellipse3.png'),
-      name: 'Alternative Fitness',
-      Tags: '#Architecture',
-    },
-    {
-      id: 3,
-      image: require('../Assets/Images/Ellipse4.png'),
-      name: 'Archery',
-      Tags: '#Architecture',
-    },
-    {
-      id: 4,
-      image: require('../Assets/Images/Ellipse5.png'),
-      name: 'architecture',
-      Tags: '#Architecture',
-    },
-    {
-      id: 5,
-      image: require('../Assets/Images/Ellipse6.png'),
-      name: 'art',
-      Tags: '#Architecture',
-    },
-    {
-      id: 6,
-      image: require('../Assets/Images/Ellipse2.png'),
-      name: 'Astrology',
-      Tags: '#Architecture',
-    },
-    {
-      id: 7,
-      image: require('../Assets/Images/Ellipse3.png'),
-      name: 'Beer',
-      Tags: '#Architecture',
-    },
-    {
-      id: 8,
-      image: require('../Assets/Images/Ellipse4.png'),
-      name: 'Author Books',
-      Tags: '#Architecture',
-    },
-    {
-      id: 9,
-      image: require('../Assets/Images/Ellipse5.png'),
-      name: 'Bird Watching',
-      Tags: '#Architecture',
-    },
-    {
-      id: 10,
-      image: require('../Assets/Images/Ellipse6.png'),
-      name: 'bolging',
-      Tags: '#Architecture',
-    },
-    {
-      id: 11,
-      image: require('../Assets/Images/Ellipse2.png'),
-      name: 'Author books',
-      Tags: '#Architecture',
-    },
-  ];
   const [newData, setnewData] = useState([]);
   const [invitedPeople, setInvitedPeople] = useState([]);
 
@@ -136,7 +68,6 @@ const Bubble = props => {
       clearTimeout(timerId);
     }
 
-   
     const newTimerId = setTimeout(() => {
       SearchMembers(text);
     }, 300);
@@ -145,7 +76,6 @@ const Bubble = props => {
   };
 
   const SearchMembers = async text => {
-    console.log('🚀 ~ file: Bubble.js:151 ~ SearchMembers ~ text:', text);
     const url = `auth/member_search`;
     const body = {
       search: text,

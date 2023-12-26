@@ -32,20 +32,20 @@ import moment from 'moment';
 import navigationService from '../navigationService';
 import TextInputWithTitle from './TextInputWithTitle';
 import ComentsSection from './ComentsSection';
-import numeral from 'numeral'
-import { baseUrl } from '../Config';
+import numeral from 'numeral';
+import {baseUrl} from '../Config';
 
 const PostComponentBubble = ({data}) => {
-  const [like, setLike] = useState(data?.my_like ? data?.my_like : false);
+  const [like, setLike] = useState(data?.my_like ? true : false);
   const userData = useSelector(state => state.commonReducer.userData);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
+  const [commentsCount, setCommentsCount] = useState(0)
   const refRBSheet = useRef();
   const MoreIcon = require('../Assets/Images/threedots.png');
   const token = useSelector(state => state.authReducer.token);
 
-  const [animationStarted, setAnimationStarted] = useState(false);
+
   const [loading, setloading] = useState(false);
-  const lottieAnimation = useRef();
 
   const editPost = () => {
     navigationService.navigate('AddPost', {data});
@@ -59,6 +59,7 @@ const PostComponentBubble = ({data}) => {
     if (response != undefined) {
     }
   };
+
   const likePost = async () => {
     const url = `auth/post_like`;
     const body = {
@@ -75,61 +76,33 @@ const PostComponentBubble = ({data}) => {
 
   return (
     <>
-      <View
-        style={{
-          width: windowWidth * 0.95,
-          marginVertical: moderateScale(10, 0.6),
-          paddingVertical: moderateScale(10, 0.3),
-          backgroundColor: '#F5F5F5',
-          borderRadius: moderateScale(10, 0.6),
-          alignSelf: 'center',
-          // marginTop: moderateScale(10, 0.3),
-        }}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingHorizontal: moderateScale(10, 0.6),
-            // marginTop: moderateScale(10, 0.3),
-          }}>
+      <View style={styles.mainContainer}>
+        <View style={styles.postFooter}>
           <View style={styles.profileSection2}>
             <CustomImage
-              source={{uri:`${baseUrl}/${data?.profile_info?.photo}`}}
+              source={{uri: `${baseUrl}/${data?.profile_info?.photo}`}}
               // source={{uri: data?.profile_info?.photo}}
-              style={{
-                height: '100%',
-                width: '100%',
-              }}
-              // resizeMode="contain"
+              style={styles.image}
             />
           </View>
 
-          <View style={{width: windowWidth * 0.65, justifyContent: 'center'}}>
-            <View
+          <View
+            style={{
+              width: windowWidth * 0.65,
+              justifyContent: 'center',
+            }}>
+            <CustomText
+              isBold
+              numberOfLines={1}
               style={{
-                flexDirection: 'row',
-                width: windowWidth * 0.6,
-                // backgroundColor : 'red',
-                alignItems: 'center',
+                fontSize: moderateScale(15, 0.6),
               }}>
-              <CustomText
-                isBold
-                numberOfLines={1}
-                style={{
-                  fontSize: moderateScale(15, 0.6),
-                }}>
-                {data?.profile_info?.name}
-              </CustomText>
-            </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-              }}>
-              <CustomText style={{textAlign: 'left'}}>
-                {moment(data?.created_at).fromNow()}
-              </CustomText>
-            </View>
+              {data?.profile_info?.name}
+            </CustomText>
+
+            <CustomText style={{textAlign: 'left'}}>
+              {moment(data?.created_at).fromNow()}
+            </CustomText>
           </View>
 
           <OptionsMenu
@@ -140,37 +113,15 @@ const PostComponentBubble = ({data}) => {
               tintColor: '#000',
             }}
             destructiveIndex={1}
-            options={[ 'Delete']}
-            actions={[ deletePost]}
+            options={['Delete']}
+            actions={[deletePost]}
           />
         </View>
 
-        <View
-          style={{
-            width: windowWidth * 0.9,
-            // backgroundColor:'red',
-            marginTop: moderateScale(8, 0.3),
-          }}>
-          <CustomText
-            style={{
-              textAlign: 'left',
-              marginLeft: moderateScale(15, 0.3),
-              fontSize: moderateScale(13, 0.6),
-              lineHeight: moderateScale(20, 0.6),
-            }}>
-            {data?.caption}
-          </CustomText>
-        </View>
+        <CustomText style={styles.caption}>{data?.caption}</CustomText>
+
         {data?.post_images?.length > 0 && (
-          <View
-            style={{
-              alignSelf: 'center',
-              width: windowWidth * 0.9,
-              height: windowHeight * 0.3,
-              marginTop: moderateScale(10, 0.3),
-              borderRadius: moderateScale(20, 0.6),
-              overflow: 'hidden',
-            }}>
+          <View style={styles.actions}>
             {data?.post_images?.length > 0 ? (
               <View
                 style={{
@@ -185,107 +136,73 @@ const PostComponentBubble = ({data}) => {
                   }}
                   resizeMode="cover"
                 />
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: windowWidth,
-                    height: windowHeight * 0.06,
-                    alignItems: 'center',
-                    // justifyContent: 'space-between',
-                    paddingHorizontal: moderateScale(10, 0.3),
-
-                    position: 'absolute',
-                    bottom: 0,
-                    backgroundColor: 'rgba(255,255,255,0.3)',
-                  }}>
-                  <View
-                    style={{
-                      flexDirection: 'row',
-                      // width: windowWidth * 0.25,
-                      justifyContent:'space-between',
-                      // backgroundColor: 'green',
-                      alignItems: 'center',
-                    }}>
-                    <View
-                      style={{
-                        width:like ?  moderateScale(30, 0.6) : moderateScale(25, 0.6),
-                        height: like ?  moderateScale(30, 0.6) : moderateScale(25, 0.6),
-                        // backgroundColor:'purple',
-                        
-                      }}>
-                      <CustomImage
-                        source={
-                          like
-                            ? require('../Assets/Images/heart.png')
-                            : require('../Assets/Images/heart3.png')
-                        }
-                        style={{
-                          height: '100%',
-                          width: '100%',
-                        }}
-                        onPress={() => {
-                          likePost();
-                        }}
-                        resizeMode="cover"
-                      />
-                    </View>
-
-                    <CustomText
-                      isBold
-                      style={{
-                        color: Color.black,
-                        marginLeft: moderateScale(2, 0.3),
-                        marginRight: moderateScale(10, 0.3),
-                        fontSize: moderateScale(13, 0.6),
-                        // width: windowWidth * 0.16,
-                      }}>
-                      {like ? numeral(data?.total_likes_count+1).format('0a'): numeral(data?.total_likes_count).format('0a')}
-                    </CustomText>
-                    <TouchableOpacity
-                      onPress={() => {
-                        refRBSheet.current.open();
-                      }}
-                      style={{
-                        width: moderateScale(25, 0.6),
-                        height: moderateScale(25, 0.6),
-                        marginLeft:moderateScale(5,.3),
-                      }}>
-                      <CustomImage
-                        onPress={() => {
-                          refRBSheet.current.open();
-                        }}
-                        source={require('../Assets/Images/msg1.png')}
-                        style={{
-                          height: '100%',
-                          width: '100%',
-                          tintColor: 'white',
-                        }}
-                        resizeMode="contain"
-                      />
-                    </TouchableOpacity>
-                    <CustomText
-                      onPress={() => {
-                        refRBSheet.current.open();
-                      }}
-                      isBold
-                      style={{
-                        color: Color.black,
-                        marginLeft: moderateScale(5, 0.3),
-                        fontSize: moderateScale(13, 0.6),
-                        width: windowWidth * 0.13,
-                      }}>
-                      {data?.comments?.length}
-                    </CustomText>
-                  </View>
-                </View>
               </View>
             ) : (
               <VideoController item={data} />
             )}
           </View>
         )}
+        <View
+          style={[
+            styles.imageContainer,
+            // data?.post_images?.length > 0 && {position: 'absolute'},
+          ]}>
+          <View
+            style={{
+              width: like ? moderateScale(30, 0.6) : moderateScale(25, 0.6),
+              height: like ? moderateScale(30, 0.6) : moderateScale(25, 0.6),
+            }}>
+            <CustomImage
+              source={
+                like
+                  ? require('../Assets/Images/heart.png')
+                  : require('../Assets/Images/heart3.png')
+              }
+              style={{
+                height: '100%',
+                width: '100%',
+              }}
+              onPress={() => {
+                likePost();
+              }}
+              resizeMode="cover"
+            />
+          </View>
+
+          <CustomText
+            isBold
+            style={styles.numLikes}>
+            {(data?.my_like && like) ||(!data?.my_like && !like)  
+              ? numeral(data?.total_likes_count).format('0a')
+              : data?.my_like && !like
+              ? numeral(data?.total_likes_count - 1).format('0a')
+              : numeral(data?.total_likes_count + 1).format('0a')}
+          </CustomText>
+          <TouchableOpacity
+            onPress={() => {
+              refRBSheet.current.open();
+            }}
+            style={styles.comments}>
+            <CustomImage
+              onPress={() => {
+                refRBSheet.current.open();
+              }}
+              source={require('../Assets/Images/msg1.png')}
+              style={[styles.image, {tintColor: 'white'}]}
+              resizeMode="contain"
+            />
+          </TouchableOpacity>
+          <CustomText
+            onPress={() => {
+              refRBSheet.current.open();
+            }}
+            isBold
+            style={styles.commentsText}>
+            {data?.comments?.length+commentsCount}
+          </CustomText>
+        </View>
       </View>
-      <ComentsSection refRBSheet={refRBSheet} data={data} />
+      <ComentsSection refRBSheet={refRBSheet} data={data} setCommentsCount={setCommentsCount} />
     </>
   );
 };
@@ -312,6 +229,70 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     overflow: 'hidden',
   },
+  mainContainer: {
+    width: windowWidth * 0.95,
+    marginVertical: moderateScale(10, 0.6),
+    paddingVertical: moderateScale(10, 0.3),
+    backgroundColor: '#F5F5F5',
+    borderRadius: moderateScale(10, 0.6),
+    alignSelf: 'center',
+    overflow: 'hidden',
+  },
+  image: {
+    height: '100%',
+    width: '100%',
+  },
+  postFooter: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(10, 0.6),
+  },
+  nameView: {
+    flexDirection: 'row',
+    width: windowWidth * 0.6,
+    alignItems: 'center',
+  },
+  caption: {
+    textAlign: 'left',
+    marginLeft: moderateScale(15, 0.3),
+    fontSize: moderateScale(13, 0.6),
+    lineHeight: moderateScale(20, 0.6),
+    paddingVertical: moderateScale(10, 0.6),
+  },
+  imageContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    // justifyContent:'center',
+    paddingHorizontal: moderateScale(10, 0.3),
+    paddingVertical: moderateScale(5, 0.3),
+    bottom: -12,
+    backgroundColor: 'rgba(0,0,0,0.3)',
+  },
+  actions: {
+    alignSelf: 'center',
+    width: windowWidth * 0.9,
+    height: windowHeight * 0.3,
+    marginTop: moderateScale(10, 0.3),
+    borderRadius: moderateScale(20, 0.6),
+    overflow: 'hidden',
+  },
+  comments: {
+    width: moderateScale(25, 0.6),
+    height: moderateScale(25, 0.6),
+    marginLeft: moderateScale(5, 0.3),
+  },
+  commentsText: {
+    color: Color.black,
+    marginLeft: moderateScale(5, 0.3),
+    fontSize: moderateScale(13, 0.6),
+    width: windowWidth * 0.13,
+  },
+  numLikes:{
+    color: Color.black,
+    marginLeft: moderateScale(2, 0.3),
+    marginRight: moderateScale(10, 0.3),
+    fontSize: moderateScale(13, 0.6),
+  }
 });
 
 export default PostComponentBubble;

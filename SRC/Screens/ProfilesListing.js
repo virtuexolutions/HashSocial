@@ -39,46 +39,21 @@ import {setSelectedProfileData} from '../Store/slices/common';
 import navigationService from '../navigationService';
 import {baseUrl} from '../Config';
 
-const ProfilesListing = (props) => {
+const ProfilesListing = props => {
   const back = props?.route?.params?.back;
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
 
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
   const [isLoading, setIsLoading] = useState(false);
-  const [isVisible ,setIsVisible] =useState(false)
+  const [isVisible, setIsVisible] = useState(false);
+  console.log("🚀 ~ file: ProfilesListing.js:50 ~ ProfilesListing ~ isVisible:", isVisible)
   const [bubbleData, setBubbleData] = useState([]);
+  const [selectedItem, setSelectedItem] = useState({});
   const dispatch = useDispatch();
   const selectedProfile = useSelector(
     state => state.commonReducer.selectedProfile,
   );
-
-
-  // const onConfirm = async ()=>{
-  //   if (item?.privacy == 'private') {
-  //     dispatch(setAccountPrivate('private'));
-  //     navigationService.navigate('LoginProfile', {item});
-  //   } else {
-  //     dispatch(setAccountPrivate('public'));
-  //     dispatch(setQuestionAnswered(item?.qa_status));
-  //     dispatch(setSelectedProfileData(item));
-  //     dispatch(setProfileSelcted(true));
-  //     dispatch(
-  //       setBubbleSelected(
-  //         [0, '0', undefined, null, [], 'null'].includes(item?.community_info)
-  //           ? false
-  //           : true,
-  //       ),
-  //     );
-  //     dispatch(
-  //       setInterestSelected(
-  //         [0, '0', undefined, null, [], 'null'].includes(item?.interests)
-  //           ? false
-  //           : true,
-  //       ),
-  //     );
-  //   }
-  // }
 
   const profileListing = async () => {
     const url = 'auth/profile';
@@ -86,8 +61,6 @@ const ProfilesListing = (props) => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-     
-
       setBubbleData(response?.data?.profile_info);
     }
   };
@@ -129,36 +102,11 @@ const ProfilesListing = (props) => {
                   <TouchableOpacity
                     disabled={item?.id == selectedProfile?.id}
                     onPress={() => {
-                      if (item?.privacy == 'private') {
-                        dispatch(setAccountPrivate('private'));
-                        navigationService.navigate('LoginProfile', {item});
-                      } else {
-                        dispatch(setAccountPrivate('public'));
-                        dispatch(setQuestionAnswered(item?.qa_status));
-                        dispatch(setSelectedProfileData(item));
-                        dispatch(setProfileSelcted(true));
-                        dispatch(
-                          setBubbleSelected(
-                            [0, '0', undefined, null, [], 'null'].includes(
-                              item?.community_info,
-                            )
-                              ? false
-                              : true,
-                          ),
-                        );
-                        dispatch(
-                          setInterestSelected(
-                            [0, '0', undefined, null, [], 'null'].includes(
-                              item?.interests,
-                            )
-                              ? false
-                              : true,
-                          ),
-                        );
-                      }
+                      setSelectedItem(item);
+                      setIsVisible(true);
                     }}
                     style={{
-                      width:windowWidth * 0.4,
+                      width: windowWidth * 0.4,
                       paddingVertical: moderateScale(10, 0.3),
                       paddingHorizontal: moderateScale(30, 0.3),
                     }}>
@@ -171,50 +119,8 @@ const ProfilesListing = (props) => {
                       }}>
                       <CustomImage
                         onPress={() => {
-                          if (item?.id != selectedProfile?.id) {
-                            if (item?.privacy == 'private') {
-                              dispatch(setAccountPrivate('private'));
-                              navigationService.navigate('LoginProfile', {
-                                item,
-                              });
-                            } else {
-                              dispatch(setAccountPrivate('public'));
-                              dispatch(setSelectedProfileData(item));
-                              dispatch(setQuestionAnswered(item?.qa_status));
-                              dispatch(setProfileSelcted(true));
-                              dispatch(
-                                setBubbleSelected(
-                                  [
-                                    '0',
-                                    0,
-                                    undefined,
-                                    null,
-                                    [],
-                                    'null',
-                                  ].includes(item?.community_info)
-                                    ? false
-                                    : true,
-                                ),
-                              );
-                              dispatch(
-                                setInterestSelected(
-                                  [
-                                    0,
-                                    '0',
-                                    ,
-                                    undefined,
-                                    null,
-                                    [],
-                                    'null',
-                                  ].includes(item?.interests)
-                                    ? false
-                                    : true,
-                                ),
-                              );
-                            }
-                          }else{
-                            Alert.alert('already selected')
-                          }
+                          setSelectedItem(item );
+                          setIsVisible(true);
                         }}
                         style={{
                           height: '100%',
@@ -229,7 +135,7 @@ const ProfilesListing = (props) => {
               );
             })}
           </View>
-            {/* <AlertModal isVisible={isVisible} setIsVisible={setIsVisible}//>  */}
+          <AlertModal isVisible={isVisible} setIsVisible={setIsVisible}  item={selectedItem} />
         </View>
       </ImageBackground>
     </>
