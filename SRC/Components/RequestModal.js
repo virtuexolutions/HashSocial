@@ -38,10 +38,7 @@ const RequestModal = ({isVisible, setIsVisible, text, selectedBubbleId}) => {
     const response = await Post(url, body, apiHeader(token));
     setLoading(false);
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: RequestModal.js:32 ~ addRequest ~ response:',
-        response?.data,
-      );
+      
       setIsVisible(false);
       Platform.OS == 'android'
         ? ToastAndroid.show('Request has been sent', ToastAndroid.SHORT)

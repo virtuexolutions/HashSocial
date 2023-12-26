@@ -23,7 +23,6 @@ import {useSelector} from 'react-redux';
 import { baseUrl } from '../Config';
 
 const FeedContainer = ({item, source}) => {
-  console.log('🚀 ~ file: FeedContainer.js:25 ~ FeedContainer ~ source:', item);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
 
   return (

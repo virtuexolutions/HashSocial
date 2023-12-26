@@ -43,7 +43,6 @@ const HomeScreen = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
-  console.log("🚀 ~ file: HomeScreen.js:46 ~ HomeScreen ~ profileData:", profileData)
   const newSignUp = useSelector(state => state.authReducer.newSignUp);
   const token = useSelector(state => state.authReducer.token);
   const [selectedBubbleId, setSelectedBubbleId] = useState(null);
@@ -105,12 +104,10 @@ const HomeScreen = props => {
     setIsLoading(true);
     const response = await Get(url, token);
     setIsLoading(false);
-    console.log("🚀 ~ file: HomeScreen.js:294 ~ getBubbles ~ response:", response?.data)
     if (response != undefined) {
       setBubbles(response?.data?.community_info);
       setContent(
         response?.data?.community_info?.map(item => {
-          console.log(`${baseUrl}/${item?.image}`)
           return {
             id: item?.id,
             image: (

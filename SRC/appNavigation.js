@@ -60,14 +60,11 @@ const AppNavigator = () => {
   const walkThrough = useSelector(state => state.authReducer.userWalkThrough);
   const isVerified = useSelector(state => state.authReducer.isVerified);
   const token = useSelector(state => state.authReducer.token);
-  console.log('🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ token:', token);
   const bubbleCreated = useSelector(state => state.authReducer.bubbleCreated);
   const interestSelected = useSelector(
     state => state.authReducer.interestSelected,
   );
-  console.log("🚀 ~ file: appNavigation.js:68 ~ AppNavigator ~ interestSelected:", interestSelected)
 
-  console.log('🚀 ~ file: appNavigation.js:59 ~ AppNavigator ~ token:', token);
   const bubbleSelected = useSelector(state => state.authReducer.bubbleSelected);
 
   const numOfProfile = useSelector(state => state.authReducer.numOfProfiles);
@@ -75,11 +72,20 @@ const AppNavigator = () => {
 
   const profileSelected = useSelector(
     state => state.authReducer.profileSelected,
-  );
+    );
+    console.log(
+      '🚀 ~ file: appNavigation.js:63 ~ AppNavigator ~ token:',
+      token,
+      'interestSelected',
+      interestSelected,
+      'numOfProfile',
+      numOfProfile,
+      'profileSelected',
+      profileSelected,
+      'bubbleSelected',
+      bubbleSelected
 
-  const questionAnswered = useSelector(
-    state => state.authReducer.questionAnswered,
-  );
+    );
 
   const RootNav = createNativeStackNavigator();
   const RootNavLogged = createNativeStackNavigator();
@@ -115,7 +121,7 @@ const AppNavigator = () => {
             component={BubbleManagement}
           />
           <RootNav.Screen name="Feeds" component={Feeds} />
-          
+
           <RootNav.Screen name="ProfileType" component={ProfileType} />
           <RootNav.Screen name="QuestionScreen" component={QuestionScreen} />
           <RootNav.Screen name="EventDetails" component={EventDetails} />

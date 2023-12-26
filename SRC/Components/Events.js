@@ -32,7 +32,6 @@ const Events = ({onPress, bubbleId, bubbleInfo}) => {
   const [isLoading, setIsLoading] = useState(false);
   const [events, setEvents] = useState([]);
   const isFocused = useIsFocused();
-  console.log('🚀 ~ file: Events.js:24 ~ Events ~ bubbleId:', bubbleId);
 
   const getEvents = async () => {
     const url = `auth/event/${bubbleId}`;
@@ -40,10 +39,7 @@ const Events = ({onPress, bubbleId, bubbleInfo}) => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: Events.js:34 ~ getEvents ~ response:',
-        response?.data,
-      );
+     
       setEvents(response?.data?.event_info);
     }
   };

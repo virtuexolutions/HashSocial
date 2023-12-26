@@ -42,7 +42,6 @@ const BubbleCard = ({
   getRequests,
   getList,
 }) => {
-  console.log("🚀 ~ file: BubbleCard.js:45 ~ item:", item?.status == 'invite'&& item)
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const token = useSelector(state => state.authReducer.token);
   const [loading, setLoading] = useState(false);

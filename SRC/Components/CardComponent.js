@@ -46,10 +46,7 @@ const CardComponent = ({
   Requested,
   blocked,
 }) => {
-  console.log(
-    '🚀 ~ file: CardComponent.js:39 ~ CardComponent ~ item:',
-    item?.status,
-  );
+
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
 
@@ -60,7 +57,6 @@ const CardComponent = ({
   const [invite , setinvited] = useState(item?.role == 'admin' && item?.status == 'invite' ? true : false)
   const [block , setblocked] = useState(item?.role == 'admin' && item?.status == 'blocked' ? true : false)
   const [member , setmember] = useState(item?.role == 'admin' && item?.status == 'follow' ? true : false)
-  console.log("🚀 ~ file: CardComponent.js:63 ~ member:", member)
 
 
 
@@ -70,11 +66,9 @@ const CardComponent = ({
       status: actionType,
     };
     setisLoading(true);
-    // return console.log("🚀 ~ file: CardComponent.js:51 ~ handleMemberAction ~ body:", body)
     const response = await Post(url, body, apiHeader(token));
     setisLoading(false);
     if (response != undefined) {
-      console.log(response?.data);
       if(actionType == 'accept'){
         setRequested(false)
         setmember(true)

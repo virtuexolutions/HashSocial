@@ -1,6 +1,6 @@
 // export const baseUrl = "https://hatch-social.ad-wize.com";
-export const baseUrl = "https://stoic-herschel.23-83-37-162.plesk.page";
-// export const baseUrl = "https://4b54-113-203-241-1.in.ngrok.io";
+// export const baseUrl = "https://stoic-herschel.23-83-37-162.plesk.page";
+export const baseUrl = "https://65e1-139-190-235-61.ngrok-free.app";
 export const imageUrl = `${baseUrl}/api/images/`;
 export const profilePicUrl = `${baseUrl}/uploads`
 

@@ -52,10 +52,7 @@ const ProfilesListing = (props) => {
   const selectedProfile = useSelector(
     state => state.commonReducer.selectedProfile,
   );
-  console.log(
-    '🚀 ~ file: ProfilesListing.js:46 ~ ProfilesListing ~ selectedProfile:',
-    selectedProfile,
-  );
+
 
   // const onConfirm = async ()=>{
   //   if (item?.privacy == 'private') {
@@ -89,10 +86,7 @@ const ProfilesListing = (props) => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: ProfileList.js:37 ~ profileListing ~ response:',
-        response?.data,
-      );
+     
 
       setBubbleData(response?.data?.profile_info);
     }

@@ -106,19 +106,13 @@ const AddEvents = (props) => {
         ? ToastAndroid.show('Add an image', ToastAndroid.SHORT)
         : Alert.alert('Add an image');
     }
-     console.log(
-      '🚀 ~ file: AddEvents.js:76 ~ AddEvent ~ formData:',
-      formData,
-    );
+  
 
     setLoading(true);
     const response = await Post(url, formData, apiHeader(token));
     setLoading(false);
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: AddEvents.js:77 ~ AddEvent ~ response:',
-        response?.data,
-      );
+    
       navigation.goBack();
     }
   };
@@ -318,7 +312,6 @@ const AddEvents = (props) => {
               }}
               minDate={moment().format()}
               onDayPress={day => {
-                console.log('day========>>>>>', day);
                 setDate(day?.dateString);
                 setCalendarVisible(false);
               }}
@@ -393,10 +386,7 @@ const AddEvents = (props) => {
         visible={timeVisible}
         setIsVisible={setTimeVisible}
         onConfirm={pickedDuration => {
-          console.log(
-            '🚀 ~ file: AddEvents.js:389 ~ AddEvents ~ pickedDuration:',
-            pickedDuration,
-          );
+        
           // setTime(pickedDuration);
           setHours(pickedDuration?.hours);
           setMinutes(pickedDuration?.minutes);

@@ -108,7 +108,6 @@ const AddPost = props => {
       }
     }
 
-    console.log('🚀 ~ file: AddPost.js:64 ~ AddPost ~ formData:',JSON.stringify(formData, null, 2));
 
     setLoading(true);
     const response = await Post(url, formData, apiHeader(token));
@@ -154,16 +153,12 @@ const AddPost = props => {
       }
     }
 
-    console.log('🚀 ~ file: AddPost.js:64 ~ AddPost ~ formData:', formData);
 
     setLoading(true);
     const response = await Post(url, formData, apiHeader(token));
     setLoading(false);
     if (response != undefined) {
-      return console.log(
-        '🚀 ~ file: AddPost.js:74 ~ AddPost ~ response:',
-        response?.data,
-      );
+     
       navigation.goBack();
     }
   };
@@ -390,7 +385,6 @@ const AddPost = props => {
           </View>
           <View style={styles.imagesContainer}>
             {images?.map(item => {
-                console.log("🚀 ~ file: AddPost.js:548 ~ AddPost ~ item:", item)
               return (
                 <View style={styles.image}>
                   <TouchableOpacity

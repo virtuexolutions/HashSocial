@@ -30,7 +30,6 @@ const Posts = ({onPress, bubbleId, bubbleInfo}) => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
-  console.log("🚀 ~ file: Posts.js:28 ~ Posts ~ bubbleInfo:", bubbleInfo?.profile_id, profileData?.id)
 
   const isFocused = useIsFocused();
 
@@ -40,15 +39,11 @@ const Posts = ({onPress, bubbleId, bubbleInfo}) => {
 
   const getPosts = async () => {
     const url = `auth/post/${bubbleId}?profile_id=${profileData?.id}`;
-    console.log('🚀 ~ file: Posts.js:42 ~ getPosts ~ url:', url);
     setIsLoading(true);
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: Posts.js:36 ~ getPosts ~ response:',
-        response?.data,
-      );
+  
       setPosts(response?.data?.post_info?.filter(item => item?.post_videos?.length == 0));
     }
   };
