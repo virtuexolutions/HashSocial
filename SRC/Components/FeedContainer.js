@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useRef} from 'react';
 import {
   Text,
   TouchableOpacity,
@@ -7,23 +7,47 @@ import {
   ImageBackground,
 } from 'react-native';
 import Color from '../Assets/Utilities/Color';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import CustomImage from '../Components/CustomImage';
 import LinearGradient from 'react-native-linear-gradient';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import RBSheet from 'react-native-raw-bottom-sheet';
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Feather from 'react-native-vector-icons/Feather';
 import Video from 'react-native-video';
-
+import numeral from 'numeral';
 import CustomText from '../Components/CustomText';
 import {Icon} from 'native-base';
 import {useSelector} from 'react-redux';
-import { baseUrl } from '../Config';
+import {baseUrl} from '../Config';
+import ComentsSection from './ComentsSection';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
 const FeedContainer = ({item, source}) => {
+  // return console.log("🚀 ~ file: FeedContainer.js:28 ~ FeedContainer ~ item:", item)
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
+  const token = useSelector(state => state.authReducer.token);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  const [like, setLike] = useState(item?.my_like ? true :false) ;
+  const refRBSheet = useRef();
+  const [loading, setloading] = useState(false);
+
+  const likePost = async () => {
+    const url = `auth/post_like`;
+    const body = {
+      post_id: item?.id,
+      profile_id: profileData?.id,
+    };
+    setloading(true);
+    const response = await Post(url, body, apiHeader(token));
+//  console.log("🚀 ~ file: FeedContainer.js:45 ~ likePost ~ response:", response)
+    setloading(false);
+    if (response != undefined) {
+      setLike(!like);
+    }
+  };
 
   return (
     <TouchableOpacity
@@ -62,7 +86,7 @@ const FeedContainer = ({item, source}) => {
           style={{
             height: windowHeight * 0.4,
             width: windowWidth * 0.7,
-            // backgroundColor: 'black',
+            // backgroundColor: 'green',
           }}>
           <View
             style={{
@@ -84,7 +108,11 @@ const FeedContainer = ({item, source}) => {
                 marginRight: moderateScale(8, 0.3),
               }}>
               <CustomImage
-                source={item?.profile_info?.photo ? {uri:`${baseUrl}/${item?.profile_info?.photo}`}: require('../Assets/Images/avatar3.png')}
+                source={
+                  item?.profile_info?.photo
+                    ? {uri: `${baseUrl}/${item?.profile_info?.photo}`}
+                    : require('../Assets/Images/avatar3.png')
+                }
                 style={{
                   height: '100%',
                   width: '100%',
@@ -102,7 +130,7 @@ const FeedContainer = ({item, source}) => {
                   textAlign: 'left',
                 }}
                 isBold>
-               {item?.profile_info?.name}
+                {item?.profile_info?.name}
               </CustomText>
 
               <CustomText
@@ -150,7 +178,7 @@ const FeedContainer = ({item, source}) => {
               paddingLeft: moderateScale(15, 0.6),
               marginTop: moderateScale(10, 0.3),
             }}>
-          {item?.caption}
+            {item?.caption}
           </CustomText>
         </View>
         <View
@@ -169,6 +197,11 @@ const FeedContainer = ({item, source}) => {
               alignItems: 'center',
             }}>
             <TouchableOpacity
+              onPress={() => {
+                console.log('hello===================>');
+                // setLike(!like)
+                likePost();
+              }}
               style={{
                 height: moderateScale(30, 0.6),
                 width: moderateScale(30, 0.6),
@@ -177,12 +210,22 @@ const FeedContainer = ({item, source}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Icon name={'like2'} as={AntDesign} color={'white'} size={5} />
+              <Icon
+                name={like == true ? 'like1' : 'like2'}
+                as={AntDesign}
+                color={like == true ? 'white' : 'white'}
+                size={like == true ? 8 : 5}
+              />
             </TouchableOpacity>
             <CustomText
               numberOfLines={1}
               style={{fontSize: moderateScale(12, 0.6), color: Color.white}}>
-              {item?.total_likes_count}
+              {/* {item?.total_likes_count} */}
+              {(item?.my_like && like) ||(!item?.my_like && !like)  
+              ? numeral(item?.total_likes_count).format('0a')
+              : item?.my_like && !like
+              ? numeral(item?.total_likes_count - 1).format('0a')
+              : numeral(item?.total_likes_count + 1).format('0a')}
             </CustomText>
           </View>
 
@@ -193,6 +236,11 @@ const FeedContainer = ({item, source}) => {
               alignItems: 'center',
             }}>
             <TouchableOpacity
+              onPress={() => {
+                refRBSheet.current.open();
+                console.log('here===================>');
+                // setLike(!like)
+              }}
               style={{
                 height: moderateScale(30, 0.6),
                 width: moderateScale(30, 0.6),
@@ -201,15 +249,21 @@ const FeedContainer = ({item, source}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
               }}>
-              <Icon name={'dislike2'} as={AntDesign} color={'white'} size={5} />
+              <Icon
+                name={'comments'}
+                as={FontAwesome5}
+                color={'white'}
+                size={5}
+              />
             </TouchableOpacity>
             <CustomText
               numberOfLines={1}
               style={{fontSize: moderateScale(12, 0.6), color: Color.white}}>
-              3k
+              {item?.comments?.length}
+              {/* 3k */}
             </CustomText>
           </View>
-          <View
+          {/* <View
             style={{
               marginTop: moderateScale(20, 0.3),
               justifyContent: 'center',
@@ -231,7 +285,8 @@ const FeedContainer = ({item, source}) => {
               style={{fontSize: moderateScale(12, 0.6), color: Color.white}}>
               1k
             </CustomText>
-          </View>
+          </View> */}
+          <ComentsSection refRBSheet={refRBSheet} data={item} />
         </View>
       </LinearGradient>
     </TouchableOpacity>
