@@ -1,4 +1,4 @@
-import {FlatList, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {FlatList, StyleSheet, Text, TouchableOpacity, View ,ActivityIndicator} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CustomImage from './CustomImage';
 import CustomText from './CustomText';
@@ -202,6 +202,8 @@ const Home = ({bubbleId}) => {
       </View> */}
 
       <View style={styles.activityContainer}>
+        {
+          isLoading ? <ActivityIndicator size={'large'} color={'white'}/> : 
         <FlatList
           numColumns={3}
           data={posts}
@@ -231,6 +233,7 @@ const Home = ({bubbleId}) => {
             );
           }}
         />
+        }
       </View>
     </>
   );
@@ -398,13 +401,14 @@ const styles = ScaledSheet.create({
   },
   activityContainer: {
     width: windowWidth * 0.9,
-    height: windowHeight * 0.65,
+    height: windowHeight * 0.55,
     justifyContent: 'center',
     alignSelf: 'center',
     // alignItems:'center',
     marginTop: moderateScale(20, 0.3),
     flexDirection: 'row',
     flexWrap: 'nowrap',
+
   },
   activityImage: {
     height: windowHeight * 0.2,

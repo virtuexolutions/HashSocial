@@ -7,6 +7,7 @@ import {
   FlatList,
   Image,
   TouchableOpacity,
+  ActivityIndicator
 } from 'react-native';
 import React, {useState, useEffect} from 'react';
 const {height, width} = Dimensions.get('window');
@@ -70,12 +71,20 @@ const ProfileList = () => {
           width: windowWidth * 1,
           height: windowHeight * 0.9,
           alignItems: 'center',
+          justifyContent:'center'
         }}>
-        <View
+        {/* <View
           style={{
             width: windowWidth,
+            height:windowHeight*0.8,
+            alignItems:'center',
+            justifyContent:'center',
+            backgroundColor:'green',
             marginTop: moderateScale(10, 0.3),
-          }}>
+          }}> */}
+            {
+              isLoading  ?  
+              <ActivityIndicator size={'large'} color={'white'}/> :
           <FlatList
             data={profileData}
             contentContainerStyle={{
@@ -89,30 +98,37 @@ const ProfileList = () => {
                   close={item?.close}
                   edit={item?.edit}
                   pending={item?.pending}
+
                 />
               );
             }}
+            ListFooterComponent={() => 
+                <View
+              style={{
+                backgroundColor: 'white',
+                padding: moderateScale(11, 0.3),
+                borderRadius: 11,
+                borderColor: Color.green,
+                borderWidth: 1,
+                width:windowWidth*0.4,
+                alignSelf:'center',
+                marginTop:moderateScale(15,0.6)
+              }}>
+              <CustomText
+                onPress={() => navigationService.navigate('Profile')}
+                style={{
+                  fontSize: moderateScale(13, 0.6),
+                  color: '#000',
+                  textAlign: 'center',
+                }}
+                isBold>
+                create new profile
+              </CustomText>
+            </View>}
           />
-        </View>
-        <View
-          style={{
-            backgroundColor: 'white',
-            padding: moderateScale(11, 0.3),
-            borderRadius: 11,
-            borderColor: Color.green,
-            borderWidth: 1,
-          }}>
-          <CustomText
-            onPress={() => navigationService.navigate('Profile')}
-            style={{
-              fontSize: moderateScale(13, 0.6),
-              color: '#000',
-              textAlign: 'center',
-            }}
-            isBold>
-            create new profile
-          </CustomText>
-        </View>
+            }
+        {/* </View> */}
+       
       </ImageBackground>
     </>
   );
