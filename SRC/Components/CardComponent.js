@@ -49,14 +49,15 @@ const CardComponent = ({
 
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
+  const profileData = useSelector(state => state.commonReducer.profileData);
 
   const [isVisible, setIsVisible] = useState(false);
   const [msg, setMsg] = useState('');
   const [isLoading, setisLoading] = useState(false);
-  const [requested , setRequested] = useState(item?.role == 'admin' && item?.status == 'request' ? true : false)
-  const [invite , setinvited] = useState(item?.role == 'admin' && item?.status == 'invite' ? true : false)
-  const [block , setblocked] = useState(item?.role == 'admin' && item?.status == 'blocked' ? true : false)
-  const [member , setmember] = useState(item?.role == 'admin' && item?.status == 'follow' ? true : false)
+  const [requested , setRequested] = useState(item?.profile_id == profileData?.id  && item?.status == 'request' ? true : false)
+  const [invite , setinvited] = useState(item?.profile_id == profileData?.id  && item?.status == 'invite' ? true : false)
+  const [block , setblocked] = useState(item?.profile_id == profileData?.id  && item?.status == 'blocked' ? true : false)
+  const [member , setmember] = useState(item?.profile_id == profileData?.id  && item?.status == 'follow' ? true : false)
 
 
 
@@ -100,22 +101,12 @@ const CardComponent = ({
               style={{width: '100%', height: '100%'}}
             />
           </View>
-          {MemberList && (
+          
             <TouchableOpacity
               onPress={() => {
                 setIsVisible(true);
               }}
-              style={{
-                backgroundColor: 'white',
-                height: windowHeight * 0.03,
-                width: windowHeight * 0.03,
-                justifyContent: 'center',
-                alignItems: 'center',
-                borderRadius: (windowHeight * 0.03) / 2,
-                position: 'absolute',
-                top: 0,
-                right: 0,
-              }}>
+              style={styles.view}>
               <Icon
                 name="message1"
                 as={AntDesign}
@@ -125,16 +116,13 @@ const CardComponent = ({
                 }}
               />
             </TouchableOpacity>
-          )}
+     
         </View>
 
         <View
           style={{
             paddingLeft: moderateScale(15, 0.6),
             width: windowWidth * 0.45,
-            // backgroundColor:'red',
-            // justifyContent:'center',
-            // alignItems:'center'
           }}>
           <CustomText
             numberOfLines={1}
@@ -165,6 +153,7 @@ const CardComponent = ({
           </CustomText>
         </View>
 
+
         <View
           style={{
             flexDirection: 'row',
@@ -185,56 +174,6 @@ const CardComponent = ({
               marginRight={moderateScale(5, 0.3)}
             />
           )}
-          {check && (
-            <CustomButton
-              iconName={'check'}
-              iconType={Entypo}
-              iconStyle={{
-                color: Color.black,
-              }}
-              textColor={Color.black}
-              // width={windowWidth * 0.15}
-              height={windowHeight * 0.05}
-              fontSize={moderateScale(12, 0.6)}
-              borderRadius={moderateScale(10, 0.3)}
-              bgColor={'#FFFFFF'}
-              paddingHorizontal={moderateScale(15, 0.3)}
-              marginRight={moderateScale(5, 0.3)}
-            />
-          )}
-          {edit && (
-            <CustomButton
-              onPress={() => {
-                navigationService.navigate('Profile', {item: item});
-              }}
-              text={'Edit'}
-              textColor={Color.black}
-              width={windowWidth * 0.13}
-              height={windowHeight * 0.05}
-              fontSize={moderateScale(10, 0.6)}
-              borderRadius={moderateScale(10, 0.3)}
-              bgColor={'#FFFFFF'}
-              paddingHorizontal={moderateScale(5, 0.3)}
-              marginRight={moderateScale(5, 0.3)}
-            />
-          )}
-          {close && (
-            <CustomButton
-              iconName={'cross'}
-              iconType={Entypo}
-              iconStyle={{
-                color: Color.black,
-              }}
-              textColor={Color.black}
-              // width={windowWidth * 0.15}
-              height={windowHeight * 0.05}
-              fontSize={moderateScale(12, 0.6)}
-              borderRadius={moderateScale(10, 0.3)}
-              paddingHorizontal={moderateScale(15, 0.3)}
-              marginRight={moderateScale(5, 0.3)}
-              bgColor={'#FFFFFF'}
-            />
-          )}
 
           {requested && (
             <>
@@ -245,14 +184,9 @@ const CardComponent = ({
                   handleMemberAction('accept');
                 }}
                 iconStyle={{
-                  // width: 120,
-                  // height: 120,
                   color: Color.black,
-                  // padding: 55,
-                  // marginLeft: 92,
                 }}
                 textColor={Color.black}
-                // width={windowWidth * 0.15}
                 height={windowHeight * 0.05}
                 fontSize={moderateScale(12, 0.6)}
                 borderRadius={moderateScale(10, 0.3)}
@@ -267,14 +201,9 @@ const CardComponent = ({
                   handleMemberAction('reject');
                 }}
                 iconStyle={{
-                  // width: 120,
-                  // height: 120,
                   color: Color.black,
-                  // padding: 55,
-                  // marginLeft: 92,
                 }}
                 textColor={Color.black}
-                // width={windowWidth * 0.15}
                 height={windowHeight * 0.05}
                 fontSize={moderateScale(12, 0.6)}
                 borderRadius={moderateScale(10, 0.3)}
@@ -293,14 +222,9 @@ const CardComponent = ({
                   handleMemberAction('blocked');
                 }}
                 iconStyle={{
-                  // width: 120,
-                  // height: 120,
                   color: Color.black,
-                  // padding: 55,
-                  // marginLeft: 92,
                 }}
                 textColor={Color.black}
-                // width={windowWidth * 0.15}
                 height={windowHeight * 0.05}
                 fontSize={moderateScale(12, 0.6)}
                 borderRadius={moderateScale(10, 0.3)}
@@ -314,15 +238,10 @@ const CardComponent = ({
                 onPress={() => {
                   handleMemberAction('reject');
                 }}
-                iconStyle={{
-                  // width: 120,
-                  // height: 120,
+                iconStyle={{          
                   color: Color.black,
-                  // padding: 55,
-                  // marginLeft: 92,
                 }}
                 textColor={Color.black}
-                // width={windowWidth * 0.15}
                 height={windowHeight * 0.05}
                 fontSize={moderateScale(12, 0.6)}
                 borderRadius={moderateScale(10, 0.3)}
@@ -340,14 +259,9 @@ const CardComponent = ({
                 handleMemberAction('accept');
               }}
               iconStyle={{
-                // width: 120,
-                // height: 120,
                 color: Color.black,
-                // padding: 55,
-                // marginLeft: 92,
               }}
               textColor={Color.black}
-              // width={windowWidth * 0.15}
               height={windowHeight * 0.05}
               fontSize={moderateScale(12, 0.6)}
               borderRadius={moderateScale(10, 0.3)}
@@ -369,7 +283,6 @@ const CardComponent = ({
                 handleMemberAction('reject');
               }}
               textColor={Color.black}
-              // width={windowWidth * 0.13}
               height={windowHeight * 0.05}
               fontSize={moderateScale(10, 0.6)}
               bgColor={'#FFFFFF'}
@@ -401,7 +314,6 @@ const CardComponent = ({
               style={{
                 color: Color.white,
                 fontSize: moderateScale(15, 0.6),
-                // marginTop: moderateScale(20, 0.3),
                 paddingVertical: moderateScale(10, 0.6),
                 paddingHorizontal: moderateScale(30, 0.6),
                 textAlign: 'center',
@@ -411,7 +323,6 @@ const CardComponent = ({
             </CustomText>
           </View>
           <View
-            // colors={['#286086', '#dfecf5']}
             style={{
               height: windowHeight * 0.22,
               width: windowWidth * 0.85,
@@ -426,7 +337,6 @@ const CardComponent = ({
             </View>
             <TextInputWithTitle
               marginTop={moderateScale(10, 0.6)}
-              // title={'Title'}
               secureText={false}
               placeholder={'Write message here'}
               setText={setMsg}
@@ -437,26 +347,13 @@ const CardComponent = ({
               backgroundColor={'white'}
               border={1}
               borderColor={Color.veryLightGray}
-              // marginTop={moderateScale(10, 0.3)}
-              // borderColor={'#FFFFFF'}
 
               color={themeColor[1]}
               placeholderColor={Color.themeLightGray}
               borderRadius={moderateScale(10, 0.3)}
             />
 
-            {/* 
-            <CustomText
-              style={{
-                color: Color.black,
-                fontSize: moderateScale(14, 0.6),
-                marginTop: moderateScale(20, 0.3),
-                paddingHorizontal: moderateScale(30, 0.6),
-                textAlign: 'center',
-              }}
-              isBold>
-             By confirming a private chat will be created
-            </CustomText> */}
+           
           </View>
 
           <CustomButton
@@ -471,7 +368,7 @@ const CardComponent = ({
             width={windowWidth * 0.7}
             height={windowHeight * 0.06}
             marginTop={moderateScale(20, 0.3)}
-            bgColor={Color.themeBgColor}
+            bgColor={themeColor}
             borderRadius={moderateScale(25, 0.3)}
             elevation
             isGradient
@@ -496,14 +393,26 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     // marginBottom : moderateScale(20,0.3)
   },
+  view:{
+    backgroundColor: 'white',
+    height: windowHeight * 0.03,
+    width: windowHeight * 0.03,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: (windowHeight * 0.03) / 2,
+    position: 'absolute',
+    top: 0,
+    right: 0,
+  },
 
   row: {
+    paddingVertical:moderateScale(5,.6),
     width: windowWidth * 0.97,
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: moderateScale(5, 0.3),
-    paddingBottom: 10,
+    // marginBottom: moderateScale(5, 0.3),
+    // paddingBottom: 10,
     borderBottomWidth: 1,
     borderColor: 'rgba(255,255,255,0.5)',
   },

@@ -393,7 +393,6 @@ const AddPost = props => {
                       right: 2,
                       top: 2,
                       zIndex: 1,
-                      // backgroundColor: 'green',
                     }}
                     onPress={() => {
                       images.filter(data => data?.uri != item?.uri)
@@ -449,7 +448,6 @@ const AddPost = props => {
           </View>
           <View style={styles.hashtagview}>
             <TextInputWithTitle
-              // title={'Title'}
               secureText={false}
               placeholder={'#Hashtags'}
               setText={setHashtag}
@@ -459,7 +457,6 @@ const AddPost = props => {
               inputWidth={0.65}
               backgroundColor={'white'}
               border={1}
-              // marginTop={moderateScale(10, 0.3)}
               borderColor={'#FFFFFF'}
               color={themeColor[1]}
               placeholderColor={Color.themeLightGray}
@@ -471,7 +468,6 @@ const AddPost = props => {
               width={windowWidth * 0.2}
               height={windowHeight * 0.05}
               fontSize={moderateScale(13, 0.6)}
-              // marginTop={moderateScale(40, 0.3)}
               onPress={() => {
                 if (hashtag == '') {
                   Platform.OS == 'android'
@@ -482,12 +478,10 @@ const AddPost = props => {
                     : Alert.alert('Please add any hashtag');
                 } else {
                   setHashtags(prev => [hashtag, ...prev]);
-
                   setHashtag('');
                 }
               }}
               bgColor={['#FFFFFF', '#FFFFFF']}
-              // borderRadius={moderateScale(10, 0.3)}
               isGradient
               isBold={true}
             />
@@ -499,7 +493,7 @@ const AddPost = props => {
             <CustomButton
               text={
                 loading ? (
-                  <ActivityIndicator color={'#01E8E3'} size={'small'} />
+                  <ActivityIndicator color={themeColor[1]} size={'small'} />
                 ) : data ? (
                   'Update'
                 ) : (
@@ -584,8 +578,8 @@ const styles = ScaledSheet.create({
     borderRadius: moderateScale(10, 0.6),
     overflow: 'hidden',
     margin: moderateScale(5, 0.6),
-    justifyContent:'center', 
-    alignItems:'center'
+    // justifyContent:'center', 
+    // alignItems:'center'
   },
 
   title: {
