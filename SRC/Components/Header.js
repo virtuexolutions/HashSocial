@@ -50,13 +50,7 @@ const Header = props => {
         setModalVisible(!modalVisible);
       },
     },
-    {
-      name: 'Profile listing',
-      onPress: () => {
-        navigationService.navigate('ProfilesListing');
-        setModalVisible(!modalVisible);
-      },
-    },
+   
     {
       name: 'Bubble List',
       onPress: () => {

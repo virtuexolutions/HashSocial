@@ -40,7 +40,7 @@ const ProfileList = () => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-      console.log("🚀 ~ file: ProfileList.js:43 ~ profileListing ~ response:", response?.data)
+      // console.log("🚀 ~ file: ProfileList.js:43 ~ profileListing ~ response:", response?.data)
       setProfileData(response?.data?.profile_info);
     }
   };

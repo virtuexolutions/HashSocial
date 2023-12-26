@@ -34,6 +34,14 @@ import TextInputWithTitle from './TextInputWithTitle';
 import {baseUrl} from '../Config';
 import moment from 'moment';
 import {Post} from '../Axios/AxiosInterceptorFunction';
+import {
+  setAccountPrivate,
+  setBubbleSelected,
+  setInterestSelected,
+  setProfileSelcted,
+  setQuestionAnswered,
+} from '../Store/slices/auth';
+import { setSelectedProfileData } from '../Store/slices/common';
 
 const ProfileComponent = ({
   item,
@@ -49,16 +57,42 @@ const ProfileComponent = ({
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
   const profileData = useSelector(state => state.commonReducer.profileData);
-  console.log('Herere is s daaaaattttaaa=====', `${baseUrl}/${item?.photo}`);
   const [isLoading, setisLoading] = useState(false);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   return (
     <>
-      <TouchableOpacity style={styles.row} 
-      onPress={() => {
-        
-      }}>
+      <TouchableOpacity
+        style={styles.row}
+        onPress={() => {
+          if (item?.privacy == 'private') {
+            dispatch(setAccountPrivate('private'));
+            navigationService.navigate('LoginProfile', {item});
+            dispatch(setSelectedProfileData({}));
+          } else {
+            dispatch(setAccountPrivate('public'));
+            dispatch(setQuestionAnswered(item?.qa_status));
+            dispatch(setSelectedProfileData(item));
+            dispatch(setProfileSelcted(true));
+            dispatch(
+              setBubbleSelected(
+                [0, '0', undefined, null, [], 'null'].includes(
+                  item?.community_info,
+                )
+                  ? false
+                  : true,
+              ),
+            );
+            dispatch(
+              setInterestSelected(
+                [0, '0', undefined, null, [], 'null'].includes(item?.interests)
+                  ? false
+                  : true,
+              ),
+            );
+            navigationService.navigate('TabNavigation')
+          }
+        }}>
         <View>
           <View style={styles.profileSection}>
             <CustomImage
@@ -132,6 +166,7 @@ const styles = StyleSheet.create({
   row: {
     paddingVertical: moderateScale(5, 0.6),
     width: windowWidth * 0.97,
+    paddingHorizontal: moderateScale(10, 0.6),
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',

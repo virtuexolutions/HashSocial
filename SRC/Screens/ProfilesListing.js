@@ -47,13 +47,43 @@ const ProfilesListing = props => {
   const token = useSelector(state => state.authReducer.token);
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  console.log("🚀 ~ file: ProfilesListing.js:50 ~ ProfilesListing ~ isVisible:", isVisible)
+  console.log(
+    '🚀 ~ file: ProfilesListing.js:50 ~ ProfilesListing ~ isVisible:',
+    isVisible,
+  );
   const [bubbleData, setBubbleData] = useState([]);
   const [selectedItem, setSelectedItem] = useState({});
   const dispatch = useDispatch();
   const selectedProfile = useSelector(
     state => state.commonReducer.selectedProfile,
   );
+
+  const onPress = () => {
+    if (item?.privacy == 'private') {
+      dispatch(setAccountPrivate('private'));
+      navigationService.navigate('LoginProfile', {item});
+      dispatch(setSelectedProfileData({}));
+    } else {
+      dispatch(setAccountPrivate('public'));
+      dispatch(setQuestionAnswered(item?.qa_status));
+      dispatch(setSelectedProfileData(item));
+      dispatch(setProfileSelcted(true));
+      dispatch(
+        setBubbleSelected(
+          [0, '0', undefined, null, [], 'null'].includes(item?.community_info)
+            ? false
+            : true,
+        ),
+      );
+      dispatch(
+        setInterestSelected(
+          [0, '0', undefined, null, [], 'null'].includes(item?.interests)
+            ? false
+            : true,
+        ),
+      );
+    }
+  };
 
   const profileListing = async () => {
     const url = 'auth/profile';
@@ -102,8 +132,9 @@ const ProfilesListing = props => {
                   <TouchableOpacity
                     disabled={item?.id == selectedProfile?.id}
                     onPress={() => {
+                      onPress()
                       setSelectedItem(item);
-                      setIsVisible(true);
+                      // setIsVisible(true);
                     }}
                     style={{
                       width: windowWidth * 0.4,
@@ -119,8 +150,10 @@ const ProfilesListing = props => {
                       }}>
                       <CustomImage
                         onPress={() => {
-                          setSelectedItem(item );
-                          setIsVisible(true);
+                          onPress()
+                          setSelectedItem(item);
+                          // setIsVisible(true);
+
                         }}
                         style={{
                           height: '100%',
@@ -135,7 +168,11 @@ const ProfilesListing = props => {
               );
             })}
           </View>
-          <AlertModal isVisible={isVisible} setIsVisible={setIsVisible}  item={selectedItem} />
+          <AlertModal
+            isVisible={isVisible}
+            setIsVisible={setIsVisible}
+            item={selectedItem}
+          />
         </View>
       </ImageBackground>
     </>

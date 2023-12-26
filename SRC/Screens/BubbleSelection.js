@@ -34,11 +34,9 @@ const BubbleSelection = () => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
-  //  console.log("🚀 ~ file: BubbleSelection.js:31 ~ profileData:", profileData)
   const [isLaoding, setIsLaoding] = useState(false);
-  // console.log("🚀 ~ file: BubbleSelection.js:26 ~ BubbleSelection ~ token:", token)
-
   const [selectedBubble, setSelectedBubble] = useState([]);
+
   console.log(
     '🚀 ~ file: BubbleSelection.js:29 ~ BubbleSelection ~ selectedBubble:',
     selectedBubble?.length,
@@ -129,25 +127,6 @@ const BubbleSelection = () => {
     },
   ]);
 
-  // const sendSelectedBubble = async () => {   
-  //   const url = 'auth/subscribe';
-  //   const body = {
-  //     id: profileData?.id,
-  //     bubble: selectedBubble,
-  //   };
-  //   // console.log("🚀 ~ file: BubbleSelection.js:127 ~ sendSelectedBubble ~ body:", body)
-  //   setIsLaoding(true);
-  //   const response = await Post(url, body, apiHeader(token));
-  //   setIsLaoding(false);
-  //   if (response != undefined) {
-  //     dispatch(setSelectedProfileData(response?.data?.profile_info));
-  //     dispatch(setBubbleSelected(true));
-  //     dispatch(setSelectedBubbles(selectedBubble));
-  //     Platform.OS == 'android'
-  //       ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
-  //       : Alert.alert('Saved');
-  //   }
-  // };
   const handleBubbleSelection = index => {
     const updatedBubbleArray = [...BubbleImageArraty];
     updatedBubbleArray[index].added = !updatedBubbleArray[index].added;

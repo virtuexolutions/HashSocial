@@ -39,6 +39,7 @@ import {setSelectedProfileData} from '../Store/slices/common';
 import Modal from 'react-native-modal';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import {baseUrl} from '../Config';
+import navigationService from '../navigationService';
 
 const LoginProfile = props => {
   const item = props?.route?.params?.item;
@@ -99,6 +100,7 @@ const LoginProfile = props => {
             : true,
         ),
       );
+      navigationService.navigate('TabNavigation')
     }
   };
 
