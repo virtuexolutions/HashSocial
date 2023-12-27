@@ -146,7 +146,7 @@ const Bubble = props => {
     setIsLoading(false);
     if (response != undefined) {
       console.log(
-        '🚀 ~ file: Bubble.js:150 ~ getBubbleDetails ~ response:',
+        '🚀 ~ file: Bubble.js:150 ~ getBubbleDetails ~ response:======>',
         response?.data,
       );
       setBubbleInfo(response?.data?.community_info);

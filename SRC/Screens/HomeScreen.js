@@ -141,7 +141,6 @@ const HomeScreen = props => {
   }, [animationStopped]);
 
   useEffect(() => {
-    // dispatch(setNewSignUp(true))
     if (newSignUp) {
       setTimeout(() => {
         console.log('New Signup');

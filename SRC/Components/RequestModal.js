@@ -33,23 +33,11 @@ const RequestModal = ({
   const token = useSelector(state => state.authReducer.token);
   const [bubbleInfo, setBubbleInfo] = useState([]);
   const isFocused = useIsFocused()
-  console.log("🚀 ~ file: RequestModal.js:36 ~ isFocused:", isFocused)
+  
 
   const [requested, setRequested] = useState(false);
 
-  const getBubbleDetails = async () => {
-    const url = `auth/community_detail/${selectedBubbleId}?profile_id=${profileData?.id}`;
-    const response = await Get(url, token);
-    if (response != undefined) {
-      console.log(
-        '🚀 ~ file: Bubble.js:150 ~ getBubbleDetails ~ response:',
-        response?.data,
-      );
-      setBubbleInfo(response?.data?.community_info);
-      setRequested(response?.data?.follow?.status == 'request' ? true : false )
-      // setStartFollowing(response?.data?.community_info?.follow ? true : false);
-    }
-  };
+ 
 
   const addRequest = async () => {
     const url = 'auth/community_member/add';
@@ -70,9 +58,6 @@ const RequestModal = ({
     setRequested(!requested);
   };
 
-  useEffect(() => {
-    getBubbleDetails();
-  }, [isFocused]);
 
   return (
     <Modal
