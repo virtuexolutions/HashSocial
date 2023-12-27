@@ -38,11 +38,13 @@ const MemberList = props => {
     const response = await Get(url, token);
     setLoading(false);
     if (response != undefined) {
-      setMembers(
-        response?.data?.member_info?.filter(
-          data => data?.profile_id != profileData?.id,
-        ),
-      );
+      console.log("🚀 ~ file: MemberList.js:41 ~ GetBubblemembers ~ response:", response?.data)
+      // setMembers(
+      //   response?.data?.member_info?.filter(
+      //     data => data?.profile_id != profileData?.id,
+      //   ),
+      // );
+      setMembers(response?.data?.member_info)
     }
   };
 

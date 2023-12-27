@@ -6,7 +6,7 @@ import {
   ToastAndroid,
   ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Modal from 'react-native-modal';
 import {Alert, Icon} from 'native-base';
 import CustomText from './CustomText';
@@ -17,28 +17,51 @@ import Color from '../Assets/Utilities/Color';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import CustomImage from './CustomImage';
 import {useSelector} from 'react-redux';
-import {Post} from '../Axios/AxiosInterceptorFunction';
+import {Get, Post} from '../Axios/AxiosInterceptorFunction';
+import { useIsFocused } from '@react-navigation/native';
 
-const RequestModal = ({isVisible, setIsVisible, text, selectedBubbleId}) => {
+const RequestModal = ({
+  isVisible,
+  setIsVisible,
+  text,
+  selectedBubbleId,
+  item,
+}) => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const [loading, setLoading] = useState(false);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const token = useSelector(state => state.authReducer.token);
+  const [bubbleInfo, setBubbleInfo] = useState([]);
+  const isFocused = useIsFocused()
+  console.log("🚀 ~ file: RequestModal.js:36 ~ isFocused:", isFocused)
 
   const [requested, setRequested] = useState(false);
+
+  const getBubbleDetails = async () => {
+    const url = `auth/community_detail/${selectedBubbleId}?profile_id=${profileData?.id}`;
+    const response = await Get(url, token);
+    if (response != undefined) {
+      console.log(
+        '🚀 ~ file: Bubble.js:150 ~ getBubbleDetails ~ response:',
+        response?.data,
+      );
+      setBubbleInfo(response?.data?.community_info);
+      setRequested(response?.data?.follow?.status == 'request' ? true : false )
+      // setStartFollowing(response?.data?.community_info?.follow ? true : false);
+    }
+  };
 
   const addRequest = async () => {
     const url = 'auth/community_member/add';
     const body = {
       status: 'request',
-      profile_id:[ profileData?.id],
+      profile_id: [profileData?.id],
       community_id: selectedBubbleId,
     };
     setLoading(true);
     const response = await Post(url, body, apiHeader(token));
     setLoading(false);
     if (response != undefined) {
-      
       setIsVisible(false);
       Platform.OS == 'android'
         ? ToastAndroid.show('Request has been sent', ToastAndroid.SHORT)
@@ -46,6 +69,10 @@ const RequestModal = ({isVisible, setIsVisible, text, selectedBubbleId}) => {
     }
     setRequested(!requested);
   };
+
+  useEffect(() => {
+    getBubbleDetails();
+  }, [isFocused]);
 
   return (
     <Modal

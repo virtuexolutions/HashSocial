@@ -46,6 +46,7 @@ const CardComponent = ({
   Requested,
   blocked,
 }) => {
+  console.log("🚀 ~ file: CardComponent.js:49 ~ item:", item)
 
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
@@ -59,6 +60,7 @@ const CardComponent = ({
   const [block , setblocked] = useState(item?.profile_id == profileData?.id  && item?.status == 'blocked' ? true : false)
   const [member , setmember] = useState(item?.profile_id == profileData?.id  && item?.status == 'follow' ? true : false)
 
+  console.log('Heereeeeeee',  `${baseUrl}/${item?.photo}` )
 
 
   const handleMemberAction = async actionType => {
@@ -97,7 +99,7 @@ const CardComponent = ({
         <View>
           <View style={styles.profileSection}>
             <CustomImage
-              source={{uri: `${baseUrl}${item?.photo}`}}
+              source={{uri: `${baseUrl}/${item?.photo ? item?.photo : item?.profile_info?.photo}`}}
               style={{width: '100%', height: '100%'}}
             />
           </View>

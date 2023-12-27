@@ -47,10 +47,7 @@ const ProfilesListing = props => {
   const token = useSelector(state => state.authReducer.token);
   const [isLoading, setIsLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
-  console.log(
-    '🚀 ~ file: ProfilesListing.js:50 ~ ProfilesListing ~ isVisible:',
-    isVisible,
-  );
+
   const [bubbleData, setBubbleData] = useState([]);
   const [selectedItem, setSelectedItem] = useState({});
   const dispatch = useDispatch();
@@ -58,7 +55,7 @@ const ProfilesListing = props => {
     state => state.commonReducer.selectedProfile,
   );
 
-  const onPress = () => {
+  const onPress = (item) => {
     if (item?.privacy == 'private') {
       dispatch(setAccountPrivate('private'));
       navigationService.navigate('LoginProfile', {item});
@@ -132,7 +129,7 @@ const ProfilesListing = props => {
                   <TouchableOpacity
                     disabled={item?.id == selectedProfile?.id}
                     onPress={() => {
-                      onPress()
+                      onPress(item)
                       setSelectedItem(item);
                       // setIsVisible(true);
                     }}
@@ -150,7 +147,7 @@ const ProfilesListing = props => {
                       }}>
                       <CustomImage
                         onPress={() => {
-                          onPress()
+                          onPress(item)
                           setSelectedItem(item);
                           // setIsVisible(true);
 

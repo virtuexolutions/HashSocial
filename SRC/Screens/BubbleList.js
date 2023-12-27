@@ -17,24 +17,23 @@ import CustomText from '../Components/CustomText';
 import {useSelector} from 'react-redux';
 import CardComponent from '../Components/CardComponent';
 import BubbleCard from '../Components/BubbleCard';
-import { Get } from '../Axios/AxiosInterceptorFunction';
-import { useIsFocused } from '@react-navigation/native';
+import {Get} from '../Axios/AxiosInterceptorFunction';
+import {useIsFocused} from '@react-navigation/native';
 // const {height, width} = Dimensions.get('window');
 
 const BubbleList = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const [selectedTab, setSelectedTab] = useState(1);
-  const [yourBubbles, setYourBubbles] = useState([])
-  const [requests, setRequests] = useState([])
-  const [invitedBubbles, setInvitedBubbles] = useState([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [yourBubbles, setYourBubbles] = useState([]);
+  const [requests, setRequests] = useState([]);
+  const [invitedBubbles, setInvitedBubbles] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const isFocused = useIsFocused()
+  const isFocused = useIsFocused();
 
-  const profileData = useSelector(state=> state.commonReducer.selectedProfile)
-  const token = useSelector(state=> state.authReducer.token)
-  console.log("🚀 ~ file: BubbleList.js:36 ~ BubbleList ~ token:", token)
-
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
+  const token = useSelector(state => state.authReducer.token);
+  console.log('🚀 ~ file: BubbleList.js:36 ~ BubbleList ~ token:', token);
 
   const getYourBubbles = async () => {
     const url = `auth/my_community/${profileData?.id}`;
@@ -52,7 +51,7 @@ const BubbleList = () => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-        console.log(
+      console.log(
         '🚀 ~ file: Events.js:34 ~ getEvents ~ response: =========>>>>>',
         response?.data,
       );
@@ -60,10 +59,9 @@ const BubbleList = () => {
     }
   };
 
-
   useEffect(() => {
     getYourBubbles();
-    getInvitedBubbles()
+    getInvitedBubbles();
   }, [isFocused]);
 
   const BubbleListData = [
@@ -225,11 +223,11 @@ const BubbleList = () => {
             marginBottom: moderateScale(20, 0.3),
           }}>
           <FlatList
-          showsVerticalScrollIndicator={false}
-            data={selectedTab == 1 ?yourBubbles : invitedBubbles}
+            showsVerticalScrollIndicator={false}
+            data={selectedTab == 1 ? yourBubbles : invitedBubbles}
             contentContainerStyle={{
               marginBottom: moderateScale(10, 0.3),
-              paddingBottom:moderateScale(50,.6),
+              paddingBottom: moderateScale(50, 0.6),
             }}
             renderItem={({item, index}) => {
               return (
@@ -243,6 +241,13 @@ const BubbleList = () => {
                   edit={item?.edit}
                   pending={item?.pending}
                 />
+              );
+            }}
+            ListEmptyComponent={() => {
+              return (
+                <View style={{ justifyContent:'center', alignItems:'center', height:windowHeight*0.6}}>
+                  <CustomText style-={{fontSize:moderateScale(15,.6), color:'black'}} isBold>No data found</CustomText>
+                </View>
               );
             }}
           />
