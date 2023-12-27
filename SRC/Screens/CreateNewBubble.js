@@ -35,23 +35,28 @@ import Entypo from 'react-native-vector-icons/Entypo';
 import {setBubbleCreated} from '../Store/slices/auth';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 import CustomDropDownMultiSelect from '../Components/CustomDropDownMultiSelect';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const CreateNewBubble = props => {
   const item = props?.route?.params?.item;
   const token = useSelector(state => state.authReducer.token);
   const userData = useSelector(state => state.commonReducer.userData);
   // console.log("🚀 ~ file: CreateNewBubble.js:44 ~ CreateNewBubble ~ userData:", userData)
-  const navigation = useNavigation()
+  const navigation = useNavigation();
 
   const dispatch = useDispatch();
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
   // const architecture = useSelector(state => state.commonReducer.architecture)
-  console.log("🚀 ~ file: CreateNewBubble.js:51 ~ CreateNewBubble ~ architecture:", architecture)
+  console.log(
+    '🚀 ~ file: CreateNewBubble.js:51 ~ CreateNewBubble ~ architecture:',
+    architecture,
+  );
   const [CreateBubble, setCreateBubble] = useState('');
-  const [Admin, setAdmin] = useState(userData?.first_name ?  userData?.first_name :'');
+  const [Admin, setAdmin] = useState(
+    userData?.first_name ? userData?.first_name : '',
+  );
   const [bubbleTitle, setBubbleTitle] = useState(item?.name ? item?.name : '');
   const [moderator, setModerator] = useState(
     item?.moderator ? item?.moderator : '',
@@ -131,7 +136,10 @@ const CreateNewBubble = props => {
     },
   ];
   const [architectureValue, setArchitectureValue] = useState([]);
-  console.log("🚀 ~ file: CreateNewBubble.js:131 ~ CreateNewBubble ~ architectureValue:", architectureValue)
+  console.log(
+    '🚀 ~ file: CreateNewBubble.js:131 ~ CreateNewBubble ~ architectureValue:',
+    architectureValue,
+  );
   const [switchValue, setSwitchValue] = useState('Private');
   const ApprovalForAdmittance = ['yes', 'No'];
   const [ApprovalForAdmittanceValue, SetApprovalForAdmittance] = useState('');
@@ -174,7 +182,7 @@ const CreateNewBubble = props => {
     const url = 'auth/community';
     const body = {
       title: bubbleTitle,
-      profile_id: profileData?.id, 
+      profile_id: profileData?.id,
       approval_admittance: ApprovalForAdmittanceValue,
       approval_post: ApprovalToPostValue,
       membership_cost: MembershipCostValue,
@@ -199,11 +207,18 @@ const CreateNewBubble = props => {
       formData.append('image', profilePicture);
     } else {
       return Platform.OS == 'android'
-      ? ToastAndroid.show(`image is empty`, ToastAndroid.SHORT)
-      : Alert.alert(`image is empty`);
+        ? ToastAndroid.show(`image is empty`, ToastAndroid.SHORT)
+        : Alert.alert(`image is empty`);
     }
-    architectureValue.map((item, index)=>formData.append(`category[${index}]`, architecture[item]?.name))
-    console.log("🚀 ~ file: CreateNewBubble.js:199 ~ createBubble ~ formData:", JSON.stringify(formData, null, 2))
+    if (architectureValue?.length > 0) {
+      architectureValue.map((item, index) =>
+        formData.append(`category[${index}]`, architecture[item]?.name),
+      )
+    } else {
+      return Platform.OS == 'android'
+        ? ToastAndroid.show(`Please select interest`, ToastAndroid.SHORT)
+        : Alert.alert(`Please select interest`);
+    }
 
     setIsLoading(true);
     const response = await Post(url, formData, apiHeader(token));
@@ -219,7 +234,7 @@ const CreateNewBubble = props => {
         ? ToastAndroid.show('Bubble created Successfully', ToastAndroid.SHORT)
         : Alert.alert('Bubble created Successfully');
 
-        navigation.goBack()
+      navigation.goBack();
     }
   };
 
@@ -247,9 +262,7 @@ const CreateNewBubble = props => {
             width: windowWidth,
             height: windowHeight * 0.9,
           }}>
-          <ScrollView 
-          nestedScrollEnabled
-          >
+          <ScrollView nestedScrollEnabled>
             <View style={styles.topContainer}>
               <View style={{}}>
                 <TextInputWithTitle
@@ -264,7 +277,6 @@ const CreateNewBubble = props => {
                   color={Color.black}
                   placeholderColor={Color.black}
                   isBold
-                  // backgroundColor={'red'}
                 />
 
                 <CustomDropDownMultiSelect
@@ -279,26 +291,6 @@ const CreateNewBubble = props => {
                     height: windowHeight * 0.05,
                   }}
                 />
-
-                {/* <CustomDropDownMultiSelect
-                  array={architecture}
-                  item={architectureValue}
-                  setItem={setArchitectureValue}
-                  width={windowWidth * 0.34}
-                  placeholder={'select category'}
-                  fontSize={moderateScale(10, 0.5)}
-                  dropdownStyle={{
-                    borderBottomWidth: 0,
-                    width: windowWidth * 0.3,
-                    height: windowHeight * 0.05,
-                    // backgroundColor: 'red',
-                  }}
-                  btnStyle={{
-                    backgroundColor: '#fff',
-                    width: windowWidth * 0.2,
-                    height: windowHeight * 0.04,
-                  }}
-                /> */}
               </View>
 
               <TouchableOpacity
@@ -348,30 +340,6 @@ const CreateNewBubble = props => {
             <View style={styles.line}></View>
 
             <View style={styles.view}>
-              {/* <View style={styles.Row}>
-                <CustomText
-                  style={{
-                    width: windowWidth * 0.25,
-                    color: Color.black,
-                    fontSize: moderateScale(11, 0.6),
-                    paddingLeft: moderateScale(20, 0.6),
-                  }}>
-                  Moderator :
-                </CustomText>
-
-                <TextInputWithTitle
-                  placeholder={'Jonathan'}
-                  setText={setModerator}
-                  value={moderator}
-                  viewHeight={0.06}
-                  viewWidth={0.7}
-                  inputWidth={0.8}
-                  color={Color.black}
-                  placeholderColor={Color.veryLightGray}
-                  borderRadius={moderateScale(20, 0.3)}
-                  isBold
-                />
-              </View> */}
               <TextInputWithTitle
                 placeholder={'Admin'}
                 setText={setAdmin}
@@ -494,7 +462,6 @@ const CreateNewBubble = props => {
                 justifyContent: 'space-between',
                 paddingHorizontal: moderateScale(30, 0.6),
               }}>
-             
               <CustomButton
                 text={'cancel'}
                 textColor={themeColor[1]}
@@ -506,12 +473,12 @@ const CreateNewBubble = props => {
                 isBold={true}
                 marginBottom={moderateScale(50)}
                 onPress={() => {
-                  navigation.goBack()
+                  navigation.goBack();
                   dispatch(setBubbleCreated(true));
                 }}
               />
 
-<CustomButton
+              <CustomButton
                 text={
                   isLoading ? (
                     <ActivityIndicator color={themeColor[1]} size={'small'} />
@@ -548,7 +515,7 @@ const CreateNewBubble = props => {
 export default CreateNewBubble;
 const styles = ScaledSheet.create({
   topContainer: {
-    paddingHorizontal:moderateScale(10,.6),
+    paddingHorizontal: moderateScale(10, 0.6),
     // height: windowHeight * 0.3,
     flexDirection: 'row',
     justifyContent: 'space-between',
