@@ -59,6 +59,8 @@ const HomeScreen = props => {
 
   const backRef = useRef(null);
   const [rotationAngle, setRotationAngle] = useState(0);
+  const [bubbleData, setBubbleData] = useState({})
+  console.log("🚀 ~ file: HomeScreen.js:63 ~ HomeScreen ~ bubbleData:", bubbleData)
 
   const [content, setContent] = useState([]);
 
@@ -105,6 +107,7 @@ const HomeScreen = props => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
+      // console.log("🚀 ~ file: HomeScreen.js:109 ~ getBubbles ~ response:", JSON.stringify(response?.data?.community_info, null, 2))
       setBubbles(response?.data?.community_info);
       setContent(
         response?.data?.community_info?.map(item => {
@@ -246,6 +249,7 @@ const HomeScreen = props => {
                 setAnimationStopped={setAnimationStopped}
                 rotationAngle={rotationAngle}
                 alignment={alignment}
+                setBubbleData={setBubbleData}
                 elevation={5}
                 setIsVisible={setIsVisible}
                 setSelectedBubbleId={setSelectedBubbleId}
@@ -328,6 +332,7 @@ const HomeScreen = props => {
         setIsVisible={setIsVisible}
         isVisible={isVisible}
         text={text}
+        bubbleData={bubbleData}
       />
       <Propmpt isVisible={prompt} setVisible={setPrompt} />
     </>

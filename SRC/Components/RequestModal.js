@@ -24,9 +24,11 @@ const RequestModal = ({
   isVisible,
   setIsVisible,
   text,
+  bubbleData, 
   selectedBubbleId,
   item,
 }) => {
+  console.log("🚀 ~ file: RequestModal.js:31 ~ bubbleData:", bubbleData?.follow?.status)
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const [loading, setLoading] = useState(false);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
@@ -35,7 +37,7 @@ const RequestModal = ({
   const isFocused = useIsFocused()
   
 
-  const [requested, setRequested] = useState(false);
+  const [requested, setRequested] = useState(bubbleData?.follow?.status == 'request' ? true : false);
 
  
 
@@ -57,6 +59,13 @@ const RequestModal = ({
     }
     setRequested(!requested);
   };
+
+  useEffect(() => {
+    setRequested(bubbleData?.follow?.status == 'request' ? true : false)
+  
+    
+  }, [bubbleData])
+  
 
 
   return (
