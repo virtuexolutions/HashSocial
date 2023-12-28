@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {windowHeight, windowWidth} from '../Utillity/utils';
-import React, {useState} from 'react';
+import React, {useRef, useState} from 'react';
 import FeedContainer from '../Components/FeedContainer';
 import {FlatList, ScrollView} from 'native-base';
 import CustomText from '../Components/CustomText';
@@ -12,18 +12,25 @@ import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
 import {useSelector} from 'react-redux';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const Feeds = props => {
   const navigation = useNavigation();
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const image = props?.route?.params?.image;
-  const uri = props?.route?.params?.id
-  const item = props?.route?.params?.item
-  console.log("🚀 ~ file: Feeds.js:24 ~ Feeds ~ item:", item)
+  const uri = props?.route?.params?.id;
+  const posts = props?.route?.params?.posts;
+  const index = props?.route?.params?.index;
+ 
 
   const [selectedTab, SetSelectedTab] = useState('Fitness');
+  const onViewableItemsChanged = ({viewableItems}) => {
+ 
+
+    // Do stuff
+  };
+  const viewabilityConfigCallbackPairs = useRef([{onViewableItemsChanged}]);
 
   feedsArray = [
     {
@@ -52,7 +59,7 @@ const Feeds = props => {
     },
 
     {
-      Image:  require('../Assets/Images/video1.mp4'),
+      Image: require('../Assets/Images/video1.mp4'),
       likes: 2,
       dislikes: 4,
       downloads: 4,
@@ -78,91 +85,43 @@ const Feeds = props => {
     },
   ];
 
-  
-
   return (
     <View style={{width: windowWidth}}>
-      {/* <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        style={{
-          marginTop: moderateScale(40, 0.3),
-          position: 'absolute',
-          zIndex: 1,
-          marginLeft: moderateScale(20, 0.3),
-        }}>
-        <TouchableOpacity
-        onPress={()=>{
-          navigation.goBack()
-        }}
-          activeOpacity={0.7}
-          style={{
-            justifyContent: 'center',
-            marginRight: moderateScale(5, 0.3),
-          }}>
-          <Icon name={'arrowleft'} as={AntDesign} color={'white'} size={5} 
-           onPress={()=>{
-            navigation.goBack()
-           }}
-          />
-        </TouchableOpacity>
-
-        {Fitness?.map(item => {
+      <FlatList
+       pagingEnabled
+       decelerationRate={'normal'}
+       scrollEventThrottle={16}
+        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
+        showsVerticalScrollIndicator={false}
+        data={posts.slice(index)}
+        renderItem={({item, index}) => {
           return (
-            <LinearGradient
-              start={{x: 0, y: 0}}
-              end={{x: 0, y: 0.9}}
-              colors={
-                selectedTab == item?.name
-                  ? themeColor
-                  : ['rgba(0,0,0,0.4)', 'rgba(0,0,0,0.4)']
-              }
-              style={{
-                width: windowWidth * 0.2,
-                height: windowHeight * 0.04,
-                borderRadius: (windowHeight * 0.04) / 5,
-                margin: moderateScale(10, 0.3),
-              }}>
-              <TouchableOpacity
-                onPress={() => {
-                  SetSelectedTab(item?.name);
-                }}
-                activeOpacity={0.8}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
-                <CustomText
-                  style={{
-                    fontSize: moderateScale(12, 0.6),
-                    color: Color.white,
-                  }}>
-                  {item?.name}
-                </CustomText>
-              </TouchableOpacity>
-            </LinearGradient>
+            <FeedContainer source={item?.post_videos[0]?.name} item={item} />
           );
-        })}
-      </ScrollView> */}
-    
-      <FeedContainer source = {uri} item={item} />
+        }}
+      />
     </View>
   );
 };
 
 export default Feeds;
 
-
-  {/* <FlatList
+{
+  /* <FlatList
           vertical={true}
           showsVerticalScrollIndicator={true}
           data={feedsArray}
           contentContainerStyle={{
             zIndex: 0,
           }}
-          renderItem={({item, index}) => { */}
-      {/* return */}
-      {/* }} */}
-      {/* /> */}
+          renderItem={({item, index}) => { */
+}
+{
+  /* return */
+}
+{
+  /* }} */
+}
+{
+  /* /> */
+}

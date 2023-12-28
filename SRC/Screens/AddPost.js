@@ -108,9 +108,11 @@ const AddPost = props => {
       }
     }
 
+     console.log('🚀 ~ file: AddPost.js:108 ~ AddPost ~ formData:', JSON.stringify(formData, null, 2));
 
     setLoading(true);
     const response = await Post(url, formData, apiHeader(token));
+    console.log("🚀 ~ file: AddPost.js:115 ~ AddPost ~ response:", response?.data)
     setLoading(false);
     if (response != undefined) {
       navigation.goBack();
@@ -153,12 +155,10 @@ const AddPost = props => {
       }
     }
 
-
     setLoading(true);
     const response = await Post(url, formData, apiHeader(token));
     setLoading(false);
     if (response != undefined) {
-     
       navigation.goBack();
     }
   };
@@ -370,18 +370,18 @@ const AddPost = props => {
               isBold={true}
               children={'Add Media'}
             />
-     
-           <OptionsMenu
-            button={require('../Assets/Images/plus2.png')}
-            buttonStyle={{
-              width: 15,
-              height: 15,
-              tintColor: '#000',
-            }}
-            destructiveIndex={1}
-            options={['Video', 'Image']}
-            actions={[Video, Image]}
-          />
+
+            <OptionsMenu
+              button={require('../Assets/Images/plus2.png')}
+              buttonStyle={{
+                width: 15,
+                height: 15,
+                tintColor: '#000',
+              }}
+              destructiveIndex={1}
+              options={['Video', 'Image']}
+              actions={[Video, Image]}
+            />
           </View>
           <View style={styles.imagesContainer}>
             {images?.map(item => {
@@ -395,7 +395,7 @@ const AddPost = props => {
                       zIndex: 1,
                     }}
                     onPress={() => {
-                      images.filter(data => data?.uri != item?.uri)
+                      images.filter(data => data?.uri != item?.uri);
                     }}>
                     <Icon
                       name={'cross'}
@@ -403,14 +403,14 @@ const AddPost = props => {
                       as={Entypo}
                       onPress={() => {
                         setImages(
-                          images.filter(data => data?.uri != item?.uri)
+                          images.filter(data => data?.uri != item?.uri),
                         );
                       }}
                     />
                   </TouchableOpacity>
                   <CustomImage
                     style={{width: '100%', height: '100%'}}
-                    source={{uri: item?.uri }}
+                    source={{uri: item?.uri}}
                   />
                 </View>
               );
@@ -420,7 +420,11 @@ const AddPost = props => {
             {videos?.map(item => {
               return (
                 <>
-                  <VideoComponent item={item} videos={videos} setVideos={setVideos}/>
+                  <VideoComponent
+                    item={item}
+                    videos={videos}
+                    setVideos={setVideos}
+                  />
                 </>
               );
             })}
@@ -534,7 +538,6 @@ const AddPost = props => {
     </>
   );
 };
-          
 
 const styles = ScaledSheet.create({
   text: {
@@ -578,7 +581,7 @@ const styles = ScaledSheet.create({
     borderRadius: moderateScale(10, 0.6),
     overflow: 'hidden',
     margin: moderateScale(5, 0.6),
-    // justifyContent:'center', 
+    // justifyContent:'center',
     // alignItems:'center'
   },
 

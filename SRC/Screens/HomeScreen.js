@@ -108,7 +108,6 @@ const HomeScreen = props => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-      // console.log("🚀 ~ file: HomeScreen.js:109 ~ getBubbles ~ response:", JSON.stringify(response?.data?.community_info, null, 2))
       setBubbles(response?.data?.community_info);
       setContent(
         response?.data?.community_info?.map(item => {

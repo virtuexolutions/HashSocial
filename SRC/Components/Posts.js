@@ -29,6 +29,7 @@ const Posts = ({onPress, bubbleId, bubbleInfo}) => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
+  console.log("🚀 ~ file: Posts.js:33 ~ Posts ~ token:", token)
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
 
   const isFocused = useIsFocused();
@@ -43,6 +44,7 @@ const Posts = ({onPress, bubbleId, bubbleInfo}) => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
+    console.log("🚀 ~ file: Posts.js:46 ~ getPosts ~ response:", JSON.stringify(response?.data?.post_info))
   
       setPosts(response?.data?.post_info?.filter(item => item?.post_videos?.length == 0));
     }
@@ -129,7 +131,7 @@ const Posts = ({onPress, bubbleId, bubbleInfo}) => {
             );
           }}
           renderItem={({item, index}) => {
-            return <PostComponentBubble data={item} />;
+            return <PostComponentBubble data={item} bubbleInfo={bubbleInfo} />;
           }}
         />
       )}

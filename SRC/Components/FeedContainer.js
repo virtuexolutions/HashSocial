@@ -1,21 +1,12 @@
 import React, {useState, useRef} from 'react';
-import {
-  Text,
-  TouchableOpacity,
-  View,
-  StyleSheet,
-  ImageBackground,
-} from 'react-native';
+import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import CustomImage from '../Components/CustomImage';
 import LinearGradient from 'react-native-linear-gradient';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import RBSheet from 'react-native-raw-bottom-sheet';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import Feather from 'react-native-vector-icons/Feather';
 import Video from 'react-native-video';
 import numeral from 'numeral';
 import CustomText from '../Components/CustomText';
@@ -23,15 +14,17 @@ import {Icon} from 'native-base';
 import {useSelector} from 'react-redux';
 import {baseUrl} from '../Config';
 import ComentsSection from './ComentsSection';
-import { Post } from '../Axios/AxiosInterceptorFunction';
+import {Post} from '../Axios/AxiosInterceptorFunction';
 
 const FeedContainer = ({item, source}) => {
-  // return console.log("🚀 ~ file: FeedContainer.js:28 ~ FeedContainer ~ item:", item)
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const token = useSelector(state => state.authReducer.token);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
-  const [like, setLike] = useState(item?.my_like ? true :false) ;
+  const [like, setLike] = useState(item?.my_like ? true : false);
   const refRBSheet = useRef();
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+
   const [loading, setloading] = useState(false);
 
   const likePost = async () => {
@@ -42,7 +35,6 @@ const FeedContainer = ({item, source}) => {
     };
     setloading(true);
     const response = await Post(url, body, apiHeader(token));
-//  console.log("🚀 ~ file: FeedContainer.js:45 ~ likePost ~ response:", response)
     setloading(false);
     if (response != undefined) {
       setLike(!like);
@@ -57,17 +49,19 @@ const FeedContainer = ({item, source}) => {
         {height: windowHeight, paddingBottom: moderateScale(0, 0.3)},
       ]}>
       <Video
-        // posterResizeMode={'repeat'}
-        // muted
-        // fullscreen
         resizeMode={'stretch'}
-        paused={false}
         repeat={true}
-        // controls={true}
+        pause={false}
+        controls={true}
+        // source={require('../Assets/Images/video1.mp4')}
         source={{uri: source}}
         style={styles.backgroundVideo}
+        onProgress={data => {
+          console.log('hereeeeeeeeeee================>>>>>', data);
+          setDuration(data?.playableDuration);
+          setCurrentTime(data?.currentTime);
+        }}
       />
-      {/* </SharedElement>  */}
       <LinearGradient
         start={{x: 0, y: 0}}
         end={{x: 0, y: 0.9}}
@@ -86,7 +80,6 @@ const FeedContainer = ({item, source}) => {
           style={{
             height: windowHeight * 0.4,
             width: windowWidth * 0.7,
-            // backgroundColor: 'green',
           }}>
           <View
             style={{
@@ -126,7 +119,6 @@ const FeedContainer = ({item, source}) => {
                   fontSize: moderateScale(12, 0.6),
                   color: Color.white,
                   marginTop: moderateScale(12, 0.3),
-                  // marginRight: moderateScale(8, 0.3),
                   textAlign: 'left',
                 }}
                 isBold>
@@ -138,7 +130,6 @@ const FeedContainer = ({item, source}) => {
                 style={{
                   fontSize: moderateScale(10, 0.6),
                   color: Color.white,
-                  // marginRight: moderateScale(8, 0.3),
                   textAlign: 'left',
                 }}>
                 new york
@@ -186,9 +177,6 @@ const FeedContainer = ({item, source}) => {
             position: 'absolute',
             right: 20,
             top: 35,
-            // justifyContent: 'space-between',
-            // backgroundColor: 'black',
-            // height: windowHeight * 0.4,
           }}>
           <View
             style={{
@@ -198,8 +186,6 @@ const FeedContainer = ({item, source}) => {
             }}>
             <TouchableOpacity
               onPress={() => {
-                console.log('hello===================>');
-                // setLike(!like)
                 likePost();
               }}
               style={{
@@ -220,12 +206,11 @@ const FeedContainer = ({item, source}) => {
             <CustomText
               numberOfLines={1}
               style={{fontSize: moderateScale(12, 0.6), color: Color.white}}>
-              {/* {item?.total_likes_count} */}
-              {(item?.my_like && like) ||(!item?.my_like && !like)  
-              ? numeral(item?.total_likes_count).format('0a')
-              : item?.my_like && !like
-              ? numeral(item?.total_likes_count - 1).format('0a')
-              : numeral(item?.total_likes_count + 1).format('0a')}
+              {(item?.my_like && like) || (!item?.my_like && !like)
+                ? numeral(item?.total_likes_count).format('0a')
+                : item?.my_like && !like
+                ? numeral(item?.total_likes_count - 1).format('0a')
+                : numeral(item?.total_likes_count + 1).format('0a')}
             </CustomText>
           </View>
 
@@ -238,8 +223,6 @@ const FeedContainer = ({item, source}) => {
             <TouchableOpacity
               onPress={() => {
                 refRBSheet.current.open();
-                console.log('here===================>');
-                // setLike(!like)
               }}
               style={{
                 height: moderateScale(30, 0.6),
@@ -260,34 +243,22 @@ const FeedContainer = ({item, source}) => {
               numberOfLines={1}
               style={{fontSize: moderateScale(12, 0.6), color: Color.white}}>
               {item?.comments?.length}
-              {/* 3k */}
             </CustomText>
           </View>
-          {/* <View
-            style={{
-              marginTop: moderateScale(20, 0.3),
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
-            <TouchableOpacity
-              style={{
-                height: moderateScale(30, 0.6),
-                width: moderateScale(30, 0.6),
-                borderRadius: moderateScale(30, 0.6) / 2,
-                backgroundColor: 'rgba(0,0,0,0.2)',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-              <Icon name={'share'} as={Feather} color={'white'} size={5} />
-            </TouchableOpacity>
-            <CustomText
-              numberOfLines={1}
-              style={{fontSize: moderateScale(12, 0.6), color: Color.white}}>
-              1k
-            </CustomText>
-          </View> */}
+
           <ComentsSection refRBSheet={refRBSheet} data={item} />
         </View>
+        <View
+          style={{
+            position: 'absolute',
+            backgroundColor: Color.themeColor,
+            height: windowWidth * 0.03,
+            width: currentTime
+              ? duration
+                ?`${(currentTime / duration)*100}%`
+                : '0%'
+              : '0%',
+          }}></View>
       </LinearGradient>
     </TouchableOpacity>
   );
@@ -305,9 +276,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   card: {
-    backgroundColor: 'red',
-    // height: windowHeight * 0.72,
-    // borderRadius: moderateScale(20, 0.6),
     shadowColor: Color.black,
     shadowOffset: {
       width: 0,
@@ -320,7 +288,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
   },
   backgroundVideo: {
-    backgroundColor: 'red',
     position: 'absolute',
     top: 0,
     left: 0,
@@ -336,13 +303,11 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(18, 0.6),
     color: Color.white,
     textShadowColor: Color.black,
-    // textShadowRadius: moderateScale(30, 0.6),
   },
   text1: {
     fontSize: moderateScale(15, 0.6),
     color: Color.veryLightGray,
     textShadowColor: Color.black,
-    // textShadowRadius: moderateScale(30, 0.6),
   },
   view: {
     width: '100%',
@@ -354,12 +319,10 @@ const styles = StyleSheet.create({
   israelite: {
     width: windowWidth * 0.22,
     height: windowWidth * 0.1,
-    // backgroundColor: themeColor[1],
     borderRadius: moderateScale(8, 0.6),
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'center',
-    // borderColor: themeColor[1],
     borderWidth: 1,
   },
 });

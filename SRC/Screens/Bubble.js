@@ -9,6 +9,7 @@ import {
   ToastAndroid,
   TouchableOpacity,
   View,
+  Alert,
 } from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -37,7 +38,6 @@ import { baseUrl } from '../Config';
 
 const Bubble = props => {
   const bubbleId = props?.route?.params?.id;
-  console.log('🚀 ~ file: Bubble.js:38 ~ Bubble ~ bubbleId:', bubbleId);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -63,11 +63,9 @@ const Bubble = props => {
 
   const handleInputChange = text => {
     setSearch(text);
-
     if (timerId) {
       clearTimeout(timerId);
     }
-
     const newTimerId = setTimeout(() => {
       SearchMembers(text);
     }, 300);
@@ -84,14 +82,10 @@ const Bubble = props => {
   
     const response = await Post(url, body, apiHeader(token));
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: Bubble.js:150 ~ getBubbleDetails ~ response:',
-        response?.data,
-      );
       setnewData(response?.data?.profile_info);
-    
     }
   };
+
   const SendInvite = async () => {
     const url = 'auth/community_member/add';
     const invitedIds = invitedPeople.map((item, index) => {
@@ -103,15 +97,10 @@ const Bubble = props => {
       community_id: bubbleId,
       invite_profile_id: profileData?.id,
     };
-      console.log("🚀 ~ file: Bubble.js:177 ~ SendInvite ~ body:", body)
     setLoadingInvite(true);
     const response = await Post(url, body, apiHeader(token));
     setLoadingInvite(false);
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: RequestModal.js:32 ~ addRequest ~ response:',
-        response?.data,
-      );
       setIsVisible(false);
       Platform.OS == 'android'
         ? ToastAndroid.show('Request has been sent', ToastAndroid.SHORT)
@@ -145,22 +134,24 @@ const Bubble = props => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: Bubble.js:150 ~ getBubbleDetails ~ response:======>',
-        response?.data,
-      );
+      
       setBubbleInfo(response?.data?.community_info);
       setStartFollowing(response?.data?.community_info?.follow ? true : false);
     }
   };
 
   const InviteMember = () => {
-    setIsVisible(true);
+    if(bubbleInfo?.invite_members?.toLowerCase() == 'yes'){
+      setIsVisible(true);
+    }else{
+      Alert.alert('you donot have permissions to invite the others')
+    }
   };
 
-  const BubbleMangement = () => {
+  const BubbleMangement = () => {   
     navigationService.navigate('BubbleManagement');
   };
+
   useEffect(() => {
     getBubbleDetails();
   }, [isFocused]);
@@ -282,9 +273,6 @@ const Bubble = props => {
             </View>
             <View style={styles.followbtn}>
               <CustomButton
-                // disabled={
-                //   bubbleInfo?.profile_id == profileData?.id ? true : false
-                // }
                 text={
                   followLoading ? (
                     <ActivityIndicator color={themeColor[1]} size={'small'} />

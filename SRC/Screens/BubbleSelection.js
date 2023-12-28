@@ -37,10 +37,6 @@ const BubbleSelection = () => {
   const [isLaoding, setIsLaoding] = useState(false);
   const [selectedBubble, setSelectedBubble] = useState([]);
 
-  console.log(
-    '🚀 ~ file: BubbleSelection.js:29 ~ BubbleSelection ~ selectedBubble:',
-    selectedBubble?.length,
-  );
   const [bubble, setBubble] = useState([]);
 
   const selectedProfile = useSelector(
@@ -151,7 +147,6 @@ const BubbleSelection = () => {
     const url = `auth/community/${profileData?.id}`;
     setIsLaoding(true);
     const response = await Get(url, token);
-    // return  console.log("🚀 ~ file: BubbleSelection.js:169 ~ getbubble ~ response:", response?.data?.community_info)
     setIsLaoding(false);
     if (response != undefined) {
       setBubble(response?.data?.community_info);
@@ -166,24 +161,16 @@ const BubbleSelection = () => {
     const communityid = selectedBubble?.map((item, index) => {
       return item?.id;
     });
-    //  console.log("🚀 ~ file: BubbleSelection.js:190 ~ communityid ~ communityid:", communityid)
     const body = {
       status: 'request',
       community_id: communityid,
       profile_id: profileData?.id,
     };
-    // return console.log(
-    //   '🚀 ~ file: BubbleSelection.js:189 ~ MultiAddCommunity ~ body:',
-    //   body,
-    // );
     setIsLaoding(true);
     const response = await Post(url, body, apiHeader(token));
     setIsLaoding(false);
     if (response != undefined) {
-    //  return console.log("🚀 ~ file: BubbleSelection.js:204 ~ MultiAddCommunity ~ response:", response?.data)
-      // dispatch(setSelectedProfileData(response?.data?.profile_info));
           dispatch(setBubbleSelected(true));
-      //     dispatch(setSelectedBubbles(selectedBubble));
           Platform.OS == 'android'
             ? ToastAndroid.show('Saved', ToastAndroid.SHORT)
             : Alert.alert('Saved');
@@ -216,6 +203,7 @@ const BubbleSelection = () => {
             zIndex: 1,
           }}>
           <CustomButton
+          disabled ={bubble?.length == 0 ? true : false}
             text={
               isLaoding ? (
                 <ActivityIndicator color={Color.white} size={'small'} />

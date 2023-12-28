@@ -1,4 +1,11 @@
-import {FlatList, StyleSheet, Text, TouchableOpacity, View ,ActivityIndicator} from 'react-native';
+import {
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ActivityIndicator,
+} from 'react-native';
 import React, {useEffect, useState} from 'react';
 import CustomImage from './CustomImage';
 import CustomText from './CustomText';
@@ -20,17 +27,13 @@ const Home = ({bubbleId}) => {
   const [isLoading, setIsLoading] = useState(false);
   const isFocused = useIsFocused();
 
-
   const getPosts = async () => {
     const url = `auth/post/${bubbleId}?profile_id=${profileData?.id}`;
     setIsLoading(true);
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: Posts.js:36 ~ getPosts ~ response:',
-        response?.data,
-      );
+     
       setPosts(
         response?.data?.post_info.filter(item => item?.post_videos?.length > 0),
       );
@@ -202,38 +205,45 @@ const Home = ({bubbleId}) => {
       </View> */}
 
       <View style={styles.activityContainer}>
-        {
-          isLoading ? <ActivityIndicator size={'large'} color={'white'}/> : 
-        <FlatList
-          numColumns={3}
-          data={posts}
-          showsVerticalScrollIndicator={false}
-          renderItem={({item, index}) => {
-            // return console.log("🚀 ~ file: Home.js:210 ~ Home ~ item:", item)
-            return (
-              <TouchableOpacity
-                style={styles.activityImage}
-                onPress={() => {
-                  navigationService.navigate('Feeds',{id:item?.post_videos[0]?.name, item:item});
-                }}>
-              
-                <Video
-                  paused={true}
-                  repeat={true}
-                  // controls={true}
-                  source={{uri:item?.post_videos[0]?.name}}
-                  
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    backgroundColor: Color.white,
-                  }}
-                />
-              </TouchableOpacity>
-            );
-          }}
-        />
-        }
+        {isLoading ? (
+          <ActivityIndicator size={'large'} color={'white'} />
+        ) : (
+          <FlatList
+            numColumns={3}
+            data={posts}
+            showsVerticalScrollIndicator={false}
+            renderItem={({item, index}) => {
+              // return console.log("🚀 ~ file: Home.js:210 ~ Home ~ item:", item)
+              return (
+                <TouchableOpacity
+                  style={styles.activityImage}
+                  onPress={() => {
+                    navigationService.navigate('Feeds', {
+                      id: item?.post_videos[0]?.name,
+                      item: item,
+                      posts: posts,
+                      index: index,
+                    });
+                  }}>
+                  <Video
+                    repeat={true}
+                    resizeMode={'cover'}  
+                    mute={true}
+                    // controls={true}
+                    // source={require('../Assets/Images/video1.mp4')}
+                    source={{uri:item?.post_videos[0]?.name}}
+
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      backgroundColor: Color.white,
+                    }}
+                  />
+                </TouchableOpacity>
+              );
+            }}
+          />
+        )}
       </View>
     </>
   );
@@ -408,7 +418,6 @@ const styles = ScaledSheet.create({
     marginTop: moderateScale(20, 0.3),
     flexDirection: 'row',
     flexWrap: 'nowrap',
-
   },
   activityImage: {
     height: windowHeight * 0.2,

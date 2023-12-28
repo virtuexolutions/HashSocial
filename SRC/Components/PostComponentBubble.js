@@ -2,40 +2,26 @@ import {
   View,
   TouchableOpacity,
   StyleSheet,
-  ImageBackground,
-  video,
-  Alert,
-  Pressable,
+
 } from 'react-native';
 import React, {useState, useRef} from 'react';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale} from 'react-native-size-matters';
 import Color from '../Assets/Utilities/Color';
 import CustomText from '../Components/CustomText';
-import {Icon} from 'native-base';
-import {Divider} from 'native-base';
-import Entypo from 'react-native-vector-icons/Entypo';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import Octicons from 'react-native-vector-icons/Octicons';
-import LinearGradient from 'react-native-linear-gradient';
+
 import CustomImage from './CustomImage';
-import ShowMoreAndShowLessText from './ShowMoreAndShowLessText';
 import VideoController from './VideoController';
 import OptionsMenu from 'react-native-options-menu';
-import RBSheet from 'react-native-raw-bottom-sheet';
-import {FlatList} from 'react-native';
-import Lottie from 'lottie-react-native';
-import {Image} from 'react-native-svg';
 import {Delete, Post} from '../Axios/AxiosInterceptorFunction';
 import {useSelector} from 'react-redux';
 import moment from 'moment';
 import navigationService from '../navigationService';
-import TextInputWithTitle from './TextInputWithTitle';
 import ComentsSection from './ComentsSection';
 import numeral from 'numeral';
 import {baseUrl} from '../Config';
 
-const PostComponentBubble = ({data}) => {
+const PostComponentBubble = ({data, bubbleInfo}) => {
   const [like, setLike] = useState(data?.my_like ? true : false);
   const userData = useSelector(state => state.commonReducer.userData);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
@@ -52,11 +38,16 @@ const PostComponentBubble = ({data}) => {
   };
 
   const deletePost = async () => {
-    const url = `auth/post/${data?.id}`;
-    setloading(true);
-    const response = await Delete(url, apiHeader(token));
-    setloading(false);
-    if (response != undefined) {
+    if(bubbleInfo?.remove_content.toLowerCase()=='yes'){
+
+      const url = `auth/post/${data?.id}`;
+      setloading(true);
+      const response = await Delete(url, apiHeader(token));
+      setloading(false);
+      if (response != undefined) {
+      }
+    }else{
+      alert("You don't have permission to delete this post.")
     }
   };
 
@@ -262,7 +253,6 @@ const styles = StyleSheet.create({
   imageContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    // justifyContent:'center',
     paddingHorizontal: moderateScale(10, 0.3),
     paddingVertical: moderateScale(5, 0.3),
     bottom: -12,
