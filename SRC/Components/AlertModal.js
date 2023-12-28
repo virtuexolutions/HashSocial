@@ -29,7 +29,7 @@ import {
 import navigationService from '../navigationService';
 
 const RequestModal = ({isVisible, setIsVisible, item}) => {
-  console.log('🚀 ~ file: AlertModal.js:23 ~ RequestModal ~ data:', item);
+  // console.log('🚀 ~ file: AlertModal.js:23 ~ RequestModal ~ data:', item);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const [loading, setLoading] = useState(false);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);

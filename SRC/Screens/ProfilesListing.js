@@ -55,7 +55,8 @@ const ProfilesListing = props => {
     state => state.commonReducer.selectedProfile,
   );
 
-  const onPress = (item) => {
+  const onPress = item => {
+    console.log('🚀 ~ file: ProfilesListing.js:59 ~ onPress ~ item:', item);
     if (item?.privacy == 'private') {
       dispatch(setAccountPrivate('private'));
       navigationService.navigate('LoginProfile', {item});
@@ -65,20 +66,8 @@ const ProfilesListing = props => {
       dispatch(setQuestionAnswered(item?.qa_status));
       dispatch(setSelectedProfileData(item));
       dispatch(setProfileSelcted(true));
-      dispatch(
-        setBubbleSelected(
-          [0, '0', undefined, null, [], 'null'].includes(item?.community_info)
-            ? false
-            : true,
-        ),
-      );
-      dispatch(
-        setInterestSelected(
-          [0, '0', undefined, null, [], 'null'].includes(item?.interests)
-            ? false
-            : true,
-        ),
-      );
+      dispatch(setBubbleSelected(item?.community_info?.length == 0 ? false : true));
+      dispatch(setInterestSelected(item?.interests?.length == 0 ? false : true));
     }
   };
 
@@ -129,7 +118,7 @@ const ProfilesListing = props => {
                   <TouchableOpacity
                     disabled={item?.id == selectedProfile?.id}
                     onPress={() => {
-                      onPress(item)
+                      onPress(item);
                       setSelectedItem(item);
                       // setIsVisible(true);
                     }}
@@ -147,10 +136,9 @@ const ProfilesListing = props => {
                       }}>
                       <CustomImage
                         onPress={() => {
-                          onPress(item)
+                          onPress(item);
                           setSelectedItem(item);
                           // setIsVisible(true);
-
                         }}
                         style={{
                           height: '100%',
@@ -159,17 +147,14 @@ const ProfilesListing = props => {
                         source={{uri: `${baseUrl}/${item?.photo}`}}
                       />
                     </View>
-                    <CustomText style={styles.text2}>{item?.name}</CustomText>
+                    <CustomText style={styles.text2} isBold>
+                      {item?.name}
+                    </CustomText>
                   </TouchableOpacity>
                 </>
               );
             })}
           </View>
-          <AlertModal
-            isVisible={isVisible}
-            setIsVisible={setIsVisible}
-            item={selectedItem}
-          />
         </View>
       </ImageBackground>
     </>

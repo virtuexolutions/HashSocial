@@ -65,6 +65,7 @@ const ProfileComponent = ({
       <TouchableOpacity
         style={styles.row}
         onPress={() => {
+           console.log("🚀 ~ file: profileComponent.js:69 ~ item:", item)
           if (item?.privacy == 'private') {
             dispatch(setAccountPrivate('private'));
             navigationService.navigate('LoginProfile', {item});
@@ -74,22 +75,6 @@ const ProfileComponent = ({
             dispatch(setQuestionAnswered(item?.qa_status));
             dispatch(setSelectedProfileData(item));
             dispatch(setProfileSelcted(true));
-            dispatch(
-              setBubbleSelected(
-                [0, '0', undefined, null, [], 'null'].includes(
-                  item?.community_info,
-                )
-                  ? false
-                  : true,
-              ),
-            );
-            dispatch(
-              setInterestSelected(
-                [0, '0', undefined, null, [], 'null'].includes(item?.interests)
-                  ? false
-                  : true,
-              ),
-            );
             navigationService.navigate('TabNavigation')
           }
         }}>

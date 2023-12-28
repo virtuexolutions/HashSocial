@@ -33,7 +33,7 @@ import {ScaledSheet} from 'react-native-size-matters';
 import {useDispatch, useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
 import {setBubbleCreated} from '../Store/slices/auth';
-import {Post} from '../Axios/AxiosInterceptorFunction';
+import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 import CustomDropDownMultiSelect from '../Components/CustomDropDownMultiSelect';
 import {useNavigation} from '@react-navigation/native';
 
@@ -41,18 +41,13 @@ const CreateNewBubble = props => {
   const item = props?.route?.params?.item;
   const token = useSelector(state => state.authReducer.token);
   const userData = useSelector(state => state.commonReducer.userData);
-  // console.log("🚀 ~ file: CreateNewBubble.js:44 ~ CreateNewBubble ~ userData:", userData)
-  const navigation = useNavigation();
 
+  const navigation = useNavigation();
   const dispatch = useDispatch();
+
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
-  // const architecture = useSelector(state => state.commonReducer.architecture)
-  console.log(
-    '🚀 ~ file: CreateNewBubble.js:51 ~ CreateNewBubble ~ architecture:',
-    architecture,
-  );
   const [CreateBubble, setCreateBubble] = useState('');
   const [Admin, setAdmin] = useState(
     userData?.first_name ? userData?.first_name : '',
@@ -61,6 +56,7 @@ const CreateNewBubble = props => {
   const [moderator, setModerator] = useState(
     item?.moderator ? item?.moderator : '',
   );
+  const [interests, setInterests] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [profilePicture, setProfilePicture] = useState({});
   const [isLoading, setIsLoading] = useState(false);
@@ -137,7 +133,7 @@ const CreateNewBubble = props => {
   ];
   const [architectureValue, setArchitectureValue] = useState([]);
   console.log(
-    '🚀 ~ file: CreateNewBubble.js:131 ~ CreateNewBubble ~ architectureValue:',
+    '🚀 ~ file: CreateNewBubble.js:136 ~ CreateNewBubble ~ architectureValue:',
     architectureValue,
   );
   const [switchValue, setSwitchValue] = useState('Private');
@@ -196,39 +192,37 @@ const CreateNewBubble = props => {
     for (let key in body) {
       if (body[key] == '') {
         return Platform.OS == 'android'
-          ? ToastAndroid.show(`${key} is required`, ToastAndroid.SHORT)
-          : Alert.alert(`${key} is required`);
+        ? ToastAndroid.show(`${key} is required`, ToastAndroid.SHORT)
+        : Alert.alert(`${key} is required`);
       } else {
         formData.append(key, body[key]);
       }
     }
-
+    
     if (Object.keys(profilePicture).length > 0) {
       formData.append('image', profilePicture);
     } else {
       return Platform.OS == 'android'
-        ? ToastAndroid.show(`image is empty`, ToastAndroid.SHORT)
-        : Alert.alert(`image is empty`);
+      ? ToastAndroid.show(`image is empty`, ToastAndroid.SHORT)
+      : Alert.alert(`image is empty`);
     }
     if (architectureValue?.length > 0) {
       architectureValue.map((item, index) =>
-        formData.append(`category[${index}]`, architecture[item]?.name),
-      )
+      formData.append(`category[${index}]`, item),
+      );
     } else {
       return Platform.OS == 'android'
-        ? ToastAndroid.show(`Please select interest`, ToastAndroid.SHORT)
-        : Alert.alert(`Please select interest`);
+      ? ToastAndroid.show(`Please select interest`, ToastAndroid.SHORT)
+      : Alert.alert(`Please select interest`);
     }
-
+     console.log("🚀 ~ file: CreateNewBubble.js:192 ~ createBubble ~ formData:", formData)
+    
     setIsLoading(true);
     const response = await Post(url, formData, apiHeader(token));
     setIsLoading(false);
+    console.log("🚀 ~ file: CreateNewBubble.js:222 ~ createBubble ~ response:", response?.data)
 
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: CreateNewBubble.js:92 ~ createBubble ~ response:',
-        response?.data,
-      );
       dispatch(setBubbleCreated(true));
       Platform.OS == 'android'
         ? ToastAndroid.show('Bubble created Successfully', ToastAndroid.SHORT)
@@ -237,6 +231,20 @@ const CreateNewBubble = props => {
       navigation.goBack();
     }
   };
+
+  const getInterest = async () => {
+    const url = `auth/interest_list`;
+    setIsLoading(true);
+    const response = await Get(url, token);
+    setIsLoading(false);
+    if (response != undefined) {
+      setInterests(response?.data?.post_info);
+    }
+  };
+
+  useEffect(() => {
+    getInterest();
+  }, []);
 
   useEffect(() => {
     if (Object.keys(profilePicture).length > 0) {
@@ -281,7 +289,7 @@ const CreateNewBubble = props => {
 
                 <CustomDropDownMultiSelect
                   title={'select category'}
-                  array={architecture}
+                  array={interests}
                   item={architectureValue}
                   setItem={setArchitectureValue}
                   maxHeight={windowHeight * 0.13}

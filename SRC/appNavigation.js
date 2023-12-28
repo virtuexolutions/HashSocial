@@ -115,6 +115,7 @@ const AppNavigator = () => {
             name="InterestSelection"
             component={InterestSelection}
           />
+          <RootNav.Screen name="BubbleSelection" component={BubbleSelection} />
           <RootNav.Screen name="PostScreen" component={PostScreen} />
           <RootNav.Screen name="FeedList" component={FeedList} />
           <RootNav.Screen
@@ -136,7 +137,6 @@ const AppNavigator = () => {
           <RootNav.Screen name="BubbleDetail" component={BubbleDetail} />
           <RootNav.Screen name="Bubble" component={Bubble} />
           <RootNav.Screen name="MyGallery" component={MyGallery} />
-          <RootNav.Screen name="BubbleSelection" component={BubbleSelection} />
           <RootNav.Screen name="FeedSelection" component={FeedSelection} />
           <RootNav.Screen name="EnterPhone" component={EnterPhone} />
           <RootNav.Screen name="BubbleList" component={BubbleList} />

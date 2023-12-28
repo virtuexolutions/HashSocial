@@ -32,6 +32,7 @@ const ProfileList = () => {
   const navigation = useNavigation();
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
+  console.log("🚀 ~ file: ProfileList.js:35 ~ ProfileList ~ token:", token)
   const [profileData, setProfileData] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -41,7 +42,7 @@ const ProfileList = () => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-      // console.log("🚀 ~ file: ProfileList.js:43 ~ profileListing ~ response:", response?.data)
+    console.log("🚀 ~ file: ProfileList.js:44 ~ profileListing ~ response:", response?.data?.profile_info[0])
       setProfileData(response?.data?.profile_info);
     }
   };

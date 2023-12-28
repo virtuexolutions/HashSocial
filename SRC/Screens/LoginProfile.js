@@ -60,47 +60,36 @@ const LoginProfile = props => {
       name: item?.name,
       passcode: passCode,
     };
+
     if (passCode == '') {
       return Platform.OS == 'android'
         ? ToastAndroid.show('Passcode is required', ToastAndroid.SHORT)
         : Alert.alert('Passcode is required');
     }
-    console.log('🚀 ~ file: LoginProfile.js:50 ~ loginProfile ~ body:', body);
     setIsLoading(true);
     const response = await Post(url, body, apiHeader(token));
     setIsLoading(false);
 
     if (response?.data?.success) {
-      console.log(
-        '🚀 ~ file: LoginProfile.js:73 ~ loginProfile ~ response:',
-        response?.data,
-        response?.data?.profile_info?.community_list?.length,
-      );
-
+      
       setPassCode('');
       setModal(false);
       dispatch(setSelectedProfileData({}));
-      dispatch(setQuestionAnswered(response?.data?.profile_info?.qa_status));
       dispatch(setSelectedProfileData(response?.data?.profile_info));
       dispatch(setProfileSelcted(true));
-
       dispatch(
-        setBubbleSelected(
-          response?.data?.profile_info?.community_list?.length > 0
-            ? true
-            : false,
+        setInterestSelected(
+          response?.data?.profile_info?.interests?.length == 0 ? false : true,
         ),
       );
       dispatch(
-        setInterestSelected(
-          [null, undefined, 0, 'null', []].includes(
-            response?.data?.profile_info?.interests,
-          )
+        setBubbleSelected(
+          response?.data?.profile_info?.community_list?.length == 0
             ? false
             : true,
         ),
       );
-      navigationService.navigate('TabNavigation')
+      // navigationService.navigate('TabNavigation');
     }
   };
 
@@ -134,8 +123,6 @@ const LoginProfile = props => {
             alignItems: 'center',
             justifyContent: 'center',
             height: windowHeight,
-            // backgroundColor:'green',
-            // height: windowWidth,
           }}>
           <View
             style={{

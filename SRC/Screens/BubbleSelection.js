@@ -152,6 +152,7 @@ const BubbleSelection = () => {
       setBubble(response?.data?.community_info);
     }
   };
+  
   useEffect(() => {
     getBubble();
   }, []);

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ActivityIndicator} from 'react-native';
 import * as Animatable from 'react-native-animatable';
 import Color from '../Assets/Utilities/Color';
@@ -18,16 +18,14 @@ import {
 import Header from '../Components/Header';
 import {View} from 'react-native';
 import CustomButton from '../Components/CustomButton';
-import navigationService from '../navigationService';
 import {useDispatch, useSelector} from 'react-redux';
 import {
-  setBubbleSelected,
-  setFeedsSelected,
   setInterestSelected,
 } from '../Store/slices/auth';
-import {Post} from '../Axios/AxiosInterceptorFunction';
+import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 import {setSelectedFeeds, setSelectedProfileData} from '../Store/slices/common';
 import CustomText from '../Components/CustomText';
+import { baseUrl } from '../Config';
 
 const InterestSelection = () => {
   const privacy = useSelector(state => state.authReducer.privacy);
@@ -37,10 +35,8 @@ const InterestSelection = () => {
 
   const [isLaoding, setIsLaoding] = useState(false);
   const [selectedBubble, setSelectedBubble] = useState([]);
-  console.log(
-    '🚀 ~ file: BubbleSelection.js:29 ~ BubbleSelection ~ selectedBubble:',
-    selectedBubble,
-  );
+  console.log("🚀 ~ file: InterestsSelection.js:38 ~ InterestSelection ~ selectedBubble:", selectedBubble)
+ const [interestListing, setInterestListing] = useState([])
 
   const selectedProfile = useSelector(
     state => state.commonReducer.selectedProfile,
@@ -159,19 +155,28 @@ const InterestSelection = () => {
     // },
   ]);
 
+  const getInterest = async () => {
+    const url = `auth/interest_list`;
+    setIsLaoding(true);
+    const response = await Get(url, token);
+    setIsLaoding(false);
+    if (response != undefined) {
+      console.log("🚀 ~ file: InterestsSelection.js:165 ~ getInterest ~ response:", response?.data)
+      setInterestListing(response?.data?.post_info);
+    }
+  };
+ 
+
   const sendSelectedFeeds = async () => {
     const url = 'auth/subscribe';
     const body = {
       id: profileData?.id,
       interests: selectedBubble,
     };
-    // return console.log("🚀 ~ file: InterestsSelection.js:169 ~ sendSelectedFeeds ~ body:", body)
     setIsLaoding(true);
     const response = await Post(url, body, apiHeader(token));
     setIsLaoding(false);
-  console.log("🚀 ~ file: InterestsSelection.js:171 ~ sendSelectedFeeds ~ response:", response)
     if (response != undefined) {
-    // return console.log('data ======= > ' , response?.data)
       dispatch(setSelectedProfileData(response?.data?.profile_info));
       dispatch(setInterestSelected(true));
       Platform.OS == 'android'
@@ -179,6 +184,10 @@ const InterestSelection = () => {
         : Alert.alert('Saved');
     }
   };
+
+  useEffect(() => {
+    getInterest();
+  }, []);
 
   return (
     <ScreenBoiler
@@ -195,8 +204,6 @@ const InterestSelection = () => {
         style={{
           width: windowWidth,
           height: windowHeight * 0.9,
-          //   justifyContent: 'center',
-          //   alignItems: 'center',
         }}>
         <View
           style={{
@@ -239,7 +246,6 @@ const InterestSelection = () => {
             fontSize={moderateScale(12, 0.6)}
             onPress={() => {
               dispatch(setInterestSelected(true));
-              // navigationService.navigate('')
             }}
             marginTop={moderateScale(10, 0.3)}
             bgColor={['#ffffff', '#ffffff']}
@@ -250,7 +256,6 @@ const InterestSelection = () => {
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
-            // alignItems : 'center',
             paddingHorizontal: moderateScale(5, 0.6),
             flexDirection: 'row',
             flexWrap: 'wrap',
@@ -261,17 +266,17 @@ const InterestSelection = () => {
           style={{
             width: windowWidth,
           }}>
-          {BubbleImageArraty.map((item, index) => {
+          {interestListing.map((item, index) => {
             return (
               <TouchableOpacity
                 onPress={() => {
                   console.log('Here');
-                  if (selectedBubble.findIndex(i => i.id == item?.id) != -1) {
+                  if (selectedBubble.findIndex(i => i == item?.id) != -1) {
                     setSelectedBubble(
-                      selectedBubble?.filter(i => i?.id != item?.id),
+                      selectedBubble?.filter(i => i != item?.id),
                     );
                   } else {
-                    setSelectedBubble(prev => [...prev, item]);
+                    setSelectedBubble(prev => [...prev, item?.id]);
                   }
                   const data = [...BubbleImageArraty];
                   data[index].added = !data[index].added;
@@ -309,27 +314,25 @@ const InterestSelection = () => {
                 </CustomText>
                 <CustomImage
                   onPress={() => {
-                    console.log('Here');
-
-                    if (selectedBubble.findIndex(i => i.id == item?.id) != -1) {
+                    if (selectedBubble.findIndex(i => i == item?.id) != -1) {
                       setSelectedBubble(
-                        selectedBubble?.filter(i => i?.id != item?.id),
+                        selectedBubble?.filter(i => i != item?.id),
                       );
                     } else {
-                      setSelectedBubble(prev => [...prev, item]);
+                      setSelectedBubble(prev => [...prev, item?.id]);
                     }
                     const data = [...BubbleImageArraty];
                     data[index].added = !data[index].added;
 
                     setBubbleImageArraty(data);
                   }}
-                  source={item.image}
+                  source={item?.image ? {uri:`${baseUrl}/${item.image}`} :BubbleImageArraty[index]?.image}
                   style={{
                     width: '100%',
                     height: '100%',
                   }}
                 />
-                {item.added && (
+                {selectedBubble.includes(item?.id)&& (
                   <View
                     style={{
                       width: windowWidth * 0.3,
@@ -354,16 +357,15 @@ const InterestSelection = () => {
                       }}>
                       <CustomImage
                         onPress={() => {
-                          console.log('Here');
                           if (
-                            selectedBubble.findIndex(i => i.id == item?.id) !=
+                            selectedBubble.findIndex(i => i == item?.id) !=
                             -1
                           ) {
                             setSelectedBubble(
-                              selectedBubble?.filter(i => i?.id != item?.id),
+                              selectedBubble?.filter(i => i != item?.id),
                             );
                           } else {
-                            setSelectedBubble(prev => [...prev, item]);
+                            setSelectedBubble(prev => [...prev, item?.id]);
                           }
                           const data = [...BubbleImageArraty];
                           data[index].added = !data[index].added;
