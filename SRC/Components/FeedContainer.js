@@ -64,7 +64,7 @@ const FeedContainer = ({ item, source }) => {
         pause={false}
         controls={true}
         // source={require('../Assets/Images/video1.mp4')}
-        source={{uri: source}}
+        source={{ uri: source }}
         style={styles.backgroundVideo}
         onProgress={data => {
           console.log('hereeeeeeeeeee================>>>>>', data);
@@ -175,7 +175,7 @@ const FeedContainer = ({ item, source }) => {
               width: windowWidth * 0.8,
               marginTop: moderateScale(10, 0.3),
               // alignSelf: 'center',
-              paddingHorizontal:moderateScale(10,.3),
+              paddingHorizontal: moderateScale(10, .3),
 
               // color:'white',
               backgroundColor: 'pink'
@@ -309,7 +309,7 @@ const FeedContainer = ({ item, source }) => {
             height: windowWidth * 0.03,
             width: currentTime
               ? duration
-                ?`${(currentTime / duration)*100}%`
+                ? `${(currentTime / duration) * 100}%`
                 : '0%'
               : '0%',
           }}></View>

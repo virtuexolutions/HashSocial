@@ -117,7 +117,7 @@ const Signup = () => {
       dispatch(setUserData(response?.data?.user_info));
       dispatch(setUserLogin(response?.data?.token));
       dispatch(setUserToken({token: response?.data?.token}));
-      dispatch(setNumOfProfiles(response?.data?.user_info?.total_profile));
+      dispatch(setNumOfProfiles([undefined ,null ,'null' ,0 ,]?.includes(response?.data?.user_info?.total_profile) ? 0 : (response?.data?.user_info?.total_profile) ));
       dispatch(setNewSignUp(true))
       // dispatch(setBubbleCreated(false))
     }
