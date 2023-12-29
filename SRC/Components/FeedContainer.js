@@ -1,8 +1,20 @@
+<<<<<<< HEAD
 import React, {useState, useRef} from 'react';
 import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
+=======
+import React, { useState, useRef } from 'react';
+import {
+  Text,
+  TouchableOpacity,
+  View,
+  StyleSheet,
+  ImageBackground,
+  ScrollView,
+} from 'react-native';
+>>>>>>> origin/main
 import Color from '../Assets/Utilities/Color';
-import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
-import {moderateScale, ScaledSheet} from 'react-native-size-matters';
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
+import { moderateScale, ScaledSheet } from 'react-native-size-matters';
 import CustomImage from '../Components/CustomImage';
 import LinearGradient from 'react-native-linear-gradient';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -10,13 +22,15 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Video from 'react-native-video';
 import numeral from 'numeral';
 import CustomText from '../Components/CustomText';
-import {Icon} from 'native-base';
-import {useSelector} from 'react-redux';
-import {baseUrl} from '../Config';
+import { Icon } from 'native-base';
+import { useSelector } from 'react-redux';
+import { baseUrl } from '../Config';
 import ComentsSection from './ComentsSection';
-import {Post} from '../Axios/AxiosInterceptorFunction';
+import { Post } from '../Axios/AxiosInterceptorFunction';
+import ShowMoreAndShowLessText from '../Components/ShowMoreAndShowLessText';
 
-const FeedContainer = ({item, source}) => {
+const FeedContainer = ({ item, source }) => {
+  // return console.log("🚀 ~ file: FeedContainer.js:28 ~ FeedContainer ~ item:", item)
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const token = useSelector(state => state.authReducer.token);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
@@ -26,6 +40,7 @@ const FeedContainer = ({item, source}) => {
   const [currentTime, setCurrentTime] = useState(0);
 
   const [loading, setloading] = useState(false);
+  const [commentsCount, setCommentsCount] = useState(0)
 
   const likePost = async () => {
     const url = `auth/post_like`;
@@ -46,7 +61,7 @@ const FeedContainer = ({item, source}) => {
       activeOpacity={1}
       style={[
         styles.card,
-        {height: windowHeight, paddingBottom: moderateScale(0, 0.3)},
+        { height: windowHeight, paddingBottom: moderateScale(0, 0.3) },
       ]}>
       <Video
         resizeMode={'stretch'}
@@ -63,14 +78,14 @@ const FeedContainer = ({item, source}) => {
         }}
       />
       <LinearGradient
-        start={{x: 0, y: 0}}
-        end={{x: 0, y: 0.9}}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 0, y: 0.9 }}
         colors={['#ffffff00', '#000000']}
         style={{
           position: 'absolute',
           bottom: 0,
           justifyContent: 'flex-end',
-          shadowOffset: {height: 2, width: 0},
+          shadowOffset: { height: 2, width: 0 },
           shadowOpacity: 1,
           shadowRadius: 4,
           width: '100%',
@@ -103,7 +118,7 @@ const FeedContainer = ({item, source}) => {
               <CustomImage
                 source={
                   item?.profile_info?.photo
-                    ? {uri: `${baseUrl}/${item?.profile_info?.photo}`}
+                    ? { uri: `${baseUrl}/${item?.profile_info?.photo}` }
                     : require('../Assets/Images/avatar3.png')
                 }
                 style={{
@@ -112,7 +127,7 @@ const FeedContainer = ({item, source}) => {
                 }}
               />
             </View>
-            <View style={{justifyContent: 'space-between'}}>
+            <View style={{ justifyContent: 'space-between' }}>
               <CustomText
                 numberOfLines={1}
                 style={{
@@ -146,7 +161,7 @@ const FeedContainer = ({item, source}) => {
               paddingLeft: moderateScale(5, 0.6),
             }}>
             <CustomText
-              style={{fontSize: moderateScale(14, 0.6), color: Color.white}}>
+              style={{ fontSize: moderateScale(14, 0.6), color: Color.white }}>
               50 Views
             </CustomText>
             <View
@@ -156,12 +171,33 @@ const FeedContainer = ({item, source}) => {
                 backgroundColor: '#fff',
               }}></View>
             <CustomText
-              style={{fontSize: moderateScale(14, 0.6), color: Color.white}}>
+              style={{ fontSize: moderateScale(14, 0.6), color: Color.white }}>
               {item?.comments?.length} comments
             </CustomText>
           </View>
+          <View
+            style={{
+              width: windowWidth * 0.8,
+              marginTop: moderateScale(10, 0.3),
+              // alignSelf: 'center',
+              paddingHorizontal:moderateScale(10,.3),
 
-          <CustomText
+              // color:'white',
+              backgroundColor: 'pink'
+            }}>
+            <ScrollView
+              contentContainerStyle={{
+                paddingBottom: moderateScale(20, 0.3)
+              }}
+            >
+
+              <ShowMoreAndShowLessText minTextLength={12} style={styles.moreLess}>
+                {/* {item?.description} */}
+                {`${item?.caption}${'gffffffffahkjfhkjah dfjkhkjadhfkj hadkjfh kjh adkfj hkajdfh kjahsd fkjhakdjfhk jdfsk fkljhsdk fjhkjsdfh kjh klfjshd fkjhskldjfh ksjdhfkjsdh fkjh sdkjfh ksjd hfkjhs dkjfh skdjfh ksjhdfkjshd fkj hskdjfh ksjhd fkjh dksfjh ksh dfjk hskdh fkh sdkjfhskjdhfkjshdfkj skdjfh ksjdh fkj hdkjh fjkh hfkjhkjh jkhjhsdfkg kjhg kjhsjkghjksdfhkjs dfjk hsdjfkh ksjdhfjkshd fjkhs djkfhjksdhfjkhffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffjk'}`}
+              </ShowMoreAndShowLessText>
+            </ScrollView>
+          </View>
+          {/* <CustomText
             style={{
               fontSize: moderateScale(12, 0.6),
               color: Color.white,
@@ -170,7 +206,7 @@ const FeedContainer = ({item, source}) => {
               marginTop: moderateScale(10, 0.3),
             }}>
             {item?.caption}
-          </CustomText>
+          </CustomText> */}
         </View>
         <View
           style={{
@@ -205,12 +241,13 @@ const FeedContainer = ({item, source}) => {
             </TouchableOpacity>
             <CustomText
               numberOfLines={1}
-              style={{fontSize: moderateScale(12, 0.6), color: Color.white}}>
+              style={{ fontSize: moderateScale(12, 0.6), color: Color.white }}>
+              {/* {item?.total_likes_count} */}
               {(item?.my_like && like) || (!item?.my_like && !like)
                 ? numeral(item?.total_likes_count).format('0a')
                 : item?.my_like && !like
-                ? numeral(item?.total_likes_count - 1).format('0a')
-                : numeral(item?.total_likes_count + 1).format('0a')}
+                  ? numeral(item?.total_likes_count - 1).format('0a')
+                  : numeral(item?.total_likes_count + 1).format('0a')}
             </CustomText>
           </View>
 
@@ -241,12 +278,34 @@ const FeedContainer = ({item, source}) => {
             </TouchableOpacity>
             <CustomText
               numberOfLines={1}
-              style={{fontSize: moderateScale(12, 0.6), color: Color.white}}>
+              style={{ fontSize: moderateScale(12, 0.6), color: Color.white }}>
               {item?.comments?.length}
             </CustomText>
           </View>
-
-          <ComentsSection refRBSheet={refRBSheet} data={item} />
+          {/* <View
+            style={{
+              marginTop: moderateScale(20, 0.3),
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <TouchableOpacity
+              style={{
+                height: moderateScale(30, 0.6),
+                width: moderateScale(30, 0.6),
+                borderRadius: moderateScale(30, 0.6) / 2,
+                backgroundColor: 'rgba(0,0,0,0.2)',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Icon name={'share'} as={Feather} color={'white'} size={5} />
+            </TouchableOpacity>
+            <CustomText
+              numberOfLines={1}
+              style={{fontSize: moderateScale(12, 0.6), color: Color.white}}>
+              1k
+            </CustomText>
+          </View> */}
+          <ComentsSection refRBSheet={refRBSheet} data={item} setCommentsCount={setCommentsCount} />
         </View>
         <View
           style={{
@@ -324,6 +383,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     alignSelf: 'center',
     borderWidth: 1,
+  },
+  moreLess: {
+    textAlign: 'left',
+    fontSize: moderateScale(13, 0.6),
+    width: windowWidth * 0.85,
+    // color:'white'
   },
 });
 

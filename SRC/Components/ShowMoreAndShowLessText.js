@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Dimensions, TouchableOpacity, View} from 'react-native';
+import {Dimensions, ScrollView, TouchableOpacity, View} from 'react-native';
 import {moderateScale, ScaledSheet} from 'react-native-size-matters';
 import {useSelector} from 'react-redux';
 import Color from '../Assets/Utilities/Color';
@@ -12,11 +12,11 @@ const ShowMoreAndShowLessText = props => {
   const userRole = useSelector((state)=>state.commonReducer.selectedRole)
   const {children, style, minTextLength} = props;
   const [showMore, setShowMore] = useState(false);
-  const [textMaxLength, setTextMaxLength] = useState(children.split(' ').length);
+  const [textMaxLength, setTextMaxLength] = useState(children?.split(' ')?.length);
   const [renderText, setRenderText] = useState();
   useEffect(() => {
-    let stringArray = children !== null ? children.split(' ') : [];
-    setTextMaxLength(stringArray.length);
+    let stringArray = children !== null ? children?.split(' ') : [];
+    setTextMaxLength(stringArray?.length);
     if (showMore == false && textMaxLength > minTextLength) {
       stringArray = stringArray.splice(0, minTextLength);
       let newString = stringArray.join().replace(/,/g, ' ');
@@ -29,6 +29,7 @@ const ShowMoreAndShowLessText = props => {
   }, [showMore]);
 
   return (
+   
    
     <CustomText style={[styles.generalText, style]} isRegular>
       {renderText}{' '}
@@ -51,7 +52,6 @@ const ShowMoreAndShowLessText = props => {
       
       )}
     </CustomText>
-
   
   );
 };

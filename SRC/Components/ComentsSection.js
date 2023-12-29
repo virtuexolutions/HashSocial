@@ -51,6 +51,7 @@ const ComentsSection = ({refRBSheet, data, setCommentsCount}) => {
 
     setIsLoading(true);
     const response = await Post(url, body, apiHeader(token));
+     console.log("🚀 ~ file: ComentsSection.js:54 ~ addComment ~ response:", response)
     setIsLoading(false);
     if (response != undefined) {
       setCommentsData(prev => [

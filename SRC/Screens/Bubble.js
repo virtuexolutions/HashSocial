@@ -133,8 +133,7 @@ const Bubble = props => {
     setIsLoading(true);
     const response = await Get(url, token);
     setIsLoading(false);
-    if (response != undefined) {
-      
+    if (response != undefined) {   
       setBubbleInfo(response?.data?.community_info);
       setStartFollowing(response?.data?.community_info?.follow ? true : false);
     }

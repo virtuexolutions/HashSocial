@@ -179,7 +179,7 @@ const RoundMenu = ({
                     : center.x - centerContentSize / 2.3,
                 top: center.x - centerContentSize / 2,
                 width: centerContentSize,
-                backgroundColor: 'red',
+                backgroundColor: 'gray',
                 height: centerContentSize,
                 position: 'absolute',
                 justifyContent: 'center',
@@ -283,13 +283,11 @@ const RoundMenu = ({
                         if (el?.bubble && el?.private) {
                             console.log(el?.item?.follow)
                           if (el?.item?.profile_id == profileData?.id ||el?.item?.follow?.status == 'follow') {
-                            console.log('Here in buble details=====')
                             setText('bubble');
                             setSelectedBubbleId(el?.id);
                             setclicked(true);
                             setBubbleData(el?.item)
                           } else {
-                            console.log('Here in buble details===== else')
 
                             setIsVisible(true);
                             setSelectedBubbleId(el?.id);
@@ -297,7 +295,6 @@ const RoundMenu = ({
                             setBubbleData(el?.item)
                           }
                         } else if (el?.bubble && !el?.private) {
-                            console.log('Here in buble details===== else not private')
 
                           setclicked(true);
                           setSelectedBubbleId(el?.id);
