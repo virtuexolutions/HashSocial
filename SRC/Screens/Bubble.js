@@ -149,7 +149,7 @@ const Bubble = props => {
   };
 
   const InviteMember = () => {
-    if (bubbleInfo?.invite_members?.toLowerCase() == 'yes') {
+    if(bubbleInfo?.invite_members?.toLowerCase() == 'yes' || bubbleInfo?.profile_id == profileData?.id ){
       setIsVisible(true);
     } else {
       Alert.alert('you donot have permissions to invite the others');

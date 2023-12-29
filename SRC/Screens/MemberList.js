@@ -36,6 +36,7 @@ const MemberList = props => {
   const [members, setMembers] = useState([]);
   console.log('🚀 ~ file: MemberList.js:32 ~ MemberList ~ members:', members);
 
+  
   const GetBubblemembers = async () => {
     const url = `auth/community_member/list/${BubbleId}`;
     setLoading(true);

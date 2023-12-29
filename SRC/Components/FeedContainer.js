@@ -26,6 +26,7 @@ const FeedContainer = ({ item, source }) => {
   // return console.log("🚀 ~ file: FeedContainer.js:28 ~ FeedContainer ~ item:", item)
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
   const token = useSelector(state => state.authReducer.token);
+  return  console.log("🚀 ~ file: FeedContainer.js:29 ~ FeedContainer ~ token:", token)
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const [like, setLike] = useState(item?.my_like ? true : false);
   const refRBSheet = useRef();

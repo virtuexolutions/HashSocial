@@ -58,7 +58,7 @@ const Posts = ({onPress, bubbleId, bubbleInfo}) => {
 
   return (
     <View>
-     {(bubbleInfo?.post_privacy == 'Yes' || bubbleInfo?.profile_id == profileData?.id) && <View
+     {(bubbleInfo?.post_privacy?.toLowerCase() == 'yes' || bubbleInfo?.profile_id == profileData?.id) && <View
         style={{
           flexDirection: 'row',
           marginTop: moderateScale(10, 0.6),

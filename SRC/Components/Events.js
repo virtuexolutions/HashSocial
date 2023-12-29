@@ -113,7 +113,7 @@ const Events = ({onPress, bubbleId, bubbleInfo}) => {
 
   return (
     <View style={styles.container}>
-     {bubbleInfo?.profile_id ==profileData?.id && <View style={styles.cover}>
+     {bubbleInfo?.post_privacy?.toLowerCase() == 'yes' || bubbleInfo?.profile_id ==profileData?.id && <View style={styles.cover}>
         <View
           style={{
             width: windowWidth * 0.08,
