@@ -215,12 +215,10 @@ const CreateNewBubble = props => {
       ? ToastAndroid.show(`Please select interest`, ToastAndroid.SHORT)
       : Alert.alert(`Please select interest`);
     }
-     console.log("🚀 ~ file: CreateNewBubble.js:192 ~ createBubble ~ formData:", formData)
     
     setIsLoading(true);
     const response = await Post(url, formData, apiHeader(token));
     setIsLoading(false);
-    console.log("🚀 ~ file: CreateNewBubble.js:222 ~ createBubble ~ response:", response?.data)
 
     if (response != undefined) {
       dispatch(setBubbleCreated(true));

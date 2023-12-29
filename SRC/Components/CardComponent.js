@@ -12,7 +12,7 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 const {height, width} = Dimensions.get('window');
 import {moderateScale} from 'react-native-size-matters';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -31,13 +31,16 @@ import Feather from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
 import navigationService from '../navigationService';
 import TextInputWithTitle from './TextInputWithTitle';
-import {baseUrl} from '../Config';
+import {baseUrl, profilePicUrl} from '../Config';
 import moment from 'moment';
 import {Post} from '../Axios/AxiosInterceptorFunction';
 
 const CardComponent = ({
   item,
   pending,
+  bubbleInfo,
+  makeTeam,
+  setMakeTeam,
   check,
   close,
   edit,
@@ -46,22 +49,47 @@ const CardComponent = ({
   Requested,
   blocked,
 }) => {
-  console.log("🚀 ~ file: CardComponent.js:49 ~ item:", item)
+  console.log('🚀 ~ file: CardComponent.js:49 ~ item:', item);
 
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
   const profileData = useSelector(state => state.commonReducer.profileData);
 
+  const [modalVisible, setModalVisible] = useState(false);
+
   const [isVisible, setIsVisible] = useState(false);
   const [msg, setMsg] = useState('');
   const [isLoading, setisLoading] = useState(false);
-  const [requested , setRequested] = useState(item?.profile_id == profileData?.id  && item?.status == 'request' ? true : false)
-  const [invite , setinvited] = useState(item?.profile_id == profileData?.id  && item?.status == 'invite' ? true : false)
-  const [block , setblocked] = useState(item?.profile_id == profileData?.id  && item?.status == 'blocked' ? true : false)
-  const [member , setmember] = useState(item?.profile_id == profileData?.id  && item?.status == 'follow' ? true : false)
+  const [requested, setRequested] = useState(
+    item?.profile_id == profileData?.id && item?.status == 'request'
+      ? true
+      : false,
+  );
+  const [invite, setinvited] = useState(
+    item?.profile_id == profileData?.id && item?.status == 'invite'
+      ? true
+      : false,
+  );
+  const [block, setblocked] = useState(
+    item?.profile_id == profileData?.id && item?.status == 'blocked'
+      ? true
+      : false,
+  );
+  const [member, setmember] = useState(
+    item?.profile_id == profileData?.id && item?.status == 'follow'
+      ? true
+      : false,
+  );
 
-  console.log('Heereeeeeee',  `${baseUrl}/${item?.photo}` )
-
+  const modalData = [
+    {
+      name: 'Make Team Member',
+      onPress: () => {
+        navigationService.navigate('Notifications');
+        setModalVisible(!modalVisible);
+      },
+    },
+  ];
 
   const handleMemberAction = async actionType => {
     const url = `auth/community_member/pending_list/${item?.id}`;
@@ -72,59 +100,67 @@ const CardComponent = ({
     const response = await Post(url, body, apiHeader(token));
     setisLoading(false);
     if (response != undefined) {
-      if(actionType == 'accept'){
-        setRequested(false)
-        setmember(true)
-        setblocked(false)
-      }
-      else if (actionType == 'reject'){
-        setRequested(false)
-        setmember(false)
-        setinvited(false)
-      }
-      else if (actionType == 'blocked'){
-        setmember(false)
-        setblocked(true)
-      }
-      else if (actionType == 'blocked'){
-        setmember(false)
-        setblocked(true)
+      setModalVisible(false);
+      if (actionType == 'accept') {
+        setRequested(false);
+        setmember(true);
+        setblocked(false);
+      } else if (actionType == 'reject') {
+        setRequested(false);
+        setmember(false);
+        setinvited(false);
+      } else if (actionType == 'blocked') {
+        setmember(false);
+        setblocked(true);
+      } else if (actionType == 'blocked') {
+        setmember(false);
+        setblocked(true);
       }
     }
   };
 
   return (
     <>
-      <View style={styles.row}>
+      <TouchableOpacity
+        onLongPress={() => {
+          if (bubbleInfo?.profile_id == profileData?.id) {
+            setModalVisible(true);
+          }
+        }}
+        style={styles.row}>
         <View>
           <View style={styles.profileSection}>
             <CustomImage
-              source={{uri: `${baseUrl}/${item?.photo ? item?.photo : item?.profile_info?.photo}`}}
+              source={{
+                uri: `${baseUrl}/${
+                  item?.photo ? item?.photo : item?.profile_info?.photo
+                }`,
+              }}
               style={{width: '100%', height: '100%'}}
             />
           </View>
-          
-            <TouchableOpacity
+
+          <TouchableOpacity
+            onPress={() => {
+              setIsVisible(true);
+            }}
+            style={styles.view}>
+            <Icon
+              name="message1"
+              as={AntDesign}
+              color={themeColor[1]}
               onPress={() => {
                 setIsVisible(true);
               }}
-              style={styles.view}>
-              <Icon
-                name="message1"
-                as={AntDesign}
-                color={themeColor[1]}
-                onPress={() => {
-                  setIsVisible(true);
-                }}
-              />
-            </TouchableOpacity>
-     
+            />
+          </TouchableOpacity>
         </View>
 
         <View
           style={{
             paddingLeft: moderateScale(15, 0.6),
             width: windowWidth * 0.45,
+            backgroundColor: 'red',
           }}>
           <CustomText
             numberOfLines={1}
@@ -155,12 +191,11 @@ const CardComponent = ({
           </CustomText>
         </View>
 
-
         <View
           style={{
             flexDirection: 'row',
             justifyContent: 'flex-end',
-            // backgroundColor: 'red',
+            backgroundColor: 'green',
             width: windowWidth * 0.3,
           }}>
           {pending && (
@@ -215,7 +250,7 @@ const CardComponent = ({
               />
             </>
           )}
-          {member &&  (
+          {member && (
             <>
               <CustomButton
                 iconName={isLoading ? 'loader' : 'pause'}
@@ -240,7 +275,7 @@ const CardComponent = ({
                 onPress={() => {
                   handleMemberAction('reject');
                 }}
-                iconStyle={{          
+                iconStyle={{
                   color: Color.black,
                 }}
                 textColor={Color.black}
@@ -294,7 +329,30 @@ const CardComponent = ({
             />
           )}
         </View>
-      </View>
+        {modalVisible && (
+          <View
+            style={{
+              position: 'absolute',
+              right: 10,
+              borderRadius: moderateScale(10, 0.6),
+              bottom: -5,
+              backgroundColor: 'white',
+
+              width: windowWidth * 0.3,
+              justifyContent: 'center',
+              alignItems: 'center',
+              padding: moderateScale(10, 0.6),
+            }}>
+            <CustomText
+              style={{color: 'gray', fontSize: moderateScale(12, 0.6)}}
+              onPress={() => {
+                handleMemberAction('team');
+              }}>
+              Make Team Member
+            </CustomText>
+          </View>
+        )}
+      </TouchableOpacity>
 
       <Modal
         isVisible={isVisible}
@@ -349,13 +407,10 @@ const CardComponent = ({
               backgroundColor={'white'}
               border={1}
               borderColor={Color.veryLightGray}
-
               color={themeColor[1]}
               placeholderColor={Color.themeLightGray}
               borderRadius={moderateScale(10, 0.3)}
             />
-
-           
           </View>
 
           <CustomButton
@@ -379,6 +434,55 @@ const CardComponent = ({
           />
         </View>
       </Modal>
+      <Modal
+        visible={false}
+        onBackdropPress={() => {
+          // Alert.alert('Modal has been closed.');
+          setModalVisible(!modalVisible);
+        }}>
+        <View
+          style={{
+            width: windowWidth * 0.32,
+            // top: 120,
+            // right: 0,
+            position: 'absolute',
+            alignSelf: 'flex-end',
+            alignItems: 'center',
+            borderRadius: moderateScale(10, 0.6),
+            // backgroundColor: 'rgba(225,225,225,.5)',
+            backgroundColor: Color.white,
+            shadowColor: '#000',
+            shadowOffset: {
+              width: 0,
+              height: 2,
+            },
+            shadowOpacity: 0.25,
+            shadowRadius: 3.84,
+            elevation: 5,
+          }}>
+          {/* <CustomText style={{fontSize:moderateScale(20,.6)}}>Hello</CustomText> */}
+          {modalData.map(item => {
+            return (
+              <>
+                <CustomText
+                  style={{
+                    fontSize: moderateScale(15, 0.6),
+                    paddingVertical: moderateScale(5, 0.6),
+                  }}
+                  onPress={item?.onPress}>
+                  {item?.name}
+                </CustomText>
+                <View
+                  style={{
+                    width: windowWidth * 0.25,
+                    backgroundColor: 'rgba(0,0,0,0.1)',
+                    height: 2,
+                  }}></View>
+              </>
+            );
+          })}
+        </View>
+      </Modal>
     </>
   );
 };
@@ -395,7 +499,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     // marginBottom : moderateScale(20,0.3)
   },
-  view:{
+  view: {
     backgroundColor: 'white',
     height: windowHeight * 0.03,
     width: windowHeight * 0.03,
@@ -408,7 +512,7 @@ const styles = StyleSheet.create({
   },
 
   row: {
-    paddingVertical:moderateScale(5,.6),
+    paddingVertical: moderateScale(5, 0.6),
     width: windowWidth * 0.97,
     alignSelf: 'center',
     flexDirection: 'row',

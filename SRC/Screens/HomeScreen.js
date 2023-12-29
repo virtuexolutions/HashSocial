@@ -61,7 +61,7 @@ const HomeScreen = props => {
   const backRef = useRef(null);
   const [rotationAngle, setRotationAngle] = useState(0);
   const [bubbleData, setBubbleData] = useState({})
-  console.log("🚀 ~ file: HomeScreen.js:63 ~ HomeScreen ~ bubbleData:", bubbleData)
+  // console.log("🚀 ~ file: HomeScreen.js:63 ~ HomeScreen ~ bubbleData:", bubbleData?.map(item => item?.id))
 
   const [content, setContent] = useState([]);
 

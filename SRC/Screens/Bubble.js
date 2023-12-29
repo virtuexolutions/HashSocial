@@ -333,7 +333,7 @@ const Bubble = props => {
                     onPress={() => {
                       setSelectedEvent(data);
                       if (data == 'Members') {
-                        navigationService.navigate('MemberList' , {BubbleId : bubbleId } );
+                        navigationService.navigate('MemberList' , {BubbleId : bubbleId , bubbleInfo:bubbleInfo} );
                       }
                     }}
                   />

@@ -33,24 +33,13 @@ const Home = ({bubbleId}) => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-     
+     console.log("🚀 ~ file: Home.js:36 ~ getPosts ~ response:", response?.data?.post_info[0]?.post_videos)
       setPosts(
         response?.data?.post_info.filter(item => item?.post_videos?.length > 0),
       );
     }
   };
-  // const videos = [
-  //   require('../Assets/Images/video1.mp4'),
-  //   require('../Assets/Images/video2.mp4'),
-  //   require('../Assets/Images/video1.mp4'),
-  //   require('../Assets/Images/video2.mp4'),
-  //   require('../Assets/Images/video1.mp4'),
-  //   require('../Assets/Images/video2.mp4'),
-  //   require('../Assets/Images/video1.mp4'),
-  //   require('../Assets/Images/video2.mp4'),
-  //   require('../Assets/Images/video1.mp4'),
-  //   require('../Assets/Images/video2.mp4'),
-  // ];
+
 
   useEffect(() => {
     getPosts();

@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-import React, {useState, useRef} from 'react';
-import {Text, TouchableOpacity, View, StyleSheet} from 'react-native';
-=======
 import React, { useState, useRef } from 'react';
 import {
   Text,
@@ -11,7 +7,6 @@ import {
   ImageBackground,
   ScrollView,
 } from 'react-native';
->>>>>>> origin/main
 import Color from '../Assets/Utilities/Color';
 import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
 import { moderateScale, ScaledSheet } from 'react-native-size-matters';

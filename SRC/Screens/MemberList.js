@@ -19,6 +19,7 @@ import {useSelector} from 'react-redux';
 import CardComponent from '../Components/CardComponent';
 import {Get} from '../Axios/AxiosInterceptorFunction';
 import {useIsFocused} from '@react-navigation/native';
+import OptionsMenu from 'react-native-options-menu';
 // const {height, width} = Dimensions.get('window');
 
 const MemberList = props => {
@@ -26,7 +27,10 @@ const MemberList = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
   const BubbleId = props?.route?.params?.BubbleId;
+  const bubbleInfo = props?.route?.params?.bubbleInfo
+  console.log("🚀 ~ file: MemberList.js:31 ~ MemberList ~ bubbleInfo:", bubbleInfo)
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
+  const [makeTeam, setMakeTeam] = useState(false)
 
   const [loading, setLoading] = useState(false);
   const [members, setMembers] = useState([]);
@@ -39,12 +43,7 @@ const MemberList = props => {
     setLoading(false);
     if (response != undefined) {
       console.log("🚀 ~ file: MemberList.js:41 ~ GetBubblemembers ~ response:", response?.data)
-      // setMembers(
-      //   response?.data?.member_info?.filter(
-      //     data => data?.profile_id != profileData?.id,
-      //   ),
-      // );
-      setMembers(response?.data?.member_info)
+      setMembers(response?.data?.member_info);
     }
   };
 
@@ -72,7 +71,8 @@ const MemberList = props => {
           height: windowHeight * 0.9,
           alignItems: 'center',
         }}>
-        {loading ? ( <View
+        {loading ? (
+          <View
             style={{
               height: windowHeight * 0.8,
               justifyContent: 'center',
@@ -87,21 +87,20 @@ const MemberList = props => {
               marginBottom: moderateScale(10, 0.3),
             }}
             renderItem={({item, index}) => {
-              console.log(
-                '🚀 ~ file: MemberList.js:83 ~ MemberList ~ item:',
-                item,
-              );
-
               return (
-                <CardComponent
-                  item={item}
-                  MemberList={true}
-                  pending={item?.pending}
-                  invited={item?.status == 'invite' ? true : false}
-                  Requested={item?.status == 'request' ? true : false}
-                  bubbleId={BubbleId}
-                  blocked={item?.status == 'blocked' ? true : false}
-                />
+                <>
+                  <CardComponent
+                    bubbleInfo={bubbleInfo}
+                    item={item}
+                    MemberList={true}
+                    pending={item?.pending}
+                    invited={item?.status == 'invite' ? true : false}
+                    Requested={item?.status == 'request' ? true : false}
+                    bubbleId={BubbleId}
+                    blocked={item?.status == 'blocked' ? true : false}
+                  />
+                 
+                </>
               );
             }}
           />

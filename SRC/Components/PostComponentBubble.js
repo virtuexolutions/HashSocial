@@ -38,7 +38,7 @@ const PostComponentBubble = ({data, bubbleInfo}) => {
   };
 
   const deletePost = async () => {
-    if(bubbleInfo?.remove_content.toLowerCase()=='yes'){
+    if(bubbleInfo?.remove_content.toLowerCase()=='yes' || bubbleInfo?.profile==profileData?.id){
 
       const url = `auth/post/${data?.id}`;
       setloading(true);

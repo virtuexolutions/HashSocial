@@ -89,7 +89,7 @@ const LoginProfile = props => {
             : true,
         ),
       );
-      // navigationService.navigate('TabNavigation');
+      navigationService.navigate('TabNavigation');
     }
   };
 
