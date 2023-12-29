@@ -36,6 +36,8 @@ import Propmpt from '../Components/Propmpt';
 import {setNewSignUp} from '../Store/slices/auth';
 import {Get} from '../Axios/AxiosInterceptorFunction';
 import {useIsFocused} from '@react-navigation/native';
+
+
 import RoundMenu from '../react-native-rotating-menu/src';
 import { baseUrl } from '../Config';
 
@@ -43,7 +45,7 @@ const HomeScreen = props => {
   const privacy = useSelector(state => state.authReducer.privacy);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
-  console.log("🚀 ~ file: HomeScreen.js:46 ~ HomeScreen ~ profileData:", profileData)
+   console.log("🚀 ~ file: HomeScreen.js:46 ~ HomeScreen ~ profileData:", profileData)
   const newSignUp = useSelector(state => state.authReducer.newSignUp);
   const token = useSelector(state => state.authReducer.token);
   const [selectedBubbleId, setSelectedBubbleId] = useState(null);

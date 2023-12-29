@@ -40,20 +40,9 @@ const PostComponent = ({data}) => {
   return (
     <>
       <View
-        style={{
-          width: windowWidth,
-          paddingVertical: moderateScale(15, 0.6),
-          backgroundColor: Color.white,
-          marginTop: moderateScale(10, 0.3),
-          elevation: 2,
-        }}>
+        style={styles.mainVew}>
         <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            paddingHorizontal: moderateScale(10, 0.6),
-            marginTop: moderateScale(10, 0.3),
-          }}>
+          style={styles.profileView}>
           <View style={styles.profileSection2}>
             <CustomImage
               source={data?.profileImage}
@@ -69,12 +58,7 @@ const PostComponent = ({data}) => {
             <CustomText numberOfLines={2}>{data?.Name}</CustomText>
 
             <View
-              style={{
-                flexDirection: 'row',
-                width: windowWidth * 0.17,
-                justifyContent: 'space-around',
-                alignItems: 'center',
-              }}>
+              style={styles.btnView}>
               <CustomText style={{textAlign: 'left'}}>{data?.date}</CustomText>
               <TouchableOpacity activeOpacity={0.7}>
                 <Entypo name="globe" size={14} color={Color.veryLightGray} />
@@ -97,16 +81,9 @@ const PostComponent = ({data}) => {
         </View>
 
         <View
-          style={{
-            width: windowWidth,
-            marginTop: moderateScale(8, 0.3),
-          }}>
+          style={styles.textView}>
           <CustomText
-            style={{
-              textAlign: 'left',
-              marginLeft: moderateScale(15, 0.3),
-              fontSize: moderateScale(13, 0.6),
-            }}>
+            style={styles.customT}>
             {data?.desc}
           </CustomText>
         </View>
@@ -132,27 +109,11 @@ const PostComponent = ({data}) => {
         )}
 
         <View
-          style={{
-            flexDirection: 'row',
-            width: windowWidth,
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            paddingHorizontal: moderateScale(10, 0.3),
-            marginTop: moderateScale(15, 0.3),
-          }}>
+          style={styles.container}>
           <View
-            style={{
-              flexDirection: 'row',
-              width: windowWidth * 0.25,
-              // backgroundColor:'green',
-              alignItems: 'center',
-            }}>
+            style={styles.containerView}>
             <View
-              style={{
-                marginRight: moderateScale(3, 0.3),
-                width: moderateScale(20, 0.6),
-                height: moderateScale(20, 0.6),
-              }}>
+              style={styles.imageView}>
               <CustomImage
                 source={require('../Assets/Images/like.png')}
                 style={{
@@ -163,10 +124,7 @@ const PostComponent = ({data}) => {
               />
             </View>
             <View
-              style={{
-                width: moderateScale(25, 0.6),
-                height: moderateScale(25, 0.6),
-              }}>
+              style={styles.image2}>
               <CustomImage
                 source={require('../Assets/Images/heart.png')}
                 style={{
@@ -177,12 +135,7 @@ const PostComponent = ({data}) => {
               />
             </View>
             <CustomText
-              style={{
-                color: Color.veryLightGray,
-                marginLeft: moderateScale(5, 0.3),
-                fontSize: moderateScale(13, 0.6),
-                width: windowWidth * 0.16,
-              }}>
+              style={styles.text1}>
               {data?.Like}K
             </CustomText>
           </View>
@@ -312,31 +265,18 @@ const PostComponent = ({data}) => {
                         </View>
 
                         <View
-                          style={{
-                            // width: windowWidth * 0.42,
-                            paddingVertical: moderateScale(5, 0.6),
-                            paddingHorizontal: moderateScale(15, 0.6),
-                            backgroundColor: Color.lightGrey,
-                            borderRadius: moderateScale(10, 0.6),
-                            marginLeft: moderateScale(10, 0.3),
-                          }}>
+                          style={styles.Views}>
                           <CustomText
                             numberOfLines={1}
                             style={{
                               color: 'black',
                               fontSize: moderateScale(14, 0.6),
-                              // backgroundColor: 'red',
                             }}
                             isBold>
                             {item?.name}
                           </CustomText>
                           <CustomText
-                            style={{
-                              // width:windowWidth*0.7,
-                              color: 'black',
-                              fontSize: moderateScale(12, 0.6),
-                              // backgroundColor: 'red',
-                            }}
+                            style={styles.text}
                             numberOfLines={2}>
                             {item?.comment}
                           </CustomText>
@@ -344,13 +284,7 @@ const PostComponent = ({data}) => {
                       </View>
 
                       <View
-                        style={{
-                          flexDirection: 'row',
-                          width: windowWidth * 0.4,
-                          marginLeft: moderateScale(60, 0.3),
-                          justifyContent: 'space-evenly',
-                          marginTop: moderateScale(5, 0.3),
-                        }}>
+                        style={styles.rowView}>
                         <CustomText style={styles.text}>
                           {item?.Time}h
                         </CustomText>
@@ -370,6 +304,36 @@ const PostComponent = ({data}) => {
 };
 
 const styles = StyleSheet.create({
+  mainVew:{
+    width: windowWidth,
+    paddingVertical: moderateScale(15, 0.6),
+    backgroundColor: Color.white,
+    marginTop: moderateScale(10, 0.3),
+    elevation: 2,
+  },
+  customT:{
+    textAlign: 'left',
+    marginLeft: moderateScale(15, 0.3),
+    fontSize: moderateScale(13, 0.6),
+  },
+  image2:{
+    width: moderateScale(25, 0.6),
+    height: moderateScale(25, 0.6),
+  },
+  container:{
+    flexDirection: 'row',
+    width: windowWidth,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(10, 0.3),
+    marginTop: moderateScale(15, 0.3),
+  },
+  text1:{
+    color: Color.veryLightGray,
+    marginLeft: moderateScale(5, 0.3),
+    fontSize: moderateScale(13, 0.6),
+    width: windowWidth * 0.16,
+  },
   profileSection2: {
     height: windowHeight * 0.08,
     width: windowHeight * 0.08,
@@ -379,6 +343,25 @@ const styles = StyleSheet.create({
     borderColor: Color.themeColor,
     justifyContent: 'center',
     overflow: 'hidden',
+  },
+  rowView:{
+    flexDirection: 'row',
+    width: windowWidth * 0.4,
+    marginLeft: moderateScale(60, 0.3),
+    justifyContent: 'space-evenly',
+    marginTop: moderateScale(5, 0.3),
+  } ,
+  imageView:{
+    marginRight: moderateScale(3, 0.3),
+    width: moderateScale(20, 0.6),
+    height: moderateScale(20, 0.6),
+  },
+  Views:{
+    paddingVertical: moderateScale(5, 0.6),
+    paddingHorizontal: moderateScale(15, 0.6),
+    backgroundColor: Color.lightGrey,
+    borderRadius: moderateScale(10, 0.6),
+    marginLeft: moderateScale(10, 0.3),
   },
   text: {fontSize: moderateScale(12, 0.6), color: 'black'},
   profileSection2: {
@@ -390,6 +373,28 @@ const styles = StyleSheet.create({
     borderColor: Color.themeColor,
     justifyContent: 'center',
     overflow: 'hidden',
+  },
+  containerView:{
+    flexDirection: 'row',
+    width: windowWidth * 0.25,
+    // backgroundColor:'green',
+    alignItems: 'center',
+  },
+  btnView:{
+    flexDirection: 'row',
+    width: windowWidth * 0.17,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  textView:{
+    width: windowWidth,
+    marginTop: moderateScale(8, 0.3),
+  },
+  profileView:{
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: moderateScale(10, 0.6),
+    marginTop: moderateScale(10, 0.3),
   },
 });
 

@@ -42,6 +42,7 @@ const Bubble = props => {
   const token = useSelector(state => state.authReducer.token);
   const privacy = useSelector(state => state.authReducer.privacy);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
+  console.log("🚀 ~ file: Bubble.js:45 ~ Bubble ~ profileData:", profileData)
   const [isLoading, setIsLoading] = useState(false);
   const isFocused = useIsFocused();
   const [loadingInvite, setLoadingInvite] = useState(false);
