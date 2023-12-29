@@ -52,6 +52,7 @@ const RequestModal = ({
     const response = await Post(url, body, apiHeader(token));
     setLoading(false);
     if (response != undefined) {
+      console.log("🚀 ~ file: RequestModal.js:55 ~ addRequest ~ response:", response?.data)
       setIsVisible(false);
       Platform.OS == 'android'
         ? ToastAndroid.show('Request has been sent', ToastAndroid.SHORT)

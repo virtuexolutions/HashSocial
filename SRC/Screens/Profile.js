@@ -126,7 +126,7 @@ const Profile = props => {
       dispatch(setSelectedProfileData(response?.data?.profile_info));
       dispatch(
         setNumOfProfiles(
-          response?.data?.profile_info?.user_info[0]?.total_profile,
+          response?.data?.profile_info?.user_infos?.total_profile,
         ),
       );
       dispatch(setBubbleSelected(false));

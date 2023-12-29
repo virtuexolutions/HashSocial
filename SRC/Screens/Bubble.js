@@ -34,7 +34,7 @@ import Feather from 'react-native-vector-icons/Feather';
 import OptionsMenu from 'react-native-options-menu';
 import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 import {useIsFocused} from '@react-navigation/native';
-import { baseUrl } from '../Config';
+import {baseUrl} from '../Config';
 
 const Bubble = props => {
   const bubbleId = props?.route?.params?.id;
@@ -42,13 +42,13 @@ const Bubble = props => {
   const token = useSelector(state => state.authReducer.token);
   const privacy = useSelector(state => state.authReducer.privacy);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
-  console.log("🚀 ~ file: Bubble.js:45 ~ Bubble ~ profileData:", profileData)
+  console.log('🚀 ~ file: Bubble.js:45 ~ Bubble ~ profileData:', profileData);
   const [isLoading, setIsLoading] = useState(false);
   const isFocused = useIsFocused();
   const [loadingInvite, setLoadingInvite] = useState(false);
   const [followLoading, setFollowLoading] = useState(false);
   const [startFollowing, setStartFollowing] = useState(
-    bubbleInfo?.follow ? true : false,
+    bubbleInfo?.follow?.status == 'follow' ? true : false,
   );
   const [isVisible, setIsVisible] = useState(false);
   const [bubbleInfo, setBubbleInfo] = useState({});
@@ -80,7 +80,7 @@ const Bubble = props => {
       search: text,
       profile_id: profileData?.id,
     };
-  
+
     const response = await Post(url, body, apiHeader(token));
     if (response != undefined) {
       setnewData(response?.data?.profile_info);
@@ -134,21 +134,29 @@ const Bubble = props => {
     setIsLoading(true);
     const response = await Get(url, token);
     setIsLoading(false);
-    if (response != undefined) {   
+    if (response != undefined) {
+      console.log(
+        '🚀 ~ file: Bubble.js:138 ~ getBubbleDetails ~ response:',
+        response?.data?.community_info?.follow,
+      );
       setBubbleInfo(response?.data?.community_info);
-      setStartFollowing(response?.data?.community_info?.follow ? true : false);
+      setStartFollowing(
+        response?.data?.community_info?.follow?.status == 'follow'
+          ? true
+          : false,
+      );
     }
   };
 
   const InviteMember = () => {
-    if(bubbleInfo?.invite_members?.toLowerCase() == 'yes'){
+    if (bubbleInfo?.invite_members?.toLowerCase() == 'yes') {
       setIsVisible(true);
-    }else{
-      Alert.alert('you donot have permissions to invite the others')
+    } else {
+      Alert.alert('you donot have permissions to invite the others');
     }
   };
 
-  const BubbleMangement = () => {   
+  const BubbleMangement = () => {
     navigationService.navigate('BubbleManagement');
   };
 
@@ -184,190 +192,209 @@ const Bubble = props => {
           alignItems: 'center',
         }}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <ImageBackground
-          //  source={require('../Assets/Images/fitness.png')}
-           source={
-              bubbleInfo?.image
-                ? {uri: `${baseUrl}/${bubbleInfo?.image}`}
-                : require('../Assets/Images/fitness.png')
-            }
-            resizeMode={'cover'}
-            style={{
-              width: windowWidth,
-              height: windowHeight * 0.35,
-            }}>
-            <View style={styles.textwithicon}>
-              <CustomText
-                numberOfLines={1}
-                children={bubbleInfo?.title}
-                style={{
-                  fontSize: moderateScale(17, 0.6),
-                  color: 'black',
-                  marginRight: moderateScale(8, 0.3),
-                  textAlign: 'center',
-                }}
-                isBold
-              />
-              <View style={styles.checkIcon}>
-                <Icon
-                  name="check"
-                  as={AntDesign}
-                  color={themeColor[1]}
-                  size={5}
-                  zIndex={1}
-                />
-              </View>
+          {isLoading ? (
+              <View style={styles.loaderView}>
+              <ActivityIndicator color={Color.white} size={'large'} />
             </View>
-            <View style={styles.container2}>
-              <View style={{justifyContent: 'center'}}>
-                <CustomText
-                  numberOfLines={1}
-                  children={'36'}
-                  style={styles.followCount}
-                  isBold
-                />
-                <CustomText
-                  numberOfLines={1}
-                  children={'following'}
-                  style={styles.followText}
-                />
-              </View>
-              <View
-                style={{
-                  backgroundColor: Color.white,
-                  height: 50,
-                  width: 1,
-                }}></View>
-              <View style={{justifyContent: 'center'}}>
-                <CustomText
-                  numberOfLines={1}
-                  children={bubbleInfo?.total_members}
-                  style={styles.followCount}
-                  isBold
-                />
-                <CustomText
-                  numberOfLines={1}
-                  children={'followers'}
-                  style={styles.followText}
-                />
-              </View>
-              <View
-                style={{
-                  backgroundColor: Color.white,
-                  height: 50,
-                  width: 1,
-                }}></View>
-              <View style={{justifyContent: 'center'}}>
-                <CustomText
-                  numberOfLines={1}
-                  children={bubbleInfo?.total_posts_count}
-                  style={styles.followCount}
-                  isBold
-                />
-                <CustomText
-                  numberOfLines={1}
-                  children={'posts'}
-                  style={styles.followText}
-                />
-              </View>
-            </View>
-            <View style={styles.followbtn}>
-              <CustomButton
-                text={
-                  followLoading ? (
-                    <ActivityIndicator color={themeColor[1]} size={'small'} />
-                  ) : startFollowing ? (
-                    'Following'
-                  ) : (
-                    'Follow'
-                  )
+            
+          ) : (
+            <>
+              <ImageBackground
+                //  source={require('../Assets/Images/fitness.png')}
+                source={
+                  bubbleInfo?.image
+                    ? {uri: `${baseUrl}/${bubbleInfo?.image}`}
+                    : require('../Assets/Images/fitness.png')
                 }
-                textColor={themeColor[1]}
-                width={windowWidth * 0.5}
-                height={windowHeight * 0.06}
-                onPress={() => {
-                  follow();
-                }}
-                fontSize={moderateScale(15, 0.6)}
-                bgColor={['#FFFFFF', '#FFFFFF']}
-                borderRadius={moderateScale(30, 0.3)}
-                isGradient
-                isBold
-              />
-              <TouchableOpacity activeOpacity={0.8} style={styles.downIcon}>
-                <OptionsMenu
-                  button={MoreIcon}
-                  buttonStyle={{
-                    width: 40,
-                    height: 30,
-                    tintColor: '#000',
-                  }}
-                  destructiveIndex={1}
-                  options={['Invite Member', 'Bubble Management']}
-                  actions={[InviteMember, BubbleMangement]}
-                />
-              </TouchableOpacity>
-            </View>
-          </ImageBackground>
-          <View style={styles.mapview}>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}>
-              {events?.map(data => {
-                return (
+                resizeMode={'cover'}
+                style={{
+                  width: windowWidth,
+                  height: windowHeight * 0.35,
+                }}>
+                <View style={styles.textwithicon}>
                   <CustomText
                     numberOfLines={1}
-                    children={data}
+                    children={bubbleInfo?.title}
                     style={{
-                      ...styles.eventText,
-                      ...{
-                        backgroundColor:
-                          selectedEvent == data
-                            ? Color.white
-                            : 'rgba(0,0,0,.2)',
-                      },
-                      ...{
-                        color:
-                          selectedEvent == data ? themeColor[1] : Color.white,
-                      },
+                      fontSize: moderateScale(17, 0.6),
+                      color: 'black',
+                      marginRight: moderateScale(8, 0.3),
+                      textAlign: 'center',
                     }}
+                    isBold
+                  />
+                  <View style={styles.checkIcon}>
+                    <Icon
+                      name="check"
+                      as={AntDesign}
+                      color={themeColor[1]}
+                      size={5}
+                      zIndex={1}
+                    />
+                  </View>
+                </View>
+                <View style={styles.container2}>
+                  <View style={{justifyContent: 'center'}}>
+                    <CustomText
+                      numberOfLines={1}
+                      children={'36'}
+                      style={styles.followCount}
+                      isBold
+                    />
+                    <CustomText
+                      numberOfLines={1}
+                      children={'following'}
+                      style={styles.followText}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      backgroundColor: Color.white,
+                      height: 50,
+                      width: 1,
+                    }}></View>
+                  <View style={{justifyContent: 'center'}}>
+                    <CustomText
+                      numberOfLines={1}
+                      children={bubbleInfo?.total_members}
+                      style={styles.followCount}
+                      isBold
+                    />
+                    <CustomText
+                      numberOfLines={1}
+                      children={'followers'}
+                      style={styles.followText}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      backgroundColor: Color.white,
+                      height: 50,
+                      width: 1,
+                    }}></View>
+                  <View style={{justifyContent: 'center'}}>
+                    <CustomText
+                      numberOfLines={1}
+                      children={bubbleInfo?.total_posts_count}
+                      style={styles.followCount}
+                      isBold
+                    />
+                    <CustomText
+                      numberOfLines={1}
+                      children={'posts'}
+                      style={styles.followText}
+                    />
+                  </View>
+                </View>
+                <View style={styles.followbtn}>
+                  <CustomButton
+                    text={
+                      followLoading ? (
+                        <ActivityIndicator
+                          color={themeColor[1]}
+                          size={'small'}
+                        />
+                      ) : startFollowing ? (
+                        'Following'
+                      ) : (
+                        'Follow'
+                      )
+                    }
+                    textColor={themeColor[1]}
+                    width={windowWidth * 0.5}
+                    height={windowHeight * 0.06}
                     onPress={() => {
-                      setSelectedEvent(data);
-                      if (data == 'Members') {
-                        navigationService.navigate('MemberList' , {BubbleId : bubbleId , bubbleInfo:bubbleInfo} );
-                      }
+                      follow();
+                    }}
+                    fontSize={moderateScale(15, 0.6)}
+                    bgColor={['#FFFFFF', '#FFFFFF']}
+                    borderRadius={moderateScale(30, 0.3)}
+                    isGradient
+                    isBold
+                  />
+                  <TouchableOpacity activeOpacity={0.8} style={styles.downIcon}>
+                    <OptionsMenu
+                      button={MoreIcon}
+                      buttonStyle={{
+                        width: 40,
+                        height: 30,
+                        tintColor: '#000',
+                      }}
+                      destructiveIndex={1}
+                      options={['Invite Member', 'Bubble Management']}
+                      actions={[InviteMember, BubbleMangement]}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </ImageBackground>
+              <View style={styles.mapview}>
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}>
+                  {events?.map(data => {
+                    return (
+                      <CustomText
+                        numberOfLines={1}
+                        children={data}
+                        style={{
+                          ...styles.eventText,
+                          ...{
+                            backgroundColor:
+                              selectedEvent == data
+                                ? Color.white
+                                : 'rgba(0,0,0,.2)',
+                          },
+                          ...{
+                            color:
+                              selectedEvent == data
+                                ? themeColor[1]
+                                : Color.white,
+                          },
+                        }}
+                        onPress={() => {
+                          setSelectedEvent(data);
+                          if (data == 'Members') {
+                            navigationService.navigate('MemberList', {
+                              BubbleId: bubbleId,
+                              bubbleInfo: bubbleInfo,
+                            });
+                          }
+                        }}
+                      />
+                    );
+                  })}
+                </ScrollView>
+
+                {selectedEvent == 'Reels' ? (
+                  <Home bubbleId={bubbleId} />
+                ) : selectedEvent == 'Events' ? (
+                  <Events
+                    bubbleInfo={bubbleInfo}
+                    onPress={() => {
+                      navigationService.navigate('AddEvents', {
+                        bubbleId: bubbleId,
+                      });
+                    }}
+                    bubbleId={bubbleId}
+                  />
+                ) : selectedEvent == 'Posts' ? (
+                  <Posts
+                    bubbleInfo={bubbleInfo}
+                    bubbleId={bubbleId}
+                    onPress={() => {
+                      navigationService.navigate('AddPost', {
+                        bubbleId: bubbleId,
+                      });
                     }}
                   />
-                );
-              })}
-            </ScrollView>
-           
-            {
-            selectedEvent == 'Reels' ? (
-              <Home bubbleId={bubbleId} />
-            ) : selectedEvent == 'Events' ? (
-              <Events
-              bubbleInfo={bubbleInfo}
-                onPress={() => {
-                  navigationService.navigate('AddEvents', {bubbleId: bubbleId});
-                }}
-                bubbleId={bubbleId}
-              />
-            ) : selectedEvent == 'Posts' ? (
-              <Posts
-                bubbleInfo={bubbleInfo}
-                bubbleId={bubbleId}
-                onPress={() => {
-                  navigationService.navigate('AddPost', {bubbleId: bubbleId});
-                }}
-              />
-            ) : selectedEvent == 'Chats' ? (
-              <NullData />
-            ) : (
-              <></>
-            )}
-            
-          </View>
+                ) : selectedEvent == 'Chats' ? (
+                  <NullData />
+                ) : (
+                  <></>
+                )}
+              </View>
+            </>
+          )}
         </ScrollView>
       </ImageBackground>
       <Modal
@@ -573,6 +600,12 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     width: windowWidth * 0.11,
     padding: moderateScale(3, 0.6),
+  },
+  loaderView: {
+    // backgroundColor: 'red',
+    width: windowWidth,
+    height: windowHeight * 0.4,
+    justifyContent: 'center',
   },
   eventText: {
     fontSize: moderateScale(14, 0.6),

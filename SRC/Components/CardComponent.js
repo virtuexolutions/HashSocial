@@ -53,6 +53,7 @@ const CardComponent = ({
 
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
+  console.log("🚀 ~ file: CardComponent.js:56 ~ token:", token)
   const profileData = useSelector(state => state.commonReducer.profileData);
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -160,7 +161,7 @@ const CardComponent = ({
           style={{
             paddingLeft: moderateScale(15, 0.6),
             width: windowWidth * 0.45,
-            backgroundColor: 'red',
+            // backgroundColor: 'red',
           }}>
           <CustomText
             numberOfLines={1}
