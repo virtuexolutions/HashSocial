@@ -88,27 +88,15 @@ const ProfileComponent = ({
         </View>
 
         <View
-          style={{
-            paddingLeft: moderateScale(15, 0.6),
-            width: windowWidth * 0.45,
-          }}>
+          style={styles.mainView}>
           <CustomText
             numberOfLines={1}
-            style={{
-              fontSize: moderateScale(16, 0.6),
-              color: '#000',
-              fontWeight: '500',
-              textAlign: 'left',
-            }}>
+            style={styles.customT}>
             {item?.name}
           </CustomText>
           <CustomText
             numberOfLines={1}
-            style={{
-              fontSize: moderateScale(11, 0.6),
-              color: '#000',
-              textAlign: 'left',
-            }}>
+            style={styles.T2}>
             {moment(item?.created_at).format('ll')}
           </CustomText>
           <CustomText
@@ -172,4 +160,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     overflow: 'hidden',
   },
+  customT:{
+    fontSize: moderateScale(16, 0.6),
+    color: '#000',
+    fontWeight: '500',
+    textAlign: 'left',
+  },
+  mainView:{
+    paddingLeft: moderateScale(15, 0.6),
+    width: windowWidth * 0.45,
+  },
+  T2:{
+    fontSize: moderateScale(11, 0.6),
+    color: '#000',
+    textAlign: 'left',
+  }
 });

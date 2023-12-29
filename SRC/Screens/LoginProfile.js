@@ -89,7 +89,7 @@ const LoginProfile = props => {
             : true,
         ),
       );
-      // navigationService.navigate('TabNavigation');
+      navigationService.navigate('TabNavigation');
     }
   };
 
@@ -112,26 +112,11 @@ const LoginProfile = props => {
             : require('../Assets/Images/Main.png')
         }
         resizeMode={'cover'}
-        style={{
-          width: windowWidth * 1,
-          height: windowHeight,
-          alignItems: 'center',
-          backgroundColor: 'green',
-        }}>
+        style={styles.bgImage}>
         <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            height: windowHeight,
-          }}>
+          style={styles.mainView}>
           <View
-            style={{
-              height: windowHeight * 0.2,
-              width: windowHeight * 0.2,
-              borderRadius: moderateScale(2, 0.6),
-              overflow: 'hidden',
-              // marginBottom: moderateScale(10, 0.6),
-            }}>
+            style={styles.imageView}>
             <CustomImage
               onPress={() => {
                 console.log('first');
@@ -146,17 +131,7 @@ const LoginProfile = props => {
             />
           </View>
           <View
-            style={{
-              width: windowWidth * 0.5,
-              height: windowHeight * 0.3,
-              // backgroundColor:'red',
-              // position:'absolute',
-              // zIndex:1,
-              // left:150,
-              // top:1,
-              // transform:[{scaleX:-1}]
-              //   backgroundColor: 'red',
-            }}>
+            style={styles.lottie}>
             <Lottie
               source={require('../Assets/Images/loader.json')}
               autoPlay
@@ -168,7 +143,6 @@ const LoginProfile = props => {
           style={{
             justifyContent: 'center',
             alignItems: 'center',
-            // height:windowHeight*0.3,
           }}
           isVisible={modal}
           hasBackdrop={true}
@@ -177,21 +151,9 @@ const LoginProfile = props => {
             // setIsVisible(false)
           }}>
           <View
-            style={{
-              backgroundColor: 'black',
-              // height:windowHeight*0.3,
-              borderRadius: moderateScale(10, 0.6),
-              paddingVertical: moderateScale(20, 0.3),
-              paddingHorizontal: moderateScale(20, 0.3),
-            }}>
+            style={styles.ctView}>
             <CustomText
-              style={{
-                color: Color.white,
-                fontSize: moderateScale(18, 0.6),
-                // marginTop: moderateScale(20, 0.3),
-                paddingHorizontal: moderateScale(30, 0.6),
-                textAlign: 'center',
-              }}
+              style={styles.customT}
               isBold>
               Enter Your Passcode
             </CustomText>
@@ -210,7 +172,6 @@ const LoginProfile = props => {
               borderRadius={moderateScale(10, 0.3)}
               titleColor={'#353535'}
               marginTop={moderateScale(15, 0.3)}
-              // textAlign={'center'}
             />
             <CustomButton
               onPress={() => {
@@ -247,7 +208,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-
+bgImage:{
+  width: windowWidth * 1,
+  height: windowHeight,
+  alignItems: 'center',
+  backgroundColor: 'green',
+},
   profileSection: {
     height: windowWidth * 0.2,
     width: windowWidth * 0.2,
@@ -256,22 +222,44 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: '#33dd50',
     overflow: 'hidden',
-    // marginBottom : moderateScale(20,0.3)
   },
-
+  mainView:{
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: windowHeight,
+  },
+imageView:{
+  height: windowHeight * 0.2,
+  width: windowHeight * 0.2,
+  borderRadius: moderateScale(2, 0.6),
+  overflow: 'hidden',
+},
+lottie:{
+  width: windowWidth * 0.5,
+  height: windowHeight * 0.3,
+},
+ctView:{
+  backgroundColor: 'black',
+  borderRadius: moderateScale(10, 0.6),
+  paddingVertical: moderateScale(20, 0.3),
+  paddingHorizontal: moderateScale(20, 0.3),
+},
+customT:{
+  color: Color.white,
+  fontSize: moderateScale(18, 0.6),
+  // marginTop: moderateScale(20, 0.3),
+  paddingHorizontal: moderateScale(30, 0.6),
+  textAlign: 'center',
+},
   row: {
     width: windowWidth * 0.97,
-    // height: windowHeight  * 0.1,
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',
-    // paddingLeft: moderateScale(20, 0.6),
     marginBottom: moderateScale(5, 0.3),
-    // backgroundColor : 'green',
     paddingBottom: 10,
     borderBottomWidth: 1,
     borderColor: 'rgba(255,255,255,0.5)',
-    // paddingBottom : 20,
   },
   Text: {
     fontSize: moderateScale(19, 0.6),

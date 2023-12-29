@@ -8,23 +8,23 @@ import {
   ToastAndroid,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import Color from '../Assets/Utilities/Color';
-import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
-import {moderateScale} from 'react-native-size-matters';
-import {Post} from '../Axios/AxiosInterceptorFunction';
-import {useSelector} from 'react-redux';
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
+import { moderateScale } from 'react-native-size-matters';
+import { Post } from '../Axios/AxiosInterceptorFunction';
+import { useSelector } from 'react-redux';
 import TextInputWithTitle from './TextInputWithTitle';
 import CustomButton from './CustomButton';
 import moment from 'moment';
 import CustomImage from './CustomImage';
 import CustomText from './CustomText';
-import {Icon} from 'native-base';
+import { Icon } from 'native-base';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { baseUrl } from '../Config';
 
-const ComentsSection = ({refRBSheet, data, setCommentsCount}) => {
+const ComentsSection = ({ refRBSheet, data, setCommentsCount }) => {
   const [yourComment, setYourComment] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [commentsData, setCommentsData] = useState(
@@ -51,7 +51,7 @@ const ComentsSection = ({refRBSheet, data, setCommentsCount}) => {
 
     setIsLoading(true);
     const response = await Post(url, body, apiHeader(token));
-     console.log("🚀 ~ file: ComentsSection.js:54 ~ addComment ~ response:", response)
+    console.log("🚀 ~ file: ComentsSection.js:54 ~ addComment ~ response:", response)
     setIsLoading(false);
     if (response != undefined) {
       setCommentsData(prev => [
@@ -64,7 +64,7 @@ const ComentsSection = ({refRBSheet, data, setCommentsCount}) => {
           image: profileData?.photo,
         },
       ]);
-      setCommentsCount(prev=>prev+1)
+      setCommentsCount(prev => prev + 1)
       Platform.OS == 'android'
         ? ToastAndroid.show('Comment added', ToastAndroid.SHORT)
         : Alert.alert('Comment added');
@@ -83,119 +83,88 @@ const ComentsSection = ({refRBSheet, data, setCommentsCount}) => {
       height={700}>
       <View
         style={{
-          height : windowHeight * 0.8,
+          height: windowHeight * 0.8,
         }}>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={{
-          paddingBottom: moderateScale(60, 0.6),
-          // backgroundColor: 'red',
-        }}
-       
-        data={commentsData}
-       
-        renderItem={({item, index}) => {
-          
-          return (
-            <View
-              style={{width: windowWidth, marginTop: moderateScale(5, 0.3)}}>
+        <FlatList
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={{
+            paddingBottom: moderateScale(60, 0.6),
+            // backgroundColor: 'red',
+          }}
+
+          data={commentsData}
+
+          renderItem={({ item, index }) => {
+
+            return (
               <View
-                style={{
-                  width: windowWidth,
-                  // marginTop: moderateScale(10, 0.3),
-                }}>
+                style={styles.mainView}>
                 <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    paddingHorizontal: moderateScale(10, 0.6),
-                    width: windowWidth,
-                  }}>
-                  <View style={styles.profileSection2}>
-                    <CustomImage
-                      source={
-                        item?.profile_info?.photo
-                          ? {uri: `${baseUrl}/${item?.profile_info?.photo}`}
-                          : item?.image
-                          ? {uri: `${baseUrl}/${item?.image}`}
-                          : require('../Assets/Images/permissions.png')
-                      }
-                      style={{
-                        height: '100%',
-                        width: '100%',
-                      }}
+                  style={styles.View2}>
+                  <View
+                    style={styles.profileView3}>
+                    <View style={styles.profileSection2}>
+                      <CustomImage
+                        source={
+                          item?.profile_info?.photo
+                            ? { uri: `${baseUrl}/${item?.profile_info?.photo}` }
+                            : item?.image
+                              ? { uri: `${baseUrl}/${item?.image}` }
+                              : require('../Assets/Images/permissions.png')
+                        }
+                        style={{
+                          height: '100%',
+                          width: '100%',
+                        }}
                       // resizeMode="contain"
-                    />
+                      />
+                    </View>
+
+                    <View
+                      style={styles.view4}>
+                      <CustomText
+                        numberOfLines={1}
+                        style={styles.customT}
+                        isBold>
+                        {item?.profile_info?.name
+                          ? item?.profile_info?.name
+                          : item?.user}
+                      </CustomText>
+                      <CustomText
+                        style={styles.text2}
+                        numberOfLines={2}>
+                        {item?.description}
+                      </CustomText>
+                    </View>
                   </View>
 
                   <View
-                    style={{
-                      paddingVertical: moderateScale(5, 0.6),
-                      paddingHorizontal: moderateScale(15, 0.6),
-                      backgroundColor: Color.lightGrey,
-                      borderRadius: moderateScale(10, 0.6),
-                      marginLeft: moderateScale(10, 0.3),
-                    }}>
-                    <CustomText
-                      numberOfLines={1}
-                      style={{
-                        color: 'black',
-                        fontSize: moderateScale(14, 0.6),
-                      }}
-                      isBold>
-                      {item?.profile_info?.name
-                        ? item?.profile_info?.name
-                        : item?.user}
+                    style={styles.textView}>
+                    <CustomText style={styles.text} isBold>
+                      Like
                     </CustomText>
-                    <CustomText
-                      style={{
-                        color: 'black',
-                        fontSize: moderateScale(12, 0.6),
-                      }}
-                      numberOfLines={2}>
-                      {item?.description}
+                    <CustomText style={[styles.text, { fontSize: 11 }]} isBold>
+                      {moment(item?.created_at).startOf('hour').fromNow()}
                     </CustomText>
+
                   </View>
                 </View>
-
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    width: windowWidth * 0.6,
-                    marginLeft: moderateScale(60, 0.3),
-                    justifyContent: 'space-between',
-                    marginBottom: moderateScale(10, 0.3),
-
-                  }}>
-                  <CustomText style={styles.text} isBold>
-                    Like
-                  </CustomText>
-                  <CustomText style={[styles.text ,{fontSize:11}]} isBold>
-                    {moment(item?.created_at).startOf('hour').fromNow()}
-                    {/* {moment(item?.created_at).fromNow()} */}
-                  </CustomText>
-                  {/* <CustomText style={styles.text} isBold>
-                    Reply
-                  </CustomText> */}
-                </View>
               </View>
-            </View>
-            // <CustomText>hello</CustomText>
-          );
-        }}
-        ListEmptyComponent={() => {
-          return (
-            <View
-              style={{
-                justifyContent: 'center',
-                alignItems: 'center',
-                height: windowHeight * 0.8,
-              }}>
-              <Text>No Comments</Text>
-            </View>
-          );
-        }}
-      />
+            );
+          }}
+          ListEmptyComponent={() => {
+            return (
+              <View
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  height: windowHeight * 0.8,
+                }}>
+                <Text>No Comments</Text>
+              </View>
+            );
+          }}
+        />
       </View>
       <View
         style={{
@@ -217,8 +186,6 @@ const ComentsSection = ({refRBSheet, data, setCommentsCount}) => {
           viewHeight={0.06}
           viewWidth={0.84}
           inputWidth={0.84}
-          // borderColor={Color.veryLightGray}
-          // border={2}
           backgroundColor={'#F5F5F5'}
           marginRight={moderateScale(10, 0.3)}
           placeholderColor={Color.veryLightGray}
@@ -230,7 +197,8 @@ const ComentsSection = ({refRBSheet, data, setCommentsCount}) => {
           color={Color.themeDarkGray}
           as={Ionicons}
 
-          onPress={() => {addComment()
+          onPress={() => {
+            addComment()
             setYourComment('')
           }}
         />
@@ -242,6 +210,38 @@ const ComentsSection = ({refRBSheet, data, setCommentsCount}) => {
 export default ComentsSection;
 
 const styles = StyleSheet.create({
+  mainView: {
+    width: windowWidth,
+    marginTop: moderateScale(5, 0.3)
+  },
+  View2: {
+    width: windowWidth,
+  },
+  profileView3: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(10, 0.6),
+    width: windowWidth,
+  },
+  text2: {
+    color: 'black',
+    fontSize: moderateScale(12, 0.6),
+  },
+  view4: {
+    paddingVertical: moderateScale(5, 0.6),
+    paddingHorizontal: moderateScale(15, 0.6),
+    backgroundColor: Color.lightGrey,
+    borderRadius: moderateScale(10, 0.6),
+    marginLeft: moderateScale(10, 0.3),
+  },
+  textView: {
+    flexDirection: 'row',
+    width: windowWidth * 0.6,
+    marginLeft: moderateScale(60, 0.3),
+    justifyContent: 'space-between',
+    marginBottom: moderateScale(10, 0.3),
+
+  },
   profileSection2: {
     height: windowHeight * 0.08,
     width: windowHeight * 0.08,
@@ -252,7 +252,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     overflow: 'hidden',
   },
-  text: {fontSize: moderateScale(12, 0.6), color: 'black'},
+  customT: {
+    color: 'black',
+    fontSize: moderateScale(14, 0.6),
+  },
+  text: { fontSize: moderateScale(12, 0.6), color: 'black' },
   profileSection2: {
     height: windowHeight * 0.06,
     width: windowHeight * 0.06,
