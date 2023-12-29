@@ -53,7 +53,7 @@ const CardComponent = ({
 
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
-  const profileData = useSelector(state => state.commonReducer.profileData);
+  const profileData = useSelector(state => state.commonReducer.selectedProfile);
 
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -61,22 +61,23 @@ const CardComponent = ({
   const [msg, setMsg] = useState('');
   const [isLoading, setisLoading] = useState(false);
   const [requested, setRequested] = useState(
-    item?.profile_id == profileData?.id && item?.status == 'request'
+    bubbleInfo?.profile_id == profileData?.id && item?.status == 'request'
       ? true
       : false,
   );
+  console.log("🚀 ~ file: CardComponent.js:68 ~ requested:", bubbleInfo?.profile_id, item?.role, profileData?.id)
   const [invite, setinvited] = useState(
-    item?.profile_id == profileData?.id && item?.status == 'invite'
+    bubbleInfo?.profile_id == profileData?.id && item?.status == 'invite'
       ? true
       : false,
   );
   const [block, setblocked] = useState(
-    item?.profile_id == profileData?.id && item?.status == 'blocked'
+    bubbleInfo?.profile_id == profileData?.id && item?.status == 'blocked'
       ? true
       : false,
   );
   const [member, setmember] = useState(
-    item?.profile_id == profileData?.id && item?.status == 'follow'
+    bubbleInfo?.profile_id == profileData?.id && item?.status == 'follow'
       ? true
       : false,
   );
@@ -92,6 +93,7 @@ const CardComponent = ({
   ];
 
   const handleMemberAction = async actionType => {
+    setModalVisible(false);
     const url = `auth/community_member/pending_list/${item?.id}`;
     const body = {
       status: actionType,
@@ -100,7 +102,7 @@ const CardComponent = ({
     const response = await Post(url, body, apiHeader(token));
     setisLoading(false);
     if (response != undefined) {
-      setModalVisible(false);
+      console.log("🚀 ~ file: CardComponent.js:105 ~ handleMemberAction ~ response:", response?.data)
       if (actionType == 'accept') {
         setRequested(false);
         setmember(true);
@@ -160,7 +162,6 @@ const CardComponent = ({
           style={{
             paddingLeft: moderateScale(15, 0.6),
             width: windowWidth * 0.45,
-            backgroundColor: 'red',
           }}>
           <CustomText
             numberOfLines={1}
@@ -195,7 +196,7 @@ const CardComponent = ({
           style={{
             flexDirection: 'row',
             justifyContent: 'flex-end',
-            backgroundColor: 'green',
+            // backgroundColor: 'green',
             width: windowWidth * 0.3,
           }}>
           {pending && (
@@ -212,7 +213,7 @@ const CardComponent = ({
             />
           )}
 
-          {requested && (
+          {requested &&  (
             <>
               <CustomButton
                 iconName={isLoading ? 'loader' : 'check'}
@@ -250,7 +251,7 @@ const CardComponent = ({
               />
             </>
           )}
-          {member && (
+          {member && item?.role !='admin' && (
             <>
               <CustomButton
                 iconName={isLoading ? 'loader' : 'pause'}
@@ -346,9 +347,14 @@ const CardComponent = ({
             <CustomText
               style={{color: 'gray', fontSize: moderateScale(12, 0.6)}}
               onPress={() => {
-                handleMemberAction('team');
+                if (item?.role == 'member') {
+
+                  handleMemberAction('team');
+                } else if (item?.role == 'team') {
+                  handleMemberAction('member');
+                }
               }}>
-              Make Team Member
+              {item?.role == 'member' ? 'Make Team Member' : 'Remove from team'}
             </CustomText>
           </View>
         )}
