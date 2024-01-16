@@ -12,18 +12,18 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import React, {useEffect, useState} from 'react';
-const {height, width} = Dimensions.get('window');
-import {moderateScale} from 'react-native-size-matters';
+import React, { useEffect, useState } from 'react';
+const { height, width } = Dimensions.get('window');
+import { moderateScale } from 'react-native-size-matters';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
-import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
+import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
-import {useSelector} from 'react-redux';
+import { useSelector } from 'react-redux';
 import CustomButton from '../Components/CustomButton';
 import Color from '../Assets/Utilities/Color';
-import {Icon, ScrollView} from 'native-base';
+import { Icon, ScrollView } from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
@@ -31,9 +31,9 @@ import Feather from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
 import navigationService from '../navigationService';
 import TextInputWithTitle from './TextInputWithTitle';
-import {baseUrl, profilePicUrl} from '../Config';
+import { baseUrl, profilePicUrl } from '../Config';
 import moment from 'moment';
-import {Post} from '../Axios/AxiosInterceptorFunction';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
 const CardComponent = ({
   item,
@@ -134,11 +134,10 @@ const CardComponent = ({
           <View style={styles.profileSection}>
             <CustomImage
               source={{
-                uri: `${baseUrl}/${
-                  item?.photo ? item?.photo : item?.profile_info?.photo
-                }`,
+                uri: `${baseUrl}/${item?.photo ? item?.photo : item?.profile_info?.photo
+                  }`,
               }}
-              style={{width: '100%', height: '100%'}}
+              style={{ width: '100%', height: '100%' }}
             />
           </View>
 
@@ -213,7 +212,7 @@ const CardComponent = ({
             />
           )}
 
-          {requested &&  (
+          {requested && (
             <>
               <CustomButton
                 iconName={isLoading ? 'loader' : 'check'}
@@ -251,7 +250,7 @@ const CardComponent = ({
               />
             </>
           )}
-          {member && item?.role !='admin' && (
+          {member && item?.role != 'admin' && (
             <>
               <CustomButton
                 iconName={isLoading ? 'loader' : 'pause'}
@@ -338,14 +337,13 @@ const CardComponent = ({
               borderRadius: moderateScale(10, 0.6),
               bottom: -5,
               backgroundColor: 'white',
-
               width: windowWidth * 0.3,
               justifyContent: 'center',
               alignItems: 'center',
               padding: moderateScale(10, 0.6),
             }}>
             <CustomText
-              style={{color: 'gray', fontSize: moderateScale(12, 0.6)}}
+              style={{ color: 'gray', fontSize: moderateScale(12, 0.6) }}
               onPress={() => {
                 if (item?.role == 'member') {
 
@@ -398,7 +396,7 @@ const CardComponent = ({
             <View style={styles.circle}>
               <CustomImage
                 source={require('../Assets/Images/chat.png')}
-                style={{width: '100%', height: '100%'}}
+                style={{ width: '100%', height: '100%' }}
               />
             </View>
             <TextInputWithTitle

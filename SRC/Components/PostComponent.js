@@ -141,12 +141,7 @@ const PostComponent = ({data}) => {
           </View>
 
           <View
-            style={{
-              flexDirection: 'row',
-              width: windowWidth * 0.62,
-              alignItems: 'center',
-              justifyContent: 'space-evenly',
-            }}>
+            style={styles.rbView}>
             <CustomText
              onPress={() => refRBSheet.current.open()}
               numberOfLines={1}
@@ -163,11 +158,7 @@ const PostComponent = ({data}) => {
             {data?.View && (
               <CustomText
                 numberOfLines={1}
-                style={{
-                  color: Color.veryLightGray,
-                  fontSize: moderateScale(13, 0.6),
-                  width: windowWidth * 0.3,
-                }}>
+                style={styles.cT}>
                 {data?.View} views
               </CustomText>
             )}
@@ -188,14 +179,7 @@ const PostComponent = ({data}) => {
             onPress={() => {
               setLike(!like);
             }}
-            style={{
-              flexDirection: 'row',
-              width: '50%',
-              alignItems: 'center',
-              justifyContent: 'center',
-              borderRightWidth : 1,
-              borderColor : Color.veryLightGray
-            }}>
+            style={styles.likebtn}>
             <Icon
               as={AntDesign}
               name={like ? 'like2' : 'like1'}
@@ -211,12 +195,7 @@ const PostComponent = ({data}) => {
 
           <TouchableOpacity
            onPress={() => refRBSheet.current.open()}
-            style={{
-              flexDirection: 'row',
-              width: '50%',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
+            style={styles.button}>
             <Octicons
               name="comment"
               size={23}
@@ -242,17 +221,9 @@ const PostComponent = ({data}) => {
                 return (
                   <View style={{width: windowWidth}}>
                     <View
-                      style={{
-                        width: windowWidth,
-                        marginTop: moderateScale(10, 0.3),
-                      }}>
+                      style={styles.flatView}>
                       <View
-                        style={{
-                          flexDirection: 'row',
-                          alignItems: 'center',
-                          paddingHorizontal: moderateScale(10, 0.6),
-                          width: windowWidth,
-                        }}>
+                        style={styles.profileView2}>
                         <View style={styles.profileSection2}>
                           <CustomImage
                             source={item?.pic}
@@ -311,10 +282,33 @@ const styles = StyleSheet.create({
     marginTop: moderateScale(10, 0.3),
     elevation: 2,
   },
+  likebtn:{
+    flexDirection: 'row',
+    width: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRightWidth : 1,
+    borderColor : Color.veryLightGray
+  },
+  flatView:{
+    width: windowWidth,
+    marginTop: moderateScale(10, 0.3),
+  },
+  cT:{
+    color: Color.veryLightGray,
+    fontSize: moderateScale(13, 0.6),
+    width: windowWidth * 0.3,
+  },
   customT:{
     textAlign: 'left',
     marginLeft: moderateScale(15, 0.3),
     fontSize: moderateScale(13, 0.6),
+  },
+  button:{
+    flexDirection: 'row',
+    width: '50%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   image2:{
     width: moderateScale(25, 0.6),
@@ -333,6 +327,12 @@ const styles = StyleSheet.create({
     marginLeft: moderateScale(5, 0.3),
     fontSize: moderateScale(13, 0.6),
     width: windowWidth * 0.16,
+  },
+  rbView:{
+    flexDirection: 'row',
+    width: windowWidth * 0.62,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
   },
   profileSection2: {
     height: windowHeight * 0.08,
@@ -355,6 +355,12 @@ const styles = StyleSheet.create({
     marginRight: moderateScale(3, 0.3),
     width: moderateScale(20, 0.6),
     height: moderateScale(20, 0.6),
+  },
+  profileView2 :{
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: moderateScale(10, 0.6),
+    width: windowWidth,
   },
   Views:{
     paddingVertical: moderateScale(5, 0.6),

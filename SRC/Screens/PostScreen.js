@@ -381,7 +381,6 @@ const styles = StyleSheet.create({
     padding: 5,
     fontSize: moderateScale(15, 0.6),
   },
-
   indicator: {
     backgroundColor: Color.black,
   },

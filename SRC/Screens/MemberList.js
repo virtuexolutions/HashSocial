@@ -67,18 +67,10 @@ const MemberList = props => {
             : require('../Assets/Images/Main.png')
         }
         resizeMode={'cover'}
-        style={{
-          width: windowWidth * 1,
-          height: windowHeight * 0.9,
-          alignItems: 'center',
-        }}>
+        style={styles.bgimage}>
         {loading ? (
           <View
-            style={{
-              height: windowHeight * 0.8,
-              justifyContent: 'center',
-              alignItems: 'center',
-            }}>
+            style={styles.mainView}>
             <ActivityIndicator color={'white'} size={'large'} />
           </View>
         ) : (
@@ -148,4 +140,14 @@ const styles = StyleSheet.create({
     marginTop: moderateScale(5, 0.3),
     marginBottom: moderateScale(20, 0.3),
   },
+  bgimage:{
+    width: windowWidth * 1,
+    height: windowHeight * 0.9,
+    alignItems: 'center',
+  },
+  mainView : {
+    height: windowHeight * 0.8,
+    justifyContent: 'center',
+    alignItems: 'center',
+  }  
 });
