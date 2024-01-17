@@ -206,7 +206,7 @@ const RoundMenu = ({
             ref={outerContainerRef}
             style={styles({size, backgroundColor}).container}>
             {content.map((el, i) => {
-              console.log("🚀 ~ {content.map ~ el:", el?.item?.title)
+              console.log("🚀 ~ {content.map ~ el:", el?.item?.profile_info?.id)
               const [x, y] = pointOnCircle({
                 radius,
                 angle:
@@ -264,8 +264,8 @@ const RoundMenu = ({
                           ? contentContainerStyle?.backgroundColor
                           : undefined,
                         // borderColor: elContainerSize == size /3 ? 'yellow':'rgb('+(x)%255+','+(y)%255+','+(x+y)%255+')',
-                        // borderColor:  elContainerSize == x /3 || elContainerSize == (Dimensions.get('window').width - x) /3  ? 'yellow':'green',
-                        borderColor: 'yellow',
+                        borderColor:  el?.item?.profile_info?.id == profileData?.id  ? 'green':'yellow',
+                        // borderColor: 'yellow',
 
                         borderRadius: el?.bubble
                           ? elContainerSize / 2
