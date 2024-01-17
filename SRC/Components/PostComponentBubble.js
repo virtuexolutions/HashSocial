@@ -20,8 +20,10 @@ import navigationService from '../navigationService';
 import ComentsSection from './ComentsSection';
 import numeral from 'numeral';
 import {baseUrl} from '../Config';
+import { theme } from 'native-base';
 
 const PostComponentBubble = ({data, bubbleInfo}) => {
+//  return  console.log("🚀 ~ file: PostComponentBubble.js:25 ~ PostComponentBubble ~ data:", data)
   const [like, setLike] = useState(data?.my_like ? true : false);
   const userData = useSelector(state => state.commonReducer.userData);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
@@ -88,6 +90,7 @@ const PostComponentBubble = ({data, bubbleInfo}) => {
               style={{
                 fontSize: moderateScale(15, 0.6),
               }}>
+                {/* 'hkjhsdfjkhskjdhfkjsdhkhskdj' */}
               {data?.profile_info?.name}
             </CustomText>
 
@@ -108,7 +111,11 @@ const PostComponentBubble = ({data, bubbleInfo}) => {
             actions={[deletePost]}
           />
         </View>
-
+        <CustomText style={[styles.caption ,{
+          color:Color.themeColor,
+    paddingVertical: moderateScale(10, 0.6),
+        }]}>{JSON.parse(data?.hashtags)}</CustomText>
+         
         <CustomText style={styles.caption}>{data?.caption}</CustomText>
 
         {data?.post_images?.length > 0 && (
@@ -248,7 +255,7 @@ const styles = StyleSheet.create({
     marginLeft: moderateScale(15, 0.3),
     fontSize: moderateScale(13, 0.6),
     lineHeight: moderateScale(20, 0.6),
-    paddingVertical: moderateScale(10, 0.6),
+    // paddingVertical: moderateScale(10, 0.6),
   },
   imageContainer: {
     flexDirection: 'row',

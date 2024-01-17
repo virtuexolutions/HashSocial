@@ -446,6 +446,7 @@ const Bubble = props => {
               height: windowHeight * 0.5,
             }}
             renderItem={({item, index}) => {
+            //  return  console.log("🚀 ~ file: Bubble.js:417 ~ Bubble ~ item:", item)
               return (
                 <TouchableOpacity
                   activeOpacity={0.8}
@@ -489,7 +490,7 @@ const Bubble = props => {
                         textAlign: 'left',
                       }}
                       isBold>
-                      {item?.name}
+                      {/* {item?.name} */}
                     </CustomText>
                     <CustomText
                       style={{
@@ -627,6 +628,12 @@ const styles = ScaledSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
+  },
+  ct:{
+    fontSize: moderateScale(17, 0.6),
+    color: 'black',
+    marginRight: moderateScale(8, 0.3),
+    textAlign: 'center',
   },
   profileSection2: {
     height: windowHeight * 0.05,
