@@ -125,7 +125,7 @@ const HomeScreen = props => {
             bubble: true,
             item:item,
             source: {uri: `${baseUrl}/${item?.image}`},
-            private: item?.privacy?.toLowerCase() == 'yes' ? false : true,
+            private: item?.privacy?.toLowerCase() == 'yes' ? true : false,
           };
         }),
       );

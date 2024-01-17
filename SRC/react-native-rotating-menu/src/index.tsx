@@ -206,6 +206,7 @@ const RoundMenu = ({
             ref={outerContainerRef}
             style={styles({size, backgroundColor}).container}>
             {content.map((el, i) => {
+              console.log("🚀 ~ {content.map ~ el:", el?.item?.title)
               const [x, y] = pointOnCircle({
                 radius,
                 angle:
@@ -341,10 +342,29 @@ const RoundMenu = ({
                         source={el.source}
                         style={{width: '100%', height: '100%'}}
                       />
+                       {/* <View
+                          style={{
+                            alignSelf : 'center',
+                            position: 'absolute',
+                            // right: 0,
+                            bottom: 0,
+                            zIndex: 2,
+                            // width: elContainerSize / 4,
+                            // height: elContainerSize / 4,
+                            // borderRadius: elContainerSize / 2,
 
-                      {/* {el?.image} */}
+                            backgroundColor: '#fff',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                          }}>
+                           <Text style={{
+                            fontSize : 10,
+                           }}>{el?.item?.title}</Text> 
+                        </View> */}
 
-                      {/* <Text>{i}</Text>  */}
+                     
+
+                    
                     </TouchableOpacity>
                   </Animatable.View>
                 </>

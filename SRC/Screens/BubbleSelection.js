@@ -146,6 +146,7 @@ const BubbleSelection = () => {
   const getBubble = async () => {
     const url = `auth/community/${profileData?.id}`;
     setIsLaoding(true);
+    console.log("🚀 ~ getBubble ~ url:", url)
     const response = await Get(url, token);
     setIsLaoding(false);
     if (response != undefined) {
@@ -166,7 +167,7 @@ const BubbleSelection = () => {
       status: 'request',
       community_id: communityid,
       profile_id: profileData?.id,
-    };
+    };   
     setIsLaoding(true);
     const response = await Post(url, body, apiHeader(token));
     setIsLaoding(false);

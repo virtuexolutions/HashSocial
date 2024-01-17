@@ -137,7 +137,7 @@ const Bubble = props => {
     if (response != undefined) {
       console.log(
         '🚀 ~ file: Bubble.js:138 ~ getBubbleDetails ~ response:',
-        response?.data?.community_info?.follow,
+        response?.data?.community_info,
       );
       setBubbleInfo(response?.data?.community_info);
       setStartFollowing(

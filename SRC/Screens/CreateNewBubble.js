@@ -43,6 +43,7 @@ import { useNavigation } from '@react-navigation/native';
 const CreateNewBubble = props => {
   const item = props?.route?.params?.item;
   const token = useSelector(state => state.authReducer.token);
+  console.log("🚀 ~ CreateNewBubble ~ token:", token)
   const userData = useSelector(state => state.commonReducer.userData);
   // console.log("🚀 ~ file: CreateNewBubble.js:47 ~ CreateNewBubble ~ userData:", userData)
 
@@ -237,7 +238,7 @@ const CreateNewBubble = props => {
       Platform.OS == 'android'
         ? ToastAndroid.show('Bubble created Successfully', ToastAndroid.SHORT)
         : Alert.alert('Bubble created Successfully');
-
+    // return  console.log('response ==== >' , response?.data)
       navigation.goBack();
     }
   };
@@ -290,7 +291,7 @@ const CreateNewBubble = props => {
                   inputHeight={0.05}
                   inputWidth={0.58}
                   color={Color.black}
-                  placeholderColor={'#DDDDDD'}
+                  placeholderColor={'#000000'}
                   isBold
                   borderBottomWidth={1}
                 // backgroundColor={'red'}
@@ -317,7 +318,7 @@ const CreateNewBubble = props => {
                     placeholder='More Keywords'
                     value={text}
                     onChangeText={item => setText(item)}
-                    placeholderTextColor={'#DDDDDD'}
+                    placeholderTextColor={'#000000'}
                   />
 
                   {text.length > 0 &&
