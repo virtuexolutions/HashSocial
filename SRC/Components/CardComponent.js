@@ -12,18 +12,18 @@ import {
   Alert,
   ActivityIndicator,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
-const { height, width } = Dimensions.get('window');
-import { moderateScale } from 'react-native-size-matters';
+import React, {useEffect, useState} from 'react';
+const {height, width} = Dimensions.get('window');
+import {moderateScale} from 'react-native-size-matters';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
-import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomImage from '../Components/CustomImage';
 import CustomText from '../Components/CustomText';
-import { useSelector } from 'react-redux';
+import {useSelector} from 'react-redux';
 import CustomButton from '../Components/CustomButton';
 import Color from '../Assets/Utilities/Color';
-import { Icon, ScrollView } from 'native-base';
+import {Icon, ScrollView} from 'native-base';
 import Entypo from 'react-native-vector-icons/Entypo';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import Feather from 'react-native-vector-icons/Feather';
@@ -31,9 +31,9 @@ import Feather from 'react-native-vector-icons/Feather';
 import Modal from 'react-native-modal';
 import navigationService from '../navigationService';
 import TextInputWithTitle from './TextInputWithTitle';
-import { baseUrl, profilePicUrl } from '../Config';
+import {baseUrl, profilePicUrl} from '../Config';
 import moment from 'moment';
-import { Post } from '../Axios/AxiosInterceptorFunction';
+import {Post} from '../Axios/AxiosInterceptorFunction';
 
 const CardComponent = ({
   item,
@@ -49,14 +49,15 @@ const CardComponent = ({
   Requested,
   blocked,
 }) => {
-  console.log('🚀 ~ file: CardComponent.js:49 ~ item:', item);
+  console.log('🚀 ~ file: CardComponent.js:49 ~ item:', item?.role);
 
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
+  console.log('🚀 ~ bubbleInfo:', bubbleInfo?.profile_id, profileData?.id);
 
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [role, setrole] = useState(item?.role)
   const [isVisible, setIsVisible] = useState(false);
   const [msg, setMsg] = useState('');
   const [isLoading, setisLoading] = useState(false);
@@ -65,7 +66,12 @@ const CardComponent = ({
       ? true
       : false,
   );
-  console.log("🚀 ~ file: CardComponent.js:68 ~ requested:", bubbleInfo?.profile_id, item?.role, profileData?.id)
+  console.log(
+    '🚀 ~ file: CardComponent.js:68 ~ requested:',
+    bubbleInfo?.profile_id,
+    item?.role,
+    profileData?.id,
+  );
   const [invite, setinvited] = useState(
     bubbleInfo?.profile_id == profileData?.id && item?.status == 'invite'
       ? true
@@ -98,11 +104,15 @@ const CardComponent = ({
     const body = {
       status: actionType,
     };
+    console.log("🚀 ~ handleMemberAction ~ body:", body)
     setisLoading(true);
     const response = await Post(url, body, apiHeader(token));
     setisLoading(false);
     if (response != undefined) {
-      console.log("🚀 ~ file: CardComponent.js:105 ~ handleMemberAction ~ response:", response?.data)
+      console.log(
+        '🚀 ~ file: CardComponent.js:105 ~ handleMemberAction ~ response:',
+        response?.data,
+      );
       if (actionType == 'accept') {
         setRequested(false);
         setmember(true);
@@ -118,6 +128,7 @@ const CardComponent = ({
         setmember(false);
         setblocked(true);
       }
+      setrole(actionType)
     }
   };
 
@@ -125,7 +136,10 @@ const CardComponent = ({
     <>
       <TouchableOpacity
         onLongPress={() => {
-          if (bubbleInfo?.profile_id == profileData?.id) {
+          if (
+            bubbleInfo?.profile_id == profileData?.id &&
+            item?.role != 'owner'
+          ) {
             setModalVisible(true);
           }
         }}
@@ -134,10 +148,11 @@ const CardComponent = ({
           <View style={styles.profileSection}>
             <CustomImage
               source={{
-                uri: `${baseUrl}/${item?.photo ? item?.photo : item?.profile_info?.photo
-                  }`,
+                uri: `${baseUrl}/${
+                  item?.photo ? item?.photo : item?.profile_info?.photo
+                }`,
               }}
-              style={{ width: '100%', height: '100%' }}
+              style={{width: '100%', height: '100%'}}
             />
           </View>
 
@@ -188,7 +203,7 @@ const CardComponent = ({
               color: '#000',
               textAlign: 'left',
             }}>
-            {item?.role}
+            {role}
           </CustomText>
         </View>
 
@@ -251,7 +266,7 @@ const CardComponent = ({
               />
             </>
           )}
-          {member && item?.role != 'admin' && (
+          {member && item?.role != 'owner' && (
             <>
               <CustomButton
                 iconName={isLoading ? 'loader' : 'pause'}
@@ -330,33 +345,9 @@ const CardComponent = ({
             />
           )}
         </View>
-        {modalVisible && (
-          <View
-            style={{
-              position: 'absolute',
-              right: 10,
-              borderRadius: moderateScale(10, 0.6),
-              bottom: -5,
-              backgroundColor: 'white',
-              width: windowWidth * 0.3,
-              justifyContent: 'center',
-              alignItems: 'center',
-              padding: moderateScale(10, 0.6),
-            }}>
-            <CustomText
-              style={{ color: 'gray', fontSize: moderateScale(12, 0.6) }}
-              onPress={() => {
-                if (item?.role == 'member') {
-
-                  handleMemberAction('team');
-                } else if (item?.role == 'team') {
-                  handleMemberAction('member');
-                }
-              }}>
-              {item?.role == 'member' ? 'Make Team Member' : 'Remove from team'}
-            </CustomText>
-          </View>
-        )}
+        {/* {modalVisible && (
+         
+        )} */}
       </TouchableOpacity>
 
       <Modal
@@ -397,7 +388,7 @@ const CardComponent = ({
             <View style={styles.circle}>
               <CustomImage
                 source={require('../Assets/Images/chat.png')}
-                style={{ width: '100%', height: '100%' }}
+                style={{width: '100%', height: '100%'}}
               />
             </View>
             <TextInputWithTitle
@@ -440,18 +431,20 @@ const CardComponent = ({
         </View>
       </Modal>
       <Modal
-        visible={false}
+        visible={modalVisible}
         onBackdropPress={() => {
           // Alert.alert('Modal has been closed.');
-          setModalVisible(!modalVisible);
+          setModalVisible(false);
         }}>
         <View
           style={{
-            width: windowWidth * 0.32,
+            width: windowWidth * 0.8,
+            paddingVertical: moderateScale(30, 0.6),
             // top: 120,
             // right: 0,
+            alignSelf: 'center',
             position: 'absolute',
-            alignSelf: 'flex-end',
+            // alignSelf: 'flex-end',
             alignItems: 'center',
             borderRadius: moderateScale(10, 0.6),
             // backgroundColor: 'rgba(225,225,225,.5)',
@@ -465,27 +458,71 @@ const CardComponent = ({
             shadowRadius: 3.84,
             elevation: 5,
           }}>
-          {/* <CustomText style={{fontSize:moderateScale(20,.6)}}>Hello</CustomText> */}
-          {modalData.map(item => {
-            return (
-              <>
-                <CustomText
-                  style={{
-                    fontSize: moderateScale(15, 0.6),
-                    paddingVertical: moderateScale(5, 0.6),
-                  }}
-                  onPress={item?.onPress}>
-                  {item?.name}
-                </CustomText>
-                <View
-                  style={{
-                    width: windowWidth * 0.25,
-                    backgroundColor: 'rgba(0,0,0,0.1)',
-                    height: 2,
-                  }}></View>
-              </>
-            );
-          })}
+         
+          {item?.role?.toLowerCase() != 'member' && (
+            <CustomText
+            style={{
+              color: 'gray',
+              fontSize: moderateScale(15, 0.6),
+              borderBottomWidth: 1,
+              width: '95%',
+              borderColor : Color.veryLightGray,
+              textAlign: 'center',
+              paddingBottom :moderateScale(10,0.6)
+            }}
+              onPress={() => {
+                // if (item?.role == 'member') {
+
+                //   handleMemberAction('team');
+                // } else if (item?.role == 'team') {
+                handleMemberAction('member');
+                // }
+              }}>
+              {'Make Bubble Member'}
+            </CustomText>
+          )}
+          {item?.role != 'admin' && (
+            <CustomText
+              style={{
+                color: 'gray',
+                fontSize: moderateScale(15, 0.6),
+                borderBottomWidth: 1,
+                width: '95%',
+                borderColor : Color.veryLightGray,
+                textAlign: 'center',
+                paddingBottom :moderateScale(10,0.6),
+                paddingTop :moderateScale(10,0.6),
+
+              }}
+              onPress={() => {
+               handleMemberAction('admin');
+             
+              }}>
+              {'Make bubble admin'}
+            </CustomText>
+          )}
+          {item?.role != 'moderator' && (
+            <CustomText
+            style={{
+              color: 'gray',
+              fontSize: moderateScale(15, 0.6),
+              // borderBottomWidth: 1,
+              width: '100%',
+              textAlign: 'center',
+              paddingTop :moderateScale(10,0.6)
+            }}
+              onPress={() => {
+                // if (item?.role == 'member') {
+
+                //   handleMemberAction('team');
+                // } else if (item?.role == 'team') {
+                handleMemberAction('moderator');
+                // }
+              }}>
+              {'Make bubble moderator'}
+            </CustomText>
+          )}
+          {/* </View> */}
         </View>
       </Modal>
     </>

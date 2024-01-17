@@ -43,7 +43,7 @@ const MemberList = props => {
     const response = await Get(url, token);
     setLoading(false);
     if (response != undefined) {
-      console.log("🚀 ~ file: MemberList.js:41 ~ GetBubblemembers ~ response:", response?.data)
+      console.log("🚀 ~ file: MemberList.js:41 ~ GetBubblemembers ~ response:", JSON.stringify(response?.data?.member_info,null,2))
       setMembers(response?.data?.member_info);
     }
   };

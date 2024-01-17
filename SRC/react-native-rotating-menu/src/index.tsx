@@ -342,7 +342,7 @@ const RoundMenu = ({
                         source={el.source}
                         style={{width: '100%', height: '100%'}}
                       />
-                       {/* <View
+                        <View
                           style={{
                             alignSelf : 'center',
                             position: 'absolute',
@@ -360,7 +360,7 @@ const RoundMenu = ({
                            <Text style={{
                             fontSize : 10,
                            }}>{el?.item?.title}</Text> 
-                        </View> */}
+                        </View> 
 
                      
 

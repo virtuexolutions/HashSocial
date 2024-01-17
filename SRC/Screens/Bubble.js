@@ -47,12 +47,12 @@ const Bubble = props => {
   const isFocused = useIsFocused();
   const [loadingInvite, setLoadingInvite] = useState(false);
   const [followLoading, setFollowLoading] = useState(false);
-  const [startFollowing, setStartFollowing] = useState(
-    bubbleInfo?.follow?.status == 'follow' ? true : false,
-  );
   const [isVisible, setIsVisible] = useState(false);
   const [bubbleInfo, setBubbleInfo] = useState({});
   console.log('🚀 ~ file: Bubble.js:46 ~ Bubble ~ bubbleInfo:', bubbleInfo);
+  const [startFollowing, setStartFollowing] = useState(
+    bubbleInfo?.follow?.status == 'follow' ? true : false,
+  );
   const events = ['Posts', 'Reels', 'Chats', 'Events', 'Members'];
   const [selectedEvent, setSelectedEvent] = useState('Posts');
   const [search, setSearch] = useState('');
@@ -289,6 +289,7 @@ const Bubble = props => {
                 <View style={styles.followbtn}>
                   <CustomButton
                     text={
+                      
                       followLoading ? (
                         <ActivityIndicator
                           color={themeColor[1]}
