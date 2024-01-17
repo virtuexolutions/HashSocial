@@ -60,10 +60,10 @@ const CreateNewBubble = props => {
   const [showModal, setShowModal] = useState(false);
   const [profilePicture, setProfilePicture] = useState({});
   const [isLoading, setIsLoading] = useState(false);
-  const [allCanPost, setAllCanPost] = useState('Yes');
+  const [adminCanCreateContent, setadminCanCreateContent] = useState('Yes');
   const [openToAll, setOpenToAll] = useState('Yes');
-  const [teamRemoveCmmnts, setTeamRemoveCmnts] = useState('Yes');
-  const [teamCanRemoveContent, setTeamCanRemoveContent] = useState('Yes');
+  const [memberCreateContent, setmemberCreateContent] = useState('Yes');
+  const [bubbleTeamCanCreateContent, setbubbleTeamCanCreateContent] = useState('Yes');
   const [allCanSendInvite, setAllCanSendInvite] = useState('Yes');
   const architecture = [
     {
@@ -179,14 +179,17 @@ const CreateNewBubble = props => {
     const body = {
       title: bubbleTitle,
       profile_id: profileData?.id,
-      approval_admittance: ApprovalForAdmittanceValue,
       approval_post: ApprovalToPostValue,
       membership_cost: MembershipCostValue,
-      privacy: openToAll,
-      post_privacy: allCanPost,
-      remove_content: teamCanRemoveContent,
-      remove_comments: teamRemoveCmmnts,
-      invite_members: allCanSendInvite,
+      admin_create_content : adminCanCreateContent,
+      moderator_create_content : bubbleTeamCanCreateContent ,
+      member_create_content : memberCreateContent ,
+      privacy: ApprovalForAdmittanceValue,
+      // approval_admittance: ApprovalForAdmittanceValue,
+      // post_privacy: adminCanCreateContent,
+      // remove_content: bubbleTeamCanCreateContent,
+      // remove_comments: memberCreateContent,
+      // invite_members: allCanSendInvite,
     };
     const formData = new FormData();
     for (let key in body) {
@@ -430,36 +433,42 @@ const CreateNewBubble = props => {
                 }}>
                 Team Role | Perms
               </CustomText>
+              {/* every one can post or not  */}
               <SwitchComponent
-                text1={'All Bubble Member Post'}
-                text2={'(N) Only bubble team posts'}
-                value={allCanPost}
-                setValue={setAllCanPost}
+                text1={'Admin can create content / post'}
+                text2={'(N) Admin can not post'}
+                value={adminCanCreateContent}
+                setValue={setadminCanCreateContent}
               />
+              {/* bubble member can post or not */}
+
               <SwitchComponent
-                text1={'Bubble team can remove comments'}
-                text2={'(N) Only bubble owner can remove comments'}
-                value={teamRemoveCmmnts}
-                setValue={setTeamRemoveCmnts}
+                text1={'Member can create content / post'}
+                text2={'Member can not create content / post'}
+                value={memberCreateContent}
+                setValue={setmemberCreateContent}
               />
+              {/* bubble team / moderator can post or not */}
+
               <SwitchComponent
-                text1={'Bubble team can remove content'}
-                text2={'Only bubble owner can remove content'}
-                value={teamCanRemoveContent}
-                setValue={setTeamCanRemoveContent}
+                text1={'Bubble team can create content'}
+                text2={'bubble team can not create content'}
+                value={bubbleTeamCanCreateContent}
+                setValue={setbubbleTeamCanCreateContent}
               />
-              <SwitchComponent
+              {/* <SwitchComponent
+                text1={'Joining is open to everyone'}
+                text2={'(N) Only bubble team can accept request'}
+                value={openToAll}
+                setValue={setOpenToAll}
+              /> */}
+              {/* <SwitchComponent
                 text1={'Entire bubble can invite new members'}
                 text2={'(N) Only bubble team can send invites'}
                 value={allCanSendInvite}
                 setValue={setAllCanSendInvite}
               />
-              <SwitchComponent
-                text1={'Joining is open to everyone'}
-                text2={'(N) Only bubble team can accept request'}
-                value={openToAll}
-                setValue={setOpenToAll}
-              />
+               */}
             </View>
             <View
               style={{

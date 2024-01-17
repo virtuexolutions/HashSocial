@@ -261,7 +261,7 @@ const InterestSelection = () => {
             flexWrap: 'wrap',
             paddingTop: moderateScale(10, 0.6),
             paddingBottom: moderateScale(40, 0.6),
-            justifyContent: 'center',
+            // justifyContent: 'center',
           }}
           style={{
             width: windowWidth,
