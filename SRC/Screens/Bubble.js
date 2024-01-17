@@ -137,7 +137,7 @@ const Bubble = props => {
     if (response != undefined) {
       console.log(
         '🚀 ~ file: Bubble.js:138 ~ getBubbleDetails ~ response:',
-        response?.data?.community_info,
+        JSON.stringify(response?.data?.community_info, null, 2),
       );
       setBubbleInfo(response?.data?.community_info);
       setStartFollowing(
@@ -149,7 +149,12 @@ const Bubble = props => {
   };
 
   const InviteMember = () => {
-    if(bubbleInfo?.invite_members?.toLowerCase() == 'yes' || bubbleInfo?.profile_id == profileData?.id ){
+    if (
+      bubbleInfo?.profile_id == profileData?.id ||
+      // bubbleInfo?.follow?.role == 'member' ||
+      bubbleInfo?.follow?.role == 'admin' 
+      // bubbleInfo?.follow?.role == 'moderator'
+    ) {
       setIsVisible(true);
     } else {
       Alert.alert('you donot have permissions to invite the others');
@@ -193,10 +198,9 @@ const Bubble = props => {
         }}>
         <ScrollView showsVerticalScrollIndicator={false}>
           {isLoading ? (
-              <View style={styles.loaderView}>
+            <View style={styles.loaderView}>
               <ActivityIndicator color={Color.white} size={'large'} />
             </View>
-            
           ) : (
             <>
               <ImageBackground
@@ -289,7 +293,6 @@ const Bubble = props => {
                 <View style={styles.followbtn}>
                   <CustomButton
                     text={
-                      
                       followLoading ? (
                         <ActivityIndicator
                           color={themeColor[1]}
@@ -447,7 +450,7 @@ const Bubble = props => {
               height: windowHeight * 0.5,
             }}
             renderItem={({item, index}) => {
-            //  return  console.log("🚀 ~ file: Bubble.js:417 ~ Bubble ~ item:", item)
+              //  return  console.log("🚀 ~ file: Bubble.js:417 ~ Bubble ~ item:", item)
               return (
                 <TouchableOpacity
                   activeOpacity={0.8}
@@ -630,7 +633,7 @@ const styles = ScaledSheet.create({
     alignItems: 'center',
     overflow: 'hidden',
   },
-  ct:{
+  ct: {
     fontSize: moderateScale(17, 0.6),
     color: 'black',
     marginRight: moderateScale(8, 0.3),

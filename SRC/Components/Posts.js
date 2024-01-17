@@ -21,15 +21,16 @@ import {FlatList} from 'react-native';
 import PostComponentBubble from './PostComponentBubble';
 import {Get} from '../Axios/AxiosInterceptorFunction';
 import {useIsFocused} from '@react-navigation/native';
-import { baseUrl } from '../Config';
+import {baseUrl} from '../Config';
 
 // import { TextInput } from 'react-native-gesture-handler';
 
 const Posts = ({onPress, bubbleId, bubbleInfo}) => {
+  console.log('🚀 ~ Posts ~ bubbleInfo:', bubbleInfo?.follow?.role);
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
-  console.log("🚀 ~ file: Posts.js:33 ~ Posts ~ token:", token)
+  console.log('🚀 ~ file: Posts.js:33 ~ Posts ~ token:', token);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
 
   const isFocused = useIsFocused();
@@ -44,9 +45,16 @@ const Posts = ({onPress, bubbleId, bubbleInfo}) => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-     console.log("🚀 ~ file: Posts.js:46 ~ getPosts ~ response:", JSON.stringify(response?.data?.post_info))
-  
-      setPosts(response?.data?.post_info?.filter(item => item?.post_videos?.length == 0));
+      console.log(
+        '🚀 ~ file: Posts.js:46 ~ getPosts ~ response:',
+        JSON.stringify(response?.data?.post_info),
+      );
+
+      setPosts(
+        response?.data?.post_info?.filter(
+          item => item?.post_videos?.length == 0,
+        ),
+      );
     }
   };
 
@@ -54,58 +62,67 @@ const Posts = ({onPress, bubbleId, bubbleInfo}) => {
     getPosts();
   }, [isFocused]);
 
-
-
   return (
     <View>
-     {(bubbleInfo?.post_privacy?.toLowerCase() == 'yes' || bubbleInfo?.profile_id == profileData?.id) && <View
-        style={{
-          flexDirection: 'row',
-          marginTop: moderateScale(10, 0.6),
-          alignItems: 'center',
-          paddingVertical: moderateScale(10, 0.6),
-          justifyContent: 'space-between',
-          paddingHorizontal: moderateScale(10, 0.6),
-        }}>
-        <View style={styles.profileImage}>
-          <CustomImage
-            // source={require('../Assets/Images/fitness2.png')}
-            source={{uri: `${baseUrl}/${profileData?.photo}`}}
-            style={{
-              height: '100%',
-              width: '100%',
-            }}
-          />
-        </View>
-        <TouchableOpacity
+      {(bubbleInfo?.profile_id == profileData?.id ||
+        (bubbleInfo?.follow?.role?.toLowerCase() == 'moderator' &&
+          bubbleInfo?.moderator_create_content?.toLowerCase() == 'yes') ||
+          (bubbleInfo?.follow?.role?.toLowerCase() == 'member' &&
+            bubbleInfo?.member_create_content?.toLowerCase() == 'yes')
+            ||
+            (bubbleInfo?.follow?.role?.toLowerCase() == 'admin' &&
+              bubbleInfo?.admin_create_content?.toLowerCase() == 'yes')
+            
+            ) && (
+        <View
           style={{
-            backgroundColor: 'white',
-            borderRadius: moderateScale(10, 0.6),
-            width: windowWidth * 0.7,
-            height: windowHeight * 0.05,
+            flexDirection: 'row',
+            marginTop: moderateScale(10, 0.6),
+            alignItems: 'center',
+            paddingVertical: moderateScale(10, 0.6),
+            justifyContent: 'space-between',
             paddingHorizontal: moderateScale(10, 0.6),
-            justifyContent: 'center',
-          }}
-          onPress={() => {
-            onPress();
           }}>
-          <CustomText
+          <View style={styles.profileImage}>
+            <CustomImage
+              // source={require('../Assets/Images/fitness2.png')}
+              source={{uri: `${baseUrl}/${profileData?.photo}`}}
+              style={{
+                height: '100%',
+                width: '100%',
+              }}
+            />
+          </View>
+          <TouchableOpacity
             style={{
-              color: 'black',
-              fontSize: moderateScale(13, 0.6),
-              width: windowWidth * 0.6,
+              backgroundColor: 'white',
+              borderRadius: moderateScale(10, 0.6),
+              width: windowWidth * 0.7,
+              height: windowHeight * 0.05,
+              paddingHorizontal: moderateScale(10, 0.6),
+              justifyContent: 'center',
             }}
             onPress={() => {
               onPress();
             }}>
-            What's on your mind?
-          </CustomText>
-        </TouchableOpacity>
+            <CustomText
+              style={{
+                color: 'black',
+                fontSize: moderateScale(13, 0.6),
+                width: windowWidth * 0.6,
+              }}
+              onPress={() => {
+                onPress();
+              }}>
+              What's on your mind?
+            </CustomText>
+          </TouchableOpacity>
 
-        <View>
-          <Icon name={'images'} as={Entypo} color={'white'} size={7} />
+          <View>
+            <Icon name={'images'} as={Entypo} color={'white'} size={7} />
+          </View>
         </View>
-      </View>}
+      )}
       {isLoading ? (
         <View style={styles.loaderView}>
           <ActivityIndicator color={Color.white} size={'large'} />

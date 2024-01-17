@@ -282,7 +282,7 @@ const RoundMenu = ({
                     <TouchableOpacity
                       onPress={() => {
                         if (el?.bubble && el?.private) {
-                            console.log('Hrere=========>>>>>>',el?.item?.follow)
+                            console.log('Hrere=========>>>>>>',el?.item)
                           if (el?.item?.profile_id == profileData?.id ||el?.item?.follow?.status == 'follow') {
                             setText('bubble');
                             setSelectedBubbleId(el?.id);

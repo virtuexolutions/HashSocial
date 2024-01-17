@@ -49,41 +49,40 @@ const CardComponent = ({
   Requested,
   blocked,
 }) => {
-  console.log('🚀 ~ file: CardComponent.js:49 ~ item:', item?.role);
-
+  
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
-  console.log('🚀 ~ bubbleInfo:', bubbleInfo?.profile_id, profileData?.id);
+  console.log('🚀 ~ bubbleInfo:', item?.role ,  bubbleInfo?.profile_id , profileData?.id);
 
   const [modalVisible, setModalVisible] = useState(false);
-  const [role, setrole] = useState(item?.role)
+  const [role, setrole] = useState(item?.role);
   const [isVisible, setIsVisible] = useState(false);
   const [msg, setMsg] = useState('');
   const [isLoading, setisLoading] = useState(false);
   const [requested, setRequested] = useState(
-    bubbleInfo?.profile_id == profileData?.id && item?.status == 'request'
-      ? true
-      : false,
+    item?.status == 'request' ? true : false,
   );
-  console.log(
-    '🚀 ~ file: CardComponent.js:68 ~ requested:',
-    bubbleInfo?.profile_id,
-    item?.role,
-    profileData?.id,
-  );
+
+
+  //only admin and owner can withdraw invitation req
   const [invite, setinvited] = useState(
-    bubbleInfo?.profile_id == profileData?.id && item?.status == 'invite'
+    (bubbleInfo?.profile_id == profileData?.id ||
+      bubbleInfo?.follow?.role == 'admin') &&
+      item?.status == 'invite'
       ? true
       : false,
   );
+  //everyone can block and unblock except member
   const [block, setblocked] = useState(
-    bubbleInfo?.profile_id == profileData?.id && item?.status == 'blocked'
+    bubbleInfo?.follow?.role != 'member' && item?.status == 'blocked'
       ? true
       : false,
   );
   const [member, setmember] = useState(
-    bubbleInfo?.profile_id == profileData?.id && item?.status == 'follow'
+    bubbleInfo?.follow?.role != 'member' &&
+      item?.role.toLowerCase() == 'member' &&
+      item?.status == 'follow'
       ? true
       : false,
   );
@@ -104,7 +103,7 @@ const CardComponent = ({
     const body = {
       status: actionType,
     };
-    console.log("🚀 ~ handleMemberAction ~ body:", body)
+    console.log('🚀 ~ handleMemberAction ~ body:', body);
     setisLoading(true);
     const response = await Post(url, body, apiHeader(token));
     setisLoading(false);
@@ -128,7 +127,7 @@ const CardComponent = ({
         setmember(false);
         setblocked(true);
       }
-      setrole(actionType)
+      setrole(actionType);
     }
   };
 
@@ -228,45 +227,48 @@ const CardComponent = ({
             />
           )}
 
-          {requested && (
-            <>
-              <CustomButton
-                iconName={isLoading ? 'loader' : 'check'}
-                iconType={isLoading ? Feather : Entypo}
-                onPress={() => {
-                  handleMemberAction('accept');
-                }}
-                iconStyle={{
-                  color: Color.black,
-                }}
-                textColor={Color.black}
-                height={windowHeight * 0.05}
-                fontSize={moderateScale(12, 0.6)}
-                borderRadius={moderateScale(10, 0.3)}
-                paddingHorizontal={moderateScale(15, 0.3)}
-                marginRight={moderateScale(5, 0.3)}
-                bgColor={'#FFFFFF'}
-              />
-              <CustomButton
-                iconName={isLoading ? 'loader' : 'cross'}
-                iconType={isLoading ? Feather : Entypo}
-                onPress={() => {
-                  handleMemberAction('reject');
-                }}
-                iconStyle={{
-                  color: Color.black,
-                }}
-                textColor={Color.black}
-                height={windowHeight * 0.05}
-                fontSize={moderateScale(12, 0.6)}
-                borderRadius={moderateScale(10, 0.3)}
-                paddingHorizontal={moderateScale(15, 0.3)}
-                marginRight={moderateScale(5, 0.3)}
-                bgColor={'#FFFFFF'}
-              />
-            </>
-          )}
-          {member && item?.role != 'owner' && (
+          {/* Only admin and owner can accept joining requests */}
+          {(bubbleInfo?.profile_id == profileData?.id ||
+            bubbleInfo?.follow?.role == 'admin') &&
+            requested && (
+              <>
+                <CustomButton
+                  iconName={isLoading ? 'loader' : 'check'}
+                  iconType={isLoading ? Feather : Entypo}
+                  onPress={() => {
+                    handleMemberAction('accept');
+                  }}
+                  iconStyle={{
+                    color: Color.black,
+                  }}
+                  textColor={Color.black}
+                  height={windowHeight * 0.05}
+                  fontSize={moderateScale(12, 0.6)}
+                  borderRadius={moderateScale(10, 0.3)}
+                  paddingHorizontal={moderateScale(15, 0.3)}
+                  marginRight={moderateScale(5, 0.3)}
+                  bgColor={'#FFFFFF'}
+                />
+                <CustomButton
+                  iconName={isLoading ? 'loader' : 'cross'}
+                  iconType={isLoading ? Feather : Entypo}
+                  onPress={() => {
+                    handleMemberAction('reject');
+                  }}
+                  iconStyle={{
+                    color: Color.black,
+                  }}
+                  textColor={Color.black}
+                  height={windowHeight * 0.05}
+                  fontSize={moderateScale(12, 0.6)}
+                  borderRadius={moderateScale(10, 0.3)}
+                  paddingHorizontal={moderateScale(15, 0.3)}
+                  marginRight={moderateScale(5, 0.3)}
+                  bgColor={'#FFFFFF'}
+                />
+              </>
+            )}
+          {member && (
             <>
               <CustomButton
                 iconName={isLoading ? 'loader' : 'pause'}
@@ -458,18 +460,17 @@ const CardComponent = ({
             shadowRadius: 3.84,
             elevation: 5,
           }}>
-         
           {item?.role?.toLowerCase() != 'member' && (
             <CustomText
-            style={{
-              color: 'gray',
-              fontSize: moderateScale(15, 0.6),
-              borderBottomWidth: 1,
-              width: '95%',
-              borderColor : Color.veryLightGray,
-              textAlign: 'center',
-              paddingBottom :moderateScale(10,0.6)
-            }}
+              style={{
+                color: 'gray',
+                fontSize: moderateScale(15, 0.6),
+                borderBottomWidth: 1,
+                width: '95%',
+                borderColor: Color.veryLightGray,
+                textAlign: 'center',
+                paddingBottom: moderateScale(10, 0.6),
+              }}
               onPress={() => {
                 // if (item?.role == 'member') {
 
@@ -488,29 +489,27 @@ const CardComponent = ({
                 fontSize: moderateScale(15, 0.6),
                 borderBottomWidth: 1,
                 width: '95%',
-                borderColor : Color.veryLightGray,
+                borderColor: Color.veryLightGray,
                 textAlign: 'center',
-                paddingBottom :moderateScale(10,0.6),
-                paddingTop :moderateScale(10,0.6),
-
+                paddingBottom: moderateScale(10, 0.6),
+                paddingTop: moderateScale(10, 0.6),
               }}
               onPress={() => {
-               handleMemberAction('admin');
-             
+                handleMemberAction('admin');
               }}>
               {'Make bubble admin'}
             </CustomText>
           )}
           {item?.role != 'moderator' && (
             <CustomText
-            style={{
-              color: 'gray',
-              fontSize: moderateScale(15, 0.6),
-              // borderBottomWidth: 1,
-              width: '100%',
-              textAlign: 'center',
-              paddingTop :moderateScale(10,0.6)
-            }}
+              style={{
+                color: 'gray',
+                fontSize: moderateScale(15, 0.6),
+                // borderBottomWidth: 1,
+                width: '100%',
+                textAlign: 'center',
+                paddingTop: moderateScale(10, 0.6),
+              }}
               onPress={() => {
                 // if (item?.role == 'member') {
 

@@ -80,6 +80,7 @@ const MemberList = props => {
               marginBottom: moderateScale(10, 0.3),
             }}
             renderItem={({item, index}) => {
+              console.log("🚀 ~ MemberList ~ item:", item?.status)
               return (
                 <>
                   <CardComponent
