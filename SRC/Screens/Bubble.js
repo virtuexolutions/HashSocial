@@ -33,7 +33,7 @@ import Modal from 'react-native-modal';
 import Feather from 'react-native-vector-icons/Feather';
 import OptionsMenu from 'react-native-options-menu';
 import {Get, Post} from '../Axios/AxiosInterceptorFunction';
-import {useIsFocused} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import {baseUrl} from '../Config';
 
 const Bubble = props => {
@@ -61,6 +61,7 @@ const Bubble = props => {
   const [invitedPeople, setInvitedPeople] = useState([]);
 
   const MoreIcon = require('../Assets/Images/threedots.png');
+  const navigation =useNavigation()
 
   const handleInputChange = text => {
     setSearch(text);
@@ -344,8 +345,8 @@ const Bubble = props => {
                         tintColor: '#000',
                       }}
                       destructiveIndex={1}
-                      options={['Invite Member', 'Bubble Management']}
-                      actions={[InviteMember, BubbleMangement]}
+                      options={['Invite Member', 'Bubble Management' ,'Activites']}
+                      actions={[InviteMember, BubbleMangement ,navigation.navigate('Activites')]}
                     />
                   </TouchableOpacity>
                 </View>

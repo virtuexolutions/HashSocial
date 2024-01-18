@@ -21,6 +21,7 @@ import ComentsSection from './ComentsSection';
 import numeral from 'numeral';
 import {baseUrl} from '../Config';
 import { theme } from 'native-base';
+import { useNavigation } from '@react-navigation/native';
 
 const PostComponentBubble = ({data, bubbleInfo}) => {
 //  return  console.log("🚀 ~ file: PostComponentBubble.js:25 ~ PostComponentBubble ~ data:", data)
@@ -31,6 +32,8 @@ const PostComponentBubble = ({data, bubbleInfo}) => {
   const refRBSheet = useRef();
   const MoreIcon = require('../Assets/Images/threedots.png');
   const token = useSelector(state => state.authReducer.token);
+  const navigation =useNavigation()
+  const [option ,setOption] =useState(['Delete' ,'Activites'])
 
 
   const [loading, setloading] = useState(false);
@@ -47,6 +50,7 @@ const PostComponentBubble = ({data, bubbleInfo}) => {
       const response = await Delete(url, apiHeader(token));
       setloading(false);
       if (response != undefined) {
+      console.log("🚀 ~ deletePost ~ response:", response)
       }
     }else{
       alert("You don't have permission to delete this post.")
@@ -108,7 +112,7 @@ const PostComponentBubble = ({data, bubbleInfo}) => {
             }}
             destructiveIndex={1}
             options={['Delete']}
-            actions={[deletePost]}
+            actions={[deletePost() ]}
           />
         </View>
         <CustomText style={[styles.caption ,{
