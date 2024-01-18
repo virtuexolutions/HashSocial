@@ -13,13 +13,15 @@ const CustomSwitch = ({
   onSelectSwitch,
   selectionColor
 }) => {
-  const [getSelectionMode, setSelectionMode] = useState(selectionMode);
+  // const [getSelectionMode, setSelectionMode] = useState(selectionMode);
+  // console.log("🚀 ~ getSelectionMode:", getSelectionMode)
   const [getRoundCorner, setRoundCorner] = useState(roundCorner);
 
   const updatedSwitchData = val => {
-    setSelectionMode(val);
-    setValue(val)
-    onSelectSwitch(val);
+    console.log("🚀 ~ updatedSwitchData ~ val:", val)
+    // setSelectionMode(val);
+    setValue(val == 1 ? 'Yes' : 'No')
+    // onSelectSwitch(val);
   };
 
   return (
@@ -42,14 +44,14 @@ const CustomSwitch = ({
           style={{
             flex: 1,
 
-            backgroundColor: getSelectionMode == 1 ? selectionColor : 'white',
+            backgroundColor: value == 1 ? selectionColor : 'white',
             borderRadius: getRoundCorner ? 25 : 0,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
           <Text
             style={{
-              color: getSelectionMode == 1 ? 'white' : selectionColor,fontSize:9
+              color: value == 1 ? 'white' : selectionColor,fontSize:9
             }}>
             {option1}
           </Text>
@@ -62,14 +64,14 @@ const CustomSwitch = ({
           style={{
             flex: 1,
 
-            backgroundColor: getSelectionMode == 2 ? selectionColor : 'white',
+            backgroundColor: value == 2 ? selectionColor : 'white',
             borderRadius: getRoundCorner ? 25 : 0,
             justifyContent: 'center',
             alignItems: 'center',
           }}>
           <Text
             style={{
-              color: getSelectionMode == 2 ? 'white' : selectionColor,fontSize:9
+              color: value == 2 ? 'white' : selectionColor,fontSize:9
             }}>
             {option2}
           </Text>

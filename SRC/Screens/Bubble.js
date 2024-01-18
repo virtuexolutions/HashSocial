@@ -24,7 +24,7 @@ import Header from '../Components/Header';
 import navigationService from '../navigationService';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import EvilIcons from 'react-native-vector-icons/EvilIcons';
-import {Icon, ScrollView} from 'native-base';
+import {Icon, ScrollView, Toast} from 'native-base';
 import Home from '../Components/Home';
 import Posts from '../Components/Posts';
 import Events from '../Components/Events';
@@ -42,14 +42,12 @@ const Bubble = props => {
   const token = useSelector(state => state.authReducer.token);
   const privacy = useSelector(state => state.authReducer.privacy);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
-  console.log('🚀 ~ file: Bubble.js:45 ~ Bubble ~ profileData:', profileData);
   const [isLoading, setIsLoading] = useState(false);
   const isFocused = useIsFocused();
   const [loadingInvite, setLoadingInvite] = useState(false);
   const [followLoading, setFollowLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [bubbleInfo, setBubbleInfo] = useState({});
-  console.log('🚀 ~ file: Bubble.js:46 ~ Bubble ~ bubbleInfo:', bubbleInfo?.follow?.status);
   const [startFollowing, setStartFollowing] = useState(
     bubbleInfo?.follow?.status == 'follow' ? true : false,
   );
@@ -121,10 +119,6 @@ const Bubble = props => {
     const response = await Post(url, body, apiHeader(token));
     setFollowLoading(false);
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: Bubble.js:131 ~ follow ~ response:',
-        response?.data,
-      );
       getBubbleDetails();
       setStartFollowing(!startFollowing);
     }
@@ -136,10 +130,6 @@ const Bubble = props => {
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
-      console.log(
-        '🚀 ~ file: Bubble.js:138 ~ getBubbleDetails ~ response:',
-        JSON.stringify(response?.data?.community_info, null, 2),
-      );
       setBubbleInfo(response?.data?.community_info);
       setStartFollowing(
         response?.data?.community_info?.follow?.status == 'follow'
@@ -163,8 +153,13 @@ const Bubble = props => {
   };
 
   const BubbleMangement = () => {
-    navigationService.navigate('BubbleManagement');
+    bubbleInfo?.follow?.role == 'owner'
+      ? navigationService.navigate('BubbleManagement', {bubbleInfo: bubbleInfo})
+      : Platform.OS == 'android'
+      ? ToastAndroid.show('Access Denied', ToastAndroid.SHORT)
+      : alert('Access Denied');
   };
+ 
 
   useEffect(() => {
     getBubbleDetails();
@@ -211,12 +206,13 @@ const Bubble = props => {
                 alignItems: 'center',
                 paddingVertical: moderateScale(5, 0.6),
               }}>
-              <CustomText style={{
-                color : Color.white,
-                width : windowWidth * 0.9,
-                textAlign : 'center',
-                fontSize : moderateScale(12,0.6),
-              }}>
+              <CustomText
+                style={{
+                  color: Color.white,
+                  width: windowWidth * 0.9,
+                  textAlign: 'center',
+                  fontSize: moderateScale(12, 0.6),
+                }}>
                 It seems like you have breach community guidline thus you are
                 temporary blocked by our team
               </CustomText>
@@ -470,7 +466,6 @@ const Bubble = props => {
               height: windowHeight * 0.5,
             }}
             renderItem={({item, index}) => {
-              //  return  console.log("🚀 ~ file: Bubble.js:417 ~ Bubble ~ item:", item)
               return (
                 <TouchableOpacity
                   activeOpacity={0.8}
