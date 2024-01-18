@@ -5,6 +5,9 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  ToastAndroid,
+  Alert,
+  Platform,
 } from 'react-native';
 import Color from '../Assets/Utilities/Color';
 import CustomStatusBar from '../Components/CustomStatusBar';
@@ -25,37 +28,64 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import ToggleComponent from '../Components/ToggleComponent';
 import CustomSwitch from '../Components/CustomSwitch';
 import { useNavigation } from '@react-navigation/native';
+import { Post } from '../Axios/AxiosInterceptorFunction';
 
-const BubbleManagement = () => {
+const BubbleManagement = (props) => {
+  const bubbleInfo = props?.route?.params?.bubbleInfo;
+  console.log("🚀 ~ BubbleManagement ~ bubInfo:", bubbleInfo)
   const navigation = useNavigation()
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
+  const  token = useSelector(state => state.authReducer. token);
   const privacy = useSelector(state => state.authReducer.privacy);
-  const onSelectSwitch = index => {
-    // alert('Selected index: ' + index);
+
+  const [isLoading , setIsLoading] = useState(false)
+  const [adminCanCreateContent, setadminCanCreateContent] = useState(bubbleInfo?.admin_create_content);
+  const [openToAll, setOpenToAll] = useState(bubbleInfo?.privacy);
+  const [memberCreateContent, setmemberCreateContent] = useState(bubbleInfo?.member_create_content);
+  const [bubbleTeamCanCreateContent, setbubbleTeamCanCreateContent] = useState(bubbleInfo?.moderator_create_content);
+  
+  const UpdateBubble = async () => {
+    const url = `auth/community_update/${bubbleInfo?.id}`;
+    const body = {
+      title: bubbleInfo?.title,
+      profile_id: bubbleInfo?.follow?.profile_id,
+      approval_post: bubbleInfo?.approval_post,
+      membership_cost: bubbleInfo?.membership_cost,
+      admin_create_content : adminCanCreateContent,
+      moderator_create_content : bubbleTeamCanCreateContent ,
+      member_create_content : memberCreateContent ,
+      privacy: openToAll,
+     };
+    //  for (let key in body) {
+    //    if (body[key] == '') {
+    //      return Platform.OS == 'android'
+    //      ? ToastAndroid.show(`${key} is required`, ToastAndroid.SHORT)
+    //      : Alert.alert(`${key} is required`);
+    //     }
+        
+    //   }
+      
+      // return console.log("🚀 ~ createBubble ~ body:", body)
+   
+    
+  
+
+    setIsLoading(true);
+    const response = await Post(url, body, apiHeader(token));
+    setIsLoading(false);
+
+    if (response != undefined) {
+      Platform.OS == 'android'
+        ? ToastAndroid.show('Bubble Updated Successfully', ToastAndroid.SHORT)
+        : Alert.alert('Bubble Updated Successfully');
+    // return  console.log('response ==== >' , response?.data)
+      navigation.goBack();
+    }
   };
 
-  const Data = [
-    {
-      text: 'All Bubble Member Post',
-      Answer: '(N) Only bubble team posts',
-    },
-    {
-      text: 'Bubble team can remove comments',
-      Answer: '(N) Only bubble owner can remove comments',
-    },
-    {
-      text: 'Bubble team can remove content',
-      Answer: '(N) Only bubble owner can remove content',
-    },
-    {
-      text: 'Entire bubble can invite new members',
-      Answer: '(N) Only bubble team can send invites',
-    },
-    {
-      text: 'Joining is open to everyone',
-      Answer: '(N) Only bubble team can accept request',
-    },
-  ];
+
+
+
   
   return (
     <>
@@ -264,56 +294,40 @@ const BubbleManagement = () => {
               }}>
               Team Role | Perms
             </CustomText>
-            {Data.map((item, index) => {
-              return (
-                <>
-                  <View style={{flexDirection: 'row'}}>
-                    <View
-                      style={{
-                        width: windowWidth * 0.7,
-                        paddingVertical: moderateScale(8, 0.6),
-                        paddingHorizontal: moderateScale(10, 0.6),
-                      }}>
-                      <CustomText
-                        style={{
-                          fontSize: moderateScale(13, 0.6),
-                          color: Color.veryLightGray,
-                        }}>
-                        {item.text}
-                      </CustomText>
-                      <CustomText
-                        style={{
-                          fontSize: moderateScale(11, 0.6),
-                          color: Color.black,
-                        }}>
-                        {item.Answer}
-                      </CustomText>
-                    </View>
-                    <View
-                      style={{
-                        width: windowWidth * 0.3,
-                        alignItems: 'flex-end',
-                        justifyContent: 'center',
-                        paddingHorizontal: moderateScale(10, 0.6),
-                      }}>
-                      <CustomSwitch
-                        selectionMode={1}
-                        roundCorner={true}
-                        option1={'Yes'}
-                        option2={'No'}
-                        onSelectSwitch={onSelectSwitch}
-                        selectionColor={'#11d40d'}
-                      />
-                    </View>
-                  </View>
-                </>
-              );
-            })}
+           
+             <SwitchComponent
+                text1={'Admin can create content / post'}
+                text2={'(N) Admin can not post'}
+                value={adminCanCreateContent}
+                setValue={setadminCanCreateContent}
+              />
+              {/* bubble member can post or not */}
+
+              <SwitchComponent
+                text1={'Member can create content / post'}
+                text2={'Member can not create content / post'}
+                value={memberCreateContent}
+                setValue={setmemberCreateContent}
+              />
+              {/* bubble team / moderator can post or not */}
+
+              <SwitchComponent
+                text1={'Bubble team can create content'}
+                text2={'bubble team can not create content'}
+                value={bubbleTeamCanCreateContent}
+                setValue={setbubbleTeamCanCreateContent}
+              />
+               <SwitchComponent
+                text1={'Make bubble private'}
+                text2={'Make bubble public'}
+                value={openToAll}
+                setValue={setOpenToAll}
+              />
           </View>
 
           <TouchableOpacity
             onPress={() => {
-              navigation.goBack()
+              UpdateBubble()
             }}
             activeOpacity={0.7}
             style={{
@@ -352,32 +366,67 @@ const BubbleManagement = () => {
             </CustomText>
           </TouchableOpacity>
 
-          {/* <CustomText
-            style={{
-              width: windowWidth,
-              paddingHorizontal: moderateScale(10, 0.6),
-              marginTop: moderateScale(20, 0.3),
-              fontSize: moderateScale(14, 0.3),
-            }}>
-            "Owner can Search and change moderate and admin and these people
-            represent bubble management
-          </CustomText> */}
-
-          {/* <CustomText
-            style={{
-              width: windowWidth,
-              paddingHorizontal: moderateScale(10, 0.6),
-              fontSize: moderateScale(14, 0.3),
-            }}>
-            "I have decided to treat the management team as one with the owner
-            able to change the moderators admins whenever they see fit And if
-            the setting change to no only the owner has control.
-          </CustomText> */}
+        
         </ImageBackground>
       </ScrollView>
     </>
   );
-  F;
+  
 };
 
 export default BubbleManagement;
+
+
+const SwitchComponent = ({ text1, text2, setValue, value }) => {
+  console.log("🚀 ~ SwitchComponent ~ value:", value)
+  // const onSelectSwitch = index => {
+  //   if (index == 1) {
+  //     setValue('Yes');
+  //   } else if (index == 2) {
+  //     setValue('No');
+  //   }
+  // };
+  return (
+    <View style={{ flexDirection: 'row' }}>
+      <View
+        style={{
+          width: windowWidth * 0.7,
+          paddingVertical: moderateScale(8, 0.6),
+          paddingHorizontal: moderateScale(10, 0.6),
+        }}>
+        <CustomText
+          style={{
+            fontSize: moderateScale(13, 0.6),
+            color: Color.veryLightGray,
+          }}>
+          {text1}
+        </CustomText>
+        <CustomText
+          style={{
+            fontSize: moderateScale(11, 0.6),
+            color: Color.black,
+          }}>
+          {text2}
+        </CustomText>
+      </View>
+      <View
+        style={{
+          width: windowWidth * 0.3,
+          alignItems: 'flex-end',
+          justifyContent: 'center',
+          paddingHorizontal: moderateScale(10, 0.6),
+        }}>
+        <CustomSwitch
+          // selectionMode={1}
+          roundCorner={true}
+          option1={'Yes'}
+          option2={'No'}
+          value={value.toLowerCase() == 'no' ? 2 : 1}
+          setValue={setValue}
+          // onSelectSwitch={onSelectSwitch}
+          selectionColor={'#11d40d'}
+        />
+      </View>
+    </View>
+  );
+};
