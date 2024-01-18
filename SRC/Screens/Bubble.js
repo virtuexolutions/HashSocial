@@ -49,7 +49,7 @@ const Bubble = props => {
   const [followLoading, setFollowLoading] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [bubbleInfo, setBubbleInfo] = useState({});
-  console.log('🚀 ~ file: Bubble.js:46 ~ Bubble ~ bubbleInfo:', bubbleInfo);
+  console.log('🚀 ~ file: Bubble.js:46 ~ Bubble ~ bubbleInfo:', bubbleInfo?.follow?.status);
   const [startFollowing, setStartFollowing] = useState(
     bubbleInfo?.follow?.status == 'follow' ? true : false,
   );
@@ -152,7 +152,7 @@ const Bubble = props => {
     if (
       bubbleInfo?.profile_id == profileData?.id ||
       // bubbleInfo?.follow?.role == 'member' ||
-      bubbleInfo?.follow?.role == 'admin' 
+      bubbleInfo?.follow?.role == 'admin'
       // bubbleInfo?.follow?.role == 'moderator'
     ) {
       setIsVisible(true);
@@ -200,6 +200,25 @@ const Bubble = props => {
           {isLoading ? (
             <View style={styles.loaderView}>
               <ActivityIndicator color={Color.white} size={'large'} />
+            </View>
+          ) : bubbleInfo?.follow?.status == 'blocked' ? (
+            <View
+              style={{
+                width: windowWidth,
+                // height : moderateScale(20,0.6),
+                backgroundColor: Color.red,
+                alignItems: 'center',
+                paddingVertical: moderateScale(5, 0.6),
+              }}>
+              <CustomText style={{
+                color : Color.white,
+                width : windowWidth * 0.9,
+                textAlign : 'center',
+                fontSize : moderateScale(12,0.6),
+              }}>
+                It seems like you have breach community guidline thus you are
+                temporary blocked by our team
+              </CustomText>
             </View>
           ) : (
             <>

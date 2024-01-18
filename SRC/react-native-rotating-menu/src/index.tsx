@@ -206,7 +206,10 @@ const RoundMenu = ({
             ref={outerContainerRef}
             style={styles({size, backgroundColor}).container}>
             {content.map((el, i) => {
-              console.log("🚀 ~ {content.map ~ el:", el?.item?.profile_info?.id)
+              console.log(
+                '🚀 ~ {content.map ~ el:',
+                el?.item?.profile_info?.id,
+              );
               const [x, y] = pointOnCircle({
                 radius,
                 angle:
@@ -264,7 +267,10 @@ const RoundMenu = ({
                           ? contentContainerStyle?.backgroundColor
                           : undefined,
                         // borderColor: elContainerSize == size /3 ? 'yellow':'rgb('+(x)%255+','+(y)%255+','+(x+y)%255+')',
-                        borderColor:  el?.item?.profile_info?.id == profileData?.id  ? 'green':'yellow',
+                        borderColor:
+                          el?.item?.profile_info?.id == profileData?.id
+                            ? 'green'
+                            : 'yellow',
                         // borderColor: 'yellow',
 
                         borderRadius: el?.bubble
@@ -282,21 +288,23 @@ const RoundMenu = ({
                     <TouchableOpacity
                       onPress={() => {
                         if (el?.bubble && el?.private) {
-                            console.log('Hrere=========>>>>>>',el?.item)
-                          if (el?.item?.profile_id == profileData?.id ||el?.item?.follow?.status == 'follow') {
+                          console.log('Hrere=========>>>>>>', el?.item);
+                          if (
+                            el?.item?.profile_id == profileData?.id ||
+                            el?.item?.follow?.status == 'follow' ||
+                            el?.item?.follow?.status == 'blocked'
+                          ) {
                             setText('bubble');
                             setSelectedBubbleId(el?.id);
                             setclicked(true);
-                            setBubbleData(el?.item)
+                            setBubbleData(el?.item);
                           } else {
-
                             setIsVisible(true);
                             setSelectedBubbleId(el?.id);
                             setText('bubble');
-                            setBubbleData(el?.item)
+                            setBubbleData(el?.item);
                           }
                         } else if (el?.bubble && !el?.private) {
-
                           setclicked(true);
                           setSelectedBubbleId(el?.id);
                         } else if (!el?.bubble && el?.private) {
@@ -342,29 +350,28 @@ const RoundMenu = ({
                         source={el.source}
                         style={{width: '100%', height: '100%'}}
                       />
-                        <View
+                      {/* <View
+                        style={{     
+                          alignSelf: 'center',
+                          position: 'absolute',
+                          // right: 0,
+                          bottom: 0,
+                          zIndex: 2,
+                          // width: elContainerSize / 4,
+                          // height: elContainerSize / 4,
+                          // borderRadius: elContainerSize / 2,
+
+                          backgroundColor: '#fff',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Text
                           style={{
-                            alignSelf : 'center',
-                            position: 'absolute',
-                            // right: 0,
-                            bottom: 0,
-                            zIndex: 2,
-                            // width: elContainerSize / 4,
-                            // height: elContainerSize / 4,
-                            // borderRadius: elContainerSize / 2,
-
-                            backgroundColor: '#fff',
-                            alignItems: 'center',
-                            justifyContent: 'center',
+                            fontSize: 10,
                           }}>
-                           <Text style={{
-                            fontSize : 10,
-                           }}>{el?.item?.title}</Text> 
-                        </View> 
-
-                     
-
-                    
+                          {el?.item?.title}
+                        </Text>
+                      </View> */}
                     </TouchableOpacity>
                   </Animatable.View>
                 </>

@@ -26,7 +26,7 @@ import {baseUrl} from '../Config';
 // import { TextInput } from 'react-native-gesture-handler';
 
 const Posts = ({onPress, bubbleId, bubbleInfo}) => {
-  console.log('🚀 ~ Posts ~ bubbleInfo:', bubbleInfo?.follow?.role);
+  console.log('🚀 ~ Posts ~ bubbleInfo:', bubbleInfo?.follow?.role ,bubbleInfo?.profile_id == profileData?.id );
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
