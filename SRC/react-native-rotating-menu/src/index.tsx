@@ -25,6 +25,7 @@ import * as Animatable from 'react-native-animatable';
 import Svg, {Ellipse} from 'react-native-svg';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import {Icon} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
 
 const {width, height} = Dimensions.get('window');
 
@@ -47,6 +48,8 @@ const RoundMenu = ({
   setText,
   setSelectedBubbleId,
 }) => {
+  console.log("🚀 ~ content:", content?.length)
+  const navigation = useNavigation()   
   const innerContainerRef = useRef(null);
   const outerContainerRef = useRef(null);
   const [menuRef, setMenuRef] = useState(null);
@@ -205,7 +208,7 @@ const RoundMenu = ({
           <Animatable.View
             ref={outerContainerRef}
             style={styles({size, backgroundColor}).container}>
-            {content.map((el, i) => {
+            {[...content.slice(0,9),{text : '9+'}].map((el, i) => {
               console.log(
                 '🚀 ~ {content.map ~ el:',
                 el?.item?.profile_info?.id,
@@ -248,7 +251,10 @@ const RoundMenu = ({
                 setHighlightedIcon(el?.image);
               }
 
+              
+
               return (
+                i <= 8 ?
                 <>
                   <Animatable.View
                     animation={
@@ -264,7 +270,7 @@ const RoundMenu = ({
                         .elContainer,
                       {
                         backgroundColor: contentContainerStyle?.backgroundColor
-                          ? contentContainerStyle?.backgroundColor
+                          ? contentContainerStyle?.red
                           : undefined,
                         // borderColor: elContainerSize == size /3 ? 'yellow':'rgb('+(x)%255+','+(y)%255+','+(x+y)%255+')',
                         borderColor:
@@ -375,6 +381,54 @@ const RoundMenu = ({
                     </TouchableOpacity>
                   </Animatable.View>
                 </>
+              :
+              <Animatable.View
+              
+              animation={
+                (elContainerSize == x / 3 ||
+                  elContainerSize ==
+                    (Dimensions.get('window').width - x) / 3) &&
+                (el?.bubble ? 'pulse' : 'swing')
+              }
+              easing="ease-in"
+              iterationCount="infinite"
+              style={[
+                styles({elContainerSize, elContainerCoOrdinates: {x, y}})
+                  .elContainer,
+                {
+                  backgroundColor: 'rgba(0,0,0,0.5)',
+                  // borderColor: elContainerSize == size /3 ? 'yellow':'rgb('+(x)%255+','+(y)%255+','+(x+y)%255+')',
+                  borderColor:
+                   'red',
+                  // borderColor: 'yellow',
+
+                  borderRadius:  elContainerSize / 4,
+                  borderWidth:
+                    elContainerSize == x / 3 ||
+                    elContainerSize ==
+                      (Dimensions.get('window').width - x) / 3
+                      ? 3
+                      : 1,
+                  overflow: 'hidden',
+                },
+              ]}>
+                <TouchableOpacity 
+                onPress={()=>{
+                  navigation.navigate('BubbleList')
+                }}
+                style={{
+                  width : '100%',
+                  height : '100%',
+                  alignItems : 'center',
+                  justifyContent : 'center',
+                }}>
+
+              <Text style={{
+                color : 'white',
+                fontSize : 20,
+              }}>9+</Text>
+              </TouchableOpacity>
+              </Animatable.View>
               );
             })}
           </Animatable.View>
