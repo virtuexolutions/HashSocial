@@ -211,7 +211,8 @@ const RoundMenu = ({
             {[...content.slice(0,9),{text : '9+'}].map((el, i) => {
               console.log(
                 '🚀 ~ {content.map ~ el:',
-                el?.item?.profile_info?.id,
+                el?.item?.community_owner?.id,
+                profileData?.id
               );
               const [x, y] = pointOnCircle({
                 radius,
@@ -274,7 +275,7 @@ const RoundMenu = ({
                           : undefined,
                         // borderColor: elContainerSize == size /3 ? 'yellow':'rgb('+(x)%255+','+(y)%255+','+(x+y)%255+')',
                         borderColor:
-                          el?.item?.profile_info?.id == profileData?.id
+                        el?.item?.community_owner?.id  == profileData?.id
                             ? 'green'
                             : 'yellow',
                         // borderColor: 'yellow',

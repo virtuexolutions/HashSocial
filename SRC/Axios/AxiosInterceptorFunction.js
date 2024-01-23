@@ -175,6 +175,7 @@ let Patch = async (route, data, headers, showAlert = true) => {
 
 let Delete = async (route, data, headers, showAlert = true) => {
   const apiUrl = URL(route);
+  console.log("🚀 ~ Delete ~ apiUrl:", apiUrl)
 
   try {
     return data == null

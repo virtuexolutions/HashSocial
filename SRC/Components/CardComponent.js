@@ -49,11 +49,25 @@ const CardComponent = ({
   Requested,
   blocked,
 }) => {
-  
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const token = useSelector(state => state.authReducer.token);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
-  console.log('🚀 ~ bubbleInfo:', item?.role ,  bubbleInfo?.profile_id , profileData?.id);
+  console.log(
+    '🚀 ~ bubbleInfo:',
+    item?.role,
+    bubbleInfo?.profile_id,
+    profileData?.id,
+  );
+  const bedges =
+    item?.role.toLowerCase() == 'member'
+      ? require('../Assets/Images/memberBedge.png')
+      : item?.role.toLowerCase() == 'admin'
+      ? require('../Assets/Images/adminBedge.png')
+      : item?.role.toLowerCase() == 'moderator'
+      ? require('../Assets/Images/moderatorBedge.png')
+      : item?.role.toLowerCase() == 'owner'
+      ? require('../Assets/Images/ownerBedge.png')
+      : require('../Assets/Images/bannedBedge.png');
 
   const [modalVisible, setModalVisible] = useState(false);
   const [role, setrole] = useState(item?.role);
@@ -63,7 +77,6 @@ const CardComponent = ({
   const [requested, setRequested] = useState(
     item?.status == 'request' ? true : false,
   );
-
 
   //only admin and owner can withdraw invitation req
   const [invite, setinvited] = useState(
@@ -143,6 +156,24 @@ const CardComponent = ({
           }
         }}
         style={styles.row}>
+          <View style={{
+            position : 'absolute' , 
+            width : moderateScale(70,0.6),
+            height : moderateScale(25,0.6),
+            zIndex : 1,
+            // top : 1,
+            left : 1
+          }}>
+                <CustomImage 
+          source={bedges}
+          style={{
+width : '100%',
+height : '100%'            
+            
+          }}
+          
+          />
+          </View>     
         <View>
           <View style={styles.profileSection}>
             <CustomImage
@@ -538,6 +569,7 @@ const styles = StyleSheet.create({
     borderWidth: 3,
     borderColor: '#33dd50',
     overflow: 'hidden',
+    marginLeft : moderateScale(10,0.3),
     // marginBottom : moderateScale(20,0.3)
   },
   view: {
@@ -554,7 +586,7 @@ const styles = StyleSheet.create({
 
   row: {
     paddingVertical: moderateScale(5, 0.6),
-    width: windowWidth * 0.97,
+    width: windowWidth,
     alignSelf: 'center',
     flexDirection: 'row',
     alignItems: 'center',

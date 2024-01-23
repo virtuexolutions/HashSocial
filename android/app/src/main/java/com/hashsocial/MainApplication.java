@@ -1,4 +1,4 @@
-package com.hashsocial;
+package com.HatchSocial;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

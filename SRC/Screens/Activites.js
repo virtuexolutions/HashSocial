@@ -9,7 +9,8 @@ import { useSelector } from 'react-redux';
 import { Get } from '../Axios/AxiosInterceptorFunction';
 
 
-const Activites = ({onPress, bubbleId, bubbleInfo}) => {
+const Activites = (props) => {
+    const bubbleInfo = props?.route?.params?.bubbleInfo
 console.log("🚀 ~ Activites ~ bubbleInfo:", bubbleInfo)
 const profileData = useSelector(state => state.commonReducer.selectedProfile);
 const token = useSelector(state => state.authReducer.token);
@@ -22,19 +23,20 @@ const  [isLoading ,setIsLoading]= useState(false)
 
     
   const getPosts = async () => {
-    const url = `auth/post/${bubbleId}?profile_id=${profileData?.id}`;
+    const url = `auth/pending_post/${bubbleInfo?.id}`;
     setIsLoading(true);
+    // return console.log("🚀 ~ getPosts ~ url:", url)
     const response = await Get(url, token);
     setIsLoading(false);
     if (response != undefined) {
     console.log("🚀 ~ getPosts ~ response:", response?.data)
-    
+    setPosts(response?.data?.post_info)
 
-      setPosts(
-        response?.data?.post_info?.filter(
-          item => item?.post_videos?.length == 0,
-        ),
-      );
+    //   setPosts(
+    //     response?.data?.post_info?.filter(
+    //       item => item?.post_videos?.length == 0,
+    //     ),
+    //   );
     }
   };
 
@@ -127,7 +129,7 @@ const  [isLoading ,setIsLoading]= useState(false)
             );
           }}
           renderItem={({item, index}) => {
-            return <PostComponentBubble data={item} bubbleInfo={bubbleInfo} />;
+            return <PostComponentBubble data={item} bubbleInfo={bubbleInfo} forApproval={true}  setData={setPosts} wholeData={posts}/>;
           }}
         />
       )}

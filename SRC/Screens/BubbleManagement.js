@@ -162,14 +162,14 @@ const BubbleManagement = (props) => {
                     fontSize: moderateScale(14, 0.6),
                     color: Color.black,
                   }}>
-                  Moderate :
+                  Moderator :
                 </CustomText>
                 <CustomText
                   style={{
                     fontSize: moderateScale(13, 0.6),
                     color: Color.themeLightGray,
                   }}>
-                  {''} Bubble Creator
+                  {''} Bubble Team
                 </CustomText>
               </View>
               <View
@@ -184,14 +184,14 @@ const BubbleManagement = (props) => {
                     fontSize: moderateScale(14, 0.6),
                     color: Color.black,
                   }}>
-                  Moderate :
+                  Admin :
                 </CustomText>
                 <CustomText
                   style={{
                     fontSize: moderateScale(13, 0.6),
                     color: Color.themeLightGray,
                   }}>
-                  {''} Bubble Creator
+                  {''} Bubble Admin
                 </CustomText>
               </View>
             </View>
@@ -217,7 +217,7 @@ const BubbleManagement = (props) => {
                   elevation: 7,
                 }}>
                 <Icon
-                  name={'search1'}
+                  name={'right'}
                   as={AntDesign}
                   size={moderateScale(12, 0.6)}
                   color={'#000'}
@@ -244,7 +244,7 @@ const BubbleManagement = (props) => {
                   elevation: 7,
                 }}>
                 <Icon
-                  name={'search1'}
+                  name={'right'}
                   as={AntDesign}
                   size={moderateScale(12, 0.6)}
                   color={'#000'}
@@ -271,7 +271,7 @@ const BubbleManagement = (props) => {
                   elevation: 7,
                 }}>
                 <Icon
-                  name={'search1'}
+                  name={'right'}
                   as={AntDesign}
                   size={moderateScale(12, 0.6)}
                   color={'#000'}

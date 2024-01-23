@@ -108,13 +108,28 @@ const AddPost = props => {
       }
     }
 
-     console.log('🚀 ~ file: AddPost.js:108 ~ AddPost ~ formData:', JSON.stringify(formData, null, 2));
+    console.log(
+      '🚀 ~ file: AddPost.js:108 ~ AddPost ~ formData:',
+      JSON.stringify(formData, null, 2),
+    );
 
     setLoading(true);
     const response = await Post(url, formData, apiHeader(token));
-    console.log("🚀 ~ file: AddPost.js:115 ~ AddPost ~ response:", response?.data)
+    console.log(
+      '🚀 ~ file: AddPost.js:115 ~ AddPost ~ response:',
+      response?.data,
+    );
     setLoading(false);
     if (response != undefined) {
+      Platform.OS == 'android'
+        ? ToastAndroid.show(
+            'Post has been sent to bubble team for approval , it will be post in feed when approved',
+            ToastAndroid.SHORT,
+          )
+        : alert(
+            'Post has been sent to bubble team for approval , it will be post in feed when approved',
+          );
+      console.log('🚀 ~ AddPost ~ response:', response?.data);
       navigation.goBack();
     }
   };

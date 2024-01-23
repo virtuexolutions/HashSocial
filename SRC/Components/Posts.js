@@ -5,9 +5,12 @@ import {
   View,
   TextInput,
   ActivityIndicator,
+  ToastAndroid,
+  Platform,
+  Alert,
 } from 'react-native';
 import React, {useEffect, useState} from 'react';
-import {windowHeight, windowWidth} from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import Color from '../Assets/Utilities/Color';
 import {moderateScale} from 'react-native-size-matters';
 import CustomText from './CustomText';
@@ -19,7 +22,7 @@ import {useSelector} from 'react-redux';
 import navigationService from '../navigationService';
 import {FlatList} from 'react-native';
 import PostComponentBubble from './PostComponentBubble';
-import {Get} from '../Axios/AxiosInterceptorFunction';
+import {Delete, Get} from '../Axios/AxiosInterceptorFunction';
 import {useIsFocused} from '@react-navigation/native';
 import {baseUrl} from '../Config';
 
@@ -57,6 +60,35 @@ const Posts = ({onPress, bubbleId, bubbleInfo}) => {
       );
     }
   };
+  const getPostsDelete = async (id) => {
+    // return console.log("🚀 ~ getPostsDelete ~ id:", id)
+    if (
+      bubbleInfo?.follow?.role?.toLowerCase() != 'member'
+    ) {
+      const url = `auth/post/${id}`;
+      // setIsLoading(true);
+      const response = await Delete(url, apiHeader(token));
+      // setIsLoading(false);
+      if (response != undefined) {
+        console.log('🚀 ~ deletePost ~ response:', response?.data);
+        Platform.OS == 'android'
+        ? ToastAndroid.show('Post deleted', ToastAndroid.SHORT)
+        : Alert.alert('Post deleted');
+        getPosts();
+      }
+    } else {
+      alert("You don't have permission to delete this post.");
+    }
+  };
+  // console.log(bubbleInfo?.profile_id == profileData?.id ||
+  //   (bubbleInfo?.follow?.role?.toLowerCase() == 'moderator' &&
+  //     bubbleInfo?.moderator_create_content?.toLowerCase() == 'yes') ||
+  //     (bubbleInfo?.follow?.role?.toLowerCase() == 'member' &&
+  //       bubbleInfo?.member_create_content?.toLowerCase() == 'yes')
+  //       ||
+  //       (bubbleInfo?.follow?.role?.toLowerCase() == 'admin' &&
+  //         bubbleInfo?.admin_create_content?.toLowerCase() == 'yes') 
+  //       )
 
   useEffect(() => {
     getPosts();
@@ -148,11 +180,12 @@ const Posts = ({onPress, bubbleId, bubbleInfo}) => {
             );
           }}
           renderItem={({item, index}) => {
-            return <PostComponentBubble data={item} bubbleInfo={bubbleInfo} />;
+            return <PostComponentBubble data={item} bubbleInfo={bubbleInfo} deletePost={getPostsDelete}/>;
           }}
         />
       )}
     </View>
+    // <View></View>
   );
 };
 

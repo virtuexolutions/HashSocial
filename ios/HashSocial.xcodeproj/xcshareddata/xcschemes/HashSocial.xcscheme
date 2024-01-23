@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-               BuildableName = "HashSocial.app"
-               BlueprintName = "HashSocial"
-               ReferencedContainer = "container:HashSocial.xcodeproj">
+               BuildableName = "HatchSocial.app"
+               BlueprintName = "HatchSocial"
+               ReferencedContainer = "container:HatchSocial.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "00E356ED1AD99517003FC87E"
-               BuildableName = "HashSocialTests.xctest"
-               BlueprintName = "HashSocialTests"
-               ReferencedContainer = "container:HashSocial.xcodeproj">
+               BuildableName = "HatchSocialTests.xctest"
+               BlueprintName = "HatchSocialTests"
+               ReferencedContainer = "container:HatchSocial.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -55,9 +55,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "HashSocial.app"
-            BlueprintName = "HashSocial"
-            ReferencedContainer = "container:HashSocial.xcodeproj">
+            BuildableName = "HatchSocial.app"
+            BlueprintName = "HatchSocial"
+            ReferencedContainer = "container:HatchSocial.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -72,9 +72,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "13B07F861A680F5B00A75B9A"
-            BuildableName = "HashSocial.app"
-            BlueprintName = "HashSocial"
-            ReferencedContainer = "container:HashSocial.xcodeproj">
+            BuildableName = "HatchSocial.app"
+            BlueprintName = "HatchSocial"
+            ReferencedContainer = "container:HatchSocial.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

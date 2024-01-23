@@ -94,9 +94,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.hashsocial"
+    namespace "com.HatchSocial"
     defaultConfig {
-        applicationId "com.hashsocial"
+        applicationId "com.HatchSocial"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

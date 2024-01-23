@@ -24,6 +24,7 @@ import moment from 'moment';
 // import { TextInput } from 'react-native-gesture-handler';
 
 const Events = ({onPress, bubbleId, bubbleInfo}) => {
+  console.log("🚀 ~ Events ~ bubbleInfo:", bubbleInfo)
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const token = useSelector(state => state.authReducer.token);
@@ -113,7 +114,16 @@ const Events = ({onPress, bubbleId, bubbleInfo}) => {
 
   return (
     <View style={styles.container}>
-     {bubbleInfo?.post_privacy?.toLowerCase() == 'yes' || bubbleInfo?.profile_id ==profileData?.id && <View style={styles.cover}>
+     {(bubbleInfo?.profile_id == profileData?.id ||
+        (bubbleInfo?.follow?.role?.toLowerCase() == 'moderator' &&
+          bubbleInfo?.moderator_create_content?.toLowerCase() == 'yes') ||
+          (bubbleInfo?.follow?.role?.toLowerCase() == 'member' &&
+            bubbleInfo?.member_create_content?.toLowerCase() == 'yes')
+            ||
+            (bubbleInfo?.follow?.role?.toLowerCase() == 'admin' &&
+              bubbleInfo?.admin_create_content?.toLowerCase() == 'yes')
+            
+            ) && <View style={styles.cover}>
         <View
           style={{
             width: windowWidth * 0.08,

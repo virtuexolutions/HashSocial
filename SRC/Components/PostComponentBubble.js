@@ -1,9 +1,4 @@
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-
-} from 'react-native';
+import {View, TouchableOpacity, StyleSheet, ActivityIndicator} from 'react-native';
 import React, {useState, useRef} from 'react';
 import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import {moderateScale} from 'react-native-size-matters';
@@ -20,40 +15,64 @@ import navigationService from '../navigationService';
 import ComentsSection from './ComentsSection';
 import numeral from 'numeral';
 import {baseUrl} from '../Config';
-import { theme } from 'native-base';
-import { useNavigation } from '@react-navigation/native';
+import {theme} from 'native-base';
+import {useNavigation} from '@react-navigation/native';
+import CustomButton from './CustomButton';
 
-const PostComponentBubble = ({data, bubbleInfo}) => {
-//  return  console.log("🚀 ~ file: PostComponentBubble.js:25 ~ PostComponentBubble ~ data:", data)
+const PostComponentBubble = ({data, bubbleInfo, deletePost, forApproval , setData , wholeData}) => {
+  console.log('🚀 ~ PostComponentBubble ~ forApproval:', forApproval);
+  const themeColor = useSelector(state => state.authReducer.ThemeColor);
+
   const [like, setLike] = useState(data?.my_like ? true : false);
   const userData = useSelector(state => state.commonReducer.userData);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
-  const [commentsCount, setCommentsCount] = useState(0)
+  const [commentsCount, setCommentsCount] = useState(0);
   const refRBSheet = useRef();
   const MoreIcon = require('../Assets/Images/threedots.png');
   const token = useSelector(state => state.authReducer.token);
-  const navigation =useNavigation()
-  const [option ,setOption] =useState(['Delete' ,'Activites'])
-
+  const navigation = useNavigation();
+  const [option, setOption] = useState(['Delete', 'Activites']);
 
   const [loading, setloading] = useState(false);
+  const [btnLoading, setBtnloading] = useState(false);
+
 
   const editPost = () => {
     navigationService.navigate('AddPost', {data});
   };
 
-  const deletePost = async () => {
-    if(bubbleInfo?.remove_content.toLowerCase()=='yes' || bubbleInfo?.profile==profileData?.id){
-
+  const handledeletePost = async () => {
+    
       const url = `auth/post/${data?.id}`;
-      setloading(true);
+      setBtnloading(true);
       const response = await Delete(url, apiHeader(token));
-      setloading(false);
+      setBtnloading(false);
       if (response != undefined) {
-      console.log("🚀 ~ deletePost ~ response:", response)
+        console.log('🚀 ~ deletePost ~ response:', response?.data);
+        let temp = [...wholeData]
+        console.log("🚀 ~ handledeletePost ~ temp:", temp)
+        setData(temp.filter((item ,index)=>item?.id != data?.id))
+
       }
-    }else{
-      alert("You don't have permission to delete this post.")
+    
+  };
+
+  const accept = async () => {
+    const url = `auth/pending_post_update/${data?.id}`;
+    const body = {
+      
+      status: 'active',
+    };
+   console.log("🚀 ~ accept ~ body:", body)
+    setBtnloading(true);
+    const response = await Post(url, body, apiHeader(token));
+    setBtnloading(false);
+    if (response != undefined) {
+      // setLike(!like);
+      console.log(response?.data)
+      let temp = [...wholeData]
+      console.log("🚀 ~ handledeletePost ~ temp:", temp)
+      setData(temp.filter((item ,index)=>item?.id != data?.id))
     }
   };
 
@@ -94,7 +113,7 @@ const PostComponentBubble = ({data, bubbleInfo}) => {
               style={{
                 fontSize: moderateScale(15, 0.6),
               }}>
-                {/* 'hkjhsdfjkhskjdhfkjsdhkhskdj' */}
+              {/* 'hkjhsdfjkhskjdhfkjsdhkhskdj' */}
               {data?.profile_info?.name}
             </CustomText>
 
@@ -112,14 +131,20 @@ const PostComponentBubble = ({data, bubbleInfo}) => {
             }}
             destructiveIndex={1}
             options={['Delete']}
-            actions={[deletePost() ]}
+            actions={[() => deletePost(data?.id)]}
           />
         </View>
-        <CustomText style={[styles.caption ,{
-          color:Color.themeColor,
-    paddingVertical: moderateScale(10, 0.6),
-        }]}>{JSON.parse(data?.hashtags)}</CustomText>
-         
+        <CustomText
+          style={[
+            styles.caption,
+            {
+              color: Color.themeColor,
+              paddingVertical: moderateScale(10, 0.6),
+            },
+          ]}>
+          {JSON.parse(data?.hashtags)}
+        </CustomText>
+
         <CustomText style={styles.caption}>{data?.caption}</CustomText>
 
         {data?.post_images?.length > 0 && (
@@ -144,67 +169,115 @@ const PostComponentBubble = ({data, bubbleInfo}) => {
             )}
           </View>
         )}
-        <View
-          style={[
-            styles.imageContainer,
-            // data?.post_images?.length > 0 && {position: 'absolute'},
-          ]}>
+        {forApproval == false && (
           <View
-            style={{
-              width: like ? moderateScale(30, 0.6) : moderateScale(25, 0.6),
-              height: like ? moderateScale(30, 0.6) : moderateScale(25, 0.6),
-            }}>
-            <CustomImage
-              source={
-                like
-                  ? require('../Assets/Images/heart.png')
-                  : require('../Assets/Images/heart3.png')
-              }
+            style={[
+              styles.imageContainer,
+              // data?.post_images?.length > 0 && {position: 'absolute'},
+            ]}>
+            <View
               style={{
-                height: '100%',
-                width: '100%',
-              }}
-              onPress={() => {
-                likePost();
-              }}
-              resizeMode="cover"
-            />
-          </View>
+                width: like ? moderateScale(30, 0.6) : moderateScale(25, 0.6),
+                height: like ? moderateScale(30, 0.6) : moderateScale(25, 0.6),
+              }}>
+              <CustomImage
+                source={
+                  like
+                    ? require('../Assets/Images/heart.png')
+                    : require('../Assets/Images/heart3.png')
+                }
+                style={{
+                  height: '100%',
+                  width: '100%',
+                }}
+                onPress={() => {
+                  likePost();
+                }}
+                resizeMode="cover"
+              />
+            </View>
 
-          <CustomText
-            isBold
-            style={styles.numLikes}>
-            {(data?.my_like && like) ||(!data?.my_like && !like)  
-              ? numeral(data?.total_likes_count).format('0a')
-              : data?.my_like && !like
-              ? numeral(data?.total_likes_count - 1).format('0a')
-              : numeral(data?.total_likes_count + 1).format('0a')}
-          </CustomText>
-          <TouchableOpacity
-            onPress={() => {
-              refRBSheet.current.open();
-            }}
-            style={styles.comments}>
-            <CustomImage
+            <CustomText isBold style={styles.numLikes}>
+              {(data?.my_like && like) || (!data?.my_like && !like)
+                ? numeral(data?.total_likes_count).format('0a')
+                : data?.my_like && !like
+                ? numeral(data?.total_likes_count - 1).format('0a')
+                : numeral(data?.total_likes_count + 1).format('0a')}
+            </CustomText>
+            <TouchableOpacity
               onPress={() => {
                 refRBSheet.current.open();
               }}
-              source={require('../Assets/Images/msg1.png')}
-              style={[styles.image, {tintColor: 'white'}]}
-              resizeMode="contain"
-            />
-          </TouchableOpacity>
-          <CustomText
-            onPress={() => {
-              refRBSheet.current.open();
-            }}
-            isBold
-            style={styles.commentsText}>
-            {data?.comments?.length+commentsCount}
-          </CustomText>
-        </View>
+              style={styles.comments}>
+              <CustomImage
+                onPress={() => {
+                  refRBSheet.current.open();
+                }}
+                source={require('../Assets/Images/msg1.png')}
+                style={[styles.image, {tintColor: 'white'}]}
+                resizeMode="contain"
+              />
+            </TouchableOpacity>
+            <CustomText
+              onPress={() => {
+                refRBSheet.current.open();
+              }}
+              isBold
+              style={styles.commentsText}>
+              {data?.comments?.length + commentsCount}
+            </CustomText>
+          </View>
+        )}
       </View>
-      <ComentsSection refRBSheet={refRBSheet} data={data} setCommentsCount={setCommentsCount} />
+      <ComentsSection
+        refRBSheet={refRBSheet}
+        data={data}
+        setCommentsCount={setCommentsCount}
+      />
+      {forApproval && (
+        <View
+          style={{
+            width: windowWidth * 0.9,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+            alignSelf :'center',
+          }}>
+          <CustomButton
+            text={
+              btnLoading ? (
+                <ActivityIndicator color={'#000000'} size={'small'} />
+              ) : (
+                
+              'Approve')}
+            textColor={'white'}
+            width={windowWidth * 0.35}
+            height={windowHeight * 0.05}
+            fontSize={moderateScale(13, 0.6)}
+            onPress={() => {
+              accept();
+            }}
+            bgColor={'green'}
+            // isGradient
+            isBold={true}
+          />
+             <CustomButton
+              text={ btnLoading ? (
+                <ActivityIndicator color={'#000000'} size={'small'} />
+              ) : (
+                
+              'Reject')}
+              textColor={'white'}
+              width={windowWidth * 0.35}
+              height={windowHeight * 0.05}
+              fontSize={moderateScale(13, 0.6)}
+              onPress={() => {
+                handledeletePost()}}
+              bgColor={'red'}
+              // isGradient
+              isBold={true}
+            />
+        </View>
+      )}
     </>
   );
 };
@@ -288,12 +361,12 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(13, 0.6),
     width: windowWidth * 0.13,
   },
-  numLikes:{
+  numLikes: {
     color: Color.black,
     marginLeft: moderateScale(2, 0.3),
     marginRight: moderateScale(10, 0.3),
     fontSize: moderateScale(13, 0.6),
-  }
+  },
 });
 
 export default PostComponentBubble;

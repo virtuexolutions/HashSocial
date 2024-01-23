@@ -19,6 +19,7 @@ const CustomText = (props) => {
         isBold && {
           fontFamily: "PlusJakartaDisplay-Bold",
           fontWeight: "bold",
+          color: Color.black,
         },
       ]}
       numberOfLines={numberOfLines}

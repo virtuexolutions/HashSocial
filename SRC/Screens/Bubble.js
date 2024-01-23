@@ -153,8 +153,18 @@ const Bubble = props => {
   };
 
   const BubbleMangement = () => {
+    console.log(bubbleInfo?.follow?.role)
     bubbleInfo?.follow?.role == 'owner'
       ? navigationService.navigate('BubbleManagement', {bubbleInfo: bubbleInfo})
+      : Platform.OS == 'android'
+      ? ToastAndroid.show('Access Denied', ToastAndroid.SHORT)
+      : alert('Access Denied');
+  };
+
+  const handleActivity = () => {
+    console.log(bubbleInfo?.follow?.role)
+    bubbleInfo?.follow?.role.toLowerCase() != 'member'
+      ? navigationService.navigate('Activites', {bubbleInfo: bubbleInfo})
       : Platform.OS == 'android'
       ? ToastAndroid.show('Access Denied', ToastAndroid.SHORT)
       : alert('Access Denied');
@@ -165,13 +175,7 @@ const Bubble = props => {
     getBubbleDetails();
   }, [isFocused]);
 
-  // useEffect(() => {
-  //   setnewData(
-  //     SearchData.filter(
-  //       item => item?.name.toLowerCase().indexOf(search.toLowerCase()) > -1,
-  //     ),
-  //   );
-  // }, [search]);
+
 
   return (
     <>
@@ -341,8 +345,8 @@ const Bubble = props => {
                         tintColor: '#000',
                       }}
                       destructiveIndex={1}
-                      options={['Invite Member', 'Bubble Management' ,'Activites']}
-                      actions={[InviteMember, BubbleMangement ,navigation.navigate('Activites')]}
+                      options={['Invite Member', 'Bubble Management' , 'See Activity' ]}
+                      actions={[InviteMember, BubbleMangement , handleActivity ]}
                     />
                   </TouchableOpacity>
                 </View>

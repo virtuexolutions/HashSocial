@@ -12,16 +12,16 @@ import {
   Alert,
   TextInput,
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
-const { height, width } = Dimensions.get('window');
-import { moderateScale } from 'react-native-size-matters';
+import React, {useEffect, useState} from 'react';
+const {height, width} = Dimensions.get('window');
+import {moderateScale} from 'react-native-size-matters';
 import CustomStatusBar from '../Components/CustomStatusBar';
 import Header from '../Components/Header';
-import { apiHeader, windowHeight, windowWidth } from '../Utillity/utils';
+import {apiHeader, windowHeight, windowWidth} from '../Utillity/utils';
 import CustomText from '../Components/CustomText';
 import TextInputWithTitle from '../Components/TextInputWithTitle';
 import DropDownSingleSelect from '../Components/DropDownSingleSelect';
-import { Icon } from 'native-base';
+import {Icon} from 'native-base';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 
@@ -32,18 +32,18 @@ import Color from '../Assets/Utilities/Color';
 import CustomImage from '../Components/CustomImage';
 import ImagePickerModal from '../Components/ImagePickerModal';
 import navigationService from '../navigationService';
-import { ScaledSheet } from 'react-native-size-matters';
-import { useDispatch, useSelector } from 'react-redux';
+import {ScaledSheet} from 'react-native-size-matters';
+import {useDispatch, useSelector} from 'react-redux';
 import Entypo from 'react-native-vector-icons/Entypo';
-import { setBubbleCreated } from '../Store/slices/auth';
-import { Get, Post } from '../Axios/AxiosInterceptorFunction';
+import {setBubbleCreated} from '../Store/slices/auth';
+import {Get, Post} from '../Axios/AxiosInterceptorFunction';
 import CustomDropDownMultiSelect from '../Components/CustomDropDownMultiSelect';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 
 const CreateNewBubble = props => {
   const item = props?.route?.params?.item;
   const token = useSelector(state => state.authReducer.token);
-  console.log("🚀 ~ CreateNewBubble ~ token:", token)
+  console.log('🚀 ~ CreateNewBubble ~ token:', token);
   const userData = useSelector(state => state.commonReducer.userData);
   // console.log("🚀 ~ file: CreateNewBubble.js:47 ~ CreateNewBubble ~ userData:", userData)
 
@@ -53,7 +53,7 @@ const CreateNewBubble = props => {
   const themeColor = useSelector(state => state.authReducer.ThemeColor);
   const privacy = useSelector(state => state.authReducer.privacy);
   const profileData = useSelector(state => state.commonReducer.selectedProfile);
-//  console.log("🚀 ~ file: CreateNewBubble.js:55 ~ CreateNewBubble ~ profileData:", profileData)
+  //  console.log("🚀 ~ file: CreateNewBubble.js:55 ~ CreateNewBubble ~ profileData:", profileData)
   const [CreateBubble, setCreateBubble] = useState('');
   const [Admin, setAdmin] = useState(
     userData?.first_name ? userData?.first_name : '',
@@ -67,78 +67,15 @@ const CreateNewBubble = props => {
   const [profilePicture, setProfilePicture] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [adminCanCreateContent, setadminCanCreateContent] = useState('Yes');
+  // console.log("🚀 ~ CreateNewBubble ~ adminCanCreateContent:", adminCanCreateContent)
   const [openToAll, setOpenToAll] = useState('Yes');
   const [memberCreateContent, setmemberCreateContent] = useState('Yes');
-  const [bubbleTeamCanCreateContent, setbubbleTeamCanCreateContent] = useState('Yes');
+  const [bubbleTeamCanCreateContent, setbubbleTeamCanCreateContent] =
+    useState('Yes');
   const [allCanSendInvite, setAllCanSendInvite] = useState('Yes');
-  const [text, setText] = useState('')
-  const [displayText, setDisplayText] = useState([])
-  const architecture = [
-    {
-      name: 'Sports',
-      id: 1,
-    },
-    {
-      name: 'Music',
-      id: 2,
-    },
-    {
-      name: 'Technology',
-      id: 3,
-    },
-    {
-      name: 'Arts and Crafts',
-      id: 4,
-    },
-    {
-      name: 'Travel',
-      id: 5,
-    },
-    {
-      name: 'Food',
-      id: 6,
-    },
-    {
-      name: 'Gaming',
-      id: 7,
-    },
-    {
-      name: 'pets',
-      id: 8,
-    },
-    {
-      name: 'learning',
-      id: 9,
-    },
-    {
-      name: 'Books',
-      id: 10,
-    },
-    {
-      name: 'Fashion',
-      id: 11,
-    },
-    {
-      name: 'Health',
-      id: 12,
-    },
-    {
-      name: 'Photography',
-      id: 13,
-    },
-    {
-      name: 'Movies and entertainment',
-      id: 14,
-    },
-    {
-      name: 'Science and nature',
-      id: 15,
-    },
-    {
-      name: 'Parenting',
-      id: 16,
-    },
-  ];
+  const [text, setText] = useState('');
+  const [displayText, setDisplayText] = useState([]);
+
   const [architectureValue, setArchitectureValue] = useState([]);
   console.log(
     '🚀 ~ file: CreateNewBubble.js:136 ~ CreateNewBubble ~ architectureValue:',
@@ -147,35 +84,7 @@ const CreateNewBubble = props => {
   const [switchValue, setSwitchValue] = useState('Private');
   const ApprovalForAdmittance = ['yes', 'No'];
   const [ApprovalForAdmittanceValue, SetApprovalForAdmittance] = useState('');
-  const Data = [
-    {
-      text: 'All Bubble Member Post',
-      Answer: '(N) Only bubble team posts',
-    },
-    {
-      text: 'Bubble team can remove comments',
-      Answer: '(N) Only bubble owner can remove comments',
-    },
-    {
-      text: 'Bubble team can remove content',
-      Answer: '(N) Only bubble owner can remove content',
-    },
-    {
-      text: 'Entire bubble can invite new members',
-      Answer: '(N) Only bubble team can send invites',
-    },
-    {
-      text: 'Joining is open to everyone',
-      Answer: '(N) Only bubble team can accept request',
-    },
-  ];
-  const onSelectSwitch = index => {
-    if (index == 1) {
-      setSwitchValue('private');
-    } else if (index == 2) {
-      setSwitchValue('public');
-    }
-  };
+
   const ApprovaltoPost = ['yes', 'No'];
   const [ApprovalToPostValue, setApprovalToPostValue] = useState('');
 
@@ -189,9 +98,9 @@ const CreateNewBubble = props => {
       profile_id: profileData?.id,
       approval_post: ApprovalToPostValue,
       membership_cost: MembershipCostValue,
-      admin_create_content : adminCanCreateContent,
-      moderator_create_content : bubbleTeamCanCreateContent ,
-      member_create_content : memberCreateContent ,
+      admin_create_content: adminCanCreateContent,
+      moderator_create_content: bubbleTeamCanCreateContent,
+      member_create_content: memberCreateContent,
       privacy: ApprovalForAdmittanceValue,
       // approval_admittance: ApprovalForAdmittanceValue,
       // post_privacy: adminCanCreateContent,
@@ -222,7 +131,10 @@ const CreateNewBubble = props => {
       architectureValue.map((item, index) =>
         formData.append(`keywords[${index}]`, item),
       );
-      console.log("🚀 ~ file: CreateNewBubble.js:216 ~ createBubble ~ architectureValue:", architectureValue)
+      console.log(
+        '🚀 ~ file: CreateNewBubble.js:216 ~ createBubble ~ architectureValue:',
+        architectureValue,
+      );
     } else {
       return Platform.OS == 'android'
         ? ToastAndroid.show(`Please select interest`, ToastAndroid.SHORT)
@@ -238,7 +150,7 @@ const CreateNewBubble = props => {
       Platform.OS == 'android'
         ? ToastAndroid.show('Bubble created Successfully', ToastAndroid.SHORT)
         : Alert.alert('Bubble created Successfully');
-    // return  console.log('response ==== >' , response?.data)
+      // return  console.log('response ==== >' , response?.data)
       navigation.goBack();
     }
   };
@@ -280,7 +192,7 @@ const CreateNewBubble = props => {
           style={styles.bgimage}>
           <ScrollView nestedScrollEnabled>
             <View style={styles.topContainer}>
-              <View >
+              <View>
                 <TextInputWithTitle
                   placeholder={'Enter Bubble Title'}
                   setText={setBubbleTitle}
@@ -294,8 +206,7 @@ const CreateNewBubble = props => {
                   placeholderColor={'#000000'}
                   isBold
                   borderBottomWidth={1}
-                // backgroundColor={'red'}
-
+                  // backgroundColor={'red'}
                 />
                 <View
                   style={{
@@ -304,29 +215,29 @@ const CreateNewBubble = props => {
                     justifyContent: 'space-between',
                     width: windowWidth * 0.56,
                     borderBottomWidth: 1,
-                    marginLeft: moderateScale(5, 0.3)
+                    marginLeft: moderateScale(5, 0.3),
                     // backgroundColor:'red',
                     //  paddingHorizontal:moderateScale(10,.6)
                   }}>
-                  <TextInput style={{
-
-                    width: windowWidth * 0.45,
-                    // backgroundColor: Color.white,
-                    borderRadius: moderateScale(5, .6),
-                    paddingHorizontal: moderateScale(10, .6)
-                  }}
-                    placeholder='More Keywords'
+                  <TextInput
+                    style={{
+                      width: windowWidth * 0.45,
+                      // backgroundColor: Color.white,
+                      borderRadius: moderateScale(5, 0.6),
+                      paddingHorizontal: moderateScale(10, 0.6),
+                    }}
+                    placeholder="More Keywords"
                     value={text}
                     onChangeText={item => setText(item)}
                     placeholderTextColor={'#000000'}
                   />
 
-                  {text.length > 0 &&
+                  {text.length > 0 && (
                     <CustomButton
                       onPress={() => {
-                        setArchitectureValue(prev => [...prev, text])
+                        setArchitectureValue(prev => [...prev, text]);
                         // setArchitectureValues(text)
-                        setText('')
+                        setText('');
                       }}
                       // style={{
 
@@ -342,24 +253,26 @@ const CreateNewBubble = props => {
                       borderRadius={moderateScale(10, 0.3)}
                       paddingHorizontal={moderateScale(10, 0.3)}
                       marginRight={moderateScale(5, 0.3)}
-                    />}
+                    />
+                  )}
                 </View>
 
                 <View style={styles.mapview}>
                   {architectureValue.map((item, index) => {
                     return (
-                      <View style={{
-                        // paddingHorizontal: 2,
-                        // width : 100,
-                      }}
-                      >
-
+                      <View
+                        style={
+                          {
+                            // paddingHorizontal: 2,
+                            // width : 100,
+                          }
+                        }>
                         <CustomText
-
                           style={[
                             styles.mapText,
                             {
                               backgroundColor: Color.white,
+                              color: '#000000',
                             },
                           ]}>
                           {item}
@@ -376,15 +289,14 @@ const CreateNewBubble = props => {
                             // zIndex : 1,
                           }}
                           onPress={() => {
-                            let temp = [...architectureValue]
-                            temp.splice(index, 1)
-                            setArchitectureValue(temp)
+                            let temp = [...architectureValue];
+                            temp.splice(index, 1);
+                            setArchitectureValue(temp);
                           }}
                         />
                       </View>
                     );
                   })}
-
                 </View>
                 {/* <View>
                   <CustomText
@@ -434,7 +346,7 @@ const CreateNewBubble = props => {
                 {item?.image || Object.keys(profilePicture).length > 0 ? (
                   <CustomImage
                     source={
-                      item?.image ? item?.image : { uri: profilePicture?.uri }
+                      item?.image ? item?.image : {uri: profilePicture?.uri}
                     }
                     style={{
                       width: '100%',
@@ -460,41 +372,45 @@ const CreateNewBubble = props => {
             <View style={styles.line}></View>
 
             <View style={styles.view}>
-              <View style={{
-                justifyContent:'space-between',
-                flexDirection:'row',
-                height:windowHeight*0.045,
-                  width:windowWidth*0.9,
-                  marginBottom:moderateScale(-5, 0.3),
-                  marginLeft:moderateScale(0.1, 0.3),
-                  color:Color.black,
-                  marginTop:moderateScale(5, 0.3),
-                  placeholderColor:Color.veryLightGray,
-                  borderRadius:moderateScale(20, 0.3),
-                  backgroundColor:Color.white,
-                  // backgroundColor:'red',
-                  // justifyContent:'center',
-                  paddingHorizontal:moderateScale(20,0.3)
-              }}>
+              <View
+                style={{
+                  justifyContent: 'space-between',
+                  flexDirection: 'row',
+                  height: windowHeight * 0.045,
+                  width: windowWidth * 0.9,
+                  marginBottom: moderateScale(-5, 0.3),
+                  marginLeft: moderateScale(0.1, 0.3),
+                  color: Color.black,
+                  marginTop: moderateScale(5, 0.3),
+                  placeholderColor: Color.veryLightGray,
+                  borderRadius: moderateScale(20, 0.3),
+                  backgroundColor: Color.white,
+                  alignItems: 'center',
+                  paddingHorizontal: moderateScale(20, 0.3),
+                }}>
                 <TextInput
-                // style={{
-                //   height:windowHeight*0.045,
-                //   width:windowWidth*0.9,
-                //   marginBottom:moderateScale(-5, 0.3),
-                //   marginLeft:moderateScale(0.1, 0.3),
-                //   color:Color.black,
-                //   marginTop:moderateScale(5, 0.3),
-                //   placeholderColor:Color.veryLightGray,
-                //   borderRadius:moderateScale(20, 0.3),
-                //   // backgroundColor:Color.white,
-                //   backgroundColor:'red',
-                //   justifyContent:'center',
-                //   paddingHorizontal:moderateScale(20,0.3)
-                // }}
-                placeholder={Admin}
-                disable={true}
+                  // style={{
+                  //   height:windowHeight*0.045,
+                  //   width:windowWidth*0.9,
+                  //   marginBottom:moderateScale(-5, 0.3),
+                  //   marginLeft:moderateScale(0.1, 0.3),
+                  //   color:Color.black,
+                  //   marginTop:moderateScale(5, 0.3),
+                  //   placeholderColor:Color.veryLightGray,
+                  //   borderRadius:moderateScale(20, 0.3),
+                  //   // backgroundColor:Color.white,
+                  //   backgroundColor:'red',
+                  //   justifyContent:'center',
+                  //   paddingHorizontal:moderateScale(20,0.3)
+                  // }}
+                  style={{
+                    color: Color.black,
+                  }}
+                  // placeholder={Admin}
+                  disable={true}
+                  value={Admin}
                 />
-{/* 
+                {/* 
                 <TextInputWithTitle
                   disable={true}
                   placeholder={'Admin'}
@@ -522,10 +438,10 @@ const CreateNewBubble = props => {
                     // textAlign: 'center',
                     // position:'absolute',
                     // right:0,
-                    paddingVertical:moderateScale(6,.3)
+                    paddingVertical: moderateScale(6, 0.3),
                   }}
                   isBold>
-                    {/* {profileData?.community_list?.role} */}
+                  {/* {profileData?.community_list?.role} */}
                   owner
                 </CustomText>
               </View>
@@ -587,9 +503,7 @@ const CreateNewBubble = props => {
                 marginTop: moderateScale(10, 0.3),
                 marginBottom: moderateScale(20, 0.3),
               }}>
-              <CustomText
-                isBold
-                style={styles.ct}>
+              <CustomText isBold style={styles.ct}>
                 Team Role | Perms
               </CustomText>
               {/* every one can post or not  */}
@@ -629,8 +543,7 @@ const CreateNewBubble = props => {
               />
                */}
             </View>
-            <View
-              style={styles.btnView}>
+            <View style={styles.btnView}>
               <CustomButton
                 text={'cancel'}
                 textColor={themeColor[1]}
@@ -777,16 +690,17 @@ const styles = ScaledSheet.create({
   },
 });
 
-const SwitchComponent = ({ text1, text2, setValue, value }) => {
-  const onSelectSwitch = index => {
-    if (index == 1) {
-      setValue('Yes');
-    } else if (index == 2) {
-      setValue('No');
-    }
-  };
+const SwitchComponent = ({text1, text2, setValue, value}) => {
+  console.log('🚀 ~ SwitchComponent ~ value:', value);
+  // const onSelectSwitch = index => {
+  //   if (index == 1) {
+  //     setValue('Yes');
+  //   } else if (index == 2) {
+  //     setValue('No');
+  //   }
+  // };
   return (
-    <View style={{ flexDirection: 'row' }}>
+    <View style={{flexDirection: 'row'}}>
       <View
         style={{
           width: windowWidth * 0.7,
@@ -816,13 +730,13 @@ const SwitchComponent = ({ text1, text2, setValue, value }) => {
           paddingHorizontal: moderateScale(10, 0.6),
         }}>
         <CustomSwitch
-          selectionMode={1}
+          // selectionMode={1}
           roundCorner={true}
           option1={'Yes'}
           option2={'No'}
-          value={value}
+          value={value.toLowerCase() == 'no' ? 2 : 1}
           setValue={setValue}
-          onSelectSwitch={onSelectSwitch}
+          // onSelectSwitch={onSelectSwitch}
           selectionColor={'#11d40d'}
         />
       </View>
